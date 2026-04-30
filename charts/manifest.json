@@ -1,0 +1,92 @@
+{
+  "charts": [
+    {
+      "song": "audio/ark-light.opus",
+      "file": "ark-light.json"
+    },
+    {
+      "song": "audio/asura.opus",
+      "file": "asura.json"
+    },
+    {
+      "song": "audio/Beethoven.opus",
+      "file": "beethoven.json"
+    },
+    {
+      "song": "audio/drama.opus",
+      "file": "drama.json"
+    },
+    {
+      "song": "audio/faraway.opus",
+      "file": "faraway.json"
+    },
+    {
+      "song": "audio/felis.opus",
+      "file": "felis.json"
+    },
+    {
+      "song": "audio/first-choice.opus",
+      "file": "first-choice.json"
+    },
+    {
+      "song": "audio/grafiore.opus",
+      "file": "grafiore.json"
+    },
+    {
+      "song": "audio/ineffable.opus",
+      "file": "ineffable.json"
+    },
+    {
+      "song": "audio/lunatic-sky.opus",
+      "file": "lunatic-sky.json"
+    },
+    {
+      "song": "audio/maidens-capriccio.opus",
+      "file": "maidens-capriccio.json"
+    },
+    {
+      "song": "audio/masquerade.opus",
+      "file": "masquerade.json"
+    },
+    {
+      "song": "audio/megaburn.opus",
+      "file": "megaburn.json"
+    },
+    {
+      "song": "audio/nb-blast.opus",
+      "file": "nb-blast.json"
+    },
+    {
+      "song": "audio/necro-fantasy.opus",
+      "file": "necro-fantasy.json"
+    },
+    {
+      "song": "audio/night of fire.opus",
+      "file": "night-of-fire.json"
+    },
+    {
+      "song": "audio/please.opus",
+      "file": "please.json"
+    },
+    {
+      "song": "audio/purple-passion.opus",
+      "file": "purple-passion.json"
+    },
+    {
+      "song": "audio/qua-vadis.opus",
+      "file": "qua-vadis.json"
+    },
+    {
+      "song": "audio/seeker.opus",
+      "file": "seeker.json"
+    },
+    {
+      "song": "audio/toy-war.opus",
+      "file": "toy-war.json"
+    },
+    {
+      "song": "audio/wings-of-silence.opus",
+      "file": "wings-of-silence.json"
+    }
+  ]
+}
