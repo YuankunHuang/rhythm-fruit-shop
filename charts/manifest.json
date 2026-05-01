@@ -33,6 +33,10 @@
       "file": "grafiore.json"
     },
     {
+      "song": "audio/grypsy-tronic.opus",
+      "file": "grypsy-tronic.json"
+    },
+    {
       "song": "audio/ineffable.opus",
       "file": "ineffable.json"
     },
@@ -83,6 +87,10 @@
     {
       "song": "audio/toy-war.opus",
       "file": "toy-war.json"
+    },
+    {
+      "song": "audio/unwelcome-school.opus",
+      "file": "unwelcome-school.json"
     },
     {
       "song": "audio/wings-of-silence.opus",

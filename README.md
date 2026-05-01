@@ -33,6 +33,7 @@ http://localhost:8080/
 
 - `index.html`: playable demo entry.
 - `audio/`: runtime music files.
+- `assets/`: runtime UI art files.
 - `charts/`: official chart JSON files.
 - `hybrid_charts.json`: embedded chart build output for the single-file demo path.
 - `README.md`: this file.

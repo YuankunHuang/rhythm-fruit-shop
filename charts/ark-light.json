@@ -2054,17 +2054,6 @@
       {
         "id": 146,
         "kind": "press",
-        "time": 72.179,
-        "end": 72.953,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 147,
-        "kind": "press",
         "time": 72.953,
         "end": 73.727,
         "lane": 0,
@@ -2074,7 +2063,7 @@
         "intensity": 1.0
       },
       {
-        "id": 148,
+        "id": 147,
         "kind": "tap",
         "time": 74.114,
         "end": 74.114,
@@ -2085,7 +2074,7 @@
         "intensity": 1.0
       },
       {
-        "id": 149,
+        "id": 148,
         "kind": "press",
         "time": 74.501,
         "end": 74.888,
@@ -2096,18 +2085,7 @@
         "intensity": 1.0
       },
       {
-        "id": 150,
-        "kind": "press",
-        "time": 74.888,
-        "end": 75.082,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 151,
+        "id": 149,
         "kind": "tap",
         "time": 75.276,
         "end": 75.276,
@@ -2118,7 +2096,7 @@
         "intensity": 1.0
       },
       {
-        "id": 152,
+        "id": 150,
         "kind": "press",
         "time": 75.663,
         "end": 76.05,
@@ -2129,18 +2107,7 @@
         "intensity": 1.0
       },
       {
-        "id": 153,
-        "kind": "tap",
-        "time": 76.05,
-        "end": 76.05,
-        "lane": 0,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 154,
+        "id": 151,
         "kind": "tap",
         "time": 76.437,
         "end": 76.437,
@@ -2151,7 +2118,7 @@
         "intensity": 1.0
       },
       {
-        "id": 155,
+        "id": 152,
         "kind": "press",
         "time": 76.631,
         "end": 76.824,
@@ -2162,7 +2129,7 @@
         "intensity": 1.0
       },
       {
-        "id": 156,
+        "id": 153,
         "kind": "tap",
         "time": 77.018,
         "end": 77.018,
@@ -2173,7 +2140,7 @@
         "intensity": 1.0
       },
       {
-        "id": 157,
+        "id": 154,
         "kind": "press",
         "time": 77.211,
         "end": 77.598,
@@ -2184,18 +2151,7 @@
         "intensity": 1.0
       },
       {
-        "id": 158,
-        "kind": "tap",
-        "time": 77.598,
-        "end": 77.598,
-        "lane": 0,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 159,
+        "id": 155,
         "kind": "press",
         "time": 77.985,
         "end": 78.373,
@@ -2206,18 +2162,7 @@
         "intensity": 1.0
       },
       {
-        "id": 160,
-        "kind": "tap",
-        "time": 78.373,
-        "end": 78.373,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 161,
+        "id": 156,
         "kind": "tap",
         "time": 78.566,
         "end": 78.566,
@@ -2228,7 +2173,7 @@
         "intensity": 1.0
       },
       {
-        "id": 162,
+        "id": 157,
         "kind": "press",
         "time": 78.76,
         "end": 79.147,
@@ -2239,18 +2184,7 @@
         "intensity": 1.0
       },
       {
-        "id": 163,
-        "kind": "tap",
-        "time": 79.147,
-        "end": 79.147,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 164,
+        "id": 158,
         "kind": "tap",
         "time": 79.534,
         "end": 79.534,
@@ -2261,7 +2195,7 @@
         "intensity": 1.0
       },
       {
-        "id": 165,
+        "id": 159,
         "kind": "tap",
         "time": 79.921,
         "end": 79.921,
@@ -2272,7 +2206,7 @@
         "intensity": 1.0
       },
       {
-        "id": 166,
+        "id": 160,
         "kind": "tap",
         "time": 80.115,
         "end": 80.115,
@@ -2283,7 +2217,7 @@
         "intensity": 1.0
       },
       {
-        "id": 167,
+        "id": 161,
         "kind": "tap",
         "time": 80.308,
         "end": 80.308,
@@ -2294,7 +2228,7 @@
         "intensity": 1.0
       },
       {
-        "id": 168,
+        "id": 162,
         "kind": "press",
         "time": 80.502,
         "end": 80.695,
@@ -2305,7 +2239,7 @@
         "intensity": 1.0
       },
       {
-        "id": 169,
+        "id": 163,
         "kind": "press",
         "time": 81.082,
         "end": 81.469,
@@ -2316,18 +2250,7 @@
         "intensity": 1.0
       },
       {
-        "id": 170,
-        "kind": "tap",
-        "time": 81.469,
-        "end": 81.469,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 171,
+        "id": 164,
         "kind": "tap",
         "time": 81.663,
         "end": 81.663,
@@ -2338,7 +2261,7 @@
         "intensity": 1.0
       },
       {
-        "id": 172,
+        "id": 165,
         "kind": "press",
         "time": 81.857,
         "end": 82.244,
@@ -2349,18 +2272,7 @@
         "intensity": 1.0
       },
       {
-        "id": 173,
-        "kind": "tap",
-        "time": 82.244,
-        "end": 82.244,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 174,
+        "id": 166,
         "kind": "press",
         "time": 82.631,
         "end": 83.018,
@@ -2371,18 +2283,7 @@
         "intensity": 1.0
       },
       {
-        "id": 175,
-        "kind": "tap",
-        "time": 83.018,
-        "end": 83.018,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 176,
+        "id": 167,
         "kind": "press",
         "time": 83.405,
         "end": 83.792,
@@ -2393,18 +2294,7 @@
         "intensity": 1.0
       },
       {
-        "id": 177,
-        "kind": "tap",
-        "time": 83.792,
-        "end": 83.792,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 178,
+        "id": 168,
         "kind": "press",
         "time": 84.179,
         "end": 84.566,
@@ -2415,18 +2305,7 @@
         "intensity": 1.0
       },
       {
-        "id": 179,
-        "kind": "tap",
-        "time": 84.566,
-        "end": 84.566,
-        "lane": -1,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 180,
+        "id": 169,
         "kind": "tap",
         "time": 84.76,
         "end": 84.76,
@@ -2437,7 +2316,7 @@
         "intensity": 1.0
       },
       {
-        "id": 181,
+        "id": 170,
         "kind": "press",
         "time": 84.953,
         "end": 85.341,
@@ -2448,18 +2327,7 @@
         "intensity": 1.0
       },
       {
-        "id": 182,
-        "kind": "tap",
-        "time": 85.341,
-        "end": 85.341,
-        "lane": 1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 183,
+        "id": 171,
         "kind": "press",
         "time": 85.728,
         "end": 86.115,
@@ -2470,18 +2338,7 @@
         "intensity": 1.0
       },
       {
-        "id": 184,
-        "kind": "tap",
-        "time": 86.115,
-        "end": 86.115,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 185,
+        "id": 172,
         "kind": "press",
         "time": 86.502,
         "end": 86.889,
@@ -2492,18 +2349,7 @@
         "intensity": 1.0
       },
       {
-        "id": 186,
-        "kind": "tap",
-        "time": 86.889,
-        "end": 86.889,
-        "lane": -1,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 187,
+        "id": 173,
         "kind": "press",
         "time": 87.276,
         "end": 87.663,
@@ -2514,18 +2360,7 @@
         "intensity": 1.0
       },
       {
-        "id": 188,
-        "kind": "tap",
-        "time": 87.663,
-        "end": 87.663,
-        "lane": 1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 189,
+        "id": 174,
         "kind": "tap",
         "time": 87.857,
         "end": 87.857,
@@ -2536,7 +2371,7 @@
         "intensity": 1.0
       },
       {
-        "id": 190,
+        "id": 175,
         "kind": "press",
         "time": 88.05,
         "end": 88.437,
@@ -2547,18 +2382,7 @@
         "intensity": 1.0
       },
       {
-        "id": 191,
-        "kind": "tap",
-        "time": 88.437,
-        "end": 88.437,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 192,
+        "id": 176,
         "kind": "press",
         "time": 88.825,
         "end": 89.212,
@@ -2569,18 +2393,7 @@
         "intensity": 1.0
       },
       {
-        "id": 193,
-        "kind": "tap",
-        "time": 89.212,
-        "end": 89.212,
-        "lane": -1,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 194,
+        "id": 177,
         "kind": "tap",
         "time": 89.405,
         "end": 89.405,
@@ -2591,7 +2404,7 @@
         "intensity": 1.0
       },
       {
-        "id": 195,
+        "id": 178,
         "kind": "press",
         "time": 89.599,
         "end": 89.986,
@@ -2602,18 +2415,7 @@
         "intensity": 1.0
       },
       {
-        "id": 196,
-        "kind": "tap",
-        "time": 89.986,
-        "end": 89.986,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 197,
+        "id": 179,
         "kind": "press",
         "time": 90.373,
         "end": 90.76,
@@ -2624,18 +2426,7 @@
         "intensity": 1.0
       },
       {
-        "id": 198,
-        "kind": "tap",
-        "time": 90.76,
-        "end": 90.76,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 199,
+        "id": 180,
         "kind": "tap",
         "time": 90.954,
         "end": 90.954,
@@ -2646,7 +2437,7 @@
         "intensity": 1.0
       },
       {
-        "id": 200,
+        "id": 181,
         "kind": "press",
         "time": 91.147,
         "end": 91.534,
@@ -2657,18 +2448,7 @@
         "intensity": 1.0
       },
       {
-        "id": 201,
-        "kind": "tap",
-        "time": 91.534,
-        "end": 91.534,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 202,
+        "id": 182,
         "kind": "press",
         "time": 91.921,
         "end": 92.309,
@@ -2679,18 +2459,7 @@
         "intensity": 1.0
       },
       {
-        "id": 203,
-        "kind": "tap",
-        "time": 92.309,
-        "end": 92.309,
-        "lane": -1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 204,
+        "id": 183,
         "kind": "tap",
         "time": 92.502,
         "end": 92.502,
@@ -2701,7 +2470,7 @@
         "intensity": 1.0
       },
       {
-        "id": 205,
+        "id": 184,
         "kind": "press",
         "time": 92.696,
         "end": 93.083,
@@ -2712,18 +2481,7 @@
         "intensity": 1.0
       },
       {
-        "id": 206,
-        "kind": "tap",
-        "time": 93.083,
-        "end": 93.083,
-        "lane": 0,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 207,
+        "id": 185,
         "kind": "press",
         "time": 93.663,
         "end": 93.857,
@@ -2734,18 +2492,7 @@
         "intensity": 1.0
       },
       {
-        "id": 208,
-        "kind": "tap",
-        "time": 93.857,
-        "end": 93.857,
-        "lane": 1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 209,
+        "id": 186,
         "kind": "tap",
         "time": 94.051,
         "end": 94.051,
@@ -2756,7 +2503,7 @@
         "intensity": 1.0
       },
       {
-        "id": 210,
+        "id": 187,
         "kind": "press",
         "time": 94.244,
         "end": 94.631,
@@ -2767,18 +2514,7 @@
         "intensity": 1.0
       },
       {
-        "id": 211,
-        "kind": "tap",
-        "time": 94.631,
-        "end": 94.631,
-        "lane": -1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 212,
+        "id": 188,
         "kind": "press",
         "time": 95.018,
         "end": 95.405,
@@ -2789,18 +2525,7 @@
         "intensity": 1.0
       },
       {
-        "id": 213,
-        "kind": "tap",
-        "time": 95.405,
-        "end": 95.405,
-        "lane": 0,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 214,
+        "id": 189,
         "kind": "tap",
         "time": 95.599,
         "end": 95.599,
@@ -2811,7 +2536,7 @@
         "intensity": 1.0
       },
       {
-        "id": 215,
+        "id": 190,
         "kind": "press",
         "time": 95.793,
         "end": 96.18,
@@ -2822,18 +2547,7 @@
         "intensity": 1.0
       },
       {
-        "id": 216,
-        "kind": "tap",
-        "time": 96.18,
-        "end": 96.18,
-        "lane": 0,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 217,
+        "id": 191,
         "kind": "tap",
         "time": 96.567,
         "end": 96.567,
@@ -2844,7 +2558,7 @@
         "intensity": 1.0
       },
       {
-        "id": 218,
+        "id": 192,
         "kind": "press",
         "time": 96.76,
         "end": 96.954,
@@ -2855,18 +2569,7 @@
         "intensity": 1.0
       },
       {
-        "id": 219,
-        "kind": "tap",
-        "time": 96.954,
-        "end": 96.954,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 220,
+        "id": 193,
         "kind": "tap",
         "time": 97.147,
         "end": 97.147,
@@ -2877,7 +2580,7 @@
         "intensity": 1.0
       },
       {
-        "id": 221,
+        "id": 194,
         "kind": "press",
         "time": 97.341,
         "end": 97.728,
@@ -2888,18 +2591,7 @@
         "intensity": 1.0
       },
       {
-        "id": 222,
-        "kind": "tap",
-        "time": 97.728,
-        "end": 97.728,
-        "lane": 1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 223,
+        "id": 195,
         "kind": "tap",
         "time": 98.018,
         "end": 98.018,
@@ -2910,7 +2602,7 @@
         "intensity": 1.0
       },
       {
-        "id": 224,
+        "id": 196,
         "kind": "tap",
         "time": 98.309,
         "end": 98.309,
@@ -2921,7 +2613,7 @@
         "intensity": 1.0
       },
       {
-        "id": 225,
+        "id": 197,
         "kind": "press",
         "time": 98.889,
         "end": 99.277,
@@ -2932,18 +2624,7 @@
         "intensity": 1.0
       },
       {
-        "id": 226,
-        "kind": "tap",
-        "time": 99.277,
-        "end": 99.277,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 227,
+        "id": 198,
         "kind": "tap",
         "time": 99.664,
         "end": 99.664,
@@ -2954,7 +2635,7 @@
         "intensity": 1.0
       },
       {
-        "id": 228,
+        "id": 199,
         "kind": "tap",
         "time": 100.051,
         "end": 100.051,
@@ -2965,7 +2646,7 @@
         "intensity": 1.0
       },
       {
-        "id": 229,
+        "id": 200,
         "kind": "tap",
         "time": 100.438,
         "end": 100.438,
@@ -2976,7 +2657,7 @@
         "intensity": 1.0
       },
       {
-        "id": 230,
+        "id": 201,
         "kind": "tap",
         "time": 100.825,
         "end": 100.825,
@@ -2987,7 +2668,7 @@
         "intensity": 1.0
       },
       {
-        "id": 231,
+        "id": 202,
         "kind": "tap",
         "time": 101.212,
         "end": 101.212,
@@ -2998,7 +2679,7 @@
         "intensity": 1.0
       },
       {
-        "id": 232,
+        "id": 203,
         "kind": "tap",
         "time": 101.599,
         "end": 101.599,
@@ -3009,7 +2690,7 @@
         "intensity": 1.0
       },
       {
-        "id": 233,
+        "id": 204,
         "kind": "tap",
         "time": 101.986,
         "end": 101.986,
@@ -3020,7 +2701,7 @@
         "intensity": 1.0
       },
       {
-        "id": 234,
+        "id": 205,
         "kind": "tap",
         "time": 102.373,
         "end": 102.373,
@@ -3031,7 +2712,7 @@
         "intensity": 1.0
       },
       {
-        "id": 235,
+        "id": 206,
         "kind": "tap",
         "time": 102.761,
         "end": 102.761,
@@ -3042,7 +2723,7 @@
         "intensity": 1.0
       },
       {
-        "id": 236,
+        "id": 207,
         "kind": "tap",
         "time": 103.148,
         "end": 103.148,
@@ -3053,7 +2734,7 @@
         "intensity": 1.0
       },
       {
-        "id": 237,
+        "id": 208,
         "kind": "tap",
         "time": 103.535,
         "end": 103.535,
@@ -3064,7 +2745,7 @@
         "intensity": 1.0
       },
       {
-        "id": 238,
+        "id": 209,
         "kind": "tap",
         "time": 103.922,
         "end": 103.922,
@@ -3075,7 +2756,7 @@
         "intensity": 1.0
       },
       {
-        "id": 239,
+        "id": 210,
         "kind": "tap",
         "time": 104.309,
         "end": 104.309,
@@ -3086,7 +2767,7 @@
         "intensity": 1.0
       },
       {
-        "id": 240,
+        "id": 211,
         "kind": "tap",
         "time": 104.696,
         "end": 104.696,
@@ -3097,7 +2778,7 @@
         "intensity": 1.0
       },
       {
-        "id": 241,
+        "id": 212,
         "kind": "tap",
         "time": 105.083,
         "end": 105.083,
@@ -3108,7 +2789,7 @@
         "intensity": 1.0
       },
       {
-        "id": 242,
+        "id": 213,
         "kind": "tap",
         "time": 105.47,
         "end": 105.47,
@@ -3119,7 +2800,7 @@
         "intensity": 1.0
       },
       {
-        "id": 243,
+        "id": 214,
         "kind": "tap",
         "time": 105.857,
         "end": 105.857,
@@ -3130,7 +2811,7 @@
         "intensity": 1.0
       },
       {
-        "id": 244,
+        "id": 215,
         "kind": "tap",
         "time": 106.245,
         "end": 106.245,
@@ -3141,7 +2822,7 @@
         "intensity": 1.0
       },
       {
-        "id": 245,
+        "id": 216,
         "kind": "tap",
         "time": 106.632,
         "end": 106.632,
@@ -3152,7 +2833,7 @@
         "intensity": 1.0
       },
       {
-        "id": 246,
+        "id": 217,
         "kind": "tap",
         "time": 107.019,
         "end": 107.019,
@@ -3163,7 +2844,7 @@
         "intensity": 1.0
       },
       {
-        "id": 247,
+        "id": 218,
         "kind": "tap",
         "time": 107.406,
         "end": 107.406,
@@ -3174,7 +2855,7 @@
         "intensity": 1.0
       },
       {
-        "id": 248,
+        "id": 219,
         "kind": "tap",
         "time": 107.793,
         "end": 107.793,
@@ -3185,7 +2866,7 @@
         "intensity": 1.0
       },
       {
-        "id": 249,
+        "id": 220,
         "kind": "tap",
         "time": 108.18,
         "end": 108.18,
@@ -3196,7 +2877,7 @@
         "intensity": 1.0
       },
       {
-        "id": 250,
+        "id": 221,
         "kind": "tap",
         "time": 108.567,
         "end": 108.567,
@@ -3207,7 +2888,7 @@
         "intensity": 1.0
       },
       {
-        "id": 251,
+        "id": 222,
         "kind": "tap",
         "time": 108.954,
         "end": 108.954,
@@ -3218,7 +2899,7 @@
         "intensity": 1.0
       },
       {
-        "id": 252,
+        "id": 223,
         "kind": "tap",
         "time": 109.341,
         "end": 109.341,
@@ -3229,7 +2910,7 @@
         "intensity": 1.0
       },
       {
-        "id": 253,
+        "id": 224,
         "kind": "tap",
         "time": 109.729,
         "end": 109.729,
@@ -3240,7 +2921,7 @@
         "intensity": 1.0
       },
       {
-        "id": 254,
+        "id": 225,
         "kind": "tap",
         "time": 110.116,
         "end": 110.116,
@@ -3251,7 +2932,7 @@
         "intensity": 1.0
       },
       {
-        "id": 255,
+        "id": 226,
         "kind": "tap",
         "time": 110.406,
         "end": 110.406,
@@ -3262,7 +2943,7 @@
         "intensity": 1.0
       },
       {
-        "id": 256,
+        "id": 227,
         "kind": "tap",
         "time": 110.696,
         "end": 110.696,
@@ -3273,7 +2954,7 @@
         "intensity": 1.0
       },
       {
-        "id": 257,
+        "id": 228,
         "kind": "tap",
         "time": 110.987,
         "end": 110.987,
@@ -3284,7 +2965,7 @@
         "intensity": 1.0
       },
       {
-        "id": 258,
+        "id": 229,
         "kind": "tap",
         "time": 111.277,
         "end": 111.277,
@@ -3295,7 +2976,7 @@
         "intensity": 1.0
       },
       {
-        "id": 259,
+        "id": 230,
         "kind": "tap",
         "time": 111.664,
         "end": 111.664,
@@ -3306,7 +2987,7 @@
         "intensity": 1.0
       },
       {
-        "id": 260,
+        "id": 231,
         "kind": "tap",
         "time": 112.051,
         "end": 112.051,
@@ -3317,7 +2998,7 @@
         "intensity": 1.0
       },
       {
-        "id": 261,
+        "id": 232,
         "kind": "tap",
         "time": 112.438,
         "end": 112.438,
@@ -3328,7 +3009,7 @@
         "intensity": 1.0
       },
       {
-        "id": 262,
+        "id": 233,
         "kind": "tap",
         "time": 112.825,
         "end": 112.825,
@@ -3339,7 +3020,7 @@
         "intensity": 1.0
       },
       {
-        "id": 263,
+        "id": 234,
         "kind": "tap",
         "time": 113.213,
         "end": 113.213,
@@ -3350,7 +3031,7 @@
         "intensity": 1.0
       },
       {
-        "id": 264,
+        "id": 235,
         "kind": "tap",
         "time": 113.6,
         "end": 113.6,
@@ -3361,7 +3042,7 @@
         "intensity": 1.0
       },
       {
-        "id": 265,
+        "id": 236,
         "kind": "tap",
         "time": 113.987,
         "end": 113.987,
@@ -3372,7 +3053,7 @@
         "intensity": 1.0
       },
       {
-        "id": 266,
+        "id": 237,
         "kind": "tap",
         "time": 114.374,
         "end": 114.374,
@@ -3383,7 +3064,7 @@
         "intensity": 1.0
       },
       {
-        "id": 267,
+        "id": 238,
         "kind": "tap",
         "time": 114.761,
         "end": 114.761,
@@ -3394,7 +3075,7 @@
         "intensity": 1.0
       },
       {
-        "id": 268,
+        "id": 239,
         "kind": "tap",
         "time": 115.148,
         "end": 115.148,
@@ -3405,7 +3086,7 @@
         "intensity": 1.0
       },
       {
-        "id": 269,
+        "id": 240,
         "kind": "tap",
         "time": 115.535,
         "end": 115.535,
@@ -3416,7 +3097,7 @@
         "intensity": 1.0
       },
       {
-        "id": 270,
+        "id": 241,
         "kind": "tap",
         "time": 115.922,
         "end": 115.922,
@@ -3427,7 +3108,7 @@
         "intensity": 1.0
       },
       {
-        "id": 271,
+        "id": 242,
         "kind": "tap",
         "time": 116.309,
         "end": 116.309,
@@ -3438,7 +3119,7 @@
         "intensity": 1.0
       },
       {
-        "id": 272,
+        "id": 243,
         "kind": "tap",
         "time": 116.697,
         "end": 116.697,
@@ -3449,7 +3130,7 @@
         "intensity": 1.0
       },
       {
-        "id": 273,
+        "id": 244,
         "kind": "tap",
         "time": 117.084,
         "end": 117.084,
@@ -3460,7 +3141,7 @@
         "intensity": 1.0
       },
       {
-        "id": 274,
+        "id": 245,
         "kind": "tap",
         "time": 117.471,
         "end": 117.471,
@@ -3471,7 +3152,7 @@
         "intensity": 1.0
       },
       {
-        "id": 275,
+        "id": 246,
         "kind": "tap",
         "time": 117.858,
         "end": 117.858,
@@ -3482,7 +3163,7 @@
         "intensity": 1.0
       },
       {
-        "id": 276,
+        "id": 247,
         "kind": "tap",
         "time": 118.245,
         "end": 118.245,
@@ -3493,7 +3174,7 @@
         "intensity": 1.0
       },
       {
-        "id": 277,
+        "id": 248,
         "kind": "tap",
         "time": 118.632,
         "end": 118.632,
@@ -3504,7 +3185,7 @@
         "intensity": 1.0
       },
       {
-        "id": 278,
+        "id": 249,
         "kind": "tap",
         "time": 119.019,
         "end": 119.019,
@@ -3515,7 +3196,7 @@
         "intensity": 1.0
       },
       {
-        "id": 279,
+        "id": 250,
         "kind": "tap",
         "time": 119.406,
         "end": 119.406,
@@ -3526,7 +3207,7 @@
         "intensity": 1.0
       },
       {
-        "id": 280,
+        "id": 251,
         "kind": "tap",
         "time": 119.793,
         "end": 119.793,
@@ -3537,7 +3218,7 @@
         "intensity": 1.0
       },
       {
-        "id": 281,
+        "id": 252,
         "kind": "tap",
         "time": 120.181,
         "end": 120.181,
@@ -3548,7 +3229,7 @@
         "intensity": 1.0
       },
       {
-        "id": 282,
+        "id": 253,
         "kind": "tap",
         "time": 120.568,
         "end": 120.568,
@@ -3559,7 +3240,7 @@
         "intensity": 1.0
       },
       {
-        "id": 283,
+        "id": 254,
         "kind": "tap",
         "time": 120.955,
         "end": 120.955,
@@ -3570,7 +3251,7 @@
         "intensity": 1.0
       },
       {
-        "id": 284,
+        "id": 255,
         "kind": "tap",
         "time": 121.342,
         "end": 121.342,
@@ -3581,7 +3262,7 @@
         "intensity": 1.0
       },
       {
-        "id": 285,
+        "id": 256,
         "kind": "tap",
         "time": 121.729,
         "end": 121.729,
@@ -3592,7 +3273,7 @@
         "intensity": 1.0
       },
       {
-        "id": 286,
+        "id": 257,
         "kind": "tap",
         "time": 122.116,
         "end": 122.116,
@@ -3603,7 +3284,7 @@
         "intensity": 1.0
       },
       {
-        "id": 287,
+        "id": 258,
         "kind": "tap",
         "time": 122.503,
         "end": 122.503,
@@ -3614,7 +3295,7 @@
         "intensity": 1.0
       },
       {
-        "id": 288,
+        "id": 259,
         "kind": "tap",
         "time": 122.794,
         "end": 122.794,
@@ -3625,7 +3306,7 @@
         "intensity": 1.0
       },
       {
-        "id": 289,
+        "id": 260,
         "kind": "tap",
         "time": 123.084,
         "end": 123.084,
@@ -3636,7 +3317,7 @@
         "intensity": 1.0
       },
       {
-        "id": 290,
+        "id": 261,
         "kind": "tap",
         "time": 123.374,
         "end": 123.374,
@@ -3647,7 +3328,7 @@
         "intensity": 1.0
       },
       {
-        "id": 291,
+        "id": 262,
         "kind": "tap",
         "time": 123.665,
         "end": 123.665,
@@ -3658,7 +3339,7 @@
         "intensity": 1.0
       },
       {
-        "id": 292,
+        "id": 263,
         "kind": "tap",
         "time": 124.052,
         "end": 124.052,
@@ -3669,7 +3350,7 @@
         "intensity": 1.0
       },
       {
-        "id": 293,
+        "id": 264,
         "kind": "tap",
         "time": 124.439,
         "end": 124.439,
@@ -3680,7 +3361,7 @@
         "intensity": 1.0
       },
       {
-        "id": 294,
+        "id": 265,
         "kind": "tap",
         "time": 124.826,
         "end": 124.826,
@@ -3691,7 +3372,7 @@
         "intensity": 1.0
       },
       {
-        "id": 295,
+        "id": 266,
         "kind": "tap",
         "time": 125.213,
         "end": 125.213,
@@ -3702,7 +3383,7 @@
         "intensity": 1.0
       },
       {
-        "id": 296,
+        "id": 267,
         "kind": "tap",
         "time": 125.6,
         "end": 125.6,
@@ -3713,7 +3394,7 @@
         "intensity": 1.0
       },
       {
-        "id": 297,
+        "id": 268,
         "kind": "tap",
         "time": 125.987,
         "end": 125.987,
@@ -3724,7 +3405,7 @@
         "intensity": 1.0
       },
       {
-        "id": 298,
+        "id": 269,
         "kind": "tap",
         "time": 126.761,
         "end": 126.761,
@@ -3735,7 +3416,7 @@
         "intensity": 1.0
       },
       {
-        "id": 299,
+        "id": 270,
         "kind": "tap",
         "time": 127.149,
         "end": 127.149,
@@ -3746,7 +3427,7 @@
         "intensity": 1.0
       },
       {
-        "id": 300,
+        "id": 271,
         "kind": "tap",
         "time": 128.31,
         "end": 128.31,
@@ -3757,7 +3438,7 @@
         "intensity": 1.0
       },
       {
-        "id": 301,
+        "id": 272,
         "kind": "tap",
         "time": 128.697,
         "end": 128.697,
@@ -3768,7 +3449,7 @@
         "intensity": 1.0
       },
       {
-        "id": 302,
+        "id": 273,
         "kind": "tap",
         "time": 129.084,
         "end": 129.084,
@@ -3779,7 +3460,7 @@
         "intensity": 1.0
       },
       {
-        "id": 303,
+        "id": 274,
         "kind": "tap",
         "time": 129.471,
         "end": 129.471,
@@ -3790,7 +3471,7 @@
         "intensity": 1.0
       },
       {
-        "id": 304,
+        "id": 275,
         "kind": "tap",
         "time": 129.858,
         "end": 129.858,
@@ -3801,7 +3482,7 @@
         "intensity": 1.0
       },
       {
-        "id": 305,
+        "id": 276,
         "kind": "tap",
         "time": 130.245,
         "end": 130.245,
@@ -3812,7 +3493,7 @@
         "intensity": 1.0
       },
       {
-        "id": 306,
+        "id": 277,
         "kind": "tap",
         "time": 131.02,
         "end": 131.02,
@@ -3823,7 +3504,7 @@
         "intensity": 1.0
       },
       {
-        "id": 307,
+        "id": 278,
         "kind": "tap",
         "time": 131.407,
         "end": 131.407,
@@ -3834,7 +3515,7 @@
         "intensity": 1.0
       },
       {
-        "id": 308,
+        "id": 279,
         "kind": "tap",
         "time": 131.794,
         "end": 131.794,
@@ -3845,7 +3526,7 @@
         "intensity": 1.0
       },
       {
-        "id": 309,
+        "id": 280,
         "kind": "tap",
         "time": 132.568,
         "end": 132.568,
@@ -3856,7 +3537,7 @@
         "intensity": 1.0
       },
       {
-        "id": 310,
+        "id": 281,
         "kind": "tap",
         "time": 132.955,
         "end": 132.955,
@@ -3867,7 +3548,7 @@
         "intensity": 1.0
       },
       {
-        "id": 311,
+        "id": 282,
         "kind": "tap",
         "time": 133.342,
         "end": 133.342,
@@ -3878,7 +3559,7 @@
         "intensity": 1.0
       },
       {
-        "id": 312,
+        "id": 283,
         "kind": "tap",
         "time": 134.117,
         "end": 134.117,
@@ -3889,7 +3570,7 @@
         "intensity": 1.0
       },
       {
-        "id": 313,
+        "id": 284,
         "kind": "tap",
         "time": 134.504,
         "end": 134.504,
@@ -3900,7 +3581,7 @@
         "intensity": 1.0
       },
       {
-        "id": 314,
+        "id": 285,
         "kind": "tap",
         "time": 134.891,
         "end": 134.891,
@@ -3911,7 +3592,7 @@
         "intensity": 1.0
       },
       {
-        "id": 315,
+        "id": 286,
         "kind": "tap",
         "time": 135.762,
         "end": 135.762,
@@ -3922,23 +3603,12 @@
         "intensity": 1.0
       },
       {
-        "id": 316,
+        "id": 287,
         "kind": "press",
         "time": 136.052,
         "end": 136.439,
         "lane": -1,
         "fruit": 4,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 317,
-        "kind": "press",
-        "time": 136.439,
-        "end": 139.536,
-        "lane": 1,
-        "fruit": 5,
         "accent": "osu_mania_hold",
         "role": "verse",
         "intensity": 1.0
@@ -5961,17 +5631,6 @@
       {
         "id": 183,
         "kind": "tap",
-        "time": 75.274,
-        "end": 75.274,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 184,
-        "kind": "tap",
         "time": 75.468,
         "end": 75.468,
         "lane": 0,
@@ -5981,7 +5640,7 @@
         "intensity": 1.0
       },
       {
-        "id": 185,
+        "id": 184,
         "kind": "press",
         "time": 75.662,
         "end": 76.049,
@@ -5992,18 +5651,7 @@
         "intensity": 1.0
       },
       {
-        "id": 186,
-        "kind": "tap",
-        "time": 76.049,
-        "end": 76.049,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 187,
+        "id": 185,
         "kind": "press",
         "time": 76.436,
         "end": 76.823,
@@ -6014,18 +5662,7 @@
         "intensity": 1.0
       },
       {
-        "id": 188,
-        "kind": "tap",
-        "time": 76.823,
-        "end": 76.823,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 189,
+        "id": 186,
         "kind": "tap",
         "time": 77.017,
         "end": 77.017,
@@ -6036,7 +5673,7 @@
         "intensity": 1.0
       },
       {
-        "id": 190,
+        "id": 187,
         "kind": "tap",
         "time": 77.21,
         "end": 77.21,
@@ -6047,7 +5684,7 @@
         "intensity": 1.0
       },
       {
-        "id": 191,
+        "id": 188,
         "kind": "tap",
         "time": 77.597,
         "end": 77.597,
@@ -6058,7 +5695,7 @@
         "intensity": 1.0
       },
       {
-        "id": 192,
+        "id": 189,
         "kind": "press",
         "time": 77.984,
         "end": 78.371,
@@ -6069,18 +5706,7 @@
         "intensity": 1.0
       },
       {
-        "id": 193,
-        "kind": "tap",
-        "time": 78.371,
-        "end": 78.371,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 194,
+        "id": 190,
         "kind": "tap",
         "time": 78.565,
         "end": 78.565,
@@ -6091,7 +5717,7 @@
         "intensity": 1.0
       },
       {
-        "id": 195,
+        "id": 191,
         "kind": "tap",
         "time": 78.759,
         "end": 78.759,
@@ -6102,7 +5728,7 @@
         "intensity": 1.0
       },
       {
-        "id": 196,
+        "id": 192,
         "kind": "tap",
         "time": 79.146,
         "end": 79.146,
@@ -6113,7 +5739,7 @@
         "intensity": 1.0
       },
       {
-        "id": 197,
+        "id": 193,
         "kind": "press",
         "time": 79.533,
         "end": 79.726,
@@ -6124,7 +5750,7 @@
         "intensity": 1.0
       },
       {
-        "id": 198,
+        "id": 194,
         "kind": "tap",
         "time": 79.92,
         "end": 79.92,
@@ -6135,7 +5761,7 @@
         "intensity": 1.0
       },
       {
-        "id": 199,
+        "id": 195,
         "kind": "tap",
         "time": 80.113,
         "end": 80.113,
@@ -6146,7 +5772,7 @@
         "intensity": 1.0
       },
       {
-        "id": 200,
+        "id": 196,
         "kind": "tap",
         "time": 80.307,
         "end": 80.307,
@@ -6157,7 +5783,7 @@
         "intensity": 1.0
       },
       {
-        "id": 201,
+        "id": 197,
         "kind": "press",
         "time": 80.501,
         "end": 80.694,
@@ -6168,18 +5794,7 @@
         "intensity": 1.0
       },
       {
-        "id": 202,
-        "kind": "tap",
-        "time": 80.694,
-        "end": 80.694,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 203,
+        "id": 198,
         "kind": "press",
         "time": 81.081,
         "end": 81.468,
@@ -6190,18 +5805,7 @@
         "intensity": 1.0
       },
       {
-        "id": 204,
-        "kind": "tap",
-        "time": 81.468,
-        "end": 81.468,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 205,
+        "id": 199,
         "kind": "tap",
         "time": 81.662,
         "end": 81.662,
@@ -6212,7 +5816,7 @@
         "intensity": 1.0
       },
       {
-        "id": 206,
+        "id": 200,
         "kind": "press",
         "time": 81.855,
         "end": 82.243,
@@ -6223,18 +5827,7 @@
         "intensity": 1.0
       },
       {
-        "id": 207,
-        "kind": "tap",
-        "time": 82.243,
-        "end": 82.243,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 208,
+        "id": 201,
         "kind": "press",
         "time": 82.63,
         "end": 83.017,
@@ -6245,18 +5838,7 @@
         "intensity": 1.0
       },
       {
-        "id": 209,
-        "kind": "tap",
-        "time": 83.017,
-        "end": 83.017,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 210,
+        "id": 202,
         "kind": "tap",
         "time": 83.21,
         "end": 83.21,
@@ -6267,7 +5849,7 @@
         "intensity": 1.0
       },
       {
-        "id": 211,
+        "id": 203,
         "kind": "press",
         "time": 83.404,
         "end": 83.791,
@@ -6278,18 +5860,7 @@
         "intensity": 1.0
       },
       {
-        "id": 212,
-        "kind": "tap",
-        "time": 83.791,
-        "end": 83.791,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 213,
+        "id": 204,
         "kind": "tap",
         "time": 84.178,
         "end": 84.178,
@@ -6300,7 +5871,7 @@
         "intensity": 1.0
       },
       {
-        "id": 214,
+        "id": 205,
         "kind": "press",
         "time": 84.372,
         "end": 84.565,
@@ -6311,18 +5882,7 @@
         "intensity": 1.0
       },
       {
-        "id": 215,
-        "kind": "tap",
-        "time": 84.565,
-        "end": 84.565,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 216,
+        "id": 206,
         "kind": "tap",
         "time": 84.759,
         "end": 84.759,
@@ -6333,7 +5893,7 @@
         "intensity": 1.0
       },
       {
-        "id": 217,
+        "id": 207,
         "kind": "tap",
         "time": 84.952,
         "end": 84.952,
@@ -6344,7 +5904,7 @@
         "intensity": 1.0
       },
       {
-        "id": 218,
+        "id": 208,
         "kind": "tap",
         "time": 85.34,
         "end": 85.34,
@@ -6355,7 +5915,7 @@
         "intensity": 1.0
       },
       {
-        "id": 219,
+        "id": 209,
         "kind": "press",
         "time": 85.727,
         "end": 86.114,
@@ -6366,18 +5926,7 @@
         "intensity": 1.0
       },
       {
-        "id": 220,
-        "kind": "tap",
-        "time": 86.114,
-        "end": 86.114,
-        "lane": 1,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 221,
+        "id": 210,
         "kind": "press",
         "time": 86.501,
         "end": 86.888,
@@ -6388,18 +5937,7 @@
         "intensity": 1.0
       },
       {
-        "id": 222,
-        "kind": "tap",
-        "time": 86.888,
-        "end": 86.888,
-        "lane": 0,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 223,
+        "id": 211,
         "kind": "press",
         "time": 87.275,
         "end": 87.662,
@@ -6410,18 +5948,7 @@
         "intensity": 1.0
       },
       {
-        "id": 224,
-        "kind": "tap",
-        "time": 87.662,
-        "end": 87.662,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 225,
+        "id": 212,
         "kind": "tap",
         "time": 87.856,
         "end": 87.856,
@@ -6432,7 +5959,7 @@
         "intensity": 1.0
       },
       {
-        "id": 226,
+        "id": 213,
         "kind": "press",
         "time": 88.049,
         "end": 88.436,
@@ -6443,18 +5970,7 @@
         "intensity": 1.0
       },
       {
-        "id": 227,
-        "kind": "tap",
-        "time": 88.436,
-        "end": 88.436,
-        "lane": 1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 228,
+        "id": 214,
         "kind": "tap",
         "time": 88.824,
         "end": 88.824,
@@ -6465,7 +5981,7 @@
         "intensity": 1.0
       },
       {
-        "id": 229,
+        "id": 215,
         "kind": "tap",
         "time": 89.211,
         "end": 89.211,
@@ -6476,7 +5992,7 @@
         "intensity": 1.0
       },
       {
-        "id": 230,
+        "id": 216,
         "kind": "tap",
         "time": 89.404,
         "end": 89.404,
@@ -6487,7 +6003,7 @@
         "intensity": 1.0
       },
       {
-        "id": 231,
+        "id": 217,
         "kind": "press",
         "time": 89.598,
         "end": 89.985,
@@ -6498,18 +6014,7 @@
         "intensity": 1.0
       },
       {
-        "id": 232,
-        "kind": "tap",
-        "time": 89.985,
-        "end": 89.985,
-        "lane": 0,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 233,
+        "id": 218,
         "kind": "press",
         "time": 90.372,
         "end": 90.759,
@@ -6520,18 +6025,7 @@
         "intensity": 1.0
       },
       {
-        "id": 234,
-        "kind": "tap",
-        "time": 90.759,
-        "end": 90.759,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 235,
+        "id": 219,
         "kind": "tap",
         "time": 90.953,
         "end": 90.953,
@@ -6542,7 +6036,7 @@
         "intensity": 1.0
       },
       {
-        "id": 236,
+        "id": 220,
         "kind": "press",
         "time": 91.146,
         "end": 91.533,
@@ -6553,18 +6047,7 @@
         "intensity": 1.0
       },
       {
-        "id": 237,
-        "kind": "tap",
-        "time": 91.533,
-        "end": 91.533,
-        "lane": 1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 238,
+        "id": 221,
         "kind": "tap",
         "time": 91.92,
         "end": 91.92,
@@ -6575,7 +6058,7 @@
         "intensity": 1.0
       },
       {
-        "id": 239,
+        "id": 222,
         "kind": "tap",
         "time": 92.308,
         "end": 92.308,
@@ -6586,7 +6069,7 @@
         "intensity": 1.0
       },
       {
-        "id": 240,
+        "id": 223,
         "kind": "tap",
         "time": 92.501,
         "end": 92.501,
@@ -6597,7 +6080,7 @@
         "intensity": 1.0
       },
       {
-        "id": 241,
+        "id": 224,
         "kind": "press",
         "time": 92.695,
         "end": 93.082,
@@ -6608,18 +6091,7 @@
         "intensity": 1.0
       },
       {
-        "id": 242,
-        "kind": "tap",
-        "time": 93.082,
-        "end": 93.082,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 243,
+        "id": 225,
         "kind": "press",
         "time": 93.469,
         "end": 93.856,
@@ -6630,18 +6102,7 @@
         "intensity": 1.0
       },
       {
-        "id": 244,
-        "kind": "tap",
-        "time": 93.856,
-        "end": 93.856,
-        "lane": 1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 245,
+        "id": 226,
         "kind": "tap",
         "time": 94.05,
         "end": 94.05,
@@ -6652,7 +6113,7 @@
         "intensity": 1.0
       },
       {
-        "id": 246,
+        "id": 227,
         "kind": "tap",
         "time": 94.243,
         "end": 94.243,
@@ -6663,7 +6124,7 @@
         "intensity": 1.0
       },
       {
-        "id": 247,
+        "id": 228,
         "kind": "tap",
         "time": 94.63,
         "end": 94.63,
@@ -6674,7 +6135,7 @@
         "intensity": 1.0
       },
       {
-        "id": 248,
+        "id": 229,
         "kind": "press",
         "time": 95.017,
         "end": 95.405,
@@ -6685,18 +6146,7 @@
         "intensity": 1.0
       },
       {
-        "id": 249,
-        "kind": "tap",
-        "time": 95.405,
-        "end": 95.405,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 250,
+        "id": 230,
         "kind": "tap",
         "time": 95.598,
         "end": 95.598,
@@ -6707,7 +6157,7 @@
         "intensity": 1.0
       },
       {
-        "id": 251,
+        "id": 231,
         "kind": "press",
         "time": 95.792,
         "end": 96.179,
@@ -6718,18 +6168,7 @@
         "intensity": 1.0
       },
       {
-        "id": 252,
-        "kind": "tap",
-        "time": 96.179,
-        "end": 96.179,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 253,
+        "id": 232,
         "kind": "tap",
         "time": 96.566,
         "end": 96.566,
@@ -6740,7 +6179,7 @@
         "intensity": 1.0
       },
       {
-        "id": 254,
+        "id": 233,
         "kind": "press",
         "time": 96.759,
         "end": 96.953,
@@ -6751,7 +6190,7 @@
         "intensity": 1.0
       },
       {
-        "id": 255,
+        "id": 234,
         "kind": "tap",
         "time": 97.147,
         "end": 97.147,
@@ -6762,7 +6201,7 @@
         "intensity": 1.0
       },
       {
-        "id": 256,
+        "id": 235,
         "kind": "tap",
         "time": 97.34,
         "end": 97.34,
@@ -6773,7 +6212,7 @@
         "intensity": 1.0
       },
       {
-        "id": 257,
+        "id": 236,
         "kind": "tap",
         "time": 97.727,
         "end": 97.727,
@@ -6784,7 +6223,7 @@
         "intensity": 1.0
       },
       {
-        "id": 258,
+        "id": 237,
         "kind": "tap",
         "time": 98.018,
         "end": 98.018,
@@ -6795,7 +6234,7 @@
         "intensity": 1.0
       },
       {
-        "id": 259,
+        "id": 238,
         "kind": "tap",
         "time": 98.308,
         "end": 98.308,
@@ -6806,7 +6245,7 @@
         "intensity": 1.0
       },
       {
-        "id": 260,
+        "id": 239,
         "kind": "tap",
         "time": 98.889,
         "end": 98.889,
@@ -6817,7 +6256,7 @@
         "intensity": 1.0
       },
       {
-        "id": 261,
+        "id": 240,
         "kind": "press",
         "time": 99.082,
         "end": 99.276,
@@ -6828,18 +6267,7 @@
         "intensity": 1.0
       },
       {
-        "id": 262,
-        "kind": "tap",
-        "time": 99.276,
-        "end": 99.276,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 263,
+        "id": 241,
         "kind": "tap",
         "time": 99.663,
         "end": 99.663,
@@ -6850,7 +6278,7 @@
         "intensity": 1.0
       },
       {
-        "id": 264,
+        "id": 242,
         "kind": "tap",
         "time": 100.05,
         "end": 100.05,
@@ -6861,7 +6289,7 @@
         "intensity": 1.0
       },
       {
-        "id": 265,
+        "id": 243,
         "kind": "tap",
         "time": 100.437,
         "end": 100.437,
@@ -6872,7 +6300,7 @@
         "intensity": 1.0
       },
       {
-        "id": 266,
+        "id": 244,
         "kind": "tap",
         "time": 100.824,
         "end": 100.824,
@@ -6883,7 +6311,7 @@
         "intensity": 1.0
       },
       {
-        "id": 267,
+        "id": 245,
         "kind": "tap",
         "time": 101.211,
         "end": 101.211,
@@ -6894,7 +6322,7 @@
         "intensity": 1.0
       },
       {
-        "id": 268,
+        "id": 246,
         "kind": "tap",
         "time": 101.598,
         "end": 101.598,
@@ -6905,7 +6333,7 @@
         "intensity": 1.0
       },
       {
-        "id": 269,
+        "id": 247,
         "kind": "tap",
         "time": 101.986,
         "end": 101.986,
@@ -6916,7 +6344,7 @@
         "intensity": 1.0
       },
       {
-        "id": 270,
+        "id": 248,
         "kind": "tap",
         "time": 102.373,
         "end": 102.373,
@@ -6927,7 +6355,7 @@
         "intensity": 1.0
       },
       {
-        "id": 271,
+        "id": 249,
         "kind": "tap",
         "time": 102.76,
         "end": 102.76,
@@ -6938,7 +6366,7 @@
         "intensity": 1.0
       },
       {
-        "id": 272,
+        "id": 250,
         "kind": "tap",
         "time": 103.147,
         "end": 103.147,
@@ -6949,7 +6377,7 @@
         "intensity": 1.0
       },
       {
-        "id": 273,
+        "id": 251,
         "kind": "tap",
         "time": 103.534,
         "end": 103.534,
@@ -6960,7 +6388,7 @@
         "intensity": 1.0
       },
       {
-        "id": 274,
+        "id": 252,
         "kind": "tap",
         "time": 103.921,
         "end": 103.921,
@@ -6971,7 +6399,7 @@
         "intensity": 1.0
       },
       {
-        "id": 275,
+        "id": 253,
         "kind": "tap",
         "time": 104.308,
         "end": 104.308,
@@ -6982,7 +6410,7 @@
         "intensity": 1.0
       },
       {
-        "id": 276,
+        "id": 254,
         "kind": "tap",
         "time": 104.695,
         "end": 104.695,
@@ -6993,7 +6421,7 @@
         "intensity": 1.0
       },
       {
-        "id": 277,
+        "id": 255,
         "kind": "tap",
         "time": 105.082,
         "end": 105.082,
@@ -7004,7 +6432,7 @@
         "intensity": 1.0
       },
       {
-        "id": 278,
+        "id": 256,
         "kind": "tap",
         "time": 105.47,
         "end": 105.47,
@@ -7015,7 +6443,7 @@
         "intensity": 1.0
       },
       {
-        "id": 279,
+        "id": 257,
         "kind": "tap",
         "time": 105.857,
         "end": 105.857,
@@ -7026,7 +6454,7 @@
         "intensity": 1.0
       },
       {
-        "id": 280,
+        "id": 258,
         "kind": "tap",
         "time": 106.244,
         "end": 106.244,
@@ -7037,7 +6465,7 @@
         "intensity": 1.0
       },
       {
-        "id": 281,
+        "id": 259,
         "kind": "tap",
         "time": 106.631,
         "end": 106.631,
@@ -7048,7 +6476,7 @@
         "intensity": 1.0
       },
       {
-        "id": 282,
+        "id": 260,
         "kind": "tap",
         "time": 107.018,
         "end": 107.018,
@@ -7059,7 +6487,7 @@
         "intensity": 1.0
       },
       {
-        "id": 283,
+        "id": 261,
         "kind": "tap",
         "time": 107.405,
         "end": 107.405,
@@ -7070,7 +6498,7 @@
         "intensity": 1.0
       },
       {
-        "id": 284,
+        "id": 262,
         "kind": "tap",
         "time": 107.792,
         "end": 107.792,
@@ -7081,7 +6509,7 @@
         "intensity": 1.0
       },
       {
-        "id": 285,
+        "id": 263,
         "kind": "tap",
         "time": 108.179,
         "end": 108.179,
@@ -7092,7 +6520,7 @@
         "intensity": 1.0
       },
       {
-        "id": 286,
+        "id": 264,
         "kind": "tap",
         "time": 108.566,
         "end": 108.566,
@@ -7103,7 +6531,7 @@
         "intensity": 1.0
       },
       {
-        "id": 287,
+        "id": 265,
         "kind": "tap",
         "time": 108.954,
         "end": 108.954,
@@ -7114,7 +6542,7 @@
         "intensity": 1.0
       },
       {
-        "id": 288,
+        "id": 266,
         "kind": "tap",
         "time": 109.341,
         "end": 109.341,
@@ -7125,7 +6553,7 @@
         "intensity": 1.0
       },
       {
-        "id": 289,
+        "id": 267,
         "kind": "tap",
         "time": 109.728,
         "end": 109.728,
@@ -7136,7 +6564,7 @@
         "intensity": 1.0
       },
       {
-        "id": 290,
+        "id": 268,
         "kind": "tap",
         "time": 109.921,
         "end": 109.921,
@@ -7147,7 +6575,7 @@
         "intensity": 1.0
       },
       {
-        "id": 291,
+        "id": 269,
         "kind": "tap",
         "time": 110.115,
         "end": 110.115,
@@ -7158,7 +6586,7 @@
         "intensity": 1.0
       },
       {
-        "id": 292,
+        "id": 270,
         "kind": "tap",
         "time": 110.405,
         "end": 110.405,
@@ -7169,7 +6597,7 @@
         "intensity": 1.0
       },
       {
-        "id": 293,
+        "id": 271,
         "kind": "tap",
         "time": 110.696,
         "end": 110.696,
@@ -7180,7 +6608,7 @@
         "intensity": 1.0
       },
       {
-        "id": 294,
+        "id": 272,
         "kind": "tap",
         "time": 110.986,
         "end": 110.986,
@@ -7191,7 +6619,7 @@
         "intensity": 1.0
       },
       {
-        "id": 295,
+        "id": 273,
         "kind": "tap",
         "time": 111.276,
         "end": 111.276,
@@ -7202,7 +6630,7 @@
         "intensity": 1.0
       },
       {
-        "id": 296,
+        "id": 274,
         "kind": "tap",
         "time": 111.47,
         "end": 111.47,
@@ -7213,7 +6641,7 @@
         "intensity": 1.0
       },
       {
-        "id": 297,
+        "id": 275,
         "kind": "tap",
         "time": 111.663,
         "end": 111.663,
@@ -7224,7 +6652,7 @@
         "intensity": 1.0
       },
       {
-        "id": 298,
+        "id": 276,
         "kind": "tap",
         "time": 112.051,
         "end": 112.051,
@@ -7235,7 +6663,7 @@
         "intensity": 1.0
       },
       {
-        "id": 299,
+        "id": 277,
         "kind": "tap",
         "time": 112.438,
         "end": 112.438,
@@ -7246,7 +6674,7 @@
         "intensity": 1.0
       },
       {
-        "id": 300,
+        "id": 278,
         "kind": "tap",
         "time": 112.825,
         "end": 112.825,
@@ -7257,7 +6685,7 @@
         "intensity": 1.0
       },
       {
-        "id": 301,
+        "id": 279,
         "kind": "tap",
         "time": 113.212,
         "end": 113.212,
@@ -7268,7 +6696,7 @@
         "intensity": 1.0
       },
       {
-        "id": 302,
+        "id": 280,
         "kind": "tap",
         "time": 113.599,
         "end": 113.599,
@@ -7279,7 +6707,7 @@
         "intensity": 1.0
       },
       {
-        "id": 303,
+        "id": 281,
         "kind": "tap",
         "time": 113.986,
         "end": 113.986,
@@ -7290,7 +6718,7 @@
         "intensity": 1.0
       },
       {
-        "id": 304,
+        "id": 282,
         "kind": "tap",
         "time": 114.373,
         "end": 114.373,
@@ -7301,7 +6729,7 @@
         "intensity": 1.0
       },
       {
-        "id": 305,
+        "id": 283,
         "kind": "tap",
         "time": 114.76,
         "end": 114.76,
@@ -7312,7 +6740,7 @@
         "intensity": 1.0
       },
       {
-        "id": 306,
+        "id": 284,
         "kind": "tap",
         "time": 115.147,
         "end": 115.147,
@@ -7323,7 +6751,7 @@
         "intensity": 1.0
       },
       {
-        "id": 307,
+        "id": 285,
         "kind": "tap",
         "time": 115.535,
         "end": 115.535,
@@ -7334,7 +6762,7 @@
         "intensity": 1.0
       },
       {
-        "id": 308,
+        "id": 286,
         "kind": "tap",
         "time": 115.922,
         "end": 115.922,
@@ -7345,7 +6773,7 @@
         "intensity": 1.0
       },
       {
-        "id": 309,
+        "id": 287,
         "kind": "tap",
         "time": 116.309,
         "end": 116.309,
@@ -7356,7 +6784,7 @@
         "intensity": 1.0
       },
       {
-        "id": 310,
+        "id": 288,
         "kind": "tap",
         "time": 116.696,
         "end": 116.696,
@@ -7367,7 +6795,7 @@
         "intensity": 1.0
       },
       {
-        "id": 311,
+        "id": 289,
         "kind": "tap",
         "time": 117.083,
         "end": 117.083,
@@ -7378,7 +6806,7 @@
         "intensity": 1.0
       },
       {
-        "id": 312,
+        "id": 290,
         "kind": "tap",
         "time": 117.47,
         "end": 117.47,
@@ -7389,7 +6817,7 @@
         "intensity": 1.0
       },
       {
-        "id": 313,
+        "id": 291,
         "kind": "tap",
         "time": 117.857,
         "end": 117.857,
@@ -7400,7 +6828,7 @@
         "intensity": 1.0
       },
       {
-        "id": 314,
+        "id": 292,
         "kind": "tap",
         "time": 118.244,
         "end": 118.244,
@@ -7411,7 +6839,7 @@
         "intensity": 1.0
       },
       {
-        "id": 315,
+        "id": 293,
         "kind": "tap",
         "time": 118.632,
         "end": 118.632,
@@ -7422,7 +6850,7 @@
         "intensity": 1.0
       },
       {
-        "id": 316,
+        "id": 294,
         "kind": "tap",
         "time": 119.019,
         "end": 119.019,
@@ -7433,7 +6861,7 @@
         "intensity": 1.0
       },
       {
-        "id": 317,
+        "id": 295,
         "kind": "tap",
         "time": 119.406,
         "end": 119.406,
@@ -7444,7 +6872,7 @@
         "intensity": 1.0
       },
       {
-        "id": 318,
+        "id": 296,
         "kind": "tap",
         "time": 119.793,
         "end": 119.793,
@@ -7455,7 +6883,7 @@
         "intensity": 1.0
       },
       {
-        "id": 319,
+        "id": 297,
         "kind": "tap",
         "time": 120.18,
         "end": 120.18,
@@ -7466,7 +6894,7 @@
         "intensity": 1.0
       },
       {
-        "id": 320,
+        "id": 298,
         "kind": "tap",
         "time": 120.567,
         "end": 120.567,
@@ -7477,7 +6905,7 @@
         "intensity": 1.0
       },
       {
-        "id": 321,
+        "id": 299,
         "kind": "tap",
         "time": 120.954,
         "end": 120.954,
@@ -7488,7 +6916,7 @@
         "intensity": 1.0
       },
       {
-        "id": 322,
+        "id": 300,
         "kind": "tap",
         "time": 121.341,
         "end": 121.341,
@@ -7499,7 +6927,7 @@
         "intensity": 1.0
       },
       {
-        "id": 323,
+        "id": 301,
         "kind": "tap",
         "time": 121.728,
         "end": 121.728,
@@ -7510,7 +6938,7 @@
         "intensity": 1.0
       },
       {
-        "id": 324,
+        "id": 302,
         "kind": "tap",
         "time": 122.116,
         "end": 122.116,
@@ -7521,7 +6949,7 @@
         "intensity": 1.0
       },
       {
-        "id": 325,
+        "id": 303,
         "kind": "tap",
         "time": 122.503,
         "end": 122.503,
@@ -7532,7 +6960,7 @@
         "intensity": 1.0
       },
       {
-        "id": 326,
+        "id": 304,
         "kind": "tap",
         "time": 122.793,
         "end": 122.793,
@@ -7543,7 +6971,7 @@
         "intensity": 1.0
       },
       {
-        "id": 327,
+        "id": 305,
         "kind": "tap",
         "time": 123.083,
         "end": 123.083,
@@ -7554,7 +6982,7 @@
         "intensity": 1.0
       },
       {
-        "id": 328,
+        "id": 306,
         "kind": "tap",
         "time": 123.374,
         "end": 123.374,
@@ -7565,7 +6993,7 @@
         "intensity": 1.0
       },
       {
-        "id": 329,
+        "id": 307,
         "kind": "tap",
         "time": 123.664,
         "end": 123.664,
@@ -7576,7 +7004,7 @@
         "intensity": 1.0
       },
       {
-        "id": 330,
+        "id": 308,
         "kind": "tap",
         "time": 123.858,
         "end": 123.858,
@@ -7587,7 +7015,7 @@
         "intensity": 1.0
       },
       {
-        "id": 331,
+        "id": 309,
         "kind": "tap",
         "time": 124.051,
         "end": 124.051,
@@ -7598,7 +7026,7 @@
         "intensity": 1.0
       },
       {
-        "id": 332,
+        "id": 310,
         "kind": "tap",
         "time": 124.438,
         "end": 124.438,
@@ -7609,7 +7037,7 @@
         "intensity": 1.0
       },
       {
-        "id": 333,
+        "id": 311,
         "kind": "tap",
         "time": 124.825,
         "end": 124.825,
@@ -7620,7 +7048,7 @@
         "intensity": 1.0
       },
       {
-        "id": 334,
+        "id": 312,
         "kind": "tap",
         "time": 125.212,
         "end": 125.212,
@@ -7631,7 +7059,7 @@
         "intensity": 1.0
       },
       {
-        "id": 335,
+        "id": 313,
         "kind": "tap",
         "time": 125.6,
         "end": 125.6,
@@ -7642,7 +7070,7 @@
         "intensity": 1.0
       },
       {
-        "id": 336,
+        "id": 314,
         "kind": "tap",
         "time": 125.987,
         "end": 125.987,
@@ -7653,7 +7081,7 @@
         "intensity": 1.0
       },
       {
-        "id": 337,
+        "id": 315,
         "kind": "tap",
         "time": 126.374,
         "end": 126.374,
@@ -7664,7 +7092,7 @@
         "intensity": 1.0
       },
       {
-        "id": 338,
+        "id": 316,
         "kind": "tap",
         "time": 126.761,
         "end": 126.761,
@@ -7675,7 +7103,7 @@
         "intensity": 1.0
       },
       {
-        "id": 339,
+        "id": 317,
         "kind": "tap",
         "time": 127.148,
         "end": 127.148,
@@ -7686,7 +7114,7 @@
         "intensity": 1.0
       },
       {
-        "id": 340,
+        "id": 318,
         "kind": "tap",
         "time": 127.535,
         "end": 127.535,
@@ -7697,7 +7125,7 @@
         "intensity": 1.0
       },
       {
-        "id": 341,
+        "id": 319,
         "kind": "tap",
         "time": 127.922,
         "end": 127.922,
@@ -7708,7 +7136,7 @@
         "intensity": 1.0
       },
       {
-        "id": 342,
+        "id": 320,
         "kind": "tap",
         "time": 128.309,
         "end": 128.309,
@@ -7719,7 +7147,7 @@
         "intensity": 1.0
       },
       {
-        "id": 343,
+        "id": 321,
         "kind": "tap",
         "time": 128.697,
         "end": 128.697,
@@ -7730,7 +7158,7 @@
         "intensity": 1.0
       },
       {
-        "id": 344,
+        "id": 322,
         "kind": "tap",
         "time": 129.084,
         "end": 129.084,
@@ -7741,7 +7169,7 @@
         "intensity": 1.0
       },
       {
-        "id": 345,
+        "id": 323,
         "kind": "tap",
         "time": 129.471,
         "end": 129.471,
@@ -7752,7 +7180,7 @@
         "intensity": 1.0
       },
       {
-        "id": 346,
+        "id": 324,
         "kind": "tap",
         "time": 129.858,
         "end": 129.858,
@@ -7763,7 +7191,7 @@
         "intensity": 1.0
       },
       {
-        "id": 347,
+        "id": 325,
         "kind": "tap",
         "time": 130.245,
         "end": 130.245,
@@ -7774,7 +7202,7 @@
         "intensity": 1.0
       },
       {
-        "id": 348,
+        "id": 326,
         "kind": "tap",
         "time": 130.632,
         "end": 130.632,
@@ -7785,7 +7213,7 @@
         "intensity": 1.0
       },
       {
-        "id": 349,
+        "id": 327,
         "kind": "tap",
         "time": 131.019,
         "end": 131.019,
@@ -7796,7 +7224,7 @@
         "intensity": 1.0
       },
       {
-        "id": 350,
+        "id": 328,
         "kind": "tap",
         "time": 131.406,
         "end": 131.406,
@@ -7807,7 +7235,7 @@
         "intensity": 1.0
       },
       {
-        "id": 351,
+        "id": 329,
         "kind": "tap",
         "time": 131.793,
         "end": 131.793,
@@ -7818,7 +7246,7 @@
         "intensity": 1.0
       },
       {
-        "id": 352,
+        "id": 330,
         "kind": "tap",
         "time": 132.181,
         "end": 132.181,
@@ -7829,7 +7257,7 @@
         "intensity": 1.0
       },
       {
-        "id": 353,
+        "id": 331,
         "kind": "tap",
         "time": 132.568,
         "end": 132.568,
@@ -7840,7 +7268,7 @@
         "intensity": 1.0
       },
       {
-        "id": 354,
+        "id": 332,
         "kind": "tap",
         "time": 132.955,
         "end": 132.955,
@@ -7851,7 +7279,7 @@
         "intensity": 1.0
       },
       {
-        "id": 355,
+        "id": 333,
         "kind": "tap",
         "time": 133.342,
         "end": 133.342,
@@ -7862,7 +7290,7 @@
         "intensity": 1.0
       },
       {
-        "id": 356,
+        "id": 334,
         "kind": "tap",
         "time": 133.729,
         "end": 133.729,
@@ -7873,7 +7301,7 @@
         "intensity": 1.0
       },
       {
-        "id": 357,
+        "id": 335,
         "kind": "tap",
         "time": 134.116,
         "end": 134.116,
@@ -7884,7 +7312,7 @@
         "intensity": 1.0
       },
       {
-        "id": 358,
+        "id": 336,
         "kind": "tap",
         "time": 134.503,
         "end": 134.503,
@@ -7895,7 +7323,7 @@
         "intensity": 1.0
       },
       {
-        "id": 359,
+        "id": 337,
         "kind": "tap",
         "time": 134.89,
         "end": 134.89,
@@ -7906,7 +7334,7 @@
         "intensity": 1.0
       },
       {
-        "id": 360,
+        "id": 338,
         "kind": "tap",
         "time": 135.181,
         "end": 135.181,
@@ -7917,7 +7345,7 @@
         "intensity": 1.0
       },
       {
-        "id": 361,
+        "id": 339,
         "kind": "tap",
         "time": 135.471,
         "end": 135.471,
@@ -7928,7 +7356,7 @@
         "intensity": 1.0
       },
       {
-        "id": 362,
+        "id": 340,
         "kind": "tap",
         "time": 135.761,
         "end": 135.761,
@@ -7939,7 +7367,7 @@
         "intensity": 1.0
       },
       {
-        "id": 363,
+        "id": 341,
         "kind": "press",
         "time": 136.052,
         "end": 139.536,
@@ -10077,17 +9505,6 @@
       {
         "id": 193,
         "kind": "tap",
-        "time": 75.274,
-        "end": 75.274,
-        "lane": 1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 194,
-        "kind": "tap",
         "time": 75.467,
         "end": 75.467,
         "lane": 0,
@@ -10097,7 +9514,7 @@
         "intensity": 1.0
       },
       {
-        "id": 195,
+        "id": 194,
         "kind": "press",
         "time": 75.661,
         "end": 76.048,
@@ -10108,18 +9525,7 @@
         "intensity": 1.0
       },
       {
-        "id": 196,
-        "kind": "tap",
-        "time": 76.048,
-        "end": 76.048,
-        "lane": -1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 197,
+        "id": 195,
         "kind": "press",
         "time": 76.435,
         "end": 76.628,
@@ -10130,18 +9536,7 @@
         "intensity": 1.0
       },
       {
-        "id": 198,
-        "kind": "press",
-        "time": 76.628,
-        "end": 76.822,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 199,
+        "id": 196,
         "kind": "tap",
         "time": 76.822,
         "end": 76.822,
@@ -10152,7 +9547,7 @@
         "intensity": 1.0
       },
       {
-        "id": 200,
+        "id": 197,
         "kind": "tap",
         "time": 77.016,
         "end": 77.016,
@@ -10163,7 +9558,7 @@
         "intensity": 1.0
       },
       {
-        "id": 201,
+        "id": 198,
         "kind": "tap",
         "time": 77.209,
         "end": 77.209,
@@ -10174,7 +9569,7 @@
         "intensity": 1.0
       },
       {
-        "id": 202,
+        "id": 199,
         "kind": "tap",
         "time": 77.596,
         "end": 77.596,
@@ -10185,7 +9580,7 @@
         "intensity": 1.0
       },
       {
-        "id": 203,
+        "id": 200,
         "kind": "press",
         "time": 77.983,
         "end": 78.177,
@@ -10196,18 +9591,7 @@
         "intensity": 1.0
       },
       {
-        "id": 204,
-        "kind": "press",
-        "time": 78.177,
-        "end": 78.37,
-        "lane": 0,
-        "fruit": 5,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 205,
+        "id": 201,
         "kind": "tap",
         "time": 78.37,
         "end": 78.37,
@@ -10218,7 +9602,7 @@
         "intensity": 1.0
       },
       {
-        "id": 206,
+        "id": 202,
         "kind": "tap",
         "time": 78.564,
         "end": 78.564,
@@ -10229,7 +9613,7 @@
         "intensity": 1.0
       },
       {
-        "id": 207,
+        "id": 203,
         "kind": "tap",
         "time": 78.758,
         "end": 78.758,
@@ -10240,7 +9624,7 @@
         "intensity": 1.0
       },
       {
-        "id": 208,
+        "id": 204,
         "kind": "tap",
         "time": 79.145,
         "end": 79.145,
@@ -10251,7 +9635,7 @@
         "intensity": 1.0
       },
       {
-        "id": 209,
+        "id": 205,
         "kind": "tap",
         "time": 79.532,
         "end": 79.532,
@@ -10262,7 +9646,7 @@
         "intensity": 1.0
       },
       {
-        "id": 210,
+        "id": 206,
         "kind": "tap",
         "time": 79.725,
         "end": 79.725,
@@ -10273,7 +9657,7 @@
         "intensity": 1.0
       },
       {
-        "id": 211,
+        "id": 207,
         "kind": "tap",
         "time": 79.919,
         "end": 79.919,
@@ -10284,7 +9668,7 @@
         "intensity": 1.0
       },
       {
-        "id": 212,
+        "id": 208,
         "kind": "tap",
         "time": 80.112,
         "end": 80.112,
@@ -10295,7 +9679,7 @@
         "intensity": 1.0
       },
       {
-        "id": 213,
+        "id": 209,
         "kind": "tap",
         "time": 80.306,
         "end": 80.306,
@@ -10306,7 +9690,7 @@
         "intensity": 1.0
       },
       {
-        "id": 214,
+        "id": 210,
         "kind": "tap",
         "time": 80.693,
         "end": 80.693,
@@ -10317,7 +9701,7 @@
         "intensity": 1.0
       },
       {
-        "id": 215,
+        "id": 211,
         "kind": "tap",
         "time": 81.08,
         "end": 81.08,
@@ -10328,7 +9712,7 @@
         "intensity": 1.0
       },
       {
-        "id": 216,
+        "id": 212,
         "kind": "press",
         "time": 81.274,
         "end": 81.467,
@@ -10339,18 +9723,7 @@
         "intensity": 1.0
       },
       {
-        "id": 217,
-        "kind": "tap",
-        "time": 81.467,
-        "end": 81.467,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 218,
+        "id": 213,
         "kind": "tap",
         "time": 81.661,
         "end": 81.661,
@@ -10361,7 +9734,7 @@
         "intensity": 1.0
       },
       {
-        "id": 219,
+        "id": 214,
         "kind": "press",
         "time": 81.854,
         "end": 82.242,
@@ -10372,18 +9745,7 @@
         "intensity": 1.0
       },
       {
-        "id": 220,
-        "kind": "tap",
-        "time": 82.242,
-        "end": 82.242,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 221,
+        "id": 215,
         "kind": "press",
         "time": 82.629,
         "end": 82.822,
@@ -10394,18 +9756,7 @@
         "intensity": 1.0
       },
       {
-        "id": 222,
-        "kind": "press",
-        "time": 82.822,
-        "end": 83.016,
-        "lane": 1,
-        "fruit": 2,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 223,
+        "id": 216,
         "kind": "tap",
         "time": 83.016,
         "end": 83.016,
@@ -10416,7 +9767,7 @@
         "intensity": 1.0
       },
       {
-        "id": 224,
+        "id": 217,
         "kind": "tap",
         "time": 83.209,
         "end": 83.209,
@@ -10427,7 +9778,7 @@
         "intensity": 1.0
       },
       {
-        "id": 225,
+        "id": 218,
         "kind": "press",
         "time": 83.403,
         "end": 83.79,
@@ -10438,18 +9789,7 @@
         "intensity": 1.0
       },
       {
-        "id": 226,
-        "kind": "tap",
-        "time": 83.79,
-        "end": 83.79,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 227,
+        "id": 219,
         "kind": "tap",
         "time": 84.177,
         "end": 84.177,
@@ -10460,7 +9800,7 @@
         "intensity": 1.0
       },
       {
-        "id": 228,
+        "id": 220,
         "kind": "press",
         "time": 84.371,
         "end": 84.564,
@@ -10471,18 +9811,7 @@
         "intensity": 1.0
       },
       {
-        "id": 229,
-        "kind": "tap",
-        "time": 84.564,
-        "end": 84.564,
-        "lane": 1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 230,
+        "id": 221,
         "kind": "tap",
         "time": 84.758,
         "end": 84.758,
@@ -10493,7 +9822,7 @@
         "intensity": 1.0
       },
       {
-        "id": 231,
+        "id": 222,
         "kind": "tap",
         "time": 84.951,
         "end": 84.951,
@@ -10504,7 +9833,7 @@
         "intensity": 1.0
       },
       {
-        "id": 232,
+        "id": 223,
         "kind": "tap",
         "time": 85.338,
         "end": 85.338,
@@ -10515,7 +9844,7 @@
         "intensity": 1.0
       },
       {
-        "id": 233,
+        "id": 224,
         "kind": "tap",
         "time": 85.726,
         "end": 85.726,
@@ -10526,7 +9855,7 @@
         "intensity": 1.0
       },
       {
-        "id": 234,
+        "id": 225,
         "kind": "tap",
         "time": 86.113,
         "end": 86.113,
@@ -10537,7 +9866,7 @@
         "intensity": 1.0
       },
       {
-        "id": 235,
+        "id": 226,
         "kind": "press",
         "time": 86.5,
         "end": 86.887,
@@ -10548,18 +9877,7 @@
         "intensity": 1.0
       },
       {
-        "id": 236,
-        "kind": "tap",
-        "time": 86.887,
-        "end": 86.887,
-        "lane": -1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 237,
+        "id": 227,
         "kind": "press",
         "time": 87.274,
         "end": 87.661,
@@ -10570,18 +9888,7 @@
         "intensity": 1.0
       },
       {
-        "id": 238,
-        "kind": "tap",
-        "time": 87.661,
-        "end": 87.661,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 239,
+        "id": 228,
         "kind": "tap",
         "time": 87.855,
         "end": 87.855,
@@ -10592,7 +9899,7 @@
         "intensity": 1.0
       },
       {
-        "id": 240,
+        "id": 229,
         "kind": "press",
         "time": 88.048,
         "end": 88.339,
@@ -10603,7 +9910,7 @@
         "intensity": 1.0
       },
       {
-        "id": 241,
+        "id": 230,
         "kind": "tap",
         "time": 88.435,
         "end": 88.435,
@@ -10614,7 +9921,7 @@
         "intensity": 1.0
       },
       {
-        "id": 242,
+        "id": 231,
         "kind": "tap",
         "time": 88.822,
         "end": 88.822,
@@ -10625,7 +9932,7 @@
         "intensity": 1.0
       },
       {
-        "id": 243,
+        "id": 232,
         "kind": "press",
         "time": 89.016,
         "end": 89.21,
@@ -10636,18 +9943,7 @@
         "intensity": 1.0
       },
       {
-        "id": 244,
-        "kind": "tap",
-        "time": 89.21,
-        "end": 89.21,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 245,
+        "id": 233,
         "kind": "tap",
         "time": 89.403,
         "end": 89.403,
@@ -10658,7 +9954,7 @@
         "intensity": 1.0
       },
       {
-        "id": 246,
+        "id": 234,
         "kind": "press",
         "time": 89.597,
         "end": 89.984,
@@ -10669,18 +9965,7 @@
         "intensity": 1.0
       },
       {
-        "id": 247,
-        "kind": "tap",
-        "time": 89.984,
-        "end": 89.984,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 248,
+        "id": 235,
         "kind": "tap",
         "time": 90.371,
         "end": 90.371,
@@ -10691,7 +9976,7 @@
         "intensity": 1.0
       },
       {
-        "id": 249,
+        "id": 236,
         "kind": "press",
         "time": 90.564,
         "end": 90.758,
@@ -10702,18 +9987,7 @@
         "intensity": 1.0
       },
       {
-        "id": 250,
-        "kind": "tap",
-        "time": 90.758,
-        "end": 90.758,
-        "lane": 0,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 251,
+        "id": 237,
         "kind": "tap",
         "time": 90.952,
         "end": 90.952,
@@ -10724,7 +9998,7 @@
         "intensity": 1.0
       },
       {
-        "id": 252,
+        "id": 238,
         "kind": "press",
         "time": 91.145,
         "end": 91.532,
@@ -10735,18 +10009,7 @@
         "intensity": 1.0
       },
       {
-        "id": 253,
-        "kind": "tap",
-        "time": 91.532,
-        "end": 91.532,
-        "lane": 1,
-        "fruit": 5,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 254,
+        "id": 239,
         "kind": "tap",
         "time": 91.919,
         "end": 91.919,
@@ -10757,7 +10020,7 @@
         "intensity": 1.0
       },
       {
-        "id": 255,
+        "id": 240,
         "kind": "press",
         "time": 92.113,
         "end": 92.306,
@@ -10768,18 +10031,7 @@
         "intensity": 1.0
       },
       {
-        "id": 256,
-        "kind": "tap",
-        "time": 92.306,
-        "end": 92.306,
-        "lane": 1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 257,
+        "id": 241,
         "kind": "tap",
         "time": 92.5,
         "end": 92.5,
@@ -10790,7 +10042,7 @@
         "intensity": 1.0
       },
       {
-        "id": 258,
+        "id": 242,
         "kind": "press",
         "time": 92.694,
         "end": 92.887,
@@ -10801,18 +10053,7 @@
         "intensity": 1.0
       },
       {
-        "id": 259,
-        "kind": "press",
-        "time": 92.887,
-        "end": 93.081,
-        "lane": 0,
-        "fruit": 4,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 260,
+        "id": 243,
         "kind": "tap",
         "time": 93.081,
         "end": 93.081,
@@ -10823,7 +10064,7 @@
         "intensity": 1.0
       },
       {
-        "id": 261,
+        "id": 244,
         "kind": "tap",
         "time": 93.468,
         "end": 93.468,
@@ -10834,7 +10075,7 @@
         "intensity": 1.0
       },
       {
-        "id": 262,
+        "id": 245,
         "kind": "press",
         "time": 93.661,
         "end": 93.855,
@@ -10845,18 +10086,7 @@
         "intensity": 1.0
       },
       {
-        "id": 263,
-        "kind": "tap",
-        "time": 93.855,
-        "end": 93.855,
-        "lane": 1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 264,
+        "id": 246,
         "kind": "tap",
         "time": 94.048,
         "end": 94.048,
@@ -10867,7 +10097,7 @@
         "intensity": 1.0
       },
       {
-        "id": 265,
+        "id": 247,
         "kind": "press",
         "time": 94.242,
         "end": 94.629,
@@ -10878,18 +10108,7 @@
         "intensity": 1.0
       },
       {
-        "id": 266,
-        "kind": "tap",
-        "time": 94.629,
-        "end": 94.629,
-        "lane": -1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 267,
+        "id": 248,
         "kind": "tap",
         "time": 95.016,
         "end": 95.016,
@@ -10900,7 +10119,7 @@
         "intensity": 1.0
       },
       {
-        "id": 268,
+        "id": 249,
         "kind": "press",
         "time": 95.21,
         "end": 95.403,
@@ -10911,18 +10130,7 @@
         "intensity": 1.0
       },
       {
-        "id": 269,
-        "kind": "tap",
-        "time": 95.403,
-        "end": 95.403,
-        "lane": 1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 270,
+        "id": 250,
         "kind": "tap",
         "time": 95.597,
         "end": 95.597,
@@ -10933,7 +10141,7 @@
         "intensity": 1.0
       },
       {
-        "id": 271,
+        "id": 251,
         "kind": "press",
         "time": 95.79,
         "end": 95.984,
@@ -10944,18 +10152,7 @@
         "intensity": 1.0
       },
       {
-        "id": 272,
-        "kind": "press",
-        "time": 95.984,
-        "end": 96.178,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 273,
+        "id": 252,
         "kind": "tap",
         "time": 96.178,
         "end": 96.178,
@@ -10966,7 +10163,7 @@
         "intensity": 1.0
       },
       {
-        "id": 274,
+        "id": 253,
         "kind": "tap",
         "time": 96.565,
         "end": 96.565,
@@ -10977,7 +10174,7 @@
         "intensity": 1.0
       },
       {
-        "id": 275,
+        "id": 254,
         "kind": "press",
         "time": 96.758,
         "end": 96.952,
@@ -10988,18 +10185,7 @@
         "intensity": 1.0
       },
       {
-        "id": 276,
-        "kind": "tap",
-        "time": 96.952,
-        "end": 96.952,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 277,
+        "id": 255,
         "kind": "tap",
         "time": 97.145,
         "end": 97.145,
@@ -11010,7 +10196,7 @@
         "intensity": 1.0
       },
       {
-        "id": 278,
+        "id": 256,
         "kind": "tap",
         "time": 97.339,
         "end": 97.339,
@@ -11021,7 +10207,7 @@
         "intensity": 1.0
       },
       {
-        "id": 279,
+        "id": 257,
         "kind": "tap",
         "time": 97.726,
         "end": 97.726,
@@ -11032,7 +10218,7 @@
         "intensity": 1.0
       },
       {
-        "id": 280,
+        "id": 258,
         "kind": "tap",
         "time": 98.016,
         "end": 98.016,
@@ -11043,7 +10229,7 @@
         "intensity": 1.0
       },
       {
-        "id": 281,
+        "id": 259,
         "kind": "tap",
         "time": 98.307,
         "end": 98.307,
@@ -11054,7 +10240,7 @@
         "intensity": 1.0
       },
       {
-        "id": 282,
+        "id": 260,
         "kind": "tap",
         "time": 98.5,
         "end": 98.5,
@@ -11065,7 +10251,7 @@
         "intensity": 1.0
       },
       {
-        "id": 283,
+        "id": 261,
         "kind": "tap",
         "time": 98.887,
         "end": 98.887,
@@ -11076,7 +10262,7 @@
         "intensity": 1.0
       },
       {
-        "id": 284,
+        "id": 262,
         "kind": "tap",
         "time": 99.081,
         "end": 99.081,
@@ -11087,7 +10273,7 @@
         "intensity": 1.0
       },
       {
-        "id": 285,
+        "id": 263,
         "kind": "tap",
         "time": 99.274,
         "end": 99.274,
@@ -11098,7 +10284,7 @@
         "intensity": 1.0
       },
       {
-        "id": 286,
+        "id": 264,
         "kind": "tap",
         "time": 99.662,
         "end": 99.662,
@@ -11109,7 +10295,7 @@
         "intensity": 1.0
       },
       {
-        "id": 287,
+        "id": 265,
         "kind": "tap",
         "time": 100.049,
         "end": 100.049,
@@ -11120,7 +10306,7 @@
         "intensity": 1.0
       },
       {
-        "id": 288,
+        "id": 266,
         "kind": "tap",
         "time": 100.436,
         "end": 100.436,
@@ -11131,7 +10317,7 @@
         "intensity": 1.0
       },
       {
-        "id": 289,
+        "id": 267,
         "kind": "tap",
         "time": 100.823,
         "end": 100.823,
@@ -11142,7 +10328,7 @@
         "intensity": 1.0
       },
       {
-        "id": 290,
+        "id": 268,
         "kind": "tap",
         "time": 101.21,
         "end": 101.21,
@@ -11153,7 +10339,7 @@
         "intensity": 1.0
       },
       {
-        "id": 291,
+        "id": 269,
         "kind": "tap",
         "time": 101.597,
         "end": 101.597,
@@ -11164,7 +10350,7 @@
         "intensity": 1.0
       },
       {
-        "id": 292,
+        "id": 270,
         "kind": "tap",
         "time": 101.984,
         "end": 101.984,
@@ -11175,7 +10361,7 @@
         "intensity": 1.0
       },
       {
-        "id": 293,
+        "id": 271,
         "kind": "tap",
         "time": 102.371,
         "end": 102.371,
@@ -11186,7 +10372,7 @@
         "intensity": 1.0
       },
       {
-        "id": 294,
+        "id": 272,
         "kind": "tap",
         "time": 102.758,
         "end": 102.758,
@@ -11197,7 +10383,7 @@
         "intensity": 1.0
       },
       {
-        "id": 295,
+        "id": 273,
         "kind": "tap",
         "time": 103.146,
         "end": 103.146,
@@ -11208,7 +10394,7 @@
         "intensity": 1.0
       },
       {
-        "id": 296,
+        "id": 274,
         "kind": "tap",
         "time": 103.533,
         "end": 103.533,
@@ -11219,7 +10405,7 @@
         "intensity": 1.0
       },
       {
-        "id": 297,
+        "id": 275,
         "kind": "tap",
         "time": 103.92,
         "end": 103.92,
@@ -11230,7 +10416,7 @@
         "intensity": 1.0
       },
       {
-        "id": 298,
+        "id": 276,
         "kind": "tap",
         "time": 104.307,
         "end": 104.307,
@@ -11241,7 +10427,7 @@
         "intensity": 1.0
       },
       {
-        "id": 299,
+        "id": 277,
         "kind": "tap",
         "time": 104.694,
         "end": 104.694,
@@ -11252,7 +10438,7 @@
         "intensity": 1.0
       },
       {
-        "id": 300,
+        "id": 278,
         "kind": "tap",
         "time": 105.081,
         "end": 105.081,
@@ -11263,7 +10449,7 @@
         "intensity": 1.0
       },
       {
-        "id": 301,
+        "id": 279,
         "kind": "tap",
         "time": 105.468,
         "end": 105.468,
@@ -11274,7 +10460,7 @@
         "intensity": 1.0
       },
       {
-        "id": 302,
+        "id": 280,
         "kind": "tap",
         "time": 105.855,
         "end": 105.855,
@@ -11285,7 +10471,7 @@
         "intensity": 1.0
       },
       {
-        "id": 303,
+        "id": 281,
         "kind": "tap",
         "time": 106.243,
         "end": 106.243,
@@ -11296,7 +10482,7 @@
         "intensity": 1.0
       },
       {
-        "id": 304,
+        "id": 282,
         "kind": "tap",
         "time": 106.63,
         "end": 106.63,
@@ -11307,7 +10493,7 @@
         "intensity": 1.0
       },
       {
-        "id": 305,
+        "id": 283,
         "kind": "tap",
         "time": 107.017,
         "end": 107.017,
@@ -11318,7 +10504,7 @@
         "intensity": 1.0
       },
       {
-        "id": 306,
+        "id": 284,
         "kind": "tap",
         "time": 107.404,
         "end": 107.404,
@@ -11329,7 +10515,7 @@
         "intensity": 1.0
       },
       {
-        "id": 307,
+        "id": 285,
         "kind": "tap",
         "time": 107.791,
         "end": 107.791,
@@ -11340,7 +10526,7 @@
         "intensity": 1.0
       },
       {
-        "id": 308,
+        "id": 286,
         "kind": "tap",
         "time": 108.178,
         "end": 108.178,
@@ -11351,7 +10537,7 @@
         "intensity": 1.0
       },
       {
-        "id": 309,
+        "id": 287,
         "kind": "tap",
         "time": 108.565,
         "end": 108.565,
@@ -11362,7 +10548,7 @@
         "intensity": 1.0
       },
       {
-        "id": 310,
+        "id": 288,
         "kind": "tap",
         "time": 108.952,
         "end": 108.952,
@@ -11373,7 +10559,7 @@
         "intensity": 1.0
       },
       {
-        "id": 311,
+        "id": 289,
         "kind": "tap",
         "time": 109.339,
         "end": 109.339,
@@ -11384,7 +10570,7 @@
         "intensity": 1.0
       },
       {
-        "id": 312,
+        "id": 290,
         "kind": "tap",
         "time": 109.727,
         "end": 109.727,
@@ -11395,7 +10581,7 @@
         "intensity": 1.0
       },
       {
-        "id": 313,
+        "id": 291,
         "kind": "tap",
         "time": 109.92,
         "end": 109.92,
@@ -11406,7 +10592,7 @@
         "intensity": 1.0
       },
       {
-        "id": 314,
+        "id": 292,
         "kind": "tap",
         "time": 110.114,
         "end": 110.114,
@@ -11417,7 +10603,7 @@
         "intensity": 1.0
       },
       {
-        "id": 315,
+        "id": 293,
         "kind": "tap",
         "time": 110.404,
         "end": 110.404,
@@ -11428,7 +10614,7 @@
         "intensity": 1.0
       },
       {
-        "id": 316,
+        "id": 294,
         "kind": "tap",
         "time": 110.694,
         "end": 110.694,
@@ -11439,7 +10625,7 @@
         "intensity": 1.0
       },
       {
-        "id": 317,
+        "id": 295,
         "kind": "tap",
         "time": 110.985,
         "end": 110.985,
@@ -11450,7 +10636,7 @@
         "intensity": 1.0
       },
       {
-        "id": 318,
+        "id": 296,
         "kind": "tap",
         "time": 111.275,
         "end": 111.275,
@@ -11461,7 +10647,7 @@
         "intensity": 1.0
       },
       {
-        "id": 319,
+        "id": 297,
         "kind": "tap",
         "time": 111.469,
         "end": 111.469,
@@ -11472,7 +10658,7 @@
         "intensity": 1.0
       },
       {
-        "id": 320,
+        "id": 298,
         "kind": "tap",
         "time": 111.662,
         "end": 111.662,
@@ -11483,7 +10669,7 @@
         "intensity": 1.0
       },
       {
-        "id": 321,
+        "id": 299,
         "kind": "tap",
         "time": 112.049,
         "end": 112.049,
@@ -11494,7 +10680,7 @@
         "intensity": 1.0
       },
       {
-        "id": 322,
+        "id": 300,
         "kind": "tap",
         "time": 112.436,
         "end": 112.436,
@@ -11505,7 +10691,7 @@
         "intensity": 1.0
       },
       {
-        "id": 323,
+        "id": 301,
         "kind": "tap",
         "time": 112.823,
         "end": 112.823,
@@ -11516,7 +10702,7 @@
         "intensity": 1.0
       },
       {
-        "id": 324,
+        "id": 302,
         "kind": "tap",
         "time": 113.211,
         "end": 113.211,
@@ -11527,7 +10713,7 @@
         "intensity": 1.0
       },
       {
-        "id": 325,
+        "id": 303,
         "kind": "tap",
         "time": 113.598,
         "end": 113.598,
@@ -11538,7 +10724,7 @@
         "intensity": 1.0
       },
       {
-        "id": 326,
+        "id": 304,
         "kind": "tap",
         "time": 113.985,
         "end": 113.985,
@@ -11549,7 +10735,7 @@
         "intensity": 1.0
       },
       {
-        "id": 327,
+        "id": 305,
         "kind": "tap",
         "time": 114.372,
         "end": 114.372,
@@ -11560,7 +10746,7 @@
         "intensity": 1.0
       },
       {
-        "id": 328,
+        "id": 306,
         "kind": "tap",
         "time": 114.759,
         "end": 114.759,
@@ -11571,7 +10757,7 @@
         "intensity": 1.0
       },
       {
-        "id": 329,
+        "id": 307,
         "kind": "tap",
         "time": 115.146,
         "end": 115.146,
@@ -11582,7 +10768,7 @@
         "intensity": 1.0
       },
       {
-        "id": 330,
+        "id": 308,
         "kind": "tap",
         "time": 115.533,
         "end": 115.533,
@@ -11593,7 +10779,7 @@
         "intensity": 1.0
       },
       {
-        "id": 331,
+        "id": 309,
         "kind": "tap",
         "time": 115.92,
         "end": 115.92,
@@ -11604,7 +10790,7 @@
         "intensity": 1.0
       },
       {
-        "id": 332,
+        "id": 310,
         "kind": "tap",
         "time": 116.307,
         "end": 116.307,
@@ -11615,7 +10801,7 @@
         "intensity": 1.0
       },
       {
-        "id": 333,
+        "id": 311,
         "kind": "tap",
         "time": 116.695,
         "end": 116.695,
@@ -11626,7 +10812,7 @@
         "intensity": 1.0
       },
       {
-        "id": 334,
+        "id": 312,
         "kind": "tap",
         "time": 117.082,
         "end": 117.082,
@@ -11637,7 +10823,7 @@
         "intensity": 1.0
       },
       {
-        "id": 335,
+        "id": 313,
         "kind": "tap",
         "time": 117.469,
         "end": 117.469,
@@ -11648,7 +10834,7 @@
         "intensity": 1.0
       },
       {
-        "id": 336,
+        "id": 314,
         "kind": "tap",
         "time": 117.856,
         "end": 117.856,
@@ -11659,7 +10845,7 @@
         "intensity": 1.0
       },
       {
-        "id": 337,
+        "id": 315,
         "kind": "tap",
         "time": 118.243,
         "end": 118.243,
@@ -11670,7 +10856,7 @@
         "intensity": 1.0
       },
       {
-        "id": 338,
+        "id": 316,
         "kind": "tap",
         "time": 118.63,
         "end": 118.63,
@@ -11681,7 +10867,7 @@
         "intensity": 1.0
       },
       {
-        "id": 339,
+        "id": 317,
         "kind": "tap",
         "time": 119.017,
         "end": 119.017,
@@ -11692,7 +10878,7 @@
         "intensity": 1.0
       },
       {
-        "id": 340,
+        "id": 318,
         "kind": "tap",
         "time": 119.404,
         "end": 119.404,
@@ -11703,7 +10889,7 @@
         "intensity": 1.0
       },
       {
-        "id": 341,
+        "id": 319,
         "kind": "tap",
         "time": 119.791,
         "end": 119.791,
@@ -11714,7 +10900,7 @@
         "intensity": 1.0
       },
       {
-        "id": 342,
+        "id": 320,
         "kind": "tap",
         "time": 120.179,
         "end": 120.179,
@@ -11725,7 +10911,7 @@
         "intensity": 1.0
       },
       {
-        "id": 343,
+        "id": 321,
         "kind": "tap",
         "time": 120.566,
         "end": 120.566,
@@ -11736,7 +10922,7 @@
         "intensity": 1.0
       },
       {
-        "id": 344,
+        "id": 322,
         "kind": "tap",
         "time": 120.953,
         "end": 120.953,
@@ -11747,7 +10933,7 @@
         "intensity": 1.0
       },
       {
-        "id": 345,
+        "id": 323,
         "kind": "tap",
         "time": 121.34,
         "end": 121.34,
@@ -11758,7 +10944,7 @@
         "intensity": 1.0
       },
       {
-        "id": 346,
+        "id": 324,
         "kind": "tap",
         "time": 121.727,
         "end": 121.727,
@@ -11769,7 +10955,7 @@
         "intensity": 1.0
       },
       {
-        "id": 347,
+        "id": 325,
         "kind": "tap",
         "time": 122.114,
         "end": 122.114,
@@ -11780,7 +10966,7 @@
         "intensity": 1.0
       },
       {
-        "id": 348,
+        "id": 326,
         "kind": "tap",
         "time": 122.308,
         "end": 122.308,
@@ -11791,7 +10977,7 @@
         "intensity": 1.0
       },
       {
-        "id": 349,
+        "id": 327,
         "kind": "tap",
         "time": 122.501,
         "end": 122.501,
@@ -11802,7 +10988,7 @@
         "intensity": 1.0
       },
       {
-        "id": 350,
+        "id": 328,
         "kind": "tap",
         "time": 122.792,
         "end": 122.792,
@@ -11813,7 +10999,7 @@
         "intensity": 1.0
       },
       {
-        "id": 351,
+        "id": 329,
         "kind": "tap",
         "time": 123.082,
         "end": 123.082,
@@ -11824,7 +11010,7 @@
         "intensity": 1.0
       },
       {
-        "id": 352,
+        "id": 330,
         "kind": "tap",
         "time": 123.372,
         "end": 123.372,
@@ -11835,7 +11021,7 @@
         "intensity": 1.0
       },
       {
-        "id": 353,
+        "id": 331,
         "kind": "tap",
         "time": 123.663,
         "end": 123.663,
@@ -11846,7 +11032,7 @@
         "intensity": 1.0
       },
       {
-        "id": 354,
+        "id": 332,
         "kind": "tap",
         "time": 123.856,
         "end": 123.856,
@@ -11857,7 +11043,7 @@
         "intensity": 1.0
       },
       {
-        "id": 355,
+        "id": 333,
         "kind": "tap",
         "time": 124.05,
         "end": 124.05,
@@ -11868,7 +11054,7 @@
         "intensity": 1.0
       },
       {
-        "id": 356,
+        "id": 334,
         "kind": "tap",
         "time": 124.437,
         "end": 124.437,
@@ -11879,7 +11065,7 @@
         "intensity": 1.0
       },
       {
-        "id": 357,
+        "id": 335,
         "kind": "tap",
         "time": 124.824,
         "end": 124.824,
@@ -11890,7 +11076,7 @@
         "intensity": 1.0
       },
       {
-        "id": 358,
+        "id": 336,
         "kind": "tap",
         "time": 125.211,
         "end": 125.211,
@@ -11901,7 +11087,7 @@
         "intensity": 1.0
       },
       {
-        "id": 359,
+        "id": 337,
         "kind": "tap",
         "time": 125.598,
         "end": 125.598,
@@ -11912,7 +11098,7 @@
         "intensity": 1.0
       },
       {
-        "id": 360,
+        "id": 338,
         "kind": "tap",
         "time": 125.985,
         "end": 125.985,
@@ -11923,7 +11109,7 @@
         "intensity": 1.0
       },
       {
-        "id": 361,
+        "id": 339,
         "kind": "tap",
         "time": 126.372,
         "end": 126.372,
@@ -11934,7 +11120,7 @@
         "intensity": 1.0
       },
       {
-        "id": 362,
+        "id": 340,
         "kind": "tap",
         "time": 126.759,
         "end": 126.759,
@@ -11945,7 +11131,7 @@
         "intensity": 1.0
       },
       {
-        "id": 363,
+        "id": 341,
         "kind": "tap",
         "time": 127.147,
         "end": 127.147,
@@ -11956,7 +11142,7 @@
         "intensity": 1.0
       },
       {
-        "id": 364,
+        "id": 342,
         "kind": "tap",
         "time": 127.534,
         "end": 127.534,
@@ -11967,7 +11153,7 @@
         "intensity": 1.0
       },
       {
-        "id": 365,
+        "id": 343,
         "kind": "tap",
         "time": 127.921,
         "end": 127.921,
@@ -11978,7 +11164,7 @@
         "intensity": 1.0
       },
       {
-        "id": 366,
+        "id": 344,
         "kind": "tap",
         "time": 128.308,
         "end": 128.308,
@@ -11989,7 +11175,7 @@
         "intensity": 1.0
       },
       {
-        "id": 367,
+        "id": 345,
         "kind": "tap",
         "time": 128.695,
         "end": 128.695,
@@ -12000,7 +11186,7 @@
         "intensity": 1.0
       },
       {
-        "id": 368,
+        "id": 346,
         "kind": "tap",
         "time": 129.082,
         "end": 129.082,
@@ -12011,7 +11197,7 @@
         "intensity": 1.0
       },
       {
-        "id": 369,
+        "id": 347,
         "kind": "tap",
         "time": 129.469,
         "end": 129.469,
@@ -12022,7 +11208,7 @@
         "intensity": 1.0
       },
       {
-        "id": 370,
+        "id": 348,
         "kind": "tap",
         "time": 129.856,
         "end": 129.856,
@@ -12033,7 +11219,7 @@
         "intensity": 1.0
       },
       {
-        "id": 371,
+        "id": 349,
         "kind": "tap",
         "time": 130.243,
         "end": 130.243,
@@ -12044,7 +11230,7 @@
         "intensity": 1.0
       },
       {
-        "id": 372,
+        "id": 350,
         "kind": "tap",
         "time": 130.631,
         "end": 130.631,
@@ -12055,7 +11241,7 @@
         "intensity": 1.0
       },
       {
-        "id": 373,
+        "id": 351,
         "kind": "tap",
         "time": 131.018,
         "end": 131.018,
@@ -12066,7 +11252,7 @@
         "intensity": 1.0
       },
       {
-        "id": 374,
+        "id": 352,
         "kind": "tap",
         "time": 131.405,
         "end": 131.405,
@@ -12077,7 +11263,7 @@
         "intensity": 1.0
       },
       {
-        "id": 375,
+        "id": 353,
         "kind": "tap",
         "time": 131.792,
         "end": 131.792,
@@ -12088,7 +11274,7 @@
         "intensity": 1.0
       },
       {
-        "id": 376,
+        "id": 354,
         "kind": "tap",
         "time": 132.179,
         "end": 132.179,
@@ -12099,7 +11285,7 @@
         "intensity": 1.0
       },
       {
-        "id": 377,
+        "id": 355,
         "kind": "tap",
         "time": 132.566,
         "end": 132.566,
@@ -12110,7 +11296,7 @@
         "intensity": 1.0
       },
       {
-        "id": 378,
+        "id": 356,
         "kind": "tap",
         "time": 132.953,
         "end": 132.953,
@@ -12121,7 +11307,7 @@
         "intensity": 1.0
       },
       {
-        "id": 379,
+        "id": 357,
         "kind": "tap",
         "time": 133.34,
         "end": 133.34,
@@ -12132,7 +11318,7 @@
         "intensity": 1.0
       },
       {
-        "id": 380,
+        "id": 358,
         "kind": "tap",
         "time": 133.727,
         "end": 133.727,
@@ -12143,7 +11329,7 @@
         "intensity": 1.0
       },
       {
-        "id": 381,
+        "id": 359,
         "kind": "tap",
         "time": 134.115,
         "end": 134.115,
@@ -12154,7 +11340,7 @@
         "intensity": 1.0
       },
       {
-        "id": 382,
+        "id": 360,
         "kind": "tap",
         "time": 134.502,
         "end": 134.502,
@@ -12165,7 +11351,7 @@
         "intensity": 1.0
       },
       {
-        "id": 383,
+        "id": 361,
         "kind": "tap",
         "time": 134.889,
         "end": 134.889,
@@ -12176,7 +11362,7 @@
         "intensity": 1.0
       },
       {
-        "id": 384,
+        "id": 362,
         "kind": "tap",
         "time": 135.469,
         "end": 135.469,
@@ -12187,7 +11373,7 @@
         "intensity": 1.0
       },
       {
-        "id": 385,
+        "id": 363,
         "kind": "press",
         "time": 136.05,
         "end": 139.631,
@@ -13566,17 +12752,6 @@
       {
         "id": 124,
         "kind": "tap",
-        "time": 42.174,
-        "end": 42.174,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 125,
-        "kind": "tap",
         "time": 42.367,
         "end": 42.367,
         "lane": 0,
@@ -13586,7 +12761,7 @@
         "intensity": 1.0
       },
       {
-        "id": 126,
+        "id": 125,
         "kind": "tap",
         "time": 42.658,
         "end": 42.658,
@@ -13597,7 +12772,7 @@
         "intensity": 1.0
       },
       {
-        "id": 127,
+        "id": 126,
         "kind": "tap",
         "time": 43.335,
         "end": 43.335,
@@ -13608,7 +12783,7 @@
         "intensity": 1.0
       },
       {
-        "id": 128,
+        "id": 127,
         "kind": "tap",
         "time": 43.529,
         "end": 43.529,
@@ -13619,7 +12794,7 @@
         "intensity": 1.0
       },
       {
-        "id": 129,
+        "id": 128,
         "kind": "tap",
         "time": 44.109,
         "end": 44.109,
@@ -13630,7 +12805,7 @@
         "intensity": 1.0
       },
       {
-        "id": 130,
+        "id": 129,
         "kind": "tap",
         "time": 44.4,
         "end": 44.4,
@@ -13641,7 +12816,7 @@
         "intensity": 1.0
       },
       {
-        "id": 131,
+        "id": 130,
         "kind": "tap",
         "time": 44.69,
         "end": 44.69,
@@ -13652,7 +12827,7 @@
         "intensity": 1.0
       },
       {
-        "id": 132,
+        "id": 131,
         "kind": "tap",
         "time": 44.883,
         "end": 44.883,
@@ -13663,7 +12838,7 @@
         "intensity": 1.0
       },
       {
-        "id": 133,
+        "id": 132,
         "kind": "tap",
         "time": 45.271,
         "end": 45.271,
@@ -13674,7 +12849,7 @@
         "intensity": 1.0
       },
       {
-        "id": 134,
+        "id": 133,
         "kind": "tap",
         "time": 45.658,
         "end": 45.658,
@@ -13685,7 +12860,7 @@
         "intensity": 1.0
       },
       {
-        "id": 135,
+        "id": 134,
         "kind": "tap",
         "time": 46.432,
         "end": 46.432,
@@ -13696,7 +12871,7 @@
         "intensity": 1.0
       },
       {
-        "id": 136,
+        "id": 135,
         "kind": "tap",
         "time": 46.625,
         "end": 46.625,
@@ -13707,7 +12882,7 @@
         "intensity": 1.0
       },
       {
-        "id": 137,
+        "id": 136,
         "kind": "tap",
         "time": 46.819,
         "end": 46.819,
@@ -13718,7 +12893,7 @@
         "intensity": 1.0
       },
       {
-        "id": 138,
+        "id": 137,
         "kind": "tap",
         "time": 47.012,
         "end": 47.012,
@@ -13729,7 +12904,7 @@
         "intensity": 1.0
       },
       {
-        "id": 139,
+        "id": 138,
         "kind": "tap",
         "time": 47.206,
         "end": 47.206,
@@ -13740,7 +12915,7 @@
         "intensity": 1.0
       },
       {
-        "id": 140,
+        "id": 139,
         "kind": "tap",
         "time": 47.496,
         "end": 47.496,
@@ -13751,7 +12926,7 @@
         "intensity": 1.0
       },
       {
-        "id": 141,
+        "id": 140,
         "kind": "press",
         "time": 47.787,
         "end": 48.174,
@@ -13762,18 +12937,7 @@
         "intensity": 1.0
       },
       {
-        "id": 142,
-        "kind": "tap",
-        "time": 48.174,
-        "end": 48.174,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 143,
+        "id": 141,
         "kind": "tap",
         "time": 48.561,
         "end": 48.561,
@@ -13784,7 +12948,7 @@
         "intensity": 1.0
       },
       {
-        "id": 144,
+        "id": 142,
         "kind": "tap",
         "time": 48.754,
         "end": 48.754,
@@ -13795,7 +12959,7 @@
         "intensity": 1.0
       },
       {
-        "id": 145,
+        "id": 143,
         "kind": "tap",
         "time": 48.948,
         "end": 48.948,
@@ -13806,7 +12970,7 @@
         "intensity": 1.0
       },
       {
-        "id": 146,
+        "id": 144,
         "kind": "press",
         "time": 49.335,
         "end": 50.303,
@@ -13817,18 +12981,7 @@
         "intensity": 1.0
       },
       {
-        "id": 147,
-        "kind": "press",
-        "time": 50.303,
-        "end": 50.884,
-        "lane": -1,
-        "fruit": 0,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 148,
+        "id": 145,
         "kind": "press",
         "time": 50.884,
         "end": 51.755,
@@ -13839,7 +12992,7 @@
         "intensity": 1.0
       },
       {
-        "id": 149,
+        "id": 146,
         "kind": "press",
         "time": 51.851,
         "end": 52.432,
@@ -13850,18 +13003,7 @@
         "intensity": 1.0
       },
       {
-        "id": 150,
-        "kind": "press",
-        "time": 52.432,
-        "end": 53.4,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 151,
+        "id": 147,
         "kind": "press",
         "time": 53.4,
         "end": 54.174,
@@ -13872,18 +13014,7 @@
         "intensity": 1.0
       },
       {
-        "id": 152,
-        "kind": "press",
-        "time": 54.174,
-        "end": 54.948,
-        "lane": -1,
-        "fruit": 5,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 153,
+        "id": 148,
         "kind": "press",
         "time": 54.948,
         "end": 55.722,
@@ -13894,18 +13025,29 @@
         "intensity": 1.0
       },
       {
-        "id": 154,
-        "kind": "press",
-        "time": 55.722,
-        "end": 56.787,
+        "id": 149,
+        "kind": "tap",
+        "time": 56.206,
+        "end": 56.206,
         "lane": 0,
-        "fruit": 0,
-        "accent": "osu_mania_hold",
+        "fruit": 1,
+        "accent": "osu_mania_tap",
         "role": "verse",
         "intensity": 1.0
       },
       {
-        "id": 155,
+        "id": 150,
+        "kind": "tap",
+        "time": 56.497,
+        "end": 56.497,
+        "lane": 1,
+        "fruit": 2,
+        "accent": "osu_mania_tap",
+        "role": "verse",
+        "intensity": 1.0
+      },
+      {
+        "id": 151,
         "kind": "press",
         "time": 56.787,
         "end": 57.271,
@@ -13916,18 +13058,7 @@
         "intensity": 1.0
       },
       {
-        "id": 156,
-        "kind": "press",
-        "time": 57.271,
-        "end": 58.045,
-        "lane": 0,
-        "fruit": 5,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 157,
+        "id": 152,
         "kind": "press",
         "time": 58.045,
         "end": 58.819,
@@ -13938,18 +13069,7 @@
         "intensity": 1.0
       },
       {
-        "id": 158,
-        "kind": "press",
-        "time": 58.819,
-        "end": 59.4,
-        "lane": -1,
-        "fruit": 2,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 159,
+        "id": 153,
         "kind": "press",
         "time": 59.4,
         "end": 60.174,
@@ -13960,18 +13080,7 @@
         "intensity": 1.0
       },
       {
-        "id": 160,
-        "kind": "press",
-        "time": 60.174,
-        "end": 60.948,
-        "lane": 0,
-        "fruit": 5,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 161,
+        "id": 154,
         "kind": "press",
         "time": 60.948,
         "end": 62.11,
@@ -13982,18 +13091,7 @@
         "intensity": 1.0
       },
       {
-        "id": 162,
-        "kind": "tap",
-        "time": 62.11,
-        "end": 62.11,
-        "lane": -1,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 163,
+        "id": 155,
         "kind": "tap",
         "time": 62.497,
         "end": 62.497,
@@ -14004,7 +13102,7 @@
         "intensity": 1.0
       },
       {
-        "id": 164,
+        "id": 156,
         "kind": "tap",
         "time": 62.69,
         "end": 62.69,
@@ -14015,7 +13113,7 @@
         "intensity": 1.0
       },
       {
-        "id": 165,
+        "id": 157,
         "kind": "tap",
         "time": 62.981,
         "end": 62.981,
@@ -14026,7 +13124,7 @@
         "intensity": 1.0
       },
       {
-        "id": 166,
+        "id": 158,
         "kind": "tap",
         "time": 63.271,
         "end": 63.271,
@@ -14037,7 +13135,7 @@
         "intensity": 1.0
       },
       {
-        "id": 167,
+        "id": 159,
         "kind": "tap",
         "time": 63.658,
         "end": 63.658,
@@ -14048,7 +13146,7 @@
         "intensity": 1.0
       },
       {
-        "id": 168,
+        "id": 160,
         "kind": "tap",
         "time": 63.948,
         "end": 63.948,
@@ -14059,7 +13157,7 @@
         "intensity": 1.0
       },
       {
-        "id": 169,
+        "id": 161,
         "kind": "tap",
         "time": 64.239,
         "end": 64.239,
@@ -14070,7 +13168,7 @@
         "intensity": 1.0
       },
       {
-        "id": 170,
+        "id": 162,
         "kind": "tap",
         "time": 64.529,
         "end": 64.529,
@@ -14081,7 +13179,7 @@
         "intensity": 1.0
       },
       {
-        "id": 171,
+        "id": 163,
         "kind": "tap",
         "time": 64.819,
         "end": 64.819,
@@ -14092,7 +13190,7 @@
         "intensity": 1.0
       },
       {
-        "id": 172,
+        "id": 164,
         "kind": "tap",
         "time": 65.206,
         "end": 65.206,
@@ -14103,7 +13201,7 @@
         "intensity": 1.0
       },
       {
-        "id": 173,
+        "id": 165,
         "kind": "tap",
         "time": 65.497,
         "end": 65.497,
@@ -14114,7 +13212,7 @@
         "intensity": 1.0
       },
       {
-        "id": 174,
+        "id": 166,
         "kind": "tap",
         "time": 65.787,
         "end": 65.787,
@@ -14125,7 +13223,7 @@
         "intensity": 1.0
       },
       {
-        "id": 175,
+        "id": 167,
         "kind": "tap",
         "time": 66.077,
         "end": 66.077,
@@ -14136,7 +13234,7 @@
         "intensity": 1.0
       },
       {
-        "id": 176,
+        "id": 168,
         "kind": "tap",
         "time": 66.368,
         "end": 66.368,
@@ -14147,7 +13245,7 @@
         "intensity": 1.0
       },
       {
-        "id": 177,
+        "id": 169,
         "kind": "tap",
         "time": 66.755,
         "end": 66.755,
@@ -14158,7 +13256,7 @@
         "intensity": 1.0
       },
       {
-        "id": 178,
+        "id": 170,
         "kind": "tap",
         "time": 67.045,
         "end": 67.045,
@@ -14169,7 +13267,7 @@
         "intensity": 1.0
       },
       {
-        "id": 179,
+        "id": 171,
         "kind": "tap",
         "time": 67.335,
         "end": 67.335,
@@ -14180,7 +13278,7 @@
         "intensity": 1.0
       },
       {
-        "id": 180,
+        "id": 172,
         "kind": "tap",
         "time": 67.626,
         "end": 67.626,
@@ -14191,7 +13289,7 @@
         "intensity": 1.0
       },
       {
-        "id": 181,
+        "id": 173,
         "kind": "tap",
         "time": 67.916,
         "end": 67.916,
@@ -14202,7 +13300,7 @@
         "intensity": 1.0
       },
       {
-        "id": 182,
+        "id": 174,
         "kind": "tap",
         "time": 68.303,
         "end": 68.303,
@@ -14213,7 +13311,7 @@
         "intensity": 1.0
       },
       {
-        "id": 183,
+        "id": 175,
         "kind": "tap",
         "time": 68.69,
         "end": 68.69,
@@ -14224,7 +13322,7 @@
         "intensity": 1.0
       },
       {
-        "id": 184,
+        "id": 176,
         "kind": "tap",
         "time": 69.077,
         "end": 69.077,
@@ -14235,7 +13333,7 @@
         "intensity": 1.0
       },
       {
-        "id": 185,
+        "id": 177,
         "kind": "tap",
         "time": 69.465,
         "end": 69.465,
@@ -14246,7 +13344,7 @@
         "intensity": 1.0
       },
       {
-        "id": 186,
+        "id": 178,
         "kind": "tap",
         "time": 69.658,
         "end": 69.658,
@@ -14257,7 +13355,7 @@
         "intensity": 1.0
       },
       {
-        "id": 187,
+        "id": 179,
         "kind": "tap",
         "time": 69.852,
         "end": 69.852,
@@ -14268,7 +13366,7 @@
         "intensity": 1.0
       },
       {
-        "id": 188,
+        "id": 180,
         "kind": "tap",
         "time": 70.239,
         "end": 70.239,
@@ -14279,7 +13377,7 @@
         "intensity": 1.0
       },
       {
-        "id": 189,
+        "id": 181,
         "kind": "tap",
         "time": 70.626,
         "end": 70.626,
@@ -14290,7 +13388,7 @@
         "intensity": 1.0
       },
       {
-        "id": 190,
+        "id": 182,
         "kind": "tap",
         "time": 71.013,
         "end": 71.013,
@@ -14301,7 +13399,7 @@
         "intensity": 1.0
       },
       {
-        "id": 191,
+        "id": 183,
         "kind": "tap",
         "time": 71.207,
         "end": 71.207,
@@ -14312,7 +13410,7 @@
         "intensity": 1.0
       },
       {
-        "id": 192,
+        "id": 184,
         "kind": "tap",
         "time": 71.4,
         "end": 71.4,
@@ -14323,7 +13421,7 @@
         "intensity": 1.0
       },
       {
-        "id": 193,
+        "id": 185,
         "kind": "tap",
         "time": 71.787,
         "end": 71.787,
@@ -14334,7 +13432,7 @@
         "intensity": 1.0
       },
       {
-        "id": 194,
+        "id": 186,
         "kind": "tap",
         "time": 72.174,
         "end": 72.174,
@@ -14345,7 +13443,7 @@
         "intensity": 1.0
       },
       {
-        "id": 195,
+        "id": 187,
         "kind": "tap",
         "time": 72.561,
         "end": 72.561,
@@ -14356,7 +13454,7 @@
         "intensity": 1.0
       },
       {
-        "id": 196,
+        "id": 188,
         "kind": "tap",
         "time": 72.948,
         "end": 72.948,
@@ -14367,7 +13465,7 @@
         "intensity": 1.0
       },
       {
-        "id": 197,
+        "id": 189,
         "kind": "tap",
         "time": 73.336,
         "end": 73.336,
@@ -14378,7 +13476,7 @@
         "intensity": 1.0
       },
       {
-        "id": 198,
+        "id": 190,
         "kind": "tap",
         "time": 73.819,
         "end": 73.819,
@@ -14389,7 +13487,7 @@
         "intensity": 1.0
       },
       {
-        "id": 199,
+        "id": 191,
         "kind": "tap",
         "time": 74.11,
         "end": 74.11,
@@ -14400,7 +13498,7 @@
         "intensity": 1.0
       },
       {
-        "id": 200,
+        "id": 192,
         "kind": "press",
         "time": 74.497,
         "end": 74.884,
@@ -14411,18 +13509,7 @@
         "intensity": 1.0
       },
       {
-        "id": 201,
-        "kind": "tap",
-        "time": 74.884,
-        "end": 74.884,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 202,
+        "id": 193,
         "kind": "tap",
         "time": 74.981,
         "end": 74.981,
@@ -14433,7 +13520,7 @@
         "intensity": 1.0
       },
       {
-        "id": 203,
+        "id": 194,
         "kind": "tap",
         "time": 75.078,
         "end": 75.078,
@@ -14444,7 +13531,7 @@
         "intensity": 1.0
       },
       {
-        "id": 204,
+        "id": 195,
         "kind": "tap",
         "time": 75.174,
         "end": 75.174,
@@ -14455,7 +13542,7 @@
         "intensity": 1.0
       },
       {
-        "id": 205,
+        "id": 196,
         "kind": "tap",
         "time": 75.271,
         "end": 75.271,
@@ -14466,7 +13553,7 @@
         "intensity": 1.0
       },
       {
-        "id": 206,
+        "id": 197,
         "kind": "tap",
         "time": 75.465,
         "end": 75.465,
@@ -14477,7 +13564,7 @@
         "intensity": 1.0
       },
       {
-        "id": 207,
+        "id": 198,
         "kind": "tap",
         "time": 75.658,
         "end": 75.658,
@@ -14488,7 +13575,7 @@
         "intensity": 1.0
       },
       {
-        "id": 208,
+        "id": 199,
         "kind": "tap",
         "time": 75.755,
         "end": 75.755,
@@ -14499,7 +13586,7 @@
         "intensity": 1.0
       },
       {
-        "id": 209,
+        "id": 200,
         "kind": "tap",
         "time": 75.852,
         "end": 75.852,
@@ -14510,7 +13597,7 @@
         "intensity": 1.0
       },
       {
-        "id": 210,
+        "id": 201,
         "kind": "tap",
         "time": 76.045,
         "end": 76.045,
@@ -14521,7 +13608,7 @@
         "intensity": 1.0
       },
       {
-        "id": 211,
+        "id": 202,
         "kind": "tap",
         "time": 76.432,
         "end": 76.432,
@@ -14532,7 +13619,7 @@
         "intensity": 1.0
       },
       {
-        "id": 212,
+        "id": 203,
         "kind": "tap",
         "time": 76.529,
         "end": 76.529,
@@ -14543,7 +13630,7 @@
         "intensity": 1.0
       },
       {
-        "id": 213,
+        "id": 204,
         "kind": "tap",
         "time": 76.626,
         "end": 76.626,
@@ -14554,7 +13641,7 @@
         "intensity": 1.0
       },
       {
-        "id": 214,
+        "id": 205,
         "kind": "press",
         "time": 76.723,
         "end": 76.82,
@@ -14565,18 +13652,7 @@
         "intensity": 1.0
       },
       {
-        "id": 215,
-        "kind": "tap",
-        "time": 76.82,
-        "end": 76.82,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 216,
+        "id": 206,
         "kind": "tap",
         "time": 76.916,
         "end": 76.916,
@@ -14587,7 +13663,7 @@
         "intensity": 1.0
       },
       {
-        "id": 217,
+        "id": 207,
         "kind": "tap",
         "time": 77.013,
         "end": 77.013,
@@ -14598,7 +13674,7 @@
         "intensity": 1.0
       },
       {
-        "id": 218,
+        "id": 208,
         "kind": "tap",
         "time": 77.207,
         "end": 77.207,
@@ -14609,7 +13685,7 @@
         "intensity": 1.0
       },
       {
-        "id": 219,
+        "id": 209,
         "kind": "tap",
         "time": 77.4,
         "end": 77.4,
@@ -14620,7 +13696,7 @@
         "intensity": 1.0
       },
       {
-        "id": 220,
+        "id": 210,
         "kind": "tap",
         "time": 77.594,
         "end": 77.594,
@@ -14631,7 +13707,7 @@
         "intensity": 1.0
       },
       {
-        "id": 221,
+        "id": 211,
         "kind": "tap",
         "time": 77.981,
         "end": 77.981,
@@ -14642,7 +13718,7 @@
         "intensity": 1.0
       },
       {
-        "id": 222,
+        "id": 212,
         "kind": "tap",
         "time": 78.078,
         "end": 78.078,
@@ -14653,7 +13729,7 @@
         "intensity": 1.0
       },
       {
-        "id": 223,
+        "id": 213,
         "kind": "tap",
         "time": 78.174,
         "end": 78.174,
@@ -14664,7 +13740,7 @@
         "intensity": 1.0
       },
       {
-        "id": 224,
+        "id": 214,
         "kind": "tap",
         "time": 78.271,
         "end": 78.271,
@@ -14675,7 +13751,7 @@
         "intensity": 1.0
       },
       {
-        "id": 225,
+        "id": 215,
         "kind": "tap",
         "time": 78.368,
         "end": 78.368,
@@ -14686,7 +13762,7 @@
         "intensity": 1.0
       },
       {
-        "id": 226,
+        "id": 216,
         "kind": "tap",
         "time": 78.562,
         "end": 78.562,
@@ -14697,7 +13773,7 @@
         "intensity": 1.0
       },
       {
-        "id": 227,
+        "id": 217,
         "kind": "tap",
         "time": 78.755,
         "end": 78.755,
@@ -14708,7 +13784,7 @@
         "intensity": 1.0
       },
       {
-        "id": 228,
+        "id": 218,
         "kind": "tap",
         "time": 78.949,
         "end": 78.949,
@@ -14719,7 +13795,7 @@
         "intensity": 1.0
       },
       {
-        "id": 229,
+        "id": 219,
         "kind": "tap",
         "time": 79.142,
         "end": 79.142,
@@ -14730,7 +13806,7 @@
         "intensity": 1.0
       },
       {
-        "id": 230,
+        "id": 220,
         "kind": "tap",
         "time": 79.529,
         "end": 79.529,
@@ -14741,7 +13817,7 @@
         "intensity": 1.0
       },
       {
-        "id": 231,
+        "id": 221,
         "kind": "tap",
         "time": 79.626,
         "end": 79.626,
@@ -14752,7 +13828,7 @@
         "intensity": 1.0
       },
       {
-        "id": 232,
+        "id": 222,
         "kind": "press",
         "time": 79.723,
         "end": 79.82,
@@ -14763,18 +13839,7 @@
         "intensity": 1.0
       },
       {
-        "id": 233,
-        "kind": "tap",
-        "time": 79.82,
-        "end": 79.82,
-        "lane": 1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 234,
+        "id": 223,
         "kind": "tap",
         "time": 79.916,
         "end": 79.916,
@@ -14785,7 +13850,7 @@
         "intensity": 1.0
       },
       {
-        "id": 235,
+        "id": 224,
         "kind": "tap",
         "time": 80.013,
         "end": 80.013,
@@ -14796,7 +13861,7 @@
         "intensity": 1.0
       },
       {
-        "id": 236,
+        "id": 225,
         "kind": "tap",
         "time": 80.11,
         "end": 80.11,
@@ -14807,7 +13872,7 @@
         "intensity": 1.0
       },
       {
-        "id": 237,
+        "id": 226,
         "kind": "tap",
         "time": 80.303,
         "end": 80.303,
@@ -14818,7 +13883,7 @@
         "intensity": 1.0
       },
       {
-        "id": 238,
+        "id": 227,
         "kind": "press",
         "time": 80.497,
         "end": 80.691,
@@ -14829,18 +13894,7 @@
         "intensity": 1.0
       },
       {
-        "id": 239,
-        "kind": "press",
-        "time": 80.691,
-        "end": 81.078,
-        "lane": 0,
-        "fruit": 1,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 240,
+        "id": 228,
         "kind": "tap",
         "time": 81.078,
         "end": 81.078,
@@ -14851,7 +13905,7 @@
         "intensity": 1.0
       },
       {
-        "id": 241,
+        "id": 229,
         "kind": "tap",
         "time": 81.174,
         "end": 81.174,
@@ -14862,7 +13916,7 @@
         "intensity": 1.0
       },
       {
-        "id": 242,
+        "id": 230,
         "kind": "tap",
         "time": 81.271,
         "end": 81.271,
@@ -14873,7 +13927,7 @@
         "intensity": 1.0
       },
       {
-        "id": 243,
+        "id": 231,
         "kind": "tap",
         "time": 81.368,
         "end": 81.368,
@@ -14884,7 +13938,7 @@
         "intensity": 1.0
       },
       {
-        "id": 244,
+        "id": 232,
         "kind": "tap",
         "time": 81.465,
         "end": 81.465,
@@ -14895,7 +13949,7 @@
         "intensity": 1.0
       },
       {
-        "id": 245,
+        "id": 233,
         "kind": "tap",
         "time": 81.658,
         "end": 81.658,
@@ -14906,7 +13960,7 @@
         "intensity": 1.0
       },
       {
-        "id": 246,
+        "id": 234,
         "kind": "press",
         "time": 81.852,
         "end": 82.239,
@@ -14917,18 +13971,7 @@
         "intensity": 1.0
       },
       {
-        "id": 247,
-        "kind": "tap",
-        "time": 82.239,
-        "end": 82.239,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 248,
+        "id": 235,
         "kind": "tap",
         "time": 82.626,
         "end": 82.626,
@@ -14939,7 +13982,7 @@
         "intensity": 1.0
       },
       {
-        "id": 249,
+        "id": 236,
         "kind": "tap",
         "time": 82.723,
         "end": 82.723,
@@ -14950,7 +13993,7 @@
         "intensity": 1.0
       },
       {
-        "id": 250,
+        "id": 237,
         "kind": "tap",
         "time": 82.82,
         "end": 82.82,
@@ -14961,7 +14004,7 @@
         "intensity": 1.0
       },
       {
-        "id": 251,
+        "id": 238,
         "kind": "tap",
         "time": 82.916,
         "end": 82.916,
@@ -14972,7 +14015,7 @@
         "intensity": 1.0
       },
       {
-        "id": 252,
+        "id": 239,
         "kind": "tap",
         "time": 83.11,
         "end": 83.11,
@@ -14983,7 +14026,7 @@
         "intensity": 1.0
       },
       {
-        "id": 253,
+        "id": 240,
         "kind": "tap",
         "time": 83.207,
         "end": 83.207,
@@ -14994,7 +14037,7 @@
         "intensity": 1.0
       },
       {
-        "id": 254,
+        "id": 241,
         "kind": "tap",
         "time": 83.4,
         "end": 83.4,
@@ -15005,7 +14048,7 @@
         "intensity": 1.0
       },
       {
-        "id": 255,
+        "id": 242,
         "kind": "tap",
         "time": 83.594,
         "end": 83.594,
@@ -15016,7 +14059,7 @@
         "intensity": 1.0
       },
       {
-        "id": 256,
+        "id": 243,
         "kind": "tap",
         "time": 83.787,
         "end": 83.787,
@@ -15027,7 +14070,7 @@
         "intensity": 1.0
       },
       {
-        "id": 257,
+        "id": 244,
         "kind": "tap",
         "time": 83.981,
         "end": 83.981,
@@ -15038,7 +14081,7 @@
         "intensity": 1.0
       },
       {
-        "id": 258,
+        "id": 245,
         "kind": "tap",
         "time": 84.175,
         "end": 84.175,
@@ -15049,7 +14092,7 @@
         "intensity": 1.0
       },
       {
-        "id": 259,
+        "id": 246,
         "kind": "tap",
         "time": 84.271,
         "end": 84.271,
@@ -15060,7 +14103,7 @@
         "intensity": 1.0
       },
       {
-        "id": 260,
+        "id": 247,
         "kind": "press",
         "time": 84.368,
         "end": 84.465,
@@ -15071,18 +14114,7 @@
         "intensity": 1.0
       },
       {
-        "id": 261,
-        "kind": "press",
-        "time": 84.465,
-        "end": 84.562,
-        "lane": 0,
-        "fruit": 3,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 262,
+        "id": 248,
         "kind": "tap",
         "time": 84.562,
         "end": 84.562,
@@ -15093,7 +14125,7 @@
         "intensity": 1.0
       },
       {
-        "id": 263,
+        "id": 249,
         "kind": "tap",
         "time": 84.755,
         "end": 84.755,
@@ -15104,7 +14136,7 @@
         "intensity": 1.0
       },
       {
-        "id": 264,
+        "id": 250,
         "kind": "tap",
         "time": 84.949,
         "end": 84.949,
@@ -15115,7 +14147,7 @@
         "intensity": 1.0
       },
       {
-        "id": 265,
+        "id": 251,
         "kind": "tap",
         "time": 85.142,
         "end": 85.142,
@@ -15126,7 +14158,7 @@
         "intensity": 1.0
       },
       {
-        "id": 266,
+        "id": 252,
         "kind": "tap",
         "time": 85.336,
         "end": 85.336,
@@ -15137,7 +14169,7 @@
         "intensity": 1.0
       },
       {
-        "id": 267,
+        "id": 253,
         "kind": "tap",
         "time": 85.529,
         "end": 85.529,
@@ -15148,7 +14180,7 @@
         "intensity": 1.0
       },
       {
-        "id": 268,
+        "id": 254,
         "kind": "tap",
         "time": 85.723,
         "end": 85.723,
@@ -15159,7 +14191,7 @@
         "intensity": 1.0
       },
       {
-        "id": 269,
+        "id": 255,
         "kind": "tap",
         "time": 85.82,
         "end": 85.82,
@@ -15170,7 +14202,7 @@
         "intensity": 1.0
       },
       {
-        "id": 270,
+        "id": 256,
         "kind": "press",
         "time": 85.916,
         "end": 86.013,
@@ -15181,7 +14213,7 @@
         "intensity": 1.0
       },
       {
-        "id": 271,
+        "id": 257,
         "kind": "tap",
         "time": 86.11,
         "end": 86.11,
@@ -15192,7 +14224,7 @@
         "intensity": 1.0
       },
       {
-        "id": 272,
+        "id": 258,
         "kind": "tap",
         "time": 86.304,
         "end": 86.304,
@@ -15203,7 +14235,7 @@
         "intensity": 1.0
       },
       {
-        "id": 273,
+        "id": 259,
         "kind": "tap",
         "time": 86.497,
         "end": 86.497,
@@ -15214,7 +14246,7 @@
         "intensity": 1.0
       },
       {
-        "id": 274,
+        "id": 260,
         "kind": "press",
         "time": 86.691,
         "end": 86.884,
@@ -15225,18 +14257,7 @@
         "intensity": 1.0
       },
       {
-        "id": 275,
-        "kind": "tap",
-        "time": 86.884,
-        "end": 86.884,
-        "lane": -1,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 276,
+        "id": 261,
         "kind": "tap",
         "time": 87.271,
         "end": 87.271,
@@ -15247,7 +14268,7 @@
         "intensity": 1.0
       },
       {
-        "id": 277,
+        "id": 262,
         "kind": "tap",
         "time": 87.368,
         "end": 87.368,
@@ -15258,7 +14279,7 @@
         "intensity": 1.0
       },
       {
-        "id": 278,
+        "id": 263,
         "kind": "press",
         "time": 87.465,
         "end": 87.562,
@@ -15269,18 +14290,7 @@
         "intensity": 1.0
       },
       {
-        "id": 279,
-        "kind": "tap",
-        "time": 87.562,
-        "end": 87.562,
-        "lane": 1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 280,
+        "id": 264,
         "kind": "tap",
         "time": 87.658,
         "end": 87.658,
@@ -15291,7 +14301,7 @@
         "intensity": 1.0
       },
       {
-        "id": 281,
+        "id": 265,
         "kind": "tap",
         "time": 87.755,
         "end": 87.755,
@@ -15302,7 +14312,7 @@
         "intensity": 1.0
       },
       {
-        "id": 282,
+        "id": 266,
         "kind": "tap",
         "time": 87.852,
         "end": 87.852,
@@ -15313,7 +14323,7 @@
         "intensity": 1.0
       },
       {
-        "id": 283,
+        "id": 267,
         "kind": "tap",
         "time": 88.046,
         "end": 88.046,
@@ -15324,7 +14334,7 @@
         "intensity": 1.0
       },
       {
-        "id": 284,
+        "id": 268,
         "kind": "press",
         "time": 88.239,
         "end": 88.433,
@@ -15335,18 +14345,7 @@
         "intensity": 1.0
       },
       {
-        "id": 285,
-        "kind": "tap",
-        "time": 88.433,
-        "end": 88.433,
-        "lane": -1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 286,
+        "id": 269,
         "kind": "tap",
         "time": 88.82,
         "end": 88.82,
@@ -15357,7 +14356,7 @@
         "intensity": 1.0
       },
       {
-        "id": 287,
+        "id": 270,
         "kind": "tap",
         "time": 88.917,
         "end": 88.917,
@@ -15368,7 +14367,7 @@
         "intensity": 1.0
       },
       {
-        "id": 288,
+        "id": 271,
         "kind": "tap",
         "time": 89.013,
         "end": 89.013,
@@ -15379,7 +14378,7 @@
         "intensity": 1.0
       },
       {
-        "id": 289,
+        "id": 272,
         "kind": "tap",
         "time": 89.11,
         "end": 89.11,
@@ -15390,7 +14389,7 @@
         "intensity": 1.0
       },
       {
-        "id": 290,
+        "id": 273,
         "kind": "tap",
         "time": 89.207,
         "end": 89.207,
@@ -15401,7 +14400,7 @@
         "intensity": 1.0
       },
       {
-        "id": 291,
+        "id": 274,
         "kind": "tap",
         "time": 89.304,
         "end": 89.304,
@@ -15412,7 +14411,7 @@
         "intensity": 1.0
       },
       {
-        "id": 292,
+        "id": 275,
         "kind": "tap",
         "time": 89.4,
         "end": 89.4,
@@ -15423,7 +14422,7 @@
         "intensity": 1.0
       },
       {
-        "id": 293,
+        "id": 276,
         "kind": "tap",
         "time": 89.594,
         "end": 89.594,
@@ -15434,7 +14433,7 @@
         "intensity": 1.0
       },
       {
-        "id": 294,
+        "id": 277,
         "kind": "press",
         "time": 89.691,
         "end": 89.981,
@@ -15445,18 +14444,7 @@
         "intensity": 1.0
       },
       {
-        "id": 295,
-        "kind": "tap",
-        "time": 89.981,
-        "end": 89.981,
-        "lane": 1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 296,
+        "id": 278,
         "kind": "tap",
         "time": 90.368,
         "end": 90.368,
@@ -15467,7 +14455,7 @@
         "intensity": 1.0
       },
       {
-        "id": 297,
+        "id": 279,
         "kind": "tap",
         "time": 90.562,
         "end": 90.562,
@@ -15478,7 +14466,7 @@
         "intensity": 1.0
       },
       {
-        "id": 298,
+        "id": 280,
         "kind": "tap",
         "time": 90.659,
         "end": 90.659,
@@ -15489,7 +14477,7 @@
         "intensity": 1.0
       },
       {
-        "id": 299,
+        "id": 281,
         "kind": "tap",
         "time": 90.755,
         "end": 90.755,
@@ -15500,7 +14488,7 @@
         "intensity": 1.0
       },
       {
-        "id": 300,
+        "id": 282,
         "kind": "tap",
         "time": 90.949,
         "end": 90.949,
@@ -15511,7 +14499,7 @@
         "intensity": 1.0
       },
       {
-        "id": 301,
+        "id": 283,
         "kind": "tap",
         "time": 91.142,
         "end": 91.142,
@@ -15522,7 +14510,7 @@
         "intensity": 1.0
       },
       {
-        "id": 302,
+        "id": 284,
         "kind": "tap",
         "time": 91.336,
         "end": 91.336,
@@ -15533,7 +14521,7 @@
         "intensity": 1.0
       },
       {
-        "id": 303,
+        "id": 285,
         "kind": "press",
         "time": 91.529,
         "end": 91.82,
@@ -15544,7 +14532,7 @@
         "intensity": 1.0
       },
       {
-        "id": 304,
+        "id": 286,
         "kind": "tap",
         "time": 91.917,
         "end": 91.917,
@@ -15555,7 +14543,7 @@
         "intensity": 1.0
       },
       {
-        "id": 305,
+        "id": 287,
         "kind": "tap",
         "time": 92.013,
         "end": 92.013,
@@ -15566,7 +14554,7 @@
         "intensity": 1.0
       },
       {
-        "id": 306,
+        "id": 288,
         "kind": "tap",
         "time": 92.11,
         "end": 92.11,
@@ -15577,7 +14565,7 @@
         "intensity": 1.0
       },
       {
-        "id": 307,
+        "id": 289,
         "kind": "tap",
         "time": 92.207,
         "end": 92.207,
@@ -15588,7 +14576,7 @@
         "intensity": 1.0
       },
       {
-        "id": 308,
+        "id": 290,
         "kind": "tap",
         "time": 92.304,
         "end": 92.304,
@@ -15599,7 +14587,7 @@
         "intensity": 1.0
       },
       {
-        "id": 309,
+        "id": 291,
         "kind": "tap",
         "time": 92.4,
         "end": 92.4,
@@ -15610,7 +14598,7 @@
         "intensity": 1.0
       },
       {
-        "id": 310,
+        "id": 292,
         "kind": "tap",
         "time": 92.497,
         "end": 92.497,
@@ -15621,7 +14609,7 @@
         "intensity": 1.0
       },
       {
-        "id": 311,
+        "id": 293,
         "kind": "tap",
         "time": 92.691,
         "end": 92.691,
@@ -15632,7 +14620,7 @@
         "intensity": 1.0
       },
       {
-        "id": 312,
+        "id": 294,
         "kind": "press",
         "time": 92.884,
         "end": 93.078,
@@ -15643,18 +14631,7 @@
         "intensity": 1.0
       },
       {
-        "id": 313,
-        "kind": "tap",
-        "time": 93.078,
-        "end": 93.078,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 314,
+        "id": 295,
         "kind": "tap",
         "time": 93.465,
         "end": 93.465,
@@ -15665,7 +14642,7 @@
         "intensity": 1.0
       },
       {
-        "id": 315,
+        "id": 296,
         "kind": "press",
         "time": 93.659,
         "end": 93.755,
@@ -15676,18 +14653,7 @@
         "intensity": 1.0
       },
       {
-        "id": 316,
-        "kind": "tap",
-        "time": 93.755,
-        "end": 93.755,
-        "lane": 1,
-        "fruit": 0,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 317,
+        "id": 297,
         "kind": "tap",
         "time": 93.852,
         "end": 93.852,
@@ -15698,7 +14664,7 @@
         "intensity": 1.0
       },
       {
-        "id": 318,
+        "id": 298,
         "kind": "tap",
         "time": 94.046,
         "end": 94.046,
@@ -15709,7 +14675,7 @@
         "intensity": 1.0
       },
       {
-        "id": 319,
+        "id": 299,
         "kind": "tap",
         "time": 94.239,
         "end": 94.239,
@@ -15720,7 +14686,7 @@
         "intensity": 1.0
       },
       {
-        "id": 320,
+        "id": 300,
         "kind": "tap",
         "time": 94.433,
         "end": 94.433,
@@ -15731,7 +14697,7 @@
         "intensity": 1.0
       },
       {
-        "id": 321,
+        "id": 301,
         "kind": "tap",
         "time": 94.626,
         "end": 94.626,
@@ -15742,7 +14708,7 @@
         "intensity": 1.0
       },
       {
-        "id": 322,
+        "id": 302,
         "kind": "tap",
         "time": 95.013,
         "end": 95.013,
@@ -15753,7 +14719,7 @@
         "intensity": 1.0
       },
       {
-        "id": 323,
+        "id": 303,
         "kind": "tap",
         "time": 95.11,
         "end": 95.11,
@@ -15764,7 +14730,7 @@
         "intensity": 1.0
       },
       {
-        "id": 324,
+        "id": 304,
         "kind": "tap",
         "time": 95.207,
         "end": 95.207,
@@ -15775,7 +14741,7 @@
         "intensity": 1.0
       },
       {
-        "id": 325,
+        "id": 305,
         "kind": "press",
         "time": 95.304,
         "end": 95.401,
@@ -15786,18 +14752,7 @@
         "intensity": 1.0
       },
       {
-        "id": 326,
-        "kind": "tap",
-        "time": 95.401,
-        "end": 95.401,
-        "lane": 0,
-        "fruit": 6,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 327,
+        "id": 306,
         "kind": "tap",
         "time": 95.594,
         "end": 95.594,
@@ -15808,7 +14763,7 @@
         "intensity": 1.0
       },
       {
-        "id": 328,
+        "id": 307,
         "kind": "tap",
         "time": 95.788,
         "end": 95.788,
@@ -15819,7 +14774,7 @@
         "intensity": 1.0
       },
       {
-        "id": 329,
+        "id": 308,
         "kind": "press",
         "time": 95.981,
         "end": 96.175,
@@ -15830,18 +14785,7 @@
         "intensity": 1.0
       },
       {
-        "id": 330,
-        "kind": "tap",
-        "time": 96.175,
-        "end": 96.175,
-        "lane": -1,
-        "fruit": 4,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 331,
+        "id": 309,
         "kind": "tap",
         "time": 96.562,
         "end": 96.562,
@@ -15852,7 +14796,7 @@
         "intensity": 1.0
       },
       {
-        "id": 332,
+        "id": 310,
         "kind": "tap",
         "time": 96.659,
         "end": 96.659,
@@ -15863,7 +14807,7 @@
         "intensity": 1.0
       },
       {
-        "id": 333,
+        "id": 311,
         "kind": "tap",
         "time": 96.755,
         "end": 96.755,
@@ -15874,7 +14818,7 @@
         "intensity": 1.0
       },
       {
-        "id": 334,
+        "id": 312,
         "kind": "press",
         "time": 96.852,
         "end": 96.949,
@@ -15885,18 +14829,7 @@
         "intensity": 1.0
       },
       {
-        "id": 335,
-        "kind": "tap",
-        "time": 96.949,
-        "end": 96.949,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 336,
+        "id": 313,
         "kind": "tap",
         "time": 97.143,
         "end": 97.143,
@@ -15907,7 +14840,7 @@
         "intensity": 1.0
       },
       {
-        "id": 337,
+        "id": 314,
         "kind": "press",
         "time": 97.336,
         "end": 97.433,
@@ -15918,18 +14851,7 @@
         "intensity": 1.0
       },
       {
-        "id": 338,
-        "kind": "press",
-        "time": 97.433,
-        "end": 97.53,
-        "lane": 0,
-        "fruit": 0,
-        "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 339,
+        "id": 315,
         "kind": "press",
         "time": 97.53,
         "end": 97.723,
@@ -15940,18 +14862,7 @@
         "intensity": 1.0
       },
       {
-        "id": 340,
-        "kind": "tap",
-        "time": 97.723,
-        "end": 97.723,
-        "lane": -1,
-        "fruit": 2,
-        "accent": "osu_mania_tap",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 341,
+        "id": 316,
         "kind": "tap",
         "time": 98.013,
         "end": 98.013,
@@ -15962,7 +14873,7 @@
         "intensity": 1.0
       },
       {
-        "id": 342,
+        "id": 317,
         "kind": "tap",
         "time": 98.207,
         "end": 98.207,
@@ -15973,7 +14884,7 @@
         "intensity": 1.0
       },
       {
-        "id": 343,
+        "id": 318,
         "kind": "tap",
         "time": 98.304,
         "end": 98.304,
@@ -15984,7 +14895,7 @@
         "intensity": 1.0
       },
       {
-        "id": 344,
+        "id": 319,
         "kind": "tap",
         "time": 98.594,
         "end": 98.594,
@@ -15995,7 +14906,7 @@
         "intensity": 1.0
       },
       {
-        "id": 345,
+        "id": 320,
         "kind": "tap",
         "time": 98.884,
         "end": 98.884,
@@ -16006,7 +14917,7 @@
         "intensity": 1.0
       },
       {
-        "id": 346,
+        "id": 321,
         "kind": "tap",
         "time": 99.078,
         "end": 99.078,
@@ -16017,7 +14928,7 @@
         "intensity": 1.0
       },
       {
-        "id": 347,
+        "id": 322,
         "kind": "tap",
         "time": 99.272,
         "end": 99.272,
@@ -16028,7 +14939,7 @@
         "intensity": 1.0
       },
       {
-        "id": 348,
+        "id": 323,
         "kind": "tap",
         "time": 99.659,
         "end": 99.659,
@@ -16039,7 +14950,7 @@
         "intensity": 1.0
       },
       {
-        "id": 349,
+        "id": 324,
         "kind": "tap",
         "time": 100.046,
         "end": 100.046,
@@ -16050,7 +14961,7 @@
         "intensity": 1.0
       },
       {
-        "id": 350,
+        "id": 325,
         "kind": "tap",
         "time": 100.239,
         "end": 100.239,
@@ -16061,7 +14972,7 @@
         "intensity": 1.0
       },
       {
-        "id": 351,
+        "id": 326,
         "kind": "tap",
         "time": 100.433,
         "end": 100.433,
@@ -16072,7 +14983,7 @@
         "intensity": 1.0
       },
       {
-        "id": 352,
+        "id": 327,
         "kind": "tap",
         "time": 100.626,
         "end": 100.626,
@@ -16083,7 +14994,7 @@
         "intensity": 1.0
       },
       {
-        "id": 353,
+        "id": 328,
         "kind": "tap",
         "time": 100.82,
         "end": 100.82,
@@ -16094,7 +15005,7 @@
         "intensity": 1.0
       },
       {
-        "id": 354,
+        "id": 329,
         "kind": "tap",
         "time": 101.207,
         "end": 101.207,
@@ -16105,7 +15016,7 @@
         "intensity": 1.0
       },
       {
-        "id": 355,
+        "id": 330,
         "kind": "tap",
         "time": 101.594,
         "end": 101.594,
@@ -16116,7 +15027,7 @@
         "intensity": 1.0
       },
       {
-        "id": 356,
+        "id": 331,
         "kind": "tap",
         "time": 101.981,
         "end": 101.981,
@@ -16127,7 +15038,7 @@
         "intensity": 1.0
       },
       {
-        "id": 357,
+        "id": 332,
         "kind": "tap",
         "time": 102.175,
         "end": 102.175,
@@ -16138,7 +15049,7 @@
         "intensity": 1.0
       },
       {
-        "id": 358,
+        "id": 333,
         "kind": "tap",
         "time": 102.368,
         "end": 102.368,
@@ -16149,7 +15060,7 @@
         "intensity": 1.0
       },
       {
-        "id": 359,
+        "id": 334,
         "kind": "tap",
         "time": 102.756,
         "end": 102.756,
@@ -16160,7 +15071,7 @@
         "intensity": 1.0
       },
       {
-        "id": 360,
+        "id": 335,
         "kind": "tap",
         "time": 103.143,
         "end": 103.143,
@@ -16171,7 +15082,7 @@
         "intensity": 1.0
       },
       {
-        "id": 361,
+        "id": 336,
         "kind": "tap",
         "time": 103.53,
         "end": 103.53,
@@ -16182,7 +15093,7 @@
         "intensity": 1.0
       },
       {
-        "id": 362,
+        "id": 337,
         "kind": "tap",
         "time": 103.723,
         "end": 103.723,
@@ -16193,7 +15104,7 @@
         "intensity": 1.0
       },
       {
-        "id": 363,
+        "id": 338,
         "kind": "tap",
         "time": 103.917,
         "end": 103.917,
@@ -16204,7 +15115,7 @@
         "intensity": 1.0
       },
       {
-        "id": 364,
+        "id": 339,
         "kind": "tap",
         "time": 104.304,
         "end": 104.304,
@@ -16215,7 +15126,7 @@
         "intensity": 1.0
       },
       {
-        "id": 365,
+        "id": 340,
         "kind": "tap",
         "time": 104.691,
         "end": 104.691,
@@ -16226,7 +15137,7 @@
         "intensity": 1.0
       },
       {
-        "id": 366,
+        "id": 341,
         "kind": "tap",
         "time": 105.078,
         "end": 105.078,
@@ -16237,7 +15148,7 @@
         "intensity": 1.0
       },
       {
-        "id": 367,
+        "id": 342,
         "kind": "tap",
         "time": 105.272,
         "end": 105.272,
@@ -16248,7 +15159,7 @@
         "intensity": 1.0
       },
       {
-        "id": 368,
+        "id": 343,
         "kind": "tap",
         "time": 105.465,
         "end": 105.465,
@@ -16259,7 +15170,7 @@
         "intensity": 1.0
       },
       {
-        "id": 369,
+        "id": 344,
         "kind": "tap",
         "time": 105.852,
         "end": 105.852,
@@ -16270,7 +15181,7 @@
         "intensity": 1.0
       },
       {
-        "id": 370,
+        "id": 345,
         "kind": "tap",
         "time": 106.046,
         "end": 106.046,
@@ -16281,7 +15192,7 @@
         "intensity": 1.0
       },
       {
-        "id": 371,
+        "id": 346,
         "kind": "tap",
         "time": 106.239,
         "end": 106.239,
@@ -16292,7 +15203,7 @@
         "intensity": 1.0
       },
       {
-        "id": 372,
+        "id": 347,
         "kind": "tap",
         "time": 106.433,
         "end": 106.433,
@@ -16303,7 +15214,7 @@
         "intensity": 1.0
       },
       {
-        "id": 373,
+        "id": 348,
         "kind": "tap",
         "time": 106.627,
         "end": 106.627,
@@ -16314,7 +15225,7 @@
         "intensity": 1.0
       },
       {
-        "id": 374,
+        "id": 349,
         "kind": "tap",
         "time": 106.82,
         "end": 106.82,
@@ -16325,7 +15236,7 @@
         "intensity": 1.0
       },
       {
-        "id": 375,
+        "id": 350,
         "kind": "tap",
         "time": 107.014,
         "end": 107.014,
@@ -16336,7 +15247,7 @@
         "intensity": 1.0
       },
       {
-        "id": 376,
+        "id": 351,
         "kind": "tap",
         "time": 107.401,
         "end": 107.401,
@@ -16347,7 +15258,7 @@
         "intensity": 1.0
       },
       {
-        "id": 377,
+        "id": 352,
         "kind": "tap",
         "time": 107.788,
         "end": 107.788,
@@ -16358,7 +15269,7 @@
         "intensity": 1.0
       },
       {
-        "id": 378,
+        "id": 353,
         "kind": "tap",
         "time": 108.175,
         "end": 108.175,
@@ -16369,7 +15280,7 @@
         "intensity": 1.0
       },
       {
-        "id": 379,
+        "id": 354,
         "kind": "tap",
         "time": 108.369,
         "end": 108.369,
@@ -16380,7 +15291,7 @@
         "intensity": 1.0
       },
       {
-        "id": 380,
+        "id": 355,
         "kind": "tap",
         "time": 108.562,
         "end": 108.562,
@@ -16391,7 +15302,7 @@
         "intensity": 1.0
       },
       {
-        "id": 381,
+        "id": 356,
         "kind": "tap",
         "time": 108.949,
         "end": 108.949,
@@ -16402,7 +15313,7 @@
         "intensity": 1.0
       },
       {
-        "id": 382,
+        "id": 357,
         "kind": "tap",
         "time": 109.143,
         "end": 109.143,
@@ -16413,7 +15324,7 @@
         "intensity": 1.0
       },
       {
-        "id": 383,
+        "id": 358,
         "kind": "tap",
         "time": 109.336,
         "end": 109.336,
@@ -16424,7 +15335,7 @@
         "intensity": 1.0
       },
       {
-        "id": 384,
+        "id": 359,
         "kind": "tap",
         "time": 109.723,
         "end": 109.723,
@@ -16435,7 +15346,7 @@
         "intensity": 1.0
       },
       {
-        "id": 385,
+        "id": 360,
         "kind": "tap",
         "time": 109.917,
         "end": 109.917,
@@ -16446,7 +15357,7 @@
         "intensity": 1.0
       },
       {
-        "id": 386,
+        "id": 361,
         "kind": "tap",
         "time": 110.111,
         "end": 110.111,
@@ -16457,7 +15368,7 @@
         "intensity": 1.0
       },
       {
-        "id": 387,
+        "id": 362,
         "kind": "tap",
         "time": 110.401,
         "end": 110.401,
@@ -16468,7 +15379,7 @@
         "intensity": 1.0
       },
       {
-        "id": 388,
+        "id": 363,
         "kind": "tap",
         "time": 110.691,
         "end": 110.691,
@@ -16479,7 +15390,7 @@
         "intensity": 1.0
       },
       {
-        "id": 389,
+        "id": 364,
         "kind": "tap",
         "time": 110.981,
         "end": 110.981,
@@ -16490,7 +15401,7 @@
         "intensity": 1.0
       },
       {
-        "id": 390,
+        "id": 365,
         "kind": "tap",
         "time": 111.272,
         "end": 111.272,
@@ -16501,7 +15412,7 @@
         "intensity": 1.0
       },
       {
-        "id": 391,
+        "id": 366,
         "kind": "tap",
         "time": 111.465,
         "end": 111.465,
@@ -16512,7 +15423,7 @@
         "intensity": 1.0
       },
       {
-        "id": 392,
+        "id": 367,
         "kind": "tap",
         "time": 111.659,
         "end": 111.659,
@@ -16523,7 +15434,7 @@
         "intensity": 1.0
       },
       {
-        "id": 393,
+        "id": 368,
         "kind": "tap",
         "time": 112.046,
         "end": 112.046,
@@ -16534,7 +15445,7 @@
         "intensity": 1.0
       },
       {
-        "id": 394,
+        "id": 369,
         "kind": "tap",
         "time": 112.24,
         "end": 112.24,
@@ -16545,7 +15456,7 @@
         "intensity": 1.0
       },
       {
-        "id": 395,
+        "id": 370,
         "kind": "tap",
         "time": 112.433,
         "end": 112.433,
@@ -16556,7 +15467,7 @@
         "intensity": 1.0
       },
       {
-        "id": 396,
+        "id": 371,
         "kind": "tap",
         "time": 112.627,
         "end": 112.627,
@@ -16567,7 +15478,7 @@
         "intensity": 1.0
       },
       {
-        "id": 397,
+        "id": 372,
         "kind": "tap",
         "time": 112.82,
         "end": 112.82,
@@ -16578,7 +15489,7 @@
         "intensity": 1.0
       },
       {
-        "id": 398,
+        "id": 373,
         "kind": "tap",
         "time": 113.014,
         "end": 113.014,
@@ -16589,7 +15500,7 @@
         "intensity": 1.0
       },
       {
-        "id": 399,
+        "id": 374,
         "kind": "tap",
         "time": 113.207,
         "end": 113.207,
@@ -16600,7 +15511,7 @@
         "intensity": 1.0
       },
       {
-        "id": 400,
+        "id": 375,
         "kind": "tap",
         "time": 113.594,
         "end": 113.594,
@@ -16611,7 +15522,7 @@
         "intensity": 1.0
       },
       {
-        "id": 401,
+        "id": 376,
         "kind": "tap",
         "time": 113.788,
         "end": 113.788,
@@ -16622,7 +15533,7 @@
         "intensity": 1.0
       },
       {
-        "id": 402,
+        "id": 377,
         "kind": "tap",
         "time": 113.982,
         "end": 113.982,
@@ -16633,7 +15544,7 @@
         "intensity": 1.0
       },
       {
-        "id": 403,
+        "id": 378,
         "kind": "tap",
         "time": 114.369,
         "end": 114.369,
@@ -16644,7 +15555,7 @@
         "intensity": 1.0
       },
       {
-        "id": 404,
+        "id": 379,
         "kind": "tap",
         "time": 114.562,
         "end": 114.562,
@@ -16655,7 +15566,7 @@
         "intensity": 1.0
       },
       {
-        "id": 405,
+        "id": 380,
         "kind": "tap",
         "time": 114.756,
         "end": 114.756,
@@ -16666,7 +15577,7 @@
         "intensity": 1.0
       },
       {
-        "id": 406,
+        "id": 381,
         "kind": "tap",
         "time": 115.143,
         "end": 115.143,
@@ -16677,7 +15588,7 @@
         "intensity": 1.0
       },
       {
-        "id": 407,
+        "id": 382,
         "kind": "tap",
         "time": 115.336,
         "end": 115.336,
@@ -16688,7 +15599,7 @@
         "intensity": 1.0
       },
       {
-        "id": 408,
+        "id": 383,
         "kind": "tap",
         "time": 115.53,
         "end": 115.53,
@@ -16699,7 +15610,7 @@
         "intensity": 1.0
       },
       {
-        "id": 409,
+        "id": 384,
         "kind": "tap",
         "time": 115.917,
         "end": 115.917,
@@ -16710,7 +15621,7 @@
         "intensity": 1.0
       },
       {
-        "id": 410,
+        "id": 385,
         "kind": "tap",
         "time": 116.111,
         "end": 116.111,
@@ -16721,7 +15632,7 @@
         "intensity": 1.0
       },
       {
-        "id": 411,
+        "id": 386,
         "kind": "tap",
         "time": 116.304,
         "end": 116.304,
@@ -16732,7 +15643,7 @@
         "intensity": 1.0
       },
       {
-        "id": 412,
+        "id": 387,
         "kind": "tap",
         "time": 116.691,
         "end": 116.691,
@@ -16743,7 +15654,7 @@
         "intensity": 1.0
       },
       {
-        "id": 413,
+        "id": 388,
         "kind": "tap",
         "time": 116.885,
         "end": 116.885,
@@ -16754,7 +15665,7 @@
         "intensity": 1.0
       },
       {
-        "id": 414,
+        "id": 389,
         "kind": "tap",
         "time": 117.078,
         "end": 117.078,
@@ -16765,7 +15676,7 @@
         "intensity": 1.0
       },
       {
-        "id": 415,
+        "id": 390,
         "kind": "tap",
         "time": 117.465,
         "end": 117.465,
@@ -16776,7 +15687,7 @@
         "intensity": 1.0
       },
       {
-        "id": 416,
+        "id": 391,
         "kind": "tap",
         "time": 117.659,
         "end": 117.659,
@@ -16787,7 +15698,7 @@
         "intensity": 1.0
       },
       {
-        "id": 417,
+        "id": 392,
         "kind": "tap",
         "time": 117.853,
         "end": 117.853,
@@ -16798,7 +15709,7 @@
         "intensity": 1.0
       },
       {
-        "id": 418,
+        "id": 393,
         "kind": "tap",
         "time": 118.24,
         "end": 118.24,
@@ -16809,7 +15720,7 @@
         "intensity": 1.0
       },
       {
-        "id": 419,
+        "id": 394,
         "kind": "tap",
         "time": 118.627,
         "end": 118.627,
@@ -16820,7 +15731,7 @@
         "intensity": 1.0
       },
       {
-        "id": 420,
+        "id": 395,
         "kind": "tap",
         "time": 118.82,
         "end": 118.82,
@@ -16831,7 +15742,7 @@
         "intensity": 1.0
       },
       {
-        "id": 421,
+        "id": 396,
         "kind": "tap",
         "time": 119.014,
         "end": 119.014,
@@ -16842,7 +15753,7 @@
         "intensity": 1.0
       },
       {
-        "id": 422,
+        "id": 397,
         "kind": "tap",
         "time": 119.207,
         "end": 119.207,
@@ -16853,7 +15764,7 @@
         "intensity": 1.0
       },
       {
-        "id": 423,
+        "id": 398,
         "kind": "tap",
         "time": 119.401,
         "end": 119.401,
@@ -16864,7 +15775,7 @@
         "intensity": 1.0
       },
       {
-        "id": 424,
+        "id": 399,
         "kind": "tap",
         "time": 119.788,
         "end": 119.788,
@@ -16875,7 +15786,7 @@
         "intensity": 1.0
       },
       {
-        "id": 425,
+        "id": 400,
         "kind": "tap",
         "time": 120.175,
         "end": 120.175,
@@ -16886,7 +15797,7 @@
         "intensity": 1.0
       },
       {
-        "id": 426,
+        "id": 401,
         "kind": "tap",
         "time": 120.562,
         "end": 120.562,
@@ -16897,7 +15808,7 @@
         "intensity": 1.0
       },
       {
-        "id": 427,
+        "id": 402,
         "kind": "tap",
         "time": 120.756,
         "end": 120.756,
@@ -16908,7 +15819,7 @@
         "intensity": 1.0
       },
       {
-        "id": 428,
+        "id": 403,
         "kind": "tap",
         "time": 120.949,
         "end": 120.949,
@@ -16919,7 +15830,7 @@
         "intensity": 1.0
       },
       {
-        "id": 429,
+        "id": 404,
         "kind": "tap",
         "time": 121.337,
         "end": 121.337,
@@ -16930,7 +15841,7 @@
         "intensity": 1.0
       },
       {
-        "id": 430,
+        "id": 405,
         "kind": "tap",
         "time": 121.53,
         "end": 121.53,
@@ -16941,7 +15852,7 @@
         "intensity": 1.0
       },
       {
-        "id": 431,
+        "id": 406,
         "kind": "tap",
         "time": 121.724,
         "end": 121.724,
@@ -16952,7 +15863,7 @@
         "intensity": 1.0
       },
       {
-        "id": 432,
+        "id": 407,
         "kind": "tap",
         "time": 122.111,
         "end": 122.111,
@@ -16963,7 +15874,7 @@
         "intensity": 1.0
       },
       {
-        "id": 433,
+        "id": 408,
         "kind": "tap",
         "time": 122.304,
         "end": 122.304,
@@ -16974,7 +15885,7 @@
         "intensity": 1.0
       },
       {
-        "id": 434,
+        "id": 409,
         "kind": "tap",
         "time": 122.498,
         "end": 122.498,
@@ -16985,7 +15896,7 @@
         "intensity": 1.0
       },
       {
-        "id": 435,
+        "id": 410,
         "kind": "tap",
         "time": 122.788,
         "end": 122.788,
@@ -16996,7 +15907,7 @@
         "intensity": 1.0
       },
       {
-        "id": 436,
+        "id": 411,
         "kind": "tap",
         "time": 123.079,
         "end": 123.079,
@@ -17007,7 +15918,7 @@
         "intensity": 1.0
       },
       {
-        "id": 437,
+        "id": 412,
         "kind": "tap",
         "time": 123.369,
         "end": 123.369,
@@ -17018,7 +15929,7 @@
         "intensity": 1.0
       },
       {
-        "id": 438,
+        "id": 413,
         "kind": "tap",
         "time": 123.659,
         "end": 123.659,
@@ -17029,7 +15940,7 @@
         "intensity": 1.0
       },
       {
-        "id": 439,
+        "id": 414,
         "kind": "tap",
         "time": 123.853,
         "end": 123.853,
@@ -17040,7 +15951,7 @@
         "intensity": 1.0
       },
       {
-        "id": 440,
+        "id": 415,
         "kind": "tap",
         "time": 124.046,
         "end": 124.046,
@@ -17051,7 +15962,7 @@
         "intensity": 1.0
       },
       {
-        "id": 441,
+        "id": 416,
         "kind": "tap",
         "time": 124.433,
         "end": 124.433,
@@ -17062,7 +15973,7 @@
         "intensity": 1.0
       },
       {
-        "id": 442,
+        "id": 417,
         "kind": "tap",
         "time": 124.82,
         "end": 124.82,
@@ -17073,7 +15984,7 @@
         "intensity": 1.0
       },
       {
-        "id": 443,
+        "id": 418,
         "kind": "tap",
         "time": 125.208,
         "end": 125.208,
@@ -17084,7 +15995,7 @@
         "intensity": 1.0
       },
       {
-        "id": 444,
+        "id": 419,
         "kind": "tap",
         "time": 125.401,
         "end": 125.401,
@@ -17095,7 +16006,7 @@
         "intensity": 1.0
       },
       {
-        "id": 445,
+        "id": 420,
         "kind": "tap",
         "time": 125.595,
         "end": 125.595,
@@ -17106,7 +16017,7 @@
         "intensity": 1.0
       },
       {
-        "id": 446,
+        "id": 421,
         "kind": "tap",
         "time": 125.982,
         "end": 125.982,
@@ -17117,7 +16028,7 @@
         "intensity": 1.0
       },
       {
-        "id": 447,
+        "id": 422,
         "kind": "tap",
         "time": 126.369,
         "end": 126.369,
@@ -17128,7 +16039,7 @@
         "intensity": 1.0
       },
       {
-        "id": 448,
+        "id": 423,
         "kind": "tap",
         "time": 126.756,
         "end": 126.756,
@@ -17139,7 +16050,7 @@
         "intensity": 1.0
       },
       {
-        "id": 449,
+        "id": 424,
         "kind": "tap",
         "time": 126.95,
         "end": 126.95,
@@ -17150,7 +16061,7 @@
         "intensity": 1.0
       },
       {
-        "id": 450,
+        "id": 425,
         "kind": "tap",
         "time": 127.143,
         "end": 127.143,
@@ -17161,7 +16072,7 @@
         "intensity": 1.0
       },
       {
-        "id": 451,
+        "id": 426,
         "kind": "tap",
         "time": 127.53,
         "end": 127.53,
@@ -17172,7 +16083,7 @@
         "intensity": 1.0
       },
       {
-        "id": 452,
+        "id": 427,
         "kind": "tap",
         "time": 127.917,
         "end": 127.917,
@@ -17183,7 +16094,7 @@
         "intensity": 1.0
       },
       {
-        "id": 453,
+        "id": 428,
         "kind": "tap",
         "time": 128.304,
         "end": 128.304,
@@ -17194,7 +16105,7 @@
         "intensity": 1.0
       },
       {
-        "id": 454,
+        "id": 429,
         "kind": "tap",
         "time": 128.498,
         "end": 128.498,
@@ -17205,7 +16116,7 @@
         "intensity": 1.0
       },
       {
-        "id": 455,
+        "id": 430,
         "kind": "tap",
         "time": 128.692,
         "end": 128.692,
@@ -17216,7 +16127,7 @@
         "intensity": 1.0
       },
       {
-        "id": 456,
+        "id": 431,
         "kind": "tap",
         "time": 129.079,
         "end": 129.079,
@@ -17227,7 +16138,7 @@
         "intensity": 1.0
       },
       {
-        "id": 457,
+        "id": 432,
         "kind": "tap",
         "time": 129.466,
         "end": 129.466,
@@ -17238,7 +16149,7 @@
         "intensity": 1.0
       },
       {
-        "id": 458,
+        "id": 433,
         "kind": "tap",
         "time": 129.853,
         "end": 129.853,
@@ -17249,7 +16160,7 @@
         "intensity": 1.0
       },
       {
-        "id": 459,
+        "id": 434,
         "kind": "tap",
         "time": 130.046,
         "end": 130.046,
@@ -17260,7 +16171,7 @@
         "intensity": 1.0
       },
       {
-        "id": 460,
+        "id": 435,
         "kind": "tap",
         "time": 130.24,
         "end": 130.24,
@@ -17271,7 +16182,7 @@
         "intensity": 1.0
       },
       {
-        "id": 461,
+        "id": 436,
         "kind": "tap",
         "time": 130.627,
         "end": 130.627,
@@ -17282,7 +16193,7 @@
         "intensity": 1.0
       },
       {
-        "id": 462,
+        "id": 437,
         "kind": "tap",
         "time": 131.014,
         "end": 131.014,
@@ -17293,7 +16204,7 @@
         "intensity": 1.0
       },
       {
-        "id": 463,
+        "id": 438,
         "kind": "tap",
         "time": 131.401,
         "end": 131.401,
@@ -17304,7 +16215,7 @@
         "intensity": 1.0
       },
       {
-        "id": 464,
+        "id": 439,
         "kind": "tap",
         "time": 131.595,
         "end": 131.595,
@@ -17315,7 +16226,7 @@
         "intensity": 1.0
       },
       {
-        "id": 465,
+        "id": 440,
         "kind": "tap",
         "time": 131.788,
         "end": 131.788,
@@ -17326,7 +16237,7 @@
         "intensity": 1.0
       },
       {
-        "id": 466,
+        "id": 441,
         "kind": "tap",
         "time": 132.175,
         "end": 132.175,
@@ -17337,7 +16248,7 @@
         "intensity": 1.0
       },
       {
-        "id": 467,
+        "id": 442,
         "kind": "tap",
         "time": 132.563,
         "end": 132.563,
@@ -17348,7 +16259,7 @@
         "intensity": 1.0
       },
       {
-        "id": 468,
+        "id": 443,
         "kind": "tap",
         "time": 132.95,
         "end": 132.95,
@@ -17359,7 +16270,7 @@
         "intensity": 1.0
       },
       {
-        "id": 469,
+        "id": 444,
         "kind": "tap",
         "time": 133.337,
         "end": 133.337,
@@ -17370,7 +16281,7 @@
         "intensity": 1.0
       },
       {
-        "id": 470,
+        "id": 445,
         "kind": "tap",
         "time": 133.724,
         "end": 133.724,
@@ -17381,7 +16292,7 @@
         "intensity": 1.0
       },
       {
-        "id": 471,
+        "id": 446,
         "kind": "tap",
         "time": 134.111,
         "end": 134.111,
@@ -17392,7 +16303,7 @@
         "intensity": 1.0
       },
       {
-        "id": 472,
+        "id": 447,
         "kind": "tap",
         "time": 134.498,
         "end": 134.498,
@@ -17403,7 +16314,7 @@
         "intensity": 1.0
       },
       {
-        "id": 473,
+        "id": 448,
         "kind": "tap",
         "time": 134.885,
         "end": 134.885,
@@ -17414,7 +16325,7 @@
         "intensity": 1.0
       },
       {
-        "id": 474,
+        "id": 449,
         "kind": "tap",
         "time": 135.176,
         "end": 135.176,
@@ -17425,7 +16336,7 @@
         "intensity": 1.0
       },
       {
-        "id": 475,
+        "id": 450,
         "kind": "tap",
         "time": 135.466,
         "end": 135.466,
@@ -17436,7 +16347,7 @@
         "intensity": 1.0
       },
       {
-        "id": 476,
+        "id": 451,
         "kind": "tap",
         "time": 135.756,
         "end": 135.756,
@@ -17447,24 +16358,13 @@
         "intensity": 1.0
       },
       {
-        "id": 477,
+        "id": 452,
         "kind": "press",
         "time": 136.046,
         "end": 136.434,
         "lane": 1,
         "fruit": 2,
         "accent": "osu_mania_hold",
-        "role": "verse",
-        "intensity": 1.0
-      },
-      {
-        "id": 478,
-        "kind": "tap",
-        "time": 136.434,
-        "end": 136.434,
-        "lane": -1,
-        "fruit": 3,
-        "accent": "osu_mania_tap",
         "role": "verse",
         "intensity": 1.0
       }
