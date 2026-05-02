@@ -1,100 +1,100 @@
 {
   "charts": [
     {
-      "song": "audio/ark-light.opus",
-      "file": "ark-light.json"
+      "song": "audio/ark-light.c37cdfc99d.opus",
+      "file": "ark-light.45bcad32f2.json"
     },
     {
-      "song": "audio/asura.opus",
-      "file": "asura.json"
+      "song": "audio/asura.d368198ce1.opus",
+      "file": "asura.0ab214b4fe.json"
     },
     {
-      "song": "audio/Beethoven.opus",
-      "file": "beethoven.json"
+      "song": "audio/Beethoven.c7858954be.opus",
+      "file": "beethoven.237d88ea3f.json"
     },
     {
-      "song": "audio/drama.opus",
-      "file": "drama.json"
+      "song": "audio/drama.efbb26d95e.opus",
+      "file": "drama.e4bc8c0e0d.json"
     },
     {
-      "song": "audio/faraway.opus",
-      "file": "faraway.json"
+      "song": "audio/faraway.1f11871321.opus",
+      "file": "faraway.fe5d94e884.json"
     },
     {
-      "song": "audio/felis.opus",
-      "file": "felis.json"
+      "song": "audio/felis.cb923127f6.opus",
+      "file": "felis.5ccf457d2b.json"
     },
     {
-      "song": "audio/first-choice.opus",
-      "file": "first-choice.json"
+      "song": "audio/first-choice.3c721c7d47.opus",
+      "file": "first-choice.e38c30eddd.json"
     },
     {
-      "song": "audio/grafiore.opus",
-      "file": "grafiore.json"
+      "song": "audio/grafiore.acfbbfbf50.opus",
+      "file": "grafiore.8e67e9a795.json"
     },
     {
-      "song": "audio/grypsy-tronic.opus",
-      "file": "grypsy-tronic.json"
+      "song": "audio/grypsy-tronic.b97fb29a56.opus",
+      "file": "grypsy-tronic.bf347fe443.json"
     },
     {
-      "song": "audio/ineffable.opus",
-      "file": "ineffable.json"
+      "song": "audio/ineffable.9b42eb53d5.opus",
+      "file": "ineffable.a7519bd356.json"
     },
     {
-      "song": "audio/lunatic-sky.opus",
-      "file": "lunatic-sky.json"
+      "song": "audio/lunatic-sky.0c1cc44c2a.opus",
+      "file": "lunatic-sky.850b949bf8.json"
     },
     {
-      "song": "audio/maidens-capriccio.opus",
-      "file": "maidens-capriccio.json"
+      "song": "audio/maidens-capriccio.4a084a9313.opus",
+      "file": "maidens-capriccio.fc1203303a.json"
     },
     {
-      "song": "audio/masquerade.opus",
-      "file": "masquerade.json"
+      "song": "audio/masquerade.2eff9a5f1d.opus",
+      "file": "masquerade.3a0ad0972d.json"
     },
     {
-      "song": "audio/megaburn.opus",
-      "file": "megaburn.json"
+      "song": "audio/megaburn.5351d29336.opus",
+      "file": "megaburn.9edd426330.json"
     },
     {
-      "song": "audio/nb-blast.opus",
-      "file": "nb-blast.json"
+      "song": "audio/nb-blast.60a11a34bf.opus",
+      "file": "nb-blast.9c4c591726.json"
     },
     {
-      "song": "audio/necro-fantasy.opus",
-      "file": "necro-fantasy.json"
+      "song": "audio/necro-fantasy.6cf1ba5ead.opus",
+      "file": "necro-fantasy.54de6d5b0d.json"
     },
     {
-      "song": "audio/night of fire.opus",
-      "file": "night-of-fire.json"
+      "song": "audio/night of fire.4aad527dba.opus",
+      "file": "night-of-fire.15b2d8367f.json"
     },
     {
-      "song": "audio/please.opus",
-      "file": "please.json"
+      "song": "audio/please.e960188443.opus",
+      "file": "please.5a3b603e46.json"
     },
     {
-      "song": "audio/purple-passion.opus",
-      "file": "purple-passion.json"
+      "song": "audio/purple-passion.7f6d1a3530.opus",
+      "file": "purple-passion.aee45968c9.json"
     },
     {
-      "song": "audio/qua-vadis.opus",
-      "file": "qua-vadis.json"
+      "song": "audio/qua-vadis.9fbd45d2f6.opus",
+      "file": "qua-vadis.b4ac1cbd60.json"
     },
     {
-      "song": "audio/seeker.opus",
-      "file": "seeker.json"
+      "song": "audio/seeker.b2e1bcc271.opus",
+      "file": "seeker.b0aba30b77.json"
     },
     {
-      "song": "audio/toy-war.opus",
-      "file": "toy-war.json"
+      "song": "audio/toy-war.56044a5e5b.opus",
+      "file": "toy-war.7afc47939d.json"
     },
     {
-      "song": "audio/unwelcome-school.opus",
-      "file": "unwelcome-school.json"
+      "song": "audio/unwelcome-school.58c5900ea4.opus",
+      "file": "unwelcome-school.2a2cfe9d1a.json"
     },
     {
-      "song": "audio/wings-of-silence.opus",
-      "file": "wings-of-silence.json"
+      "song": "audio/wings-of-silence.13e5868caf.opus",
+      "file": "wings-of-silence.2ed078611f.json"
     }
   ]
 }
