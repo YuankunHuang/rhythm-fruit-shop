@@ -425,7 +425,8 @@ function renderSpeedRows(){[songSpeedRow,$('settingsSpeedRow')].forEach(row=>{if
 function noteX(n){return view.cx+(n.lane||0)*view.laneW*.22}
 function noteY(n,t,when=n.time){return view.hitY-((when-t)/(n.travel||diff.travel))*(view.hitY-view.laneTop)}
 function lowerBoundNotes(time){let lo=0,hi=notes.length;while(lo<hi){const mid=(lo+hi)>>1;if(notes[mid].time<time)lo=mid+1;else hi=mid}return lo}
-function drawVisibleNotes(t){let count=0,start=Math.max(0,lowerBoundNotes(t-(diff.travel||1)-WINDOWS.miss-maxNoteSpan)-4),end=t+(diff.travel||1)+WINDOWS.miss+.1;for(let i=start;i<notes.length&&notes[i].time<=end;i++){const n=notes[i];if(n.state!=='done'){drawNote(n,t);count++}}perfStats.visibleNotes=count}
+function noteLookahead(){return Math.max(diff.travel||1,notes[0]?.travel||0)}
+function drawVisibleNotes(t){let count=0,lookahead=noteLookahead(),start=Math.max(0,lowerBoundNotes(t-lookahead-WINDOWS.miss-maxNoteSpan)-4),end=t+lookahead+WINDOWS.miss+.1;for(let i=start;i<notes.length&&notes[i].time<=end;i++){const n=notes[i];if(n.state!=='done'){drawNote(n,t);count++}}perfStats.visibleNotes=count}
 function pixelsPerSecond(n){return (view.hitY-view.laneTop)/(n.travel||diff.travel)}
 function centerDistance(n,t){return Math.abs(noteY(n,t,n.time)-view.hitY)}
 function judge(err,n){const d=Math.abs(err)*pixelsPerSecond(n);if(d<=pixelsPerSecond(n)*WINDOWS.perfect)return{name:'Perfect',score:300,acc:1,color:'#8cffc1'};if(d<=pixelsPerSecond(n)*WINDOWS.great)return{name:'Great',score:220,acc:.72,color:'#80b7ff'};if(d<=pixelsPerSecond(n)*WINDOWS.good)return{name:'Good',score:120,acc:.4,color:'#ffe66d'};return null}
