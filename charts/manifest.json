@@ -69,6 +69,10 @@
       "file": "night-of-fire.15b2d8367f.json"
     },
     {
+      "song": "audio/Open the Fruit Stand!.d250224207.m4a",
+      "file": "open-the-fruit-stand!.85e4211c50.json"
+    },
+    {
       "song": "audio/please.90c1bfa9df.m4a",
       "file": "please.5a3b603e46.json"
     },
@@ -87,6 +91,10 @@
     {
       "song": "audio/toy-war.782f714388.m4a",
       "file": "toy-war.7afc47939d.json"
+    },
+    {
+      "song": "audio/tutorial.40603d51e1.mp3",
+      "file": "tutorial.ed8572385e.json"
     },
     {
       "song": "audio/unwelcome-school.9982154865.m4a",
