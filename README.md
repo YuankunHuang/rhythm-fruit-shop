@@ -4,12 +4,12 @@ A mobile-friendly rhythm game demo where you run a fruit shop and serve orders t
 
 ## How To Play
 
-1. Open `index.html` directly, or start a local static server.
+1. Start a local static server or open the hosted build.
 2. Click the start button.
 3. Pick a song and difficulty.
 4. Tap or hold the single input area to process fruit to the rhythm.
 
-If local audio playback is blocked by the browser, run:
+For local testing, run:
 
 ```powershell
 python -m http.server 8080
@@ -35,7 +35,6 @@ http://localhost:8080/
 - `audio/`: runtime music files.
 - `assets/`: runtime UI art files.
 - `charts/`: official chart JSON files.
-- `hybrid_charts.json`: embedded chart build output for the single-file demo path.
 - `README.md`: this file.
 
 This package intentionally excludes development tools, MuG Diffusion imports, stems, diagnostics, and editor scripts.
