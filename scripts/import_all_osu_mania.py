@@ -125,7 +125,7 @@ def main() -> None:
     parser.add_argument("--audio-dir", type=Path, default=ROOT / "audio")
     parser.add_argument("--imports-dir", type=Path, default=ROOT / "imports")
     parser.add_argument("--charts-dir", type=Path, default=ROOT / "charts")
-    parser.add_argument("--index", type=Path, default=ROOT / "index.html")
+    parser.add_argument("--songs", type=Path, default=ROOT / "data" / "songs.json")
     parser.add_argument("--scaffold", action="store_true", help="Create imports/<song-id>/mug/ folders for every audio file")
     parser.add_argument("--dry-run", action="store_true", help="Only show which .osu files would be imported")
     parser.add_argument("--overwrite", action="store_true", help="Import even when the target chart JSON already exists")
@@ -154,9 +154,9 @@ def main() -> None:
 
     for audio_path, diff, draft in imports:
         song_key = audio_path.relative_to(ROOT).as_posix() if audio_path.is_relative_to(ROOT) else f"audio/{audio_path.name}"
-        import_osu(draft, diff, song_key, args.charts_dir, args.index, sync=False)
+        import_osu(draft, diff, song_key, args.charts_dir, args.songs, sync=False)
     if imports:
-        sync_to_game(args.charts_dir, args.index)
+        sync_to_game(args.charts_dir, args.songs)
         print("\nImported drafts were cleaned, then synced to the playable demo.")
     if skipped:
         print_skipped_details(skipped)

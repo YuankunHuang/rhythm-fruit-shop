@@ -2,6 +2,156 @@
   "$schema": "songs schema v1; matches src/data/types.js#Song",
   "songs": [
     {
+      "id": "citrus_fizz",
+      "type": "service",
+      "title": "Citrus Fizz",
+      "artist": "Demo Audio",
+      "file": "audio/service/citrus_fizz.m4a",
+      "duration": 20.554,
+      "bpm": 275.2,
+      "activeStart": 3.108,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "fresh_orange_juice",
+      "type": "service",
+      "title": "Fresh Orange Juice",
+      "artist": "Demo Audio",
+      "file": "audio/service/fresh_orange_juice.m4a",
+      "duration": 30.075,
+      "bpm": 219.8,
+      "activeStart": 0.564,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "fruit_cup_quiet",
+      "type": "service",
+      "title": "Fruit Cup Quiet",
+      "artist": "Demo Audio",
+      "file": "audio/service/fruit_cup_quiet.m4a",
+      "duration": 37.67,
+      "bpm": 219.8,
+      "activeStart": 0.564,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "fruit_cup",
+      "type": "service",
+      "title": "Fruit Cup",
+      "artist": "Demo Audio",
+      "file": "audio/service/fruit_cup.m4a",
+      "duration": 32.818,
+      "bpm": 180.2,
+      "activeStart": 0.813,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "fruit_platter",
+      "type": "service",
+      "title": "Fruit Platter",
+      "artist": "Demo Audio",
+      "file": "audio/service/fruit_platter.m4a",
+      "duration": 26.296,
+      "bpm": 200.0,
+      "activeStart": 0.197,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "grape_smoothie_afterglow",
+      "type": "service",
+      "title": "Grape Smoothie Afterglow",
+      "artist": "Demo Audio",
+      "file": "audio/service/grape_smoothie_afterglow.m4a",
+      "duration": 30.253,
+      "bpm": 170.9,
+      "activeStart": 0.778,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "grape_smoothie_smolder",
+      "type": "service",
+      "title": "Grape Smoothie Smolder",
+      "artist": "Demo Audio",
+      "file": "audio/service/grape_smoothie_smolder.m4a",
+      "duration": 31.636,
+      "bpm": 219.8,
+      "activeStart": 0.564,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "grape_smoothie_still",
+      "type": "service",
+      "title": "Grape Smoothie Still",
+      "artist": "Demo Audio",
+      "file": "audio/service/grape_smoothie_still.m4a",
+      "duration": 27.303,
+      "bpm": 280.4,
+      "activeStart": 0.0,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "hot_orange_juice",
+      "type": "service",
+      "title": "Hot Orange Juice",
+      "artist": "Demo Audio",
+      "file": "audio/service/hot_orange_juice.m4a",
+      "duration": 23.248,
+      "bpm": 284.4,
+      "activeStart": 0.008,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "lemon_water_light",
+      "type": "service",
+      "title": "Lemon Water Light",
+      "artist": "Demo Audio",
+      "file": "audio/service/lemon_water_light.m4a",
+      "duration": 30.189,
+      "bpm": 192.3,
+      "activeStart": 5.192,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
       "id": "lemon_water",
       "type": "service",
       "title": "Lemon Water",
@@ -10,6 +160,36 @@
       "duration": 32.451,
       "bpm": 118.1,
       "activeStart": 0.0,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "lychee_juice",
+      "type": "service",
+      "title": "Lychee Juice",
+      "artist": "Demo Audio",
+      "file": "audio/service/lychee_juice.m4a",
+      "duration": 30.933,
+      "bpm": 219.8,
+      "activeStart": 0.564,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "warm_lemon_water",
+      "type": "service",
+      "title": "Warm Lemon Water",
+      "artist": "Demo Audio",
+      "file": "audio/service/warm_lemon_water.m4a",
+      "duration": 29.577,
+      "bpm": 219.8,
+      "activeStart": 0.564,
       "audioOffset": -0.02,
       "stage": "day",
       "difficulties": [

@@ -25,7 +25,7 @@
     {
       "id": "service_1",
       "type": "service",
-      "songId": "",
+      "songId": "fruit_cup",
       "menuId": "fruitCup",
       "slotId": "day"
     },

@@ -44,7 +44,7 @@ def main() -> None:
     parser.add_argument("--demucs-model", default="htdemucs", help="Demucs model name, defaults to htdemucs")
     parser.add_argument("--stems-dir", type=Path, default=ROOT / "stems")
     parser.add_argument("--charts-dir", type=Path, default=ROOT / "charts")
-    parser.add_argument("--index", type=Path, default=ROOT / "index.html")
+    parser.add_argument("--songs", type=Path, default=ROOT / "data" / "songs.json")
     parser.add_argument("--no-sync", action="store_true")
     args = parser.parse_args()
 
@@ -61,7 +61,7 @@ def main() -> None:
         audio_key = args.audio_key
         if not audio_key and audio_path:
             audio_key = audio_path.relative_to(ROOT).as_posix() if audio_path.is_relative_to(ROOT) else f"audio/{audio_path.name}"
-        import_osu(osu_path, args.difficulty, audio_key, args.charts_dir, args.index, not args.no_sync)
+        import_osu(osu_path, args.difficulty, audio_key, args.charts_dir, args.songs, not args.no_sync)
     else:
         print("No .osu file was provided. Demucs output is ready for MuG/manual review.")
 
