@@ -1,0 +1,13 @@
+.venv/
+.venv-*/
+__pycache__/
+*.pyc
+
+# Generated charting intermediates. Keep README files and final .osu drafts visible.
+imports/**/source.wav
+stems/**/*
+!stems/README.md
+
+# Local diagnostics and temporary outputs.
+diagnostics/
+dist/

@@ -1,1 +1,79 @@
-{"id":"day1","title":"第1天","slots":["day"],"menuIds":["fruitCup"],"unlocks":[{"songId":"open_the_fruit_stand!","conditions":{"complete":true}},{"songId":"seeker","conditions":{"complete":true}}],"phases":[{"id":"morning","type":"dialogue","nodes":[{"speaker":"柚子","text":"新的一天。冷柜今天还算安静。","en":"New day. The freezer is behaving today."},{"speaker":"柚子","text":"今天的任务很简单——彩虹鲜果杯。熟能生巧，别创新。","en":"Today's task is simple — fruit cups. Practice makes perfect. No innovation."}]},{"id":"service_1","type":"service","songId":"","menuId":"fruitCup","slotId":"day"},{"id":"after_1","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (>=88)","nodes":[{"speaker":"柚子","text":"不错，比昨天像样多了。","en":"Not bad, much better than yesterday."}]},{"min":62,"label":"一般 (>=62)","nodes":[{"speaker":"柚子","text":"还行。别气馁。","en":"Decent. Don't be discouraged."}]},{"min":0,"label":"较差","nodes":[{"speaker":"柚子","text":"慢慢来。第一天都这样。","en":"Take it slow. Everyone's first day is like this."}]}],"after":[{"speaker":"柚子","text":"今天就到这里。去休息吧。","en":"That's it for today. Go rest."}]},{"id":"settle","type":"settlement"}]}
+{
+  "id": "day1",
+  "title": "第1天",
+  "slots": ["day"],
+  "menuIds": ["fruitCup"],
+  "unlocks": [
+    { "songId": "open_the_fruit_stand!", "conditions": { "complete": true } },
+    { "songId": "seeker", "conditions": { "complete": true } }
+  ],
+  "phases": [
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "柚子", "text": "冷柜今天还算老实。别高兴太早。" },
+        { "speaker": "你", "text": "……早。" },
+        { "speaker": "柚子", "text": "今天的单子主要是彩虹鲜果杯。之前讲过的，记得吗？" },
+        { "speaker": "你", "text": "大概记得。" },
+        { "speaker": "柚子", "text": "「大概」不行，上了台就是真刀真枪。不过——" },
+        { "speaker": "柚子", "text": "——别创新。熟能生巧，先把标准版做熟。" },
+        { "speaker": "", "text": "她把今天的备料清单拍到台面上，转身去开后厨的灯了。" },
+        { "speaker": "", "text": "（……清单上的字，她写得很快，但每行都是直的。）" }
+      ]
+    },
+    {
+      "id": "service_1",
+      "type": "service",
+      "songId": "",
+      "menuId": "fruitCup",
+      "slotId": "day"
+    },
+    {
+      "id": "after_1",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "柚子", "text": "不错。比昨天像样多了。" },
+            { "speaker": "柚子", "text": "颜色层次对了，这个最难。不是技术，是耐心。" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "柚子", "text": "还行。" },
+            { "speaker": "柚子", "text": "手稳了，但配比再练练。不着急，第二天都这样。" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "柚子", "text": "慢慢来。" },
+            { "speaker": "你", "text": "……是我节奏没跟上。" },
+            { "speaker": "柚子", "text": "节奏是练出来的，不是找出来的。找，找不到的。" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "柚子", "text": "今天就到这里。" },
+        { "speaker": "柚子", "text": "走之前把刀具归位。不是规矩，是明天早上你自己会感谢你自己。" },
+        { "speaker": "你", "text": "……好。" },
+        { "speaker": "柚子", "text": "（去后厨了，停在门边回头）对了——" },
+        { "speaker": "柚子", "text": "你那个「大概」，明天换成「记住了」。" },
+        { "speaker": "你", "text": "……记住了。" },
+        { "speaker": "", "text": "（没再回头）" },
+        { "speaker": "系统", "text": "窗外的天在一点点暗。你把刀具放回了原来的位置，比你以为的更快找到了那个位置。", "action": "settlement" }
+      ]
+    },
+    {
+      "id": "settle",
+      "type": "settlement"
+    }
+  ]
+}

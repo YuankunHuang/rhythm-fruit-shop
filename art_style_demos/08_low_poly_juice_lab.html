@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style 08 - Low Poly Juice Lab</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef7f3;color:#12312b;font-family:Inter,system-ui,sans-serif}.grid{min-height:100vh;padding:28px;display:grid;grid-template-columns:330px 1fr 300px;gap:22px}.card{background:#ffffff;border-radius:28px;padding:24px;box-shadow:0 24px 55px #12664f22}.title{font-size:42px;line-height:1;font-weight:1000;margin:0;color:#12664f}.chip{display:inline-block;background:#d9f99d;border-radius:999px;padding:7px 12px;font-weight:950}.btn{border:0;border-radius:18px;padding:14px 18px;background:#14b8a6;color:#fff;font-weight:950}.game{height:620px;position:relative;border-radius:36px;background:linear-gradient(145deg,#bff7e4,#eef7f3);overflow:hidden;box-shadow:inset 0 0 0 2px #fff}.poly{position:absolute;clip-path:polygon(50% 0,100% 35%,82% 100%,18% 100%,0 35%);background:#14b8a644}.p1{width:180px;height:160px;left:20px;top:70px}.p2{width:240px;height:210px;right:30px;bottom:40px;background:#f59e0b44}.hud{position:absolute;left:22px;top:22px;background:#ffffffcc;border-radius:20px;padding:13px 16px;font-weight:1000}.lane{position:absolute;left:50%;top:105px;bottom:90px;width:330px;transform:translateX(-50%);background:#ffffff88;border-radius:30px}.hit{position:absolute;left:22%;right:22%;bottom:116px;height:15px;border-radius:999px;background:#12312b}.note{position:absolute;width:62px;height:62px;clip-path:polygon(50% 0,92% 22%,100% 70%,52% 100%,7% 78%,0 28%);background:#f43f5e;filter:drop-shadow(0 12px 12px #12312b33)}.n1{left:48%;top:150px}.n2{left:39%;top:280px;background:#f59e0b}.n3{left:56%;top:400px;background:#14b8a6}.bar{height:16px;background:#dbe7e2;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;width:82%;background:#14b8a6}.song{padding:14px;border-radius:18px;background:#f4fbf8;margin-top:10px}.song.active{background:#d9f99d}@media(max-width:1000px){.grid{grid-template-columns:1fr}.game{height:520px}}
+</style>
+</head>
+<body>
+<main class="grid">
+<section class="card"><span class="chip">LOW POLY</span><h1 class="title">果汁实验室</h1><p>低多边形 3D 感：更现代、更像独立游戏，适合后续迁移 Unreal 时延展。</p><button class="btn">开始实验</button></section>
+<section class="game"><div class="poly p1"></div><div class="poly p2"></div><div class="hud">SCORE 778200<br>COMBO 144</div><div class="lane"></div><div class="note n1"></div><div class="note n2"></div><div class="note n3"></div><div class="hit"></div></section>
+<aside class="card"><h2>配方订单</h2><p>冷萃青柠 9/11</p><div class="bar"><i></i></div><div class="song active">Lab Beat / Normal</div><div class="song">Citrus Core / Hard</div><div class="song">Poly Rush / EX</div></aside>
+</main>
+</body>
+</html>

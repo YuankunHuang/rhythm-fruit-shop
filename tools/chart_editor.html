@@ -1,0 +1,1130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rhythm Fruit Aim 谱面编辑器</title>
+<style>
+:root{
+  --bg:#0a0d17;
+  --panel:#141a2a;
+  --panel2:#1b2438;
+  --line:#2c3855;
+  --text:#f5f8ff;
+  --muted:#9aa8c7;
+  --accent:#8cffc1;
+  --warn:#ffd98c;
+  --danger:#ff8ca3;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select{font:inherit}
+button{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px 12px;
+  background:#202a42;
+  color:var(--text);
+  cursor:pointer;
+}
+button:hover{border-color:var(--accent)}
+button.primary{background:#1f5d49;border-color:#3fbf91}
+button.danger{background:#47202a;border-color:#9f4058}
+button:disabled{opacity:.45;cursor:not-allowed}
+input,select{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px 10px;
+  background:#0f1422;
+  color:var(--text);
+}
+label{display:block;margin-bottom:6px;color:var(--muted);font-size:12px;font-weight:700}
+.app{display:grid;grid-template-rows:auto 1fr auto;min-height:100vh}
+.topbar{
+  display:grid;
+  grid-template-columns:1.1fr 1fr 1fr 1fr auto;
+  gap:12px;
+  padding:14px;
+  background:linear-gradient(180deg,#151b2b,#101524);
+  border-bottom:1px solid var(--line);
+}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:280px 1fr 300px;gap:14px;padding:14px}
+.side{display:flex;flex-direction:column;gap:12px}
+.main{display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-width:0}
+.timeline-wrap{position:relative;overflow:hidden;background:#080b15;border:1px solid var(--line);border-radius:18px}
+#timeline{display:block;width:100%;height:480px;cursor:crosshair}
+.status{padding:10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.muted{color:var(--muted)}
+.time{font-variant-numeric:tabular-nums;font-weight:900;color:var(--accent)}
+.list{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.note-item{display:grid;grid-template-columns:54px 1fr 42px;gap:8px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+.note-item:hover,.note-item.selected{background:#22304d}
+.pill{display:inline-block;padding:2px 7px;border-radius:99px;background:#25314d;color:#cbd6ef;font-size:12px}
+.hint{line-height:1.7;font-size:13px;color:var(--muted)}
+.footer{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;background:#0f1422;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:1100px){
+  .topbar,.grid{grid-template-columns:1fr}
+  #timeline{height:420px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="panel">
+      <label>导入音频（只用于播放定位）</label>
+      <input id="audioInput" type="file" accept="audio/*">
+    </div>
+    <div class="panel">
+      <label>导入正式谱面 JSON（charts/*.json）</label>
+      <input id="chartInput" type="file" accept="application/json,.json">
+    </div>
+    <div class="panel">
+      <label>导入 3K osu!mania 草稿（.osu）</label>
+      <input id="osuInput" type="file" accept=".osu,text/plain">
+    </div>
+    <div class="panel">
+      <label>目标音频路径 / 难度</label>
+      <div class="row">
+        <input id="songKey" value="audio/tracks/drama.m4a" style="flex:1 1 220px">
+        <select id="difficulty" style="width:130px">
+          <option value="easy">easy</option>
+          <option value="normal">normal</option>
+          <option value="hard">hard</option>
+          <option value="expert" selected>expert</option>
+          <option value="service">service</option>
+        </select>
+      </div>
+    </div>
+    <div class="panel row">
+      <button id="pickDirBtn">选择 charts 目录</button>
+      <button id="exportBtn" class="primary">保存谱面 JSON</button>
+      <button id="clearBtn" class="danger">清空</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <aside class="side">
+      <section class="panel">
+        <label>播放控制</label>
+        <div class="row">
+          <button id="playBtn">播放 / 暂停</button>
+          <button id="backBtn">-1s</button>
+          <button id="forwardBtn">+1s</button>
+        </div>
+        <p>当前：<span id="timeLabel" class="time">0.000</span> / <span id="durationLabel">0.000</span></p>
+        <input id="seekRange" type="range" min="0" max="0" step="0.001" value="0">
+      </section>
+
+      <section class="panel">
+        <label>时间线缩放</label>
+        <input id="zoomRange" type="range" min="8" max="90" step="1" value="24">
+        <p class="muted">当前窗口：<span id="zoomLabel">24</span>s。滚轮也可缩放。</p>
+      </section>
+
+      <section class="panel">
+        <label>横轴模式</label>
+        <select id="axisMode">
+          <option value="time" selected>时间轴</option>
+          <option value="beat">节拍轴（强制落拍）</option>
+        </select>
+        <p class="muted">节拍轴会按 4/4 显示 1/4, 2/4, 3/4, 4/4 循环。</p>
+      </section>
+
+      <section class="panel">
+        <label>插入事件</label>
+        <div class="row">
+          <button id="tapBtn" class="primary">插入单点 A</button>
+          <button id="pressBtn">长条开始/结束 S</button>
+        </div>
+        <p id="pressState" class="muted">长条：未设置起点</p>
+      </section>
+
+      <section class="panel hint">
+        <b>快捷键</b><br>
+        Space 播放/暂停，A 插入单点，S 设置/完成长条。<br>
+        Delete 删除，1/2/3 改 lane，方向键移动播放头。<br>
+        Shift + 方向键细调选中音符时间。
+      </section>
+    </aside>
+
+    <section class="main">
+      <div class="panel row">
+        <span>时间线</span>
+        <span class="pill">点击空白处跳转</span>
+        <span class="pill">点击音符选择</span>
+        <span class="pill">三条 lane: -1 / 0 / 1</span>
+      </div>
+      <div class="timeline-wrap">
+        <canvas id="timeline" width="1100" height="480"></canvas>
+      </div>
+      <div class="panel row">
+        <button id="sortBtn">排序并重编号</button>
+        <span class="muted">音符数：<b id="countLabel">0</b></span>
+        <span class="muted">选中：<b id="selectedLabel">无</b></span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <label>选中音符属性</label>
+        <div class="row">
+          <select id="editKind">
+            <option value="tap">tap</option>
+            <option value="press">press</option>
+          </select>
+          <select id="editLane">
+            <option value="-1">lane -1</option>
+            <option value="0">lane 0</option>
+            <option value="1">lane 1</option>
+          </select>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div style="flex:1">
+            <label>time</label>
+            <input id="editTime" type="number" step="0.001" min="0">
+          </div>
+          <div style="flex:1">
+            <label>end</label>
+            <input id="editEnd" type="number" step="0.001" min="0">
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button id="applyEditBtn" class="primary">应用修改</button>
+          <button id="deleteBtn" class="danger">删除</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <label>导入谱面选择</label>
+        <select id="importSongSelect"></select>
+        <select id="importDiffSelect" style="margin-top:8px"></select>
+        <button id="loadImportedBtn" style="margin-top:8px;width:100%">载入所选谱面</button>
+      </section>
+
+      <section class="panel">
+        <label>音符列表</label>
+        <div id="noteList" class="list"></div>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span id="status">准备就绪</span>
+    <span>正式格式：charts/&lt;曲名&gt;.json = { song, beats, downbeats, charts }</span>
+  </footer>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const audio = document.getElementById("audio");
+const canvas = document.getElementById("timeline");
+const ctx = canvas.getContext("2d");
+const $ = id => document.getElementById(id);
+const DIFFS = ["easy", "normal", "hard", "expert", "service"];
+const DEFAULT_SONG_KEY = "audio/tracks/drama.m4a";
+const LANES = [-1, 0, 1];
+
+let notes = [];
+let selectedId = null;
+let importedCharts = null;
+let currentOfficialChart = null;
+let chartsDirHandle = null;
+let visibleSeconds = 24;
+let windowStart = 0;
+let pressStart = null;
+let dragMode = null;
+let waveform = null;
+
+function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); }
+function duration(){ return Number.isFinite(audio.duration) ? audio.duration : 0; }
+function currentTime(){ return Number.isFinite(audio.currentTime) ? audio.currentTime : 0; }
+function setStatus(text){ $("status").textContent = text; }
+function fmt(t){ return (Number.isFinite(t) ? t : 0).toFixed(3); }
+function laneY(lane){
+  const top = 92;
+  const gap = (canvas.height - 170) / 2;
+  return top + LANES.indexOf(lane) * gap;
+}
+function timeToX(time){ return (time - windowStart) / visibleSeconds * canvas.width; }
+function xToTime(x){ return clamp(windowStart + x / canvas.width * visibleSeconds, 0, Math.max(duration(), windowStart + visibleSeconds)); }
+function selectedNote(){ return notes.find(n => n.id === selectedId) || null; }
+function officialFileName(songKey){
+  const base = (songKey.split("/").pop() || "untitled").replace(/\.[^.]+$/, "");
+  return `${base.toLowerCase().replace(/\s+/g, "-")}.json`;
+}
+function emptyCharts(){ return Object.fromEntries(DIFFS.map(diff => [diff, []])); }
+function beatGrid(){
+  return currentOfficialChart && Array.isArray(currentOfficialChart.beats) ? currentOfficialChart.beats : [];
+}
+function axisMode(){ return $("axisMode")?.value || "time"; }
+function beatMode(){ return axisMode() === "beat"; }
+function beatModeAvailable(){ return beatMode() && beatGrid().length >= 2; }
+function beatCandidatesAround(time, radius = 3){
+  const beats = beatGrid();
+  if (beats.length < 2) return [];
+  return beats
+    .map(t => Number(Number(t).toFixed(3)))
+    .filter(t => Math.abs(t - time) <= radius)
+    .sort((a, b) => a - b);
+}
+function nearestBeatTime(time){
+  time = Number.isFinite(Number(time)) ? Number(time) : 0;
+  const beats = beatGrid();
+  if (beats.length < 2) return Number(Math.max(0, time).toFixed(3));
+  let best = Math.max(0, time);
+  let bestDist = Infinity;
+  for (const candidate of beatCandidatesAround(time, 5)) {
+    const dist = Math.abs(candidate - time);
+    if (dist < bestDist) {
+      best = candidate;
+      bestDist = dist;
+    }
+  }
+  return Number(Math.max(0, best).toFixed(3));
+}
+function adjacentBeatTime(time, direction){
+  if (beatGrid().length < 2) return Number(Math.max(0, time + direction * 0.01).toFixed(3));
+  const current = nearestBeatTime(time);
+  const candidates = beatCandidatesAround(current, 8);
+  if (direction > 0) return candidates.find(t => t > current + 0.0005) ?? current;
+  return [...candidates].reverse().find(t => t < current - 0.0005) ?? current;
+}
+function nextBeatAfter(time){
+  return adjacentBeatTime(nearestBeatTime(time), 1);
+}
+function editorTime(time){
+  return beatModeAvailable() ? nearestBeatTime(time) : Number(Math.max(0, time).toFixed(3));
+}
+
+async function decodeWaveform(file){
+  waveform = null;
+  refresh();
+  setStatus(`正在解析波形：${file.name}`);
+  try {
+    const buffer = await file.arrayBuffer();
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) {
+      setStatus("当前浏览器不支持波形解析");
+      return;
+    }
+    const context = new AudioContextClass();
+    const audioBuffer = await context.decodeAudioData(buffer.slice(0));
+    const channelCount = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const samplesPerPeak = Math.max(1, Math.floor(sampleRate / 120));
+    const peakCount = Math.ceil(audioBuffer.length / samplesPerPeak);
+    const peaks = new Float32Array(peakCount);
+    for (let i = 0; i < peakCount; i++) {
+      const start = i * samplesPerPeak;
+      const end = Math.min(audioBuffer.length, start + samplesPerPeak);
+      let peak = 0;
+      for (let ch = 0; ch < channelCount; ch++) {
+        const data = audioBuffer.getChannelData(ch);
+        for (let j = start; j < end; j++) {
+          const value = Math.abs(data[j]);
+          if (value > peak) peak = value;
+        }
+      }
+      peaks[i] = peak;
+    }
+    waveform = {peaks, duration: audioBuffer.duration};
+    if (context.close) context.close();
+    setStatus(`已解析波形：${file.name}`);
+    draw();
+  } catch (err) {
+    waveform = null;
+    setStatus(`波形解析失败：${err.message}`);
+  }
+}
+
+function normalizeNote(note, index){
+  const time = Math.max(0, Number(note.time) || 0);
+  const kind = note.kind === "press" ? "press" : "tap";
+  const end = kind === "press" ? Math.max(time, Number(note.end) || time) : time;
+  const lane = LANES.includes(Number(note.lane)) ? Number(note.lane) : 0;
+  return {
+    id: index,
+    kind,
+    time: Number(time.toFixed(3)),
+    end: Number(end.toFixed(3)),
+    lane,
+    fruit: Number.isFinite(Number(note.fruit)) ? Number(note.fruit) : index % 7,
+    accent: note.accent || "manual",
+    role: note.role || "verse",
+    intensity: Number.isFinite(Number(note.intensity)) ? Number(note.intensity) : 1
+  };
+}
+
+function noteSignature(note){
+  return note ? [note.kind, fmt(note.time), fmt(note.end), String(note.lane)].join("|") : "";
+}
+
+function sortAndRenumber(){
+  const selectedSignature = noteSignature(selectedNote());
+  const seenTimes = new Set();
+  let activePressEnd = -1;
+  notes = notes
+    .map((n, i) => normalizeNote(n, i))
+    .sort((a, b) => a.time - b.time || (a.kind === "press" ? 0 : 1) - (b.kind === "press" ? 0 : 1) || (a.kind === "press" ? b.end - a.end : a.end - b.end))
+    .filter(n => {
+      if (n.time < activePressEnd) return false;
+      const key = fmt(n.time);
+      if (seenTimes.has(key)) return false;
+      seenTimes.add(key);
+      if (n.kind === "press") activePressEnd = Math.max(activePressEnd, n.end);
+      return true;
+    })
+    .map((n, i) => ({...n, id: i, fruit: Number.isFinite(n.fruit) ? n.fruit : i % 7}));
+  const selected = notes.find(n => noteSignature(n) === selectedSignature);
+  selectedId = selected ? selected.id : null;
+  refresh();
+}
+
+function resizeCanvas(){
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect.width);
+  canvas.height = Math.round(rect.height);
+  draw();
+}
+
+function ensurePlayheadVisible(){
+  const t = currentTime();
+  if (t < windowStart || t > windowStart + visibleSeconds) {
+    windowStart = clamp(t - visibleSeconds * 0.25, 0, Math.max(0, duration() - visibleSeconds));
+  }
+}
+
+function drawWaveform(){
+  if (!waveform || !waveform.peaks.length) {
+    ctx.fillStyle = "rgba(255,255,255,.06)";
+    ctx.font = "700 14px system-ui";
+    ctx.fillText("导入音频后这里会显示波形", 18, 58);
+    return;
+  }
+  const w = canvas.width;
+  const h = canvas.height;
+  const top = 56;
+  const bottom = h - 54;
+  const center = (top + bottom) / 2;
+  const amp = (bottom - top) * 0.46;
+  const peaks = waveform.peaks;
+  const waveformDuration = waveform.duration || duration() || 1;
+  ctx.save();
+  ctx.fillStyle = "rgba(128,183,255,.18)";
+  ctx.strokeStyle = "rgba(128,183,255,.62)";
+  ctx.lineWidth = 1;
+  for (let x = 0; x < w; x++) {
+    const t0 = windowStart + (x / w) * visibleSeconds;
+    const t1 = windowStart + ((x + 1) / w) * visibleSeconds;
+    const i0 = clamp(Math.floor((t0 / waveformDuration) * peaks.length), 0, peaks.length - 1);
+    const i1 = clamp(Math.ceil((t1 / waveformDuration) * peaks.length), i0 + 1, peaks.length);
+    let peak = 0;
+    for (let i = i0; i < i1; i++) {
+      if (peaks[i] > peak) peak = peaks[i];
+    }
+    const y = Math.max(1, peak * amp);
+    ctx.beginPath();
+    ctx.moveTo(x + 0.5, center - y);
+    ctx.lineTo(x + 0.5, center + y);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = "rgba(255,255,255,.18)";
+  ctx.beginPath();
+  ctx.moveTo(0, center);
+  ctx.lineTo(w, center);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawBeatAxis(){
+  const beats = beatGrid();
+  if (!beatMode() || beats.length < 2) return;
+  const h = canvas.height;
+  ctx.save();
+  for (let i = 0; i < beats.length; i++) {
+    const t = Number(beats[i]);
+    if (t < windowStart || t > windowStart + visibleSeconds) continue;
+    const x = timeToX(t);
+    const beatInBar = (i % 4) + 1;
+    ctx.strokeStyle = beatInBar === 1 ? "rgba(255,217,140,.62)" : "rgba(255,255,255,.18)";
+    ctx.lineWidth = beatInBar === 1 ? 2 : 1;
+    ctx.beginPath();
+    ctx.moveTo(x, 34);
+    ctx.lineTo(x, h - 34);
+    ctx.stroke();
+    ctx.fillStyle = beatInBar === 1 ? "rgba(255,217,140,.95)" : "rgba(245,248,255,.75)";
+    ctx.font = "800 12px system-ui";
+    ctx.fillText(`${beatInBar}/4`, x + 4, 42);
+  }
+  ctx.restore();
+}
+
+function draw(){
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = "#080b15";
+  ctx.fillRect(0, 0, w, h);
+  drawWaveform();
+  drawBeatAxis();
+
+  ctx.strokeStyle = "rgba(255,255,255,.08)";
+  ctx.lineWidth = 1;
+  const tick = visibleSeconds <= 16 ? 1 : visibleSeconds <= 36 ? 2 : 5;
+  const firstTick = Math.ceil(windowStart / tick) * tick;
+  if (!beatMode()) {
+    for (let t = firstTick; t <= windowStart + visibleSeconds; t += tick) {
+      const x = timeToX(t);
+      ctx.beginPath();
+      ctx.moveTo(x, 42);
+      ctx.lineTo(x, h - 40);
+      ctx.stroke();
+      ctx.fillStyle = "rgba(245,248,255,.55)";
+      ctx.font = "12px system-ui";
+      ctx.fillText(fmt(t), x + 4, 24);
+    }
+  }
+
+  for (const lane of LANES) {
+    const y = laneY(lane);
+    ctx.strokeStyle = lane === 0 ? "rgba(140,255,193,.35)" : "rgba(255,255,255,.16)";
+    ctx.lineWidth = lane === 0 ? 2 : 1;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+    ctx.fillStyle = "rgba(245,248,255,.65)";
+    ctx.font = "700 13px system-ui";
+    ctx.fillText(`lane ${lane}`, 14, y - 10);
+  }
+
+  for (const note of notes) {
+    if (note.end < windowStart || note.time > windowStart + visibleSeconds) continue;
+    const x = timeToX(note.time);
+    const y = laneY(note.lane);
+    const selected = note.id === selectedId;
+    if (note.kind === "press") {
+      const x2 = timeToX(note.end);
+      ctx.strokeStyle = selected ? "#ffd98c" : "#8cffc1";
+      ctx.lineWidth = selected ? 10 : 7;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(Math.max(x2, x + 8), y);
+      ctx.stroke();
+      ctx.lineCap = "butt";
+    }
+    ctx.fillStyle = selected ? "#ffd98c" : note.kind === "press" ? "#8cffc1" : "#80b7ff";
+    ctx.beginPath();
+    ctx.arc(x, y, selected ? 11 : 8, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const px = timeToX(currentTime());
+  ctx.strokeStyle = "#ff8ca3";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(px, 34);
+  ctx.lineTo(px, h - 28);
+  ctx.stroke();
+}
+
+function refreshLabels(){
+  $("timeLabel").textContent = fmt(currentTime());
+  $("durationLabel").textContent = fmt(duration());
+  $("seekRange").max = Math.max(duration(), 0);
+  $("seekRange").value = currentTime();
+  $("zoomLabel").textContent = visibleSeconds;
+  $("countLabel").textContent = notes.length;
+  const n = selectedNote();
+  $("selectedLabel").textContent = n ? `#${n.id} ${n.kind} ${fmt(n.time)}` : "无";
+}
+
+function refreshEditor(){
+  const n = selectedNote();
+  for (const id of ["editKind", "editLane", "editTime", "editEnd", "applyEditBtn", "deleteBtn"]) {
+    $(id).disabled = !n;
+  }
+  if (!n) return;
+  $("editKind").value = n.kind;
+  $("editLane").value = String(n.lane);
+  $("editTime").value = fmt(n.time);
+  $("editEnd").value = fmt(n.end);
+}
+
+function renderNoteList(){
+  const list = $("noteList");
+  list.innerHTML = "";
+  const around = notes.slice(0, 600);
+  for (const note of around) {
+    const item = document.createElement("div");
+    item.className = "note-item" + (note.id === selectedId ? " selected" : "");
+    item.innerHTML = `<span>#${note.id}</span><span>${note.kind} ${fmt(note.time)}${note.kind === "press" ? " - " + fmt(note.end) : ""}</span><span>${note.lane}</span>`;
+    item.onclick = () => {
+      selectedId = note.id;
+      audio.currentTime = note.time;
+      ensurePlayheadVisible();
+      refresh();
+    };
+    list.appendChild(item);
+  }
+  if (notes.length > around.length) {
+    const more = document.createElement("div");
+    more.className = "note-item";
+    more.textContent = `还有 ${notes.length - around.length} 个音符未显示`;
+    list.appendChild(more);
+  }
+}
+
+function refresh(){
+  refreshLabels();
+  refreshEditor();
+  renderNoteList();
+  draw();
+}
+
+function focusFirstNote(){
+  if (!notes.length) {
+    windowStart = 0;
+    refresh();
+    return;
+  }
+  const first = notes[0].time;
+  if (audio.src) {
+    try { audio.currentTime = first; } catch (_) {}
+  }
+  windowStart = clamp(first - visibleSeconds * 0.20, 0, Math.max(0, first));
+  refresh();
+}
+
+function addTap(time = currentTime()){
+  time = editorTime(time);
+  notes.push(normalizeNote({kind:"tap", time, end:time, lane:0, accent:"manual", intensity:1}, notes.length));
+  selectedId = notes[notes.length - 1].id;
+  sortAndRenumber();
+  setStatus(`已插入单点 ${fmt(time)}`);
+}
+
+function togglePress(time = currentTime()){
+  time = editorTime(time);
+  if (pressStart === null) {
+    pressStart = time;
+    $("pressState").textContent = `长条起点：${fmt(pressStart)}，再次按 S 完成`;
+    setStatus("已设置长条起点");
+    return;
+  }
+  const start = Math.min(pressStart, time);
+  const end = Math.max(pressStart, time);
+  if (end - start < 0.05) {
+    setStatus("长条太短，已取消");
+  } else {
+    notes.push(normalizeNote({kind:"press", time:start, end, lane:0, accent:"manual", intensity:1}, notes.length));
+    selectedId = notes[notes.length - 1].id;
+    sortAndRenumber();
+    setStatus(`已插入长条 ${fmt(start)} - ${fmt(end)}`);
+  }
+  pressStart = null;
+  $("pressState").textContent = "长条：未设置起点";
+}
+
+function deleteSelected(){
+  if (selectedId === null) return;
+  notes = notes.filter(n => n.id !== selectedId);
+  selectedId = null;
+  sortAndRenumber();
+  setStatus("已删除选中音符");
+}
+
+function applySelectedEdit(){
+  const n = selectedNote();
+  if (!n) return;
+  const kind = $("editKind").value;
+  const time = editorTime(Math.max(0, Number($("editTime").value) || 0));
+  const end = kind === "press" ? Math.max(time, editorTime(Number($("editEnd").value) || time)) : time;
+  Object.assign(n, {
+    kind,
+    lane: Number($("editLane").value),
+    time: Number(time.toFixed(3)),
+    end: Number(end.toFixed(3))
+  });
+  sortAndRenumber();
+  setStatus("已应用修改");
+}
+
+function pickNoteAt(x, y){
+  let best = null;
+  let bestDist = 18;
+  for (const note of notes) {
+    const nx = timeToX(note.time);
+    const ny = laneY(note.lane);
+    const dist = Math.hypot(nx - x, ny - y);
+    if (dist < bestDist) {
+      best = note;
+      bestDist = dist;
+    }
+    if (note.kind === "press") {
+      const x2 = timeToX(note.end);
+      if (x >= Math.min(nx, x2) && x <= Math.max(nx, x2) && Math.abs(y - ny) < 12) {
+        best = note;
+        bestDist = 0;
+      }
+    }
+  }
+  return best;
+}
+
+function canvasPoint(evt){
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: (evt.clientX - rect.left) / rect.width * canvas.width,
+    y: (evt.clientY - rect.top) / rect.height * canvas.height
+  };
+}
+
+function loadImportedOptions(){
+  const songSelect = $("importSongSelect");
+  songSelect.innerHTML = "";
+  if (!importedCharts || Array.isArray(importedCharts)) {
+    songSelect.add(new Option("当前数组谱面", "__array__"));
+    refreshImportDiffOptions();
+    return;
+  }
+  for (const key of Object.keys(importedCharts)) songSelect.add(new Option(key, key));
+  refreshImportDiffOptions();
+}
+
+function normalizeImportedChartData(data){
+  currentOfficialChart = null;
+  if (data && data.song && data.charts) {
+    const charts = {...emptyCharts(), ...data.charts};
+    currentOfficialChart = {
+      song: data.song,
+      beats: Array.isArray(data.beats) ? data.beats : [],
+      downbeats: Array.isArray(data.downbeats) ? data.downbeats : [],
+      charts
+    };
+    return {[data.song]: charts};
+  }
+  return data;
+}
+
+function parseOsuSections(text){
+  const sections = {};
+  let current = null;
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("//")) continue;
+    const section = line.match(/^\[(.+)\]$/);
+    if (section) {
+      current = section[1];
+      sections[current] = sections[current] || [];
+    } else if (current) {
+      sections[current].push(line);
+    }
+  }
+  return sections;
+}
+
+function parseOsuKeyValues(lines){
+  const values = {};
+  for (const line of lines || []) {
+    const index = line.indexOf(":");
+    if (index < 0) continue;
+    values[line.slice(0, index).trim()] = line.slice(index + 1).trim();
+  }
+  return values;
+}
+
+function osuColumnForX(x, keys){
+  return Math.max(0, Math.min(keys - 1, Math.floor(x * keys / 512)));
+}
+
+function osuLaneForColumn(column, keys){
+  if (keys === 3) return LANES[column] ?? 0;
+  if (keys <= 1) return 0;
+  const folded = Math.round((column / (keys - 1)) * 2);
+  return LANES[Math.max(0, Math.min(2, folded))] ?? 0;
+}
+
+function parseOsuTimingPoints(lines, chartDuration){
+  const points = [];
+  for (const line of lines || []) {
+    const parts = line.split(",");
+    const start = Number(parts[0]) / 1000;
+    const beat = Number(parts[1]) / 1000;
+    const uninherited = parts.length < 7 || parts[6] !== "0";
+    if (Number.isFinite(start) && Number.isFinite(beat) && beat > 0 && uninherited) {
+      points.push({start, beat});
+    }
+  }
+  points.sort((a, b) => a.start - b.start);
+  const beats = [];
+  const downbeats = [];
+  let globalIndex = 0;
+  for (let i = 0; i < points.length; i++) {
+    const point = points[i];
+    const end = points[i + 1]?.start ?? Math.max(chartDuration, point.start + 60);
+    let localIndex = 0;
+    for (let t = point.start; t <= end + 0.000001; t += point.beat) {
+      const rounded = Number(Math.max(0, t).toFixed(3));
+      beats.push(rounded);
+      if ((globalIndex + localIndex) % 4 === 0) downbeats.push(rounded);
+      localIndex++;
+    }
+    globalIndex += localIndex;
+  }
+  return {
+    beats: [...new Set(beats)].sort((a, b) => a - b),
+    downbeats: [...new Set(downbeats)].sort((a, b) => a - b)
+  };
+}
+
+function parseOsuManiaDraft(text, filename){
+  const sections = parseOsuSections(text);
+  const general = parseOsuKeyValues(sections.General);
+  const difficulty = parseOsuKeyValues(sections.Difficulty);
+  const mode = Number(general.Mode ?? 3);
+  if (mode !== 3) throw new Error(`不是 osu!mania 谱面：Mode=${mode}`);
+  const keys = Math.max(1, Math.round(Number(difficulty.CircleSize || 3)));
+  if (keys !== 3) setStatus(`检测到 ${keys}K，将折叠到当前 3K 视觉 lane`);
+  const notes = [];
+  for (const line of sections.HitObjects || []) {
+    const parts = line.split(",");
+    if (parts.length < 5) continue;
+    const x = Number(parts[0]) || 0;
+    const time = (Number(parts[2]) || 0) / 1000;
+    const type = Number(parts[3]) || 0;
+    const column = osuColumnForX(x, keys);
+    const lane = osuLaneForColumn(column, keys);
+    let kind = (type & 128) ? "press" : "tap";
+    let end = time;
+    if (kind === "press" && parts[5]) {
+      end = Math.max(time, (Number(parts[5].split(":")[0]) || 0) / 1000);
+      if (end - time < 0.05) {
+        kind = "tap";
+        end = time;
+      }
+    }
+    notes.push(normalizeNote({
+      kind,
+      time,
+      end,
+      lane,
+      accent: kind === "press" ? "osu_mania_hold" : "osu_mania_tap",
+      intensity: 1
+    }, notes.length));
+  }
+  const chartDuration = Math.max(0, ...notes.map(n => n.end));
+  const timing = parseOsuTimingPoints(sections.TimingPoints, chartDuration);
+  const audioName = (general.AudioFilename || filename.replace(/\.osu$/i, ".mp3")).split(/[\\/]/).pop();
+  const currentSongKey = $("songKey").value.trim();
+  const songKey = currentSongKey && currentSongKey !== DEFAULT_SONG_KEY ? currentSongKey : `audio/tracks/${audioName.replace(/\.[^.]+$/, ".m4a")}`;
+  $("songKey").value = songKey;
+  const diff = $("difficulty").value;
+  const charts = emptyCharts();
+  charts[diff] = notes;
+  return {
+    song: songKey,
+    beats: timing.beats,
+    downbeats: timing.downbeats,
+    charts
+  };
+}
+
+function refreshImportDiffOptions(){
+  const songSelect = $("importSongSelect");
+  const diffSelect = $("importDiffSelect");
+  const preferred = $("difficulty").value;
+  const previous = diffSelect.value;
+  diffSelect.innerHTML = "";
+  const songKey = songSelect.value;
+  const diffs = importedCharts && !Array.isArray(importedCharts) && importedCharts[songKey]
+    ? Object.keys(importedCharts[songKey]).filter(k => Array.isArray(importedCharts[songKey][k]))
+    : DIFFS;
+  for (const diff of diffs) diffSelect.add(new Option(diff, diff));
+  if (diffs.includes(preferred)) diffSelect.value = preferred;
+  else if (diffs.includes(previous)) diffSelect.value = previous;
+}
+
+function loadSelectedImportedChart(){
+  if (!importedCharts) return;
+  let source = [];
+  if (Array.isArray(importedCharts)) {
+    source = importedCharts;
+  } else {
+    const songKey = $("importSongSelect").value;
+    const diff = $("importDiffSelect").value;
+    source = importedCharts[songKey]?.[diff] || [];
+    $("songKey").value = songKey;
+    if (DIFFS.includes(diff)) $("difficulty").value = diff;
+  }
+  notes = source.map(normalizeNote);
+  selectedId = null;
+  sortAndRenumber();
+  focusFirstNote();
+  const beatCount = beatGrid().length;
+  setStatus(beatCount >= 2 ? `已载入 ${notes.length} 个音符，吸附网格 ${beatCount} 拍` : `已载入 ${notes.length} 个音符，但没有 beat 网格，吸附不可用`);
+}
+
+function buildOfficialChartPayload(){
+  sortAndRenumber();
+  const songKey = $("songKey").value.trim() || "audio/tracks/untitled.m4a";
+  const diff = $("difficulty").value;
+  const base = currentOfficialChart && currentOfficialChart.song === songKey
+    ? currentOfficialChart
+    : {song: songKey, beats: [], downbeats: [], charts: emptyCharts()};
+  const payload = {
+    song: songKey,
+    beats: Array.isArray(base.beats) ? base.beats : [],
+    downbeats: Array.isArray(base.downbeats) ? base.downbeats : [],
+    charts: {...emptyCharts(), ...(base.charts || {})}
+  };
+  payload.charts[diff] = notes.map(normalizeNote);
+  currentOfficialChart = payload;
+  return payload;
+}
+
+async function exportJson(){
+  const payload = buildOfficialChartPayload();
+  const songKey = payload.song;
+  const content = JSON.stringify(payload, null, 2) + "\n";
+  const filename = officialFileName(songKey);
+  if (chartsDirHandle) {
+    try {
+      const handle = await chartsDirHandle.getFileHandle(filename, {create:true});
+      const writable = await handle.createWritable();
+      await writable.write(content);
+      await writable.close();
+      setStatus(`已保存到 charts/${filename}`);
+      return;
+    } catch (err) {
+      setStatus(`直接保存失败，改为下载：${err.message}`);
+    }
+  }
+  const blob = new Blob([content], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  setStatus(`已下载 ${filename}，请放入项目 charts/ 目录`);
+}
+
+$("audioInput").onchange = event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  audio.src = URL.createObjectURL(file);
+  decodeWaveform(file);
+  if (!$("songKey").value || $("songKey").value === DEFAULT_SONG_KEY) {
+    $("songKey").value = `audio/tracks/${file.name.replace(/\.[^.]+$/, ".m4a")}`;
+  }
+};
+
+$("chartInput").onchange = async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    importedCharts = normalizeImportedChartData(JSON.parse(await file.text()));
+    loadImportedOptions();
+    loadSelectedImportedChart();
+    setStatus(`已导入并载入谱面 JSON：${file.name}`);
+  } catch (err) {
+    setStatus(`谱面 JSON 解析失败：${err.message}`);
+  }
+};
+
+$("osuInput").onchange = async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  try {
+    const payload = parseOsuManiaDraft(await file.text(), file.name);
+    importedCharts = normalizeImportedChartData(payload);
+    loadImportedOptions();
+    loadSelectedImportedChart();
+    setStatus(`已导入 3K osu!mania 草稿：${file.name}`);
+  } catch (err) {
+    setStatus(`osu!mania 草稿解析失败：${err.message}`);
+  }
+};
+
+$("pickDirBtn").onclick = async () => {
+  if (!window.showDirectoryPicker) {
+    setStatus("当前浏览器不支持直接选择目录；保存时会下载 JSON，请手动放入 charts/");
+    return;
+  }
+  try {
+    chartsDirHandle = await window.showDirectoryPicker({mode:"readwrite"});
+    setStatus("已选择 charts 目录，后续保存会直接写入该目录");
+  } catch (err) {
+    setStatus(`未选择目录：${err.message}`);
+  }
+};
+$("importSongSelect").onchange = refreshImportDiffOptions;
+$("loadImportedBtn").onclick = loadSelectedImportedChart;
+$("difficulty").onchange = () => {
+  if (!importedCharts) return;
+  refreshImportDiffOptions();
+  loadSelectedImportedChart();
+};
+$("playBtn").onclick = () => audio.paused ? audio.play() : audio.pause();
+$("backBtn").onclick = () => { audio.currentTime = beatModeAvailable() ? adjacentBeatTime(currentTime(), -1) : clamp(currentTime() - 1, 0, duration()); refresh(); };
+$("forwardBtn").onclick = () => { audio.currentTime = beatModeAvailable() ? adjacentBeatTime(currentTime(), 1) : clamp(currentTime() + 1, 0, duration()); refresh(); };
+$("tapBtn").onclick = () => addTap();
+$("pressBtn").onclick = () => togglePress();
+$("deleteBtn").onclick = deleteSelected;
+$("applyEditBtn").onclick = applySelectedEdit;
+$("sortBtn").onclick = sortAndRenumber;
+$("exportBtn").onclick = exportJson;
+$("clearBtn").onclick = () => {
+  if (!confirm("确定清空当前谱面？")) return;
+  notes = [];
+  selectedId = null;
+  refresh();
+};
+$("seekRange").oninput = event => {
+  audio.currentTime = editorTime(Number(event.target.value) || 0);
+  ensurePlayheadVisible();
+  refresh();
+};
+$("zoomRange").oninput = event => {
+  const center = currentTime();
+  visibleSeconds = Number(event.target.value) || 24;
+  windowStart = clamp(center - visibleSeconds * 0.35, 0, Math.max(0, duration() - visibleSeconds));
+  refresh();
+};
+$("axisMode").onchange = () => {
+  setStatus(beatModeAvailable() ? "节拍轴：播放头和音符强制落在 1/4, 2/4, 3/4, 4/4 拍点" : "时间轴：可连续拖动和放置");
+  refresh();
+};
+
+canvas.addEventListener("pointerdown", evt => {
+  const p = canvasPoint(evt);
+  const note = pickNoteAt(p.x, p.y);
+  if (note) {
+    selectedId = note.id;
+    audio.currentTime = note.time;
+    dragMode = "note";
+  } else {
+    audio.currentTime = editorTime(xToTime(p.x));
+    selectedId = null;
+    dragMode = "playhead";
+  }
+  ensurePlayheadVisible();
+  refresh();
+});
+canvas.addEventListener("pointermove", evt => {
+  if (!dragMode || evt.buttons !== 1) return;
+  const p = canvasPoint(evt);
+  const t = xToTime(p.x);
+  if (dragMode === "playhead") {
+    audio.currentTime = editorTime(t);
+  } else {
+    const n = selectedNote();
+    if (n) {
+      const oldDuration = Math.max(0, n.end - n.time);
+      n.time = editorTime(t);
+      n.end = n.kind === "press" ? editorTime(n.time + oldDuration) : n.time;
+      if (n.kind === "press" && n.end <= n.time) n.end = nextBeatAfter(n.time);
+      audio.currentTime = n.time;
+      const lane = LANES.reduce((best, lane) => Math.abs(laneY(lane) - p.y) < Math.abs(laneY(best) - p.y) ? lane : best, 0);
+      n.lane = lane;
+    }
+  }
+  refresh();
+});
+canvas.addEventListener("pointerup", () => {
+  if (dragMode === "note") sortAndRenumber();
+  dragMode = null;
+});
+canvas.addEventListener("wheel", evt => {
+  evt.preventDefault();
+  visibleSeconds = clamp(visibleSeconds + Math.sign(evt.deltaY) * 4, 8, 90);
+  $("zoomRange").value = visibleSeconds;
+  ensurePlayheadVisible();
+  refresh();
+}, {passive:false});
+
+document.addEventListener("keydown", evt => {
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+  if (evt.code === "Space") {
+    evt.preventDefault();
+    audio.paused ? audio.play() : audio.pause();
+  } else if (evt.key.toLowerCase() === "a") {
+    addTap();
+  } else if (evt.key.toLowerCase() === "s") {
+    togglePress();
+  } else if (evt.key === "Delete" || evt.key === "Backspace") {
+    deleteSelected();
+  } else if (["1", "2", "3"].includes(evt.key)) {
+    const n = selectedNote();
+    if (n) {
+      n.lane = LANES[Number(evt.key) - 1];
+      refresh();
+    }
+  } else if (evt.key === "ArrowLeft" || evt.key === "ArrowRight") {
+    evt.preventDefault();
+    const dir = evt.key === "ArrowRight" ? 1 : -1;
+    const step = evt.shiftKey ? 0.01 : 0.1;
+    const n = selectedNote();
+    if (evt.shiftKey && n) {
+      n.time = beatModeAvailable() ? adjacentBeatTime(n.time, dir) : editorTime(n.time + dir * step);
+      if (n.kind === "tap") n.end = n.time;
+      else n.end = beatModeAvailable() ? Math.max(nextBeatAfter(n.time), adjacentBeatTime(n.end, dir)) : Math.max(n.time, editorTime(n.end + dir * step));
+      sortAndRenumber();
+    } else {
+      audio.currentTime = beatModeAvailable() ? adjacentBeatTime(currentTime(), dir) : clamp(currentTime() + dir * step, 0, duration());
+      ensurePlayheadVisible();
+      refresh();
+    }
+  }
+});
+
+audio.addEventListener("loadedmetadata", () => {
+  $("seekRange").max = duration();
+  windowStart = 0;
+  refresh();
+});
+let playbackFrame = 0;
+function playbackRefreshLoop() {
+  if (audio.paused) {
+    playbackFrame = 0;
+    return;
+  }
+  ensurePlayheadVisible();
+  refreshLabels();
+  draw();
+  playbackFrame = requestAnimationFrame(playbackRefreshLoop);
+}
+function stopPlaybackRefresh() {
+  if (playbackFrame) cancelAnimationFrame(playbackFrame);
+  playbackFrame = 0;
+}
+audio.addEventListener("timeupdate", () => {
+  if (!audio.paused) return;
+  ensurePlayheadVisible();
+  refreshLabels();
+  draw();
+});
+audio.addEventListener("play", () => {
+  setStatus("播放中");
+  if (!playbackFrame) playbackFrame = requestAnimationFrame(playbackRefreshLoop);
+});
+audio.addEventListener("pause", () => {
+  setStatus("已暂停");
+  stopPlaybackRefresh();
+  ensurePlayheadVisible();
+  refreshLabels();
+  draw();
+});
+window.addEventListener("resize", resizeCanvas);
+
+loadImportedOptions();
+refresh();
+resizeCanvas();
+</script>
+</body>
+</html>

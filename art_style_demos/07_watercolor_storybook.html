@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style 07 - Watercolor Storybook</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Georgia,"Noto Serif SC",serif;background:#fffaf0;color:#4f3a2c}.page{min-height:100vh;padding:34px;background:radial-gradient(circle at 15% 20%,#ffd3df99,transparent 25%),radial-gradient(circle at 80% 15%,#c7f5d599,transparent 25%),radial-gradient(circle at 50% 85%,#c6e7ff99,transparent 28%);display:grid;grid-template-columns:360px 1fr;gap:26px}.paper{background:#fffdf7cc;border:2px solid #ead9bd;border-radius:32px;padding:26px;box-shadow:0 24px 60px #8b6b4430}.title{font-size:44px;line-height:1.1;color:#e36f8a;margin:0}.copy{line-height:1.8;font-size:17px}.button{border:2px solid #d8b27a;background:#ffe6a8;border-radius:999px;padding:13px 20px;font-weight:900;color:#5f442e}.game{position:relative;height:620px;background:#fffdf7aa;border:2px solid #ead9bd;border-radius:38px;overflow:hidden}.cloud{position:absolute;border-radius:50%;background:#fff;opacity:.75}.c1{width:150px;height:80px;left:40px;top:40px}.c2{width:190px;height:90px;right:70px;top:90px}.hud{position:absolute;left:26px;top:24px;color:#7a5a41;font-weight:900}.lane{position:absolute;left:50%;top:110px;bottom:100px;width:310px;transform:translateX(-50%);background:#ffffff88;border:2px solid #ead9bd;border-radius:30px}.hit{position:absolute;left:24%;right:24%;bottom:126px;height:14px;border-radius:999px;background:#e36f8a99}.fruit{position:absolute;width:60px;height:58px;border-radius:48% 52% 50% 50%;background:#e36f8a;border:3px solid #fffdf7;box-shadow:0 10px 25px #8b6b4430}.f1{left:48%;top:150px}.f2{left:38%;top:290px;background:#f2b35d}.f3{left:57%;top:410px;background:#78c58b}.side{display:grid;gap:16px}.ticket{background:#fffdf7cc;border:2px solid #ead9bd;border-radius:26px;padding:18px}.bar{height:14px;background:#f1e4cf;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;width:68%;background:#78c58b}@media(max-width:900px){.page{grid-template-columns:1fr}.game{height:520px}}
+</style>
+</head>
+<body>
+<main class="page">
+<section class="paper"><h1 class="title">水果小镇<br>的一天</h1><p class="copy">绘本水彩风：温柔、慢节奏、治愈。经营感像“照顾一家小店”，适合强调情绪陪伴。</p><button class="button">翻开今日菜单</button></section>
+<section class="game"><div class="cloud c1"></div><div class="cloud c2"></div><div class="hud">Score 102340<br>Combo 42</div><div class="lane"></div><div class="fruit f1"></div><div class="fruit f2"></div><div class="fruit f3"></div><div class="hit"></div></section>
+<aside class="side" style="grid-column:1/3"><div class="ticket"><b>故事订单</b><p>给放学的孩子做一杯蜜桃果茶 5/7</p><div class="bar"><i></i></div></div></aside>
+</main>
+</body>
+</html>
