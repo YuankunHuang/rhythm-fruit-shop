@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style 10 - Glassmorphism Juice Machine</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:#07111f;color:#eef7ff}.app{min-height:100vh;padding:28px;display:grid;grid-template-columns:370px 1fr 320px;gap:22px;background:radial-gradient(circle at 20% 10%,#38bdf866,transparent 28%),radial-gradient(circle at 80% 20%,#fb718566,transparent 28%),linear-gradient(145deg,#07111f,#0d2438)}.glass{background:#ffffff12;border:1px solid #ffffff30;border-radius:32px;padding:24px;box-shadow:0 30px 90px #0007,inset 0 1px 0 #ffffff33;backdrop-filter:blur(18px)}.title{font-size:45px;line-height:1.05;margin:0;background:linear-gradient(90deg,#a7f3d0,#93c5fd,#f9a8d4);-webkit-background-clip:text;color:transparent}.btn{border:1px solid #ffffff55;border-radius:999px;padding:13px 22px;background:#ffffff1a;color:#fff;font-weight:950}.machine{position:relative;height:620px;border-radius:38px;background:#ffffff10;border:1px solid #ffffff30;overflow:hidden;box-shadow:inset 0 0 60px #38bdf822}.tube{position:absolute;left:50%;top:90px;bottom:90px;width:330px;transform:translateX(-50%);border-radius:35px;background:linear-gradient(90deg,#ffffff08,#ffffff22,#ffffff08);border:1px solid #ffffff40}.hud{position:absolute;left:22px;right:22px;top:20px;display:flex;justify-content:space-between;background:#02061788;border:1px solid #ffffff22;border-radius:22px;padding:13px 16px;font-weight:950}.hit{position:absolute;left:21%;right:21%;bottom:115px;height:14px;border-radius:999px;background:#a7f3d0;box-shadow:0 0 30px #a7f3d0}.orb{position:absolute;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#fb7185 35%,#be123c);box-shadow:0 0 28px #fb7185}.o1{left:48%;top:150px}.o2{left:39%;top:280px;background:radial-gradient(circle at 30% 25%,#fff,#facc15 35%,#b45309);box-shadow:0 0 28px #facc15}.o3{left:56%;top:405px;background:radial-gradient(circle at 30% 25%,#fff,#34d399 35%,#047857);box-shadow:0 0 28px #34d399}.bar{height:14px;border-radius:999px;background:#ffffff1d;overflow:hidden}.bar i{display:block;height:100%;width:80%;background:linear-gradient(90deg,#a7f3d0,#93c5fd)}.song{margin-top:10px;padding:14px;border-radius:18px;background:#ffffff10;border:1px solid #ffffff20}.song.active{border-color:#a7f3d0;color:#a7f3d0}@media(max-width:1000px){.app{grid-template-columns:1fr}.machine{height:520px}}
+</style>
+</head>
+<body>
+<main class="app">
+<section class="glass"><h1 class="title">透明果汁机</h1><p>玻璃拟态 + 科技果汁机：保留高级感和发光反馈，比纯暗色更清爽。适合未来 Unreal 版的 UI 延展。</p><button class="btn">启动机器</button></section>
+<section class="machine"><div class="hud"><span>SCORE 650120</span><span>156 COMBO</span></div><div class="tube"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="hit"></div></section>
+<aside class="glass"><h2>智能订单</h2><p>复合果汁 8/10</p><div class="bar"><i></i></div><div class="song active">Crystal Beat / Normal</div><div class="song">Glass Rush / Hard</div><div class="song">Juice Reactor / Expert</div><h2>结算预览</h2><p style="font-size:38px;font-weight:1000;color:#a7f3d0">+460</p></aside>
+</main>
+</body>
+</html>

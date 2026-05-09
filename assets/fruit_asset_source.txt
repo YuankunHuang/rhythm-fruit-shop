@@ -1,0 +1,24 @@
+﻿Fruit note sprite sources used in index.html
+
+Legacy pixel pack:
+Pack: Simple Fruits
+Source: https://opengameart.org/content/simple-fruits
+Downloaded file: fruits_1.zip
+License/source note: OpenGameArt page provides this as a free game-art asset; keep the source URL with distributions.
+
+Legacy runtime files:
+Apple  -> assets/fruit_notes/apple.png    (fruits/apple2.png)
+Orange -> assets/fruit_notes/orange.png   (fruits/orange.png)
+Lime   -> assets/fruit_notes/lime.png     (fruits/lime.png)
+Banana -> assets/fruit_notes/banana.png   (fruits/banana.png)
+Grape  -> assets/fruit_notes/grape.png    (fruits/grapes.png)
+Lemon  -> assets/fruit_notes/lemon.png    (fruits/lemon.png)
+
+The runtime files were upscaled to 256x256 with nearest-neighbor sampling so the Canvas renderer loads stable, transparent PNGs without carrying unused source-pack files.
+
+Themed runtime files:
+Day   -> assets/fruit_notes/day/*.png
+Night -> assets/fruit_notes/night/*.png
+Sunny -> assets/fruit_notes/sunny/*.png
+
+Each themed set contains apple, orange, lime, banana, grape, and lemon. These are generated as clean transparent 256x256 gameplay icons with theme-specific colors and no baked background glow, so the Canvas renderer can apply note shadows consistently at runtime.

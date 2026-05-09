@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rhythm Fruit Aim 日程叙事编辑器</title>
+<style>
+:root{
+  --bg:#0a0d17;--panel:#141a2a;--panel2:#1b2438;--line:#2c3855;
+  --text:#f5f8ff;--muted:#9aa8c7;--accent:#8cffc1;--warn:#ffd98c;--danger:#ff8ca3;
+  --cDialogue:#8cffc1;--cService:#6bb5ff;--cBranch:#ffd98c;--cSettle:#9aa8c7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;font-size:14px}
+button,input,select,textarea{font:inherit;color:var(--text)}
+button{border:1px solid var(--line);border-radius:8px;padding:6px 12px;background:#202a42;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:#1f5d49;border-color:#3fbf91}
+button.danger{background:#47202a;border-color:#9f4058}
+button.sm{padding:3px 8px;font-size:12px;border-radius:6px}
+button:disabled{opacity:.4;cursor:not-allowed}
+input,select,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:#0f1422}
+textarea{resize:vertical;min-height:48px}
+label{display:block;margin-bottom:4px;color:var(--muted);font-size:12px;font-weight:700}
+a{color:var(--accent)}
+
+.app{display:grid;grid-template-rows:auto 1fr auto;height:100vh;overflow:hidden}
+
+.topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(180deg,#151b2b,#101524);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tab-group{display:flex;gap:2px;background:var(--panel);border-radius:10px;padding:2px}
+.tab{border:none;border-radius:8px;padding:6px 16px;background:transparent;color:var(--muted);font-weight:600;font-size:13px}
+.tab.active{background:#202a42;color:var(--accent)}
+.topbar-gap{flex:1}
+.topbar .muted{font-size:12px}
+
+.grid{display:grid;grid-template-columns:260px 1fr 320px;gap:0;overflow:hidden}
+.col{display:flex;flex-direction:column;gap:0;overflow-y:auto;border-right:1px solid var(--line)}
+.col:last-child{border-right:none;border-left:1px solid var(--line)}
+.col-section{padding:10px;border-bottom:1px solid var(--line)}
+.col-section label{margin-bottom:6px}
+.col-scroll{flex:1;overflow-y:auto}
+.center{overflow-y:auto;background:#080b15}
+
+.panel{background:var(--panel);border-radius:0;padding:10px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:6px}
+.panel-head label{margin:0}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.field{margin-bottom:8px}
+.field:last-child{margin-bottom:0}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700}
+
+.list-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .1s}
+.list-item:hover{background:#1a2340}
+.list-item.active{background:#22304d;border-left:3px solid var(--accent)}
+.list-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.list-item .label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.list-item .sub{color:var(--muted);font-size:11px}
+.list-item .del{opacity:0;font-size:11px;color:var(--danger);cursor:pointer;padding:2px 4px}
+.list-item:hover .del{opacity:1}
+.list-item[draggable=true]{cursor:grab}
+.list-item.dragging{opacity:.4}
+.drop-indicator{height:2px;background:var(--accent);border-radius:1px;margin:0 8px}
+
+.phase-type{font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;flex-shrink:0}
+.phase-type.dialogue{background:rgba(140,255,193,.15);color:var(--cDialogue)}
+.phase-type.service{background:rgba(107,181,255,.15);color:var(--cService)}
+.phase-type.score_branch{background:rgba(255,217,140,.15);color:var(--cBranch)}
+.phase-type.settlement{background:rgba(154,168,199,.15);color:var(--cSettle)}
+
+.flow-card{margin:8px 12px;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color .15s}
+.flow-card:hover{border-color:#4a5a80}
+.flow-card.active{border-color:var(--accent);background:var(--panel2)}
+.flow-card .card-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.flow-card .card-body{color:var(--muted);font-size:12px;line-height:1.5}
+.flow-card .card-body .node-preview{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.flow-card .card-body .node-preview:last-child{border:none}
+.flow-card .branch-row{margin-top:4px;padding:4px 8px;background:rgba(255,217,140,.06);border-radius:6px;font-size:12px}
+.connector{width:2px;height:16px;background:var(--line);margin:0 auto}
+
+.vn-area{display:flex;flex-direction:column;height:100%;background:linear-gradient(180deg,#0c1020,#0a0d17)}
+.vn-controls{display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);align-items:center;flex-wrap:wrap}
+.vn-stage{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:20px 40px 30px;min-height:300px}
+.vn-speaker{font-size:18px;font-weight:800;margin-bottom:8px;min-height:24px}
+.vn-text{font-size:16px;line-height:1.8;min-height:60px;color:var(--text);padding:16px 20px;background:rgba(20,26,42,.85);border:1px solid var(--line);border-radius:14px}
+.vn-text .cursor{display:inline-block;width:2px;height:1em;background:var(--accent);animation:blink .8s step-end infinite;vertical-align:text-bottom;margin-left:1px}
+@keyframes blink{50%{opacity:0}}
+.vn-hint{color:var(--muted);font-size:12px;margin-top:10px;text-align:center}
+.vn-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:2px dashed var(--line);border-radius:14px;color:var(--muted);font-size:14px;margin:20px 40px}
+.vn-branch-btns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.vn-branch-btns button{flex:1;min-width:120px}
+
+.data-area{padding:14px}
+.data-tabs{display:flex;gap:2px;margin-bottom:10px;background:var(--panel);border-radius:10px;padding:2px;width:fit-content}
+.data-tab{border:none;border-radius:8px;padding:5px 14px;background:transparent;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer}
+.data-tab.active{background:#202a42;color:var(--accent)}
+.data-table-wrap{overflow:auto;max-height:calc(100vh - 180px);border:1px solid var(--line);border-radius:10px}
+table.data-table{width:100%;border-collapse:collapse;font-size:13px}
+table.data-table th{position:sticky;top:0;background:var(--panel2);padding:8px 10px;text-align:left;color:var(--muted);font-size:11px;font-weight:700;border-bottom:1px solid var(--line);white-space:nowrap}
+table.data-table td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top}
+table.data-table tr:hover{background:rgba(34,48,77,.5)}
+table.data-table input,table.data-table select{font-size:12px;padding:3px 6px;border-radius:4px}
+table.data-table .cell-json{font-family:'Cascadia Code',monospace;font-size:11px;color:var(--muted)}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:12px;color:var(--muted);text-align:center;padding:40px}
+.empty-state .big{font-size:20px;font-weight:700;color:var(--text)}
+
+.node-row{display:flex;gap:6px;align-items:flex-start;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;font-size:12px;transition:background .1s}
+.node-row:hover{background:#1a2340}
+.node-row.active{background:#22304d;border-left:2px solid var(--accent)}
+.node-row .speaker-tag{flex-shrink:0;font-weight:700;width:40px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node-row .text-preview{flex:1;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.node-row .node-idx{color:var(--line);font-size:10px;width:18px;text-align:right;flex-shrink:0}
+
+.branch-section{margin-top:8px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.branch-header{display:flex;align-items:center;gap:6px;padding:6px 8px;background:rgba(255,217,140,.06);cursor:pointer;font-size:12px;font-weight:700}
+.branch-header .min-val{color:var(--cBranch)}
+.branch-body{border-top:1px solid var(--line)}
+
+.toast-container{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:6px}
+.toast{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;background:#1f5d49;border:1px solid #3fbf91;color:#8cffc1;animation:slideIn .2s ease-out;max-width:360px}
+.toast.error{background:#47202a;border-color:#9f4058;color:#ff8ca3}
+.toast.warn{background:#3d3520;border-color:#8a7030;color:#ffd98c}
+@keyframes slideIn{from{transform:translateX(60px);opacity:0}}
+
+.footer{display:flex;justify-content:space-between;gap:12px;padding:8px 14px;background:#0f1422;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+
+.hidden{display:none!important}
+.scroll-y{overflow-y:auto}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="tab-group" id="modeTabs">
+      <button class="tab active" data-mode="schedule">日程编辑</button>
+      <button class="tab" data-mode="prologue">序章对白</button>
+      <button class="tab" data-mode="preview">VN 预览</button>
+      <button class="tab" data-mode="data">数值配置</button>
+    </div>
+    <div class="topbar-gap"></div>
+    <button id="importFlowBtn" class="sm">导入日程 JSON</button>
+    <button id="newFlowBtn" class="sm">+ 新建日程</button>
+    <button id="exportFlowBtn" class="sm primary">导出日程 JSON</button>
+    <span class="muted">|</span>
+    <button id="importPrologueBtn" class="sm">导入序章 JSON</button>
+    <button id="exportPrologueBtn" class="sm primary">导出序章 JSON</button>
+    <span class="muted">|</span>
+    <button id="importDataBtn" class="sm">导入数值 JSON</button>
+    <button id="exportDataBtn" class="sm primary">导出数值 JSON</button>
+    <span class="muted">|</span>
+    <button id="pickDirBtn" class="sm" title="选择 data 目录后可直接保存">选择目录</button>
+    <input type="file" id="fileInput" accept=".json" multiple style="display:none">
+  </header>
+
+  <main class="grid">
+    <aside class="col" id="leftCol">
+      <div class="col-section">
+        <div class="panel-head"><label>日程列表</label></div>
+        <div id="flowList"></div>
+        <div style="margin-top:6px">
+          <button class="sm" id="addFlowBtn2">+ 新建</button>
+          <button class="sm danger" id="delFlowBtn">删除</button>
+        </div>
+      </div>
+      <div class="col-section" style="flex:1;display:flex;flex-direction:column">
+        <div class="panel-head">
+          <label>阶段列表</label>
+          <select id="addPhaseSelect" style="width:auto;padding:2px 6px;font-size:11px;border-radius:6px">
+            <option value="">+ 添加…</option>
+            <option value="dialogue">对话</option>
+            <option value="service">服务</option>
+            <option value="score_branch">成绩分支</option>
+            <option value="settlement">结算</option>
+          </select>
+        </div>
+        <div id="phaseList" class="col-scroll"></div>
+      </div>
+    </aside>
+
+    <section class="center" id="centerCol">
+      <div id="scheduleView"></div>
+      <div id="prologueView" class="hidden"></div>
+      <div id="vnPreviewView" class="hidden"></div>
+      <div id="dataView" class="hidden"></div>
+    </section>
+
+    <aside class="col" id="rightCol">
+      <div id="rightPanel" class="scroll-y" style="height:100%"></div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <span>Rhythm Fruit Aim 日程叙事编辑器</span>
+    <span id="footerStatus" class="muted">就绪</span>
+  </footer>
+</div>
+<div class="toast-container" id="toastBox"></div>
+
+<script>
+'use strict';
+
+const $=id=>document.getElementById(id),
+      h=s=>(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'),
+      PHASE_LABEL={dialogue:'对话',service:'服务',score_branch:'成绩分支',settlement:'结算'},
+      PHASE_COLOR={dialogue:'var(--cDialogue)',service:'var(--cService)',score_branch:'var(--cBranch)',settlement:'var(--cSettle)'},
+      SPEAKERS=['柚子','你','学生','后巷','订单','系统'],
+      ACTIONS=['','startService','settlement'];
+
+let flows={},flowOrder=[],selFlow=null,selPhase=-1,selNode=-1,selBranch=-1,
+    mode='schedule',dirty=false,
+    vnSteps=[],vnIdx=0,vnTimer=null,vnCharIdx=0,vnPlaying=false,
+    dataStore={songs:null,shop:null,menuItems:null},dataTab='songs',
+    prologueData=null,prologueSection='opening',prologueNode=-1,
+    dirHandle=null,pendingImportType=null;
+
+function flow(){return selFlow?flows[selFlow]:null}
+function phase(){const f=flow();return f&&f.phases[selPhase]||null}
+function markDirty(){dirty=true;$('footerStatus').textContent='未保存的更改'}
+function toast(msg,type=''){
+  const d=document.createElement('div');d.className='toast'+(type?' '+type:'');d.textContent=msg;
+  $('toastBox').appendChild(d);setTimeout(()=>d.remove(),3000);
+}
+
+function refresh(){
+  renderFlowList();renderPhaseList();renderCenter();renderRight();
+}
+
+// ===== FLOW LIST =====
+function renderFlowList(){
+  const c=$('flowList');c.innerHTML='';
+  for(const id of flowOrder){
+    const f=flows[id],el=document.createElement('div');
+    el.className='list-item'+(id===selFlow?' active':'');
+    el.innerHTML=`<span class="dot" style="background:var(--accent)"></span><span class="label">${h(f.title||f.id)}</span><span class="sub">${f.phases.length}阶段</span>`;
+    el.onclick=()=>{selFlow=id;selPhase=flow().phases.length?0:-1;selNode=-1;selBranch=-1;refresh()};
+    c.appendChild(el);
+  }
+  if(!flowOrder.length)c.innerHTML='<div style="padding:10px;color:var(--muted);font-size:12px">无日程。点击"导入"或"新建"开始。</div>';
+}
+
+// ===== PHASE LIST =====
+function renderPhaseList(){
+  const c=$('phaseList');c.innerHTML='';
+  const f=flow();if(!f)return;
+  f.phases.forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='list-item'+(i===selPhase?' active':'');
+    el.draggable=true;
+    el.innerHTML=`<span class="phase-type ${p.type}">${PHASE_LABEL[p.type]||p.type}</span><span class="label">${h(p.id)}</span><span class="del" data-idx="${i}" title="删除此阶段">x</span>`;
+    el.onclick=()=>{selPhase=i;selNode=-1;selBranch=-1;refresh()};
+    el.querySelector('.del').onclick=e=>{e.stopPropagation();deletePhase(i)};
+    el.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',i);el.classList.add('dragging')});
+    el.addEventListener('dragend',()=>el.classList.remove('dragging'));
+    el.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move'});
+    el.addEventListener('drop',e=>{
+      e.preventDefault();const from=+e.dataTransfer.getData('text/plain');
+      if(from!==i)movePhase(from,i);
+    });
+    c.appendChild(el);
+  });
+}
+
+// ===== CENTER =====
+function renderCenter(){
+  $('scheduleView').classList.toggle('hidden',mode!=='schedule');
+  $('prologueView').classList.toggle('hidden',mode!=='prologue');
+  $('vnPreviewView').classList.toggle('hidden',mode!=='preview');
+  $('dataView').classList.toggle('hidden',mode!=='data');
+  if(mode==='schedule')renderScheduleView();
+  else if(mode==='prologue')renderPrologueView();
+  else if(mode==='preview')renderVNView();
+  else renderDataView();
+}
+
+// ===== PROLOGUE RUNTIME JSON VIEW =====
+function defaultPrologue(){
+  return {
+    $schema:'prologue dialogue v1; node = {speaker, text, en, html?, action?}; en kept as authoring reference, never rendered',
+    opening:[],
+    afterService:{branches:{good:[],ok:[],bad:[]},shared:[]}
+  };
+}
+function ensurePrologueData(){
+  if(!prologueData)prologueData=defaultPrologue();
+  prologueData.opening=prologueData.opening||[];
+  prologueData.afterService=prologueData.afterService||{branches:{},shared:[]};
+  prologueData.afterService.branches=prologueData.afterService.branches||{};
+  ['good','ok','bad'].forEach(k=>{prologueData.afterService.branches[k]=prologueData.afterService.branches[k]||[]});
+  prologueData.afterService.shared=prologueData.afterService.shared||[];
+  return prologueData;
+}
+function prologueSections(){
+  ensurePrologueData();
+  return [
+    {id:'opening',label:'开场对白',hint:'序章开始到第一单服务前',nodes:prologueData.opening},
+    {id:'good',label:'服务后：好评',hint:'customer >= 88',nodes:prologueData.afterService.branches.good},
+    {id:'ok',label:'服务后：一般',hint:'customer >= 62',nodes:prologueData.afterService.branches.ok},
+    {id:'bad',label:'服务后：较差',hint:'customer < 62',nodes:prologueData.afterService.branches.bad},
+    {id:'shared',label:'服务后：共享后续',hint:'所有分支之后继续播放',nodes:prologueData.afterService.shared},
+  ];
+}
+function prologueNodes(id=prologueSection){
+  const sec=prologueSections().find(s=>s.id===id);
+  return sec?sec.nodes:[];
+}
+function renderPrologueView(){
+  const c=$('prologueView');c.innerHTML='';
+  if(!prologueData){
+    c.innerHTML='<div class="empty-state"><div class="big">序章对白</div><div>选择 data 目录会自动读取 dialogue/prologue.json；也可以点击"导入序章 JSON"。</div><button class="sm primary" id="createPrologueBtn">创建空序章</button></div>';
+    const btn=$('createPrologueBtn');if(btn)btn.onclick=()=>{prologueData=defaultPrologue();markDirty();renderCenter();renderRight()};
+    return;
+  }
+  const wrap=document.createElement('div');wrap.className='data-area';
+  const sections=prologueSections();
+  wrap.innerHTML=`<div class="row" style="margin-bottom:10px;gap:8px">${sections.map(s=>`<button class="sm ${s.id===prologueSection?'primary':''}" data-pro-sec="${s.id}">${h(s.label)} <span class="muted">(${s.nodes.length})</span></button>`).join('')}<span class="muted" style="margin-left:auto">保存目标：data/dialogue/prologue.json</span></div><div id="prologueNodeArea"></div>`;
+  c.appendChild(wrap);
+  wrap.querySelectorAll('[data-pro-sec]').forEach(btn=>{btn.onclick=()=>{prologueSection=btn.dataset.proSec;prologueNode=-1;renderCenter();renderRight()}});
+  const sec=sections.find(s=>s.id===prologueSection)||sections[0],area=wrap.querySelector('#prologueNodeArea');
+  area.innerHTML=`<div class="panel-head" style="padding:8px 0"><div><b>${h(sec.label)}</b><div class="muted" style="font-size:12px">${h(sec.hint)}</div></div><button class="sm" id="addPrologueNodeBtn">+ 添加节点</button></div>`;
+  sec.nodes.forEach((n,i)=>{
+    const row=document.createElement('div');
+    row.className='flow-card'+(i===prologueNode?' active':'');
+    row.draggable=true;
+    row.innerHTML=`<div class="card-head"><span class="node-idx">${i+1}</span><b style="color:${speakerColor(n.speaker)}">${h(n.speaker||'(无角色)')}</b>${n.action?`<span class="pill" style="background:rgba(107,181,255,.15);color:var(--cService)">${h(n.action)}</span>`:''}</div><div class="card-body">${h(n.text||(n.html?'[HTML]':''))}</div>`;
+    row.onclick=()=>{prologueNode=i;renderCenter();renderRight()};
+    row.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain','prologue:'+i);row.classList.add('dragging')});
+    row.addEventListener('dragend',()=>row.classList.remove('dragging'));
+    row.addEventListener('dragover',e=>{e.preventDefault()});
+    row.addEventListener('drop',e=>{e.preventDefault();const d=e.dataTransfer.getData('text/plain');if(d.startsWith('prologue:'))movePrologueNode(+d.split(':')[1],i)});
+    area.appendChild(row);
+  });
+  $('addPrologueNodeBtn').onclick=()=>{sec.nodes.push({speaker:'',text:'',en:''});prologueNode=sec.nodes.length-1;markDirty();renderCenter();renderRight()};
+}
+function renderPrologueRight(c){
+  if(!prologueData){c.innerHTML='<div class="col-section" style="color:var(--muted);font-size:13px;padding:20px">未加载序章 JSON。</div>';return}
+  const sec=prologueSections().find(s=>s.id===prologueSection),nodes=sec?.nodes||[];
+  c.innerHTML=`<div class="col-section"><label>序章对白</label><p style="color:var(--muted);font-size:12px">这里编辑的是游戏实际读取的 <code>data/dialogue/prologue.json</code>。开场最后一个订单节点通常保留 <code>action: startService</code>；共享后续最后一个系统节点通常保留 <code>action: settlement</code>。</p></div>`;
+  if(!sec)return;
+  const meta=document.createElement('div');meta.className='col-section';
+  meta.innerHTML=`<label>${h(sec.label)}</label><p style="color:var(--muted);font-size:12px">${h(sec.hint)}</p>`;
+  c.appendChild(meta);
+  if(prologueNode>=0&&prologueNode<nodes.length){
+    renderNodeDetail(c,nodes[prologueNode],n=>{nodes[prologueNode]=n;markDirty();renderPrologueView()},()=>{
+      nodes.splice(prologueNode,1);prologueNode=Math.min(prologueNode,nodes.length-1);markDirty();renderCenter();renderRight();
+    });
+  }else{
+    const empty=document.createElement('div');empty.className='col-section';empty.style.color='var(--muted)';empty.textContent='从中间选择一个节点进行编辑。';c.appendChild(empty);
+  }
+}
+function movePrologueNode(from,to){
+  const arr=prologueNodes();if(from===to||!arr[from])return;
+  const [item]=arr.splice(from,1);arr.splice(to,0,item);
+  prologueNode=to;markDirty();renderCenter();renderRight();
+}
+
+// ===== SCHEDULE VIEW (flow cards) =====
+function renderScheduleView(){
+  const c=$('scheduleView');c.innerHTML='';
+  const f=flow();
+  if(!f){c.innerHTML='<div class="empty-state"><div class="big">日程编辑器</div><div>从左侧选择一个日程，或导入/新建</div></div>';return}
+  const hdr=document.createElement('div');
+  hdr.style.cssText='padding:12px 14px;font-weight:700;color:var(--muted);font-size:13px;border-bottom:1px solid var(--line)';
+  hdr.textContent=`${f.title||f.id} — ${f.phases.length} 个阶段`;
+  c.appendChild(hdr);
+  f.phases.forEach((p,i)=>{
+    if(i>0){const conn=document.createElement('div');conn.className='connector';c.appendChild(conn)}
+    const card=document.createElement('div');card.className='flow-card'+(i===selPhase?' active':'');
+    card.onclick=()=>{selPhase=i;selNode=-1;selBranch=-1;refresh()};
+    let head=`<span class="phase-type ${p.type}">${PHASE_LABEL[p.type]}</span> <span style="font-weight:600">${h(p.id)}</span>`;
+    let body='';
+    if(p.type==='dialogue'){
+      const nodes=p.nodes||[];
+      body=nodes.slice(0,4).map((n,j)=>`<div class="node-preview"><b>${h(n.speaker)}</b> ${h(n.text||(n.html?'[HTML]':''))}</div>`).join('');
+      if(nodes.length>4)body+=`<div class="node-preview" style="color:var(--line)">…还有 ${nodes.length-4} 条</div>`;
+    }else if(p.type==='service'){
+      body=`歌曲: <b>${h(p.songId||'(未设置)')}</b>　菜单: <b>${h(p.menuId||'(无)')}</b>　时段: ${h(p.slotId||'')}`;
+    }else if(p.type==='score_branch'){
+      const branches=p.branches||[];
+      body=branches.map(b=>`<div class="branch-row">分支 <b>${h(b.label)}</b> (min ${b.min}) — ${(b.nodes||[]).length} 条对话</div>`).join('');
+      if(p.after&&p.after.length)body+=`<div style="margin-top:4px;font-size:11px;color:var(--muted)">共享后续: ${p.after.length} 条</div>`;
+    }else if(p.type==='settlement'){
+      body='触发当日结算';
+    }
+    card.innerHTML=`<div class="card-head">${head}</div><div class="card-body">${body}</div>`;
+    c.appendChild(card);
+  });
+}
+
+// ===== VN PREVIEW =====
+function buildVNSteps(){
+  const f=flow();if(!f)return[];
+  const steps=[];
+  for(const p of f.phases){
+    if(p.type==='dialogue'){
+      for(const n of p.nodes||[])steps.push({type:'node',node:n,phase:p});
+    }else if(p.type==='service'){
+      steps.push({type:'service',phase:p});
+    }else if(p.type==='score_branch'){
+      steps.push({type:'branch',phase:p});
+    }else if(p.type==='settlement'){
+      steps.push({type:'settlement',phase:p});
+    }
+  }
+  return steps;
+}
+function speakerColor(s){
+  if(/柚子|yuzu/i.test(s))return'var(--cDialogue)';
+  if(/学生|student/i.test(s))return'var(--cBranch)';
+  if(/订单|order/i.test(s))return'var(--danger)';
+  if(/系统|system/i.test(s))return'var(--cSettle)';
+  if(/后巷/i.test(s))return'var(--cService)';
+  return'var(--text)';
+}
+function renderVNView(){
+  const c=$('vnPreviewView');c.innerHTML='';
+  const f=flow();
+  if(!f){c.innerHTML='<div class="empty-state"><div class="big">VN 预览</div><div>先选择一个日程</div></div>';return}
+  c.innerHTML=`
+    <div class="vn-area">
+      <div class="vn-controls">
+        <button class="sm" id="vnResetBtn">重置</button>
+        <button class="sm" id="vnPrevBtn">上一步</button>
+        <button class="sm primary" id="vnNextBtn">下一步</button>
+        <button class="sm" id="vnAutoBtn">自动播放</button>
+        <span class="muted" id="vnProgress" style="margin-left:auto;font-size:12px"></span>
+      </div>
+      <div class="vn-stage" id="vnStage">
+        <div class="vn-speaker" id="vnSpeaker"></div>
+        <div class="vn-text" id="vnText"></div>
+        <div class="vn-hint" id="vnHint">点击"下一步"开始预览</div>
+      </div>
+    </div>`;
+  $('vnResetBtn').onclick=resetVN;
+  $('vnPrevBtn').onclick=prevVN;
+  $('vnNextBtn').onclick=nextVN;
+  $('vnAutoBtn').onclick=toggleAutoVN;
+  $('vnStage').onclick=nextVN;
+  if(!vnSteps.length||vnSteps[0]?.phase?.id!==f.phases[0]?.id)resetVN();
+  else renderVNStep();
+}
+function resetVN(){
+  stopAutoVN();vnSteps=buildVNSteps();vnIdx=0;vnCharIdx=0;
+  renderVNStep();
+}
+function renderVNStep(){
+  const speaker=$('vnSpeaker'),text=$('vnText'),hint=$('vnHint'),prog=$('vnProgress');
+  if(!speaker)return;
+  prog.textContent=`${vnIdx+1} / ${vnSteps.length}`;
+  if(vnIdx>=vnSteps.length){
+    speaker.textContent='';text.innerHTML='<div style="text-align:center;color:var(--muted)">预览结束</div>';
+    hint.textContent='点击"重置"重新开始';stopAutoVN();return;
+  }
+  const step=vnSteps[vnIdx];
+  if(step.type==='node'){
+    const n=step.node;
+    speaker.innerHTML=`<span style="color:${speakerColor(n.speaker)}">${h(n.speaker||'')}</span>`;
+    if(n.html){text.innerHTML=n.html;hint.textContent='点击继续'}
+    else{text.textContent=n.text||'';hint.textContent='点击继续'}
+  }else if(step.type==='service'){
+    speaker.textContent='';
+    text.innerHTML=`<div class="vn-placeholder"><span class="phase-type service" style="font-size:14px;padding:4px 12px">服务阶段</span><b>${h(step.phase.songId||'(未设置)')}</b><span style="color:var(--muted)">此处玩家将进行节奏游戏</span></div>`;
+    hint.textContent='点击继续到下一阶段';
+  }else if(step.type==='branch'){
+    speaker.textContent='';
+    const branches=step.phase.branches||[];
+    text.innerHTML=`<div class="vn-placeholder"><span class="phase-type score_branch" style="font-size:14px;padding:4px 12px">成绩分支</span><span>根据 ${h(step.phase.variable||'customer')} 满意度选择分支预览：</span><div class="vn-branch-btns">${branches.map((b,i)=>`<button class="sm" data-bi="${i}">${h(b.label)} (>=${b.min})</button>`).join('')}</div></div>`;
+    hint.textContent='选择一个分支查看对话';
+    text.querySelectorAll('[data-bi]').forEach(btn=>{
+      btn.onclick=e=>{e.stopPropagation();selectVNBranch(+btn.dataset.bi)}
+    });
+  }else if(step.type==='settlement'){
+    speaker.textContent='';
+    text.innerHTML='<div class="vn-placeholder"><span class="phase-type settlement" style="font-size:14px;padding:4px 12px">当日结算</span><span>此处触发结算界面</span></div>';
+    hint.textContent='点击继续';
+  }
+}
+function selectVNBranch(bi){
+  const step=vnSteps[vnIdx];if(!step||step.type!=='branch')return;
+  const branch=step.phase.branches[bi];if(!branch)return;
+  const newSteps=[];
+  for(const n of branch.nodes||[])newSteps.push({type:'node',node:n,phase:step.phase});
+  for(const n of step.phase.after||[])newSteps.push({type:'node',node:n,phase:step.phase});
+  vnSteps.splice(vnIdx+1,0,...newSteps);
+  vnIdx++;renderVNStep();
+}
+function nextVN(){
+  if(vnIdx<vnSteps.length){
+    const step=vnSteps[vnIdx];
+    if(step.type==='branch')return;
+    vnIdx++;
+  }
+  renderVNStep();
+}
+function prevVN(){if(vnIdx>0){vnIdx--;renderVNStep()}}
+function toggleAutoVN(){
+  if(vnPlaying)stopAutoVN();
+  else{vnPlaying=true;const btn=$('vnAutoBtn');if(btn)btn.textContent='停止';autoStep()}
+}
+function autoStep(){if(!vnPlaying)return;nextVN();if(vnIdx<vnSteps.length)vnTimer=setTimeout(autoStep,1200);else stopAutoVN()}
+function stopAutoVN(){vnPlaying=false;clearTimeout(vnTimer);const btn=$('vnAutoBtn');if(btn)btn.textContent='自动播放'}
+
+// ===== DATA CONFIG VIEW =====
+function renderDataView(){
+  const c=$('dataView');c.innerHTML='';
+  c.innerHTML=`<div class="data-area">
+    <div class="row" style="margin-bottom:10px;gap:10px">
+      <div class="data-tabs" id="dataTabs">
+        <button class="data-tab${dataTab==='songs'?' active':''}" data-dt="songs">歌曲</button>
+        <button class="data-tab${dataTab==='menuItems'?' active':''}" data-dt="menuItems">菜品</button>
+        <button class="data-tab${dataTab==='shop'?' active':''}" data-dt="shop">商店</button>
+      </div>
+      <button class="sm" id="dataImportOne">导入此表</button>
+      <button class="sm primary" id="dataExportOne">导出此表</button>
+    </div>
+    <div id="dataTableArea"></div>
+  </div>`;
+  $('dataTabs').onclick=e=>{const t=e.target.dataset.dt;if(t){dataTab=t;renderDataView()}};
+  $('dataImportOne').onclick=()=>{pendingImportType='data_'+dataTab;$('fileInput').click()};
+  $('dataExportOne').onclick=()=>exportDataOne(dataTab);
+  renderDataTable();
+}
+function renderDataTable(){
+  const area=$('dataTableArea');if(!area)return;
+  if(dataTab==='songs')renderSongsTable(area);
+  else if(dataTab==='menuItems')renderMenuTable(area);
+  else renderShopTable(area);
+}
+function renderSongsTable(area){
+  const data=dataStore.songs;
+  if(!data){area.innerHTML='<div class="empty-state" style="height:200px"><div>未加载歌曲数据</div><div>点击"导入此表"加载 songs.json</div></div>';return}
+  const songs=data.songs||[];
+  const cols=[{k:'id',l:'ID'},{k:'title',l:'标题'},{k:'artist',l:'艺术家'},{k:'type',l:'类型'},{k:'bpm',l:'BPM',n:true},{k:'stage',l:'时段'},{k:'duration',l:'时长',n:true}];
+  area.innerHTML=`<div class="data-table-wrap"><table class="data-table"><thead><tr>${cols.map(c=>'<th>'+c.l+'</th>').join('')}<th></th></tr></thead><tbody>${songs.map((s,i)=>'<tr>'+cols.map(c=>`<td><input value="${h(String(s[c.k]??''))}" data-i="${i}" data-k="${c.k}" ${c.n?'type="number" step="any"':''}></td>`).join('')+`<td><button class="sm danger" data-del="${i}">x</button></td></tr>`).join('')}</tbody></table></div><button class="sm" id="songAddRow" style="margin-top:6px">+ 添加歌曲</button>`;
+  area.querySelectorAll('input[data-i]').forEach(inp=>{inp.onchange=()=>{const s=songs[+inp.dataset.i];if(s){s[inp.dataset.k]=inp.type==='number'?+inp.value:inp.value;markDirty()}}});
+  area.querySelectorAll('[data-del]').forEach(b=>{b.onclick=()=>{if(confirm('删除此歌曲？')){songs.splice(+b.dataset.del,1);markDirty();renderDataTable()}}});
+  const addBtn=$('songAddRow');if(addBtn)addBtn.onclick=()=>{songs.push({id:'new_song',title:'',artist:'',type:'track',bpm:120,stage:'day',duration:120,file:'',activeStart:0,audioOffset:-0.02,difficulties:['easy','normal','hard','expert']});markDirty();renderDataTable()};
+}
+function renderMenuTable(area){
+  const data=dataStore.menuItems;
+  if(!data){area.innerHTML='<div class="empty-state" style="height:200px"><div>未加载菜品数据</div><div>点击"导入此表"加载 menu_items.json</div></div>';return}
+  const items=data.menuItems||[];
+  const cols=[{k:'id',l:'ID'},{k:'name',l:'名称'},{k:'kind',l:'类型'},{k:'needBase',l:'需求基数',n:true},{k:'color',l:'颜色'},{k:'desc',l:'描述'}];
+  area.innerHTML=`<div class="data-table-wrap"><table class="data-table"><thead><tr>${cols.map(c=>'<th>'+c.l+'</th>').join('')}<th>needs</th><th>reward</th><th></th></tr></thead><tbody>${items.map((s,i)=>'<tr>'+cols.map(c=>`<td><input value="${h(String(s[c.k]??''))}" data-i="${i}" data-k="${c.k}" ${c.n?'type="number"':''}></td>`).join('')+`<td class="cell-json">${h(JSON.stringify(s.needs||{}))}</td><td class="cell-json">${h(JSON.stringify(s.reward||{}))}</td><td><button class="sm danger" data-del="${i}">x</button></td></tr>`).join('')}</tbody></table></div><button class="sm" id="menuAddRow" style="margin-top:6px">+ 添加菜品</button>`;
+  area.querySelectorAll('input[data-i]').forEach(inp=>{inp.onchange=()=>{const s=items[+inp.dataset.i];if(s){s[inp.dataset.k]=inp.type==='number'?+inp.value:inp.value;markDirty()}}});
+  area.querySelectorAll('[data-del]').forEach(b=>{b.onclick=()=>{if(confirm('删除此菜品？')){items.splice(+b.dataset.del,1);markDirty();renderDataTable()}}});
+  const addBtn=$('menuAddRow');if(addBtn)addBtn.onclick=()=>{items.push({id:'new_item',name:'',kind:'chunks',needBase:8,color:'#ffffff',needs:{},reward:{money:30,rep:1},desc:''});markDirty();renderDataTable()};
+}
+function renderShopTable(area){
+  const data=dataStore.shop;
+  if(!data){area.innerHTML='<div class="empty-state" style="height:200px"><div>未加载商店数据</div><div>点击"导入此表"加载 shop.json</div></div>';return}
+  let html='<h4 style="color:var(--muted);margin-bottom:6px">设备升级</h4>';
+  const ups=data.upgrades||[];
+  html+=`<div class="data-table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>名称</th><th>图标</th><th>描述</th><th>基础加成</th><th>最大等级</th><th>费用列表</th></tr></thead><tbody>`;
+  ups.forEach((u,i)=>{html+=`<tr><td>${h(u.id)}</td><td><input value="${h(u.name)}" data-ui="${i}" data-k="name"></td><td>${h(u.icon)}</td><td>${h(u.desc)}</td><td>${u.baseBonus}</td><td>${u.maxLv}</td><td class="cell-json">${h(JSON.stringify(u.costs))}</td></tr>`});
+  html+='</tbody></table></div>';
+  html+='<h4 style="color:var(--muted);margin:12px 0 6px">时段</h4>';
+  const slots=data.timeSlots||[];
+  html+='<div class="data-table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>标签</th><th>最低等级</th></tr></thead><tbody>';
+  slots.forEach(s=>{html+=`<tr><td>${h(s.id)}</td><td>${h(s.label)}</td><td>${s.minLevel}</td></tr>`});
+  html+='</tbody></table></div>';
+  area.innerHTML=html;
+  area.querySelectorAll('input[data-ui]').forEach(inp=>{inp.onchange=()=>{const u=ups[+inp.dataset.ui];if(u){u[inp.dataset.k]=inp.value;markDirty()}}});
+}
+
+// ===== RIGHT PANEL =====
+function renderRight(){
+  const c=$('rightPanel');c.innerHTML='';
+  if(mode==='data'){c.innerHTML='<div class="col-section"><label>数值配置</label><p style="color:var(--muted);font-size:12px">在中央区域编辑数值表。<br>使用顶栏按钮导入/导出 JSON。</p></div>';return}
+  if(mode==='prologue'){renderPrologueRight(c);return}
+  const f=flow();
+  if(!f){c.innerHTML='<div class="col-section" style="color:var(--muted);font-size:13px;padding:20px">选择一个日程查看属性</div>';return}
+  renderFlowProps(c);
+  const p=phase();
+  if(p)renderPhaseEditor(c,p);
+}
+
+// ===== FLOW PROPERTIES =====
+function renderFlowProps(c){
+  const f=flow();if(!f)return;
+  const sec=document.createElement('div');sec.className='col-section';
+  sec.innerHTML=`
+    <label>日程属性</label>
+    <div class="field"><label>ID</label><input id="fpId" value="${h(f.id)}" readonly style="opacity:.6"></div>
+    <div class="field"><label>标题</label><input id="fpTitle" value="${h(f.title||'')}"></div>
+    <div class="field"><label>时段 (逗号分隔: day,dusk,night)</label><input id="fpSlots" value="${h((f.slots||[]).join(','))}"></div>
+    <div class="field"><label>菜单 (逗号分隔)</label><input id="fpMenus" value="${h((f.menuIds||[]).join(','))}"></div>
+    <div class="field">
+      <label>曲目解锁条件</label>
+      <div id="fpUnlocks"></div>
+      <button class="sm" id="fpAddUnlock" style="margin-top:4px">+ 添加解锁</button>
+    </div>`;
+  c.appendChild(sec);
+  $('fpTitle').onchange=()=>{f.title=$('fpTitle').value;markDirty();renderFlowList();renderScheduleView()};
+  $('fpSlots').onchange=()=>{f.slots=$('fpSlots').value.split(',').map(s=>s.trim()).filter(Boolean);markDirty()};
+  $('fpMenus').onchange=()=>{f.menuIds=$('fpMenus').value.split(',').map(s=>s.trim()).filter(Boolean);markDirty()};
+  renderUnlocks();
+  $('fpAddUnlock').onclick=()=>{(f.unlocks=f.unlocks||[]).push({songId:'',conditions:{complete:true}});markDirty();renderUnlocks()};
+}
+function renderUnlocks(){
+  const f=flow();if(!f)return;
+  const c=$('fpUnlocks');if(!c)return;c.innerHTML='';
+  (f.unlocks||[]).forEach((u,i)=>{
+    const row=document.createElement('div');row.className='row';row.style.cssText='margin-bottom:4px;gap:4px';
+    row.innerHTML=`<input style="width:120px" placeholder="songId" value="${h(u.songId||'')}" data-ui="${i}"><span class="muted" style="font-size:11px">${h(JSON.stringify(u.conditions||{}))}</span><button class="sm danger" data-udi="${i}">x</button>`;
+    row.querySelector('input').onchange=e=>{u.songId=e.target.value;markDirty()};
+    row.querySelector('[data-udi]').onclick=()=>{f.unlocks.splice(i,1);markDirty();renderUnlocks()};
+    c.appendChild(row);
+  });
+}
+
+// ===== PHASE EDITOR =====
+function renderPhaseEditor(c,p){
+  const sec=document.createElement('div');sec.className='col-section';sec.style.borderTop='2px solid '+PHASE_COLOR[p.type];
+  const headHtml=`<div class="panel-head"><label>${PHASE_LABEL[p.type]} 阶段</label><span class="phase-type ${p.type}">${h(p.id)}</span></div>
+    <div class="field"><label>阶段 ID</label><input id="peId" value="${h(p.id)}"></div>`;
+  sec.innerHTML=headHtml;
+  c.appendChild(sec);
+  $('peId').onchange=()=>{p.id=$('peId').value;markDirty();renderPhaseList();renderScheduleView()};
+
+  if(p.type==='dialogue')renderDialogueEditor(c,p);
+  else if(p.type==='service')renderServiceEditor(c,p);
+  else if(p.type==='score_branch')renderBranchEditor(c,p);
+  else if(p.type==='settlement')renderSettlementEditor(c,p);
+}
+
+// ===== DIALOGUE EDITOR =====
+function renderDialogueEditor(c,p){
+  const nodes=p.nodes||[];
+  const sec=document.createElement('div');sec.className='col-section';
+  sec.innerHTML=`<div class="panel-head"><label>对话节点 (${nodes.length})</label><button class="sm" id="addNodeBtn">+ 添加</button></div><div id="nodeListArea" class="col-scroll" style="max-height:200px;overflow-y:auto"></div>`;
+  c.appendChild(sec);
+  const list=sec.querySelector('#nodeListArea');
+  nodes.forEach((n,i)=>{
+    const row=document.createElement('div');
+    row.className='node-row'+(i===selNode?' active':'');
+    row.draggable=true;
+    row.innerHTML=`<span class="node-idx">${i+1}</span><span class="speaker-tag" style="color:${speakerColor(n.speaker)}">${h(n.speaker||'')}</span><span class="text-preview">${h(n.text||n.html?'[HTML]':'')}</span>`;
+    row.onclick=()=>{selNode=i;renderRight()};
+    row.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain','node:'+i)});
+    row.addEventListener('dragover',e=>{e.preventDefault()});
+    row.addEventListener('drop',e=>{
+      e.preventDefault();const d=e.dataTransfer.getData('text/plain');
+      if(d.startsWith('node:')){const from=+d.split(':')[1];moveNode(p.nodes,from,i)}
+    });
+    list.appendChild(row);
+  });
+  $('addNodeBtn').onclick=()=>{(p.nodes=p.nodes||[]).push({speaker:'',text:'',en:''});selNode=p.nodes.length-1;markDirty();renderRight();renderScheduleView()};
+
+  if(selNode>=0&&selNode<nodes.length){
+    renderNodeDetail(c,nodes[selNode],n=>{p.nodes[selNode]=n;markDirty();renderScheduleView()},()=>{
+      p.nodes.splice(selNode,1);selNode=Math.min(selNode,p.nodes.length-1);markDirty();renderRight();renderScheduleView();
+    });
+  }
+}
+
+// ===== NODE DETAIL EDITOR =====
+function renderNodeDetail(c,node,onChange,onDelete){
+  const sec=document.createElement('div');sec.className='col-section';
+  sec.innerHTML=`
+    <div class="panel-head"><label>节点编辑</label><button class="sm danger" id="delNodeBtn">删除节点</button></div>
+    <div class="field"><label>角色名</label>
+      <div class="row"><input id="ndSpeaker" value="${h(node.speaker||'')}" list="speakerList" style="flex:1"></div>
+      <datalist id="speakerList">${SPEAKERS.map(s=>`<option value="${h(s)}">`).join('')}</datalist>
+    </div>
+    <div class="field"><label>对话文本</label><textarea id="ndText" rows="3">${h(node.text||'')}</textarea></div>
+    <div class="field"><label>英文参考 (en)</label><textarea id="ndEn" rows="2">${h(node.en||'')}</textarea></div>
+    <div class="field"><label>自定义 HTML (留空则用 text)</label><textarea id="ndHtml" rows="2">${h(node.html||'')}</textarea></div>
+    <div class="row">
+      <div class="field" style="flex:1"><label>动作 (action)</label><input id="ndAction" value="${h(node.action||'')}" list="actionList"><datalist id="actionList">${ACTIONS.map(a=>`<option value="${h(a)}">`).join('')}</datalist></div>
+      <div class="field" style="flex:1"><label>立绘角色 (character)</label><input id="ndChar" value="${h(node.character||'')}" placeholder="yuzu / student_girl"></div>
+    </div>
+    <div class="row">
+      <div class="field" style="flex:1"><label>表情 (expr)</label><input id="ndExpr" value="${h(node.expr||'')}" placeholder="yuzu: neutral/smile/teasing/deadpan/annoyed/panic/relieved/serious/sigh …"></div>
+      <div class="field" style="flex:1"><label>转场 (transition)</label><select id="ndTrans"><option value="">否</option><option value="true" ${node.transition?'selected':''}>是</option></select></div>
+    </div>`;
+  c.appendChild(sec);
+  const save=()=>{
+    const n={speaker:$('ndSpeaker').value,text:$('ndText').value,en:$('ndEn').value};
+    if($('ndHtml').value)n.html=$('ndHtml').value;
+    if($('ndAction').value)n.action=$('ndAction').value;
+    if($('ndChar').value)n.character=$('ndChar').value;
+    if($('ndExpr').value)n.expr=$('ndExpr').value;
+    if($('ndTrans').value==='true')n.transition=true;
+    onChange(n);
+  };
+  ['ndSpeaker','ndText','ndEn','ndHtml','ndAction','ndChar','ndExpr','ndTrans'].forEach(id=>{
+    const el=$(id);if(el)el.onchange=save;
+  });
+  $('delNodeBtn').onclick=onDelete;
+}
+
+// ===== SERVICE EDITOR =====
+function renderServiceEditor(c,p){
+  const sec=document.createElement('div');sec.className='col-section';
+  const songOpts=dataStore.songs?(dataStore.songs.songs||[]).map(s=>`<option value="${h(s.id)}"${s.id===p.songId?' selected':''}>${h(s.title)} (${h(s.id)})</option>`).join(''):'';
+  const menuOpts=dataStore.menuItems?(dataStore.menuItems.menuItems||[]).map(m=>`<option value="${h(m.id)}"${m.id===p.menuId?' selected':''}>${h(m.name)} (${h(m.id)})</option>`).join(''):'';
+  const slotOpts=dataStore.shop?(dataStore.shop.timeSlots||[]).map(s=>`<option value="${h(s.id)}"${s.id===p.slotId?' selected':''}>${h(s.label)} (${h(s.id)})</option>`).join(''):'';
+  sec.innerHTML=`
+    <label>服务配置</label>
+    <div class="field"><label>歌曲 ID (songId)</label>${songOpts?`<select id="seSong"><option value="">(无)</option>${songOpts}</select>`:`<input id="seSong" value="${h(p.songId||'')}" placeholder="歌曲ID">`}</div>
+    <div class="field"><label>菜单 ID (menuId)</label>${menuOpts?`<select id="seMenu"><option value="">(无)</option>${menuOpts}</select>`:`<input id="seMenu" value="${h(p.menuId||'')}" placeholder="菜单ID">`}</div>
+    <div class="field"><label>时段 (slotId)</label>${slotOpts?`<select id="seSlot"><option value="">(无)</option>${slotOpts}</select>`:`<input id="seSlot" value="${h(p.slotId||'')}" placeholder="day / dusk / night">`}</div>
+    <p style="color:var(--muted);font-size:11px;margin-top:6px">提示：导入 songs.json / menu_items.json / shop.json 后，字段将显示为下拉菜单。</p>`;
+  c.appendChild(sec);
+  $('seSong').onchange=()=>{p.songId=$('seSong').value;markDirty();renderScheduleView()};
+  $('seMenu').onchange=()=>{p.menuId=$('seMenu').value;markDirty()};
+  $('seSlot').onchange=()=>{p.slotId=$('seSlot').value;markDirty()};
+}
+
+// ===== SCORE BRANCH EDITOR =====
+function renderBranchEditor(c,p){
+  const sec=document.createElement('div');sec.className='col-section';
+  sec.innerHTML=`
+    <label>分支配置</label>
+    <div class="field"><label>判定变量</label><input id="brVar" value="${h(p.variable||'customer')}" placeholder="customer"></div>
+    <div class="panel-head" style="margin-top:8px"><label>分支列表</label><button class="sm" id="addBranchBtn">+ 添加分支</button></div>
+    <div id="branchListArea"></div>
+    <div class="panel-head" style="margin-top:10px"><label>共享后续对话 (after)</label><button class="sm" id="addAfterBtn">+ 添加</button></div>
+    <div id="afterListArea"></div>`;
+  c.appendChild(sec);
+  $('brVar').onchange=()=>{p.variable=$('brVar').value;markDirty()};
+
+  const bList=$('branchListArea');
+  (p.branches||[]).forEach((b,bi)=>{
+    const bsec=document.createElement('div');bsec.className='branch-section';
+    bsec.innerHTML=`
+      <div class="branch-header">
+        <span class="min-val">min ${b.min}</span>
+        <span style="flex:1">${h(b.label)}</span>
+        <span class="muted">${(b.nodes||[]).length}条</span>
+        <button class="sm danger" data-bdi="${bi}" style="padding:1px 6px;font-size:10px">x</button>
+      </div>
+      <div class="branch-body">
+        <div class="row" style="padding:4px 8px;gap:4px">
+          <div class="field" style="flex:1;margin:0"><label style="font-size:10px">最低分</label><input type="number" value="${b.min}" data-bmi="${bi}" style="padding:3px 6px"></div>
+          <div class="field" style="flex:2;margin:0"><label style="font-size:10px">标签</label><input value="${h(b.label||'')}" data-bli="${bi}" style="padding:3px 6px"></div>
+        </div>
+        <div data-bnodes="${bi}" style="max-height:120px;overflow-y:auto"></div>
+        <div style="padding:4px 8px"><button class="sm" data-ban="${bi}">+ 添加节点</button></div>
+      </div>`;
+    bsec.querySelector(`[data-bdi="${bi}"]`).onclick=e=>{e.stopPropagation();if(confirm('删除此分支？')){p.branches.splice(bi,1);markDirty();renderRight()}};
+    bsec.querySelector(`[data-bmi="${bi}"]`).onchange=e=>{b.min=+e.target.value;markDirty();renderRight()};
+    bsec.querySelector(`[data-bli="${bi}"]`).onchange=e=>{b.label=e.target.value;markDirty();renderScheduleView()};
+    bsec.querySelector(`[data-ban="${bi}"]`).onclick=()=>{(b.nodes=b.nodes||[]).push({speaker:'',text:'',en:''});markDirty();renderRight()};
+    const nodesArea=bsec.querySelector(`[data-bnodes="${bi}"]`);
+    (b.nodes||[]).forEach((n,ni)=>{
+      const nr=document.createElement('div');nr.className='node-row';
+      nr.innerHTML=`<span class="node-idx">${ni+1}</span><span class="speaker-tag" style="color:${speakerColor(n.speaker)}">${h(n.speaker||'')}</span><span class="text-preview">${h(n.text||'')}</span><span class="del" data-bni="${bi}:${ni}">x</span>`;
+      nr.onclick=()=>{selBranch=bi;selNode=ni;renderBranchNodeDetail(c,p,bi,ni)};
+      nr.querySelector('.del').onclick=e=>{e.stopPropagation();b.nodes.splice(ni,1);markDirty();renderRight()};
+      nodesArea.appendChild(nr);
+    });
+    bList.appendChild(bsec);
+  });
+  $('addBranchBtn').onclick=()=>{(p.branches=p.branches||[]).push({min:0,label:'新分支',nodes:[]});markDirty();renderRight()};
+
+  const aList=$('afterListArea');
+  (p.after||[]).forEach((n,i)=>{
+    const nr=document.createElement('div');nr.className='node-row';
+    nr.innerHTML=`<span class="node-idx">${i+1}</span><span class="speaker-tag" style="color:${speakerColor(n.speaker)}">${h(n.speaker||'')}</span><span class="text-preview">${h(n.text||'')}</span><span class="del" data-ani="${i}">x</span>`;
+    nr.onclick=()=>{selBranch=-1;selNode=i;renderAfterNodeDetail(c,p,i)};
+    nr.querySelector('.del').onclick=e=>{e.stopPropagation();p.after.splice(i,1);markDirty();renderRight()};
+    aList.appendChild(nr);
+  });
+  $('addAfterBtn').onclick=()=>{(p.after=p.after||[]).push({speaker:'',text:'',en:''});markDirty();renderRight()};
+}
+function renderBranchNodeDetail(c,p,bi,ni){
+  const node=p.branches[bi]?.nodes[ni];if(!node)return;
+  const existing=c.querySelector('#branchNodeDetail');if(existing)existing.remove();
+  const wrap=document.createElement('div');wrap.id='branchNodeDetail';wrap.className='col-section';wrap.style.borderTop='1px dashed var(--cBranch)';
+  c.appendChild(wrap);
+  renderNodeDetail(wrap,node,n=>{p.branches[bi].nodes[ni]=n;markDirty()},()=>{p.branches[bi].nodes.splice(ni,1);markDirty();renderRight()});
+}
+function renderAfterNodeDetail(c,p,ni){
+  const node=(p.after||[])[ni];if(!node)return;
+  const existing=c.querySelector('#afterNodeDetail');if(existing)existing.remove();
+  const wrap=document.createElement('div');wrap.id='afterNodeDetail';wrap.className='col-section';wrap.style.borderTop='1px dashed var(--cSettle)';
+  c.appendChild(wrap);
+  renderNodeDetail(wrap,node,n=>{p.after[ni]=n;markDirty()},()=>{p.after.splice(ni,1);markDirty();renderRight()});
+}
+
+// ===== SETTLEMENT EDITOR =====
+function renderSettlementEditor(c,p){
+  const sec=document.createElement('div');sec.className='col-section';
+  sec.innerHTML=`<label>结算阶段</label><p style="color:var(--muted);font-size:12px">此阶段触发当日结算界面。<br>曲目解锁条件在上方"日程属性 > 曲目解锁条件"中配置。</p>`;
+  c.appendChild(sec);
+}
+
+// ===== ACTIONS: FLOW MANAGEMENT =====
+function addFlow(){
+  const id=prompt('日程 ID（如 prologue, day1, day2）：');
+  if(!id||!id.trim())return;
+  const tid=id.trim();
+  if(flows[tid]){toast('ID 已存在','error');return}
+  const title=prompt('标题：','第'+(flowOrder.length+1)+'天');
+  if(title===null)return;
+  flows[tid]={id:tid,title:title,slots:['day'],menuIds:[],unlocks:[],phases:[]};
+  flowOrder.push(tid);selFlow=tid;selPhase=-1;selNode=-1;markDirty();refresh();
+  toast('已创建日程: '+tid);
+}
+function deleteFlow(){
+  if(!selFlow)return;
+  if(!confirm(`确定删除日程 "${flows[selFlow]?.title||selFlow}"？`))return;
+  delete flows[selFlow];flowOrder=flowOrder.filter(id=>id!==selFlow);
+  selFlow=flowOrder[0]||null;selPhase=-1;selNode=-1;markDirty();refresh();
+  toast('已删除','warn');
+}
+
+// ===== ACTIONS: PHASE MANAGEMENT =====
+function addPhase(type){
+  const f=flow();if(!f||!type)return;
+  const id=prompt('阶段 ID：',type+'_'+(f.phases.length+1));
+  if(!id)return;
+  const p={id:id,type:type};
+  if(type==='dialogue')p.nodes=[];
+  else if(type==='service'){p.songId='';p.menuId='';p.slotId='day'}
+  else if(type==='score_branch'){p.variable='customer';p.branches=[{min:0,label:'默认',nodes:[]}];p.after=[]}
+  f.phases.push(p);selPhase=f.phases.length-1;selNode=-1;markDirty();refresh();
+  toast('已添加阶段: '+id);
+}
+function deletePhase(idx){
+  const f=flow();if(!f)return;
+  if(!confirm('删除阶段 "'+f.phases[idx]?.id+'"？'))return;
+  f.phases.splice(idx,1);
+  if(selPhase>=f.phases.length)selPhase=f.phases.length-1;
+  selNode=-1;markDirty();refresh();
+}
+function movePhase(from,to){
+  const f=flow();if(!f)return;
+  const [item]=f.phases.splice(from,1);
+  f.phases.splice(to,0,item);
+  selPhase=to;markDirty();refresh();
+}
+function moveNode(arr,from,to){
+  if(!arr||from===to)return;
+  const [item]=arr.splice(from,1);arr.splice(to,0,item);
+  selNode=to;markDirty();renderRight();renderScheduleView();
+}
+
+// ===== IMPORT / EXPORT =====
+function importFlowFiles(files){
+  let count=0;
+  for(const file of files){
+    const reader=new FileReader();
+    reader.onload=()=>{
+      try{
+        const data=JSON.parse(reader.result);
+        if(!data.id||!data.phases){toast(file.name+': 不是有效的 flow JSON (需要 id + phases)','error');return}
+        flows[data.id]=data;
+        if(!flowOrder.includes(data.id))flowOrder.push(data.id);
+        count++;
+        if(!selFlow)selFlow=data.id;
+        if(count===files.length){refresh();toast(`已导入 ${count} 个日程`)}
+      }catch(e){toast(file.name+': JSON 解析失败 — '+e.message,'error')}
+    };
+    reader.readAsText(file);
+  }
+}
+function importDataFile(file,type){
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(type==='songs'&&data.songs)dataStore.songs=data;
+      else if(type==='menuItems'&&data.menuItems)dataStore.menuItems=data;
+      else if(type==='shop'&&data.upgrades)dataStore.shop=data;
+      else{toast('无法识别数据格式','error');return}
+      toast('已导入: '+file.name);renderCenter();renderRight();
+    }catch(e){toast('JSON 解析失败: '+e.message,'error')}
+  };
+  reader.readAsText(file);
+}
+function importPrologueFile(file){
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(!Array.isArray(data.opening)||!data.afterService){toast(file.name+': 不是有效的序章 JSON','error');return}
+      prologueData=data;prologueSection='opening';prologueNode=-1;
+      toast('已导入序章: '+file.name);renderCenter();renderRight();
+    }catch(e){toast('序章 JSON 解析失败: '+e.message,'error')}
+  };
+  reader.readAsText(file);
+}
+async function exportFlow(f){
+  if(!f){toast('无日程可导出','error');return}
+  const json=JSON.stringify(f,null,2)+'\n';
+  const fname=f.id+'.json';
+  if(dirHandle){
+    try{
+      const sub=await getOrCreateDir(dirHandle,'flows');
+      const fh=await sub.getFileHandle(fname,{create:true});
+      const w=await fh.createWritable();await w.write(json);await w.close();
+      toast('已保存: data/flows/'+fname);dirty=false;$('footerStatus').textContent='已保存';
+    }catch(e){toast('保存失败: '+e.message,'error');fallbackDownload(json,fname)}
+  }else fallbackDownload(json,fname);
+}
+async function exportAllFlows(){
+  for(const id of flowOrder){await exportFlow(flows[id])}
+  if(flowOrder.length)toast(`已导出 ${flowOrder.length} 个日程`);
+}
+async function exportPrologue(){
+  if(!prologueData){toast('无序章数据可导出','error');return}
+  ensurePrologueData();
+  const json=JSON.stringify(prologueData,null,2)+'\n';
+  const fname='prologue.json';
+  if(dirHandle){
+    try{
+      const sub=await getOrCreateDir(dirHandle,'dialogue');
+      const fh=await sub.getFileHandle(fname,{create:true});
+      const w=await fh.createWritable();await w.write(json);await w.close();
+      toast('已保存: data/dialogue/prologue.json');dirty=false;$('footerStatus').textContent='已保存';
+    }catch(e){toast('保存失败: '+e.message,'error');fallbackDownload(json,fname)}
+  }else fallbackDownload(json,fname);
+}
+async function exportDataOne(type){
+  let data,fname;
+  if(type==='songs'){data=dataStore.songs;fname='songs.json'}
+  else if(type==='menuItems'){data=dataStore.menuItems;fname='menu_items.json'}
+  else if(type==='shop'){data=dataStore.shop;fname='shop.json'}
+  if(!data){toast('无数据可导出','error');return}
+  const json=JSON.stringify(data,null,2)+'\n';
+  if(dirHandle){
+    try{const fh=await dirHandle.getFileHandle(fname,{create:true});const w=await fh.createWritable();await w.write(json);await w.close();toast('已保存: data/'+fname)}catch(e){toast('保存失败','error');fallbackDownload(json,fname)}
+  }else fallbackDownload(json,fname);
+}
+async function getOrCreateDir(parent,name){try{return await parent.getDirectoryHandle(name,{create:true})}catch{return parent}}
+function fallbackDownload(content,fname){
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'application/json'}));
+  a.download=fname;a.click();URL.revokeObjectURL(a.href);
+}
+async function pickDir(){
+  if(!window.showDirectoryPicker){toast('此浏览器不支持目录选择，将使用下载方式','warn');return}
+  try{dirHandle=await window.showDirectoryPicker({mode:'readwrite'});toast('已选择目录，导出将直接保存')}catch{}
+}
+async function autoLoadFromDir(){
+  if(!dirHandle)return;
+  try{
+    const flowsDir=await dirHandle.getDirectoryHandle('flows').catch(()=>null);
+    if(flowsDir){
+      for await(const entry of flowsDir.values()){
+        if(entry.kind==='file'&&entry.name.endsWith('.json')){
+          const file=await entry.getFile();const text=await file.text();
+          try{const data=JSON.parse(text);if(data.id&&data.phases){flows[data.id]=data;if(!flowOrder.includes(data.id))flowOrder.push(data.id)}}catch{}
+        }
+      }
+    }
+    for(const [name,key] of [['songs.json','songs'],['menu_items.json','menuItems'],['shop.json','shop']]){
+      try{const fh=await dirHandle.getFileHandle(name);const file=await fh.getFile();const text=await file.text();const d=JSON.parse(text);
+        if(key==='songs'&&d.songs)dataStore.songs=d;
+        else if(key==='menuItems'&&d.menuItems)dataStore.menuItems=d;
+        else if(key==='shop'&&d.upgrades)dataStore.shop=d;
+      }catch{}
+    }
+    try{
+      const dialogueDir=await dirHandle.getDirectoryHandle('dialogue').catch(()=>null);
+      if(dialogueDir){
+        const fh=await dialogueDir.getFileHandle('prologue.json');
+        const file=await fh.getFile(),text=await file.text(),d=JSON.parse(text);
+        if(Array.isArray(d.opening)&&d.afterService)prologueData=d;
+      }
+    }catch{}
+    if(flowOrder.length){selFlow=flowOrder[0];selPhase=flows[selFlow].phases.length?0:-1}
+    refresh();toast('已从目录加载数据');
+  }catch(e){console.warn('autoLoad failed',e)}
+}
+
+// ===== KEYBOARD =====
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName))return;
+  if(e.ctrlKey&&e.key==='s'){e.preventDefault();if(mode==='prologue')exportPrologue();else{const f=flow();if(f)exportFlow(f);else exportAllFlows()}}
+  if(e.key==='Delete'&&selPhase>=0){const f=flow();if(f&&f.phases[selPhase])deletePhase(selPhase)}
+});
+
+// ===== INIT =====
+$('modeTabs').onclick=e=>{
+  const m=e.target.dataset?.mode;if(!m)return;
+  mode=m;
+  $('modeTabs').querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===m));
+  renderCenter();renderRight();
+};
+$('newFlowBtn').onclick=$('addFlowBtn2').onclick=addFlow;
+$('delFlowBtn').onclick=deleteFlow;
+$('addPhaseSelect').onchange=e=>{const v=e.target.value;if(v){addPhase(v);e.target.value=''}};
+$('importFlowBtn').onclick=()=>{pendingImportType='flow';$('fileInput').click()};
+$('importPrologueBtn').onclick=()=>{pendingImportType='prologue';$('fileInput').click()};
+$('importDataBtn').onclick=()=>{pendingImportType='data_auto';$('fileInput').click()};
+$('exportFlowBtn').onclick=()=>{const f=flow();if(f)exportFlow(f);else if(flowOrder.length)exportAllFlows();else toast('无日程','error')};
+$('exportPrologueBtn').onclick=exportPrologue;
+$('exportDataBtn').onclick=()=>{['songs','menuItems','shop'].forEach(t=>{if(dataStore[t])exportDataOne(t)})};
+$('pickDirBtn').onclick=async()=>{await pickDir();if(dirHandle)await autoLoadFromDir()};
+$('fileInput').onchange=e=>{
+  const files=e.target.files;if(!files.length)return;
+  if(pendingImportType==='flow'){importFlowFiles(files)}
+  else if(pendingImportType==='prologue'){importPrologueFile(files[0])}
+  else if(pendingImportType?.startsWith('data_')){
+    const sub=pendingImportType.replace('data_','');
+    for(const file of files){
+      if(sub==='auto'){
+        if(file.name.includes('song'))importDataFile(file,'songs');
+        else if(file.name.includes('menu'))importDataFile(file,'menuItems');
+        else if(file.name.includes('shop'))importDataFile(file,'shop');
+        else importDataFile(file,'songs');
+      }else importDataFile(file,sub);
+    }
+  }
+  e.target.value='';pendingImportType=null;
+};
+
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+
+refresh();
+</script>
+</body>
+</html>

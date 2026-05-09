@@ -1,1 +1,488 @@
-{"$schema":"songs schema v1; matches src/data/types.js#Song","songs":[{"id":"lemon_water","type":"service","title":"Lemon Water","artist":"Demo Audio","file":"audio/service/lemon_water.24b11780cb.m4a","duration":32.451,"bpm":118.1,"activeStart":0.0,"audioOffset":-0.02,"stage":"day","difficulties":["service"]},{"id":"ark_light","title":"Ark Light","artist":"M2U & 7 Sequence","file":"audio/tracks/ark-light.ff25c3dbcd.m4a","duration":139.631,"bpm":155.0,"activeStart":0.56,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"asura","title":"Asura","artist":"Nari.D (AstroKid)","file":"audio/tracks/asura.e8d0f9b7e2.m4a","duration":112.801,"bpm":177.0,"activeStart":11.791,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"beethoven","title":"Beethoven Virus","artist":"Diana Boncheva","file":"audio/tracks/Beethoven.d5b14a2b64.m4a","duration":214.185,"bpm":155.8,"activeStart":0.323,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"drama","title":"Drama","artist":"Diana Boncheva","file":"audio/tracks/drama.72f27ea926.m4a","duration":204.625,"bpm":267.9,"activeStart":12.979,"audioOffset":-0.02,"stage":"dusk","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"faraway","title":"Faraway","artist":"Diana Boncheva","file":"audio/tracks/faraway.c4539bc274.m4a","duration":208.113,"bpm":215.8,"activeStart":1.17,"audioOffset":-0.02,"stage":"dusk","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"felis","title":"Felis","artist":"M2U","file":"audio/tracks/felis.b50879efb7.m4a","duration":133.357,"bpm":155.0,"activeStart":0.0,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"first_choice","title":"First Choice","artist":"M2U","file":"audio/tracks/first-choice.49fa3b8e0a.m4a","duration":70.61,"bpm":300.0,"activeStart":0.209,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"grafiore","title":"Grafiore","artist":"M2U","file":"audio/tracks/grafiore.b0663d95c0.m4a","duration":168.915,"bpm":274.0,"activeStart":0.74,"audioOffset":-0.02,"stage":"dusk","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"gypsy_tronic","title":"Gypsy Tronic","artist":"M2U","file":"audio/tracks/grypsy-tronic.3f4e975cbe.m4a","duration":144.708,"bpm":250.0,"activeStart":0.708,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"ineffabilis","title":"Ineffabilis","artist":"M2U & Gentle Stick","file":"audio/tracks/ineffable.38f04bab56.m4a","duration":144.325,"bpm":160.0,"activeStart":0.325,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"lunatic_sky","title":"Lunatic Sky","artist":"M2U","file":"audio/tracks/lunatic-sky.f8c4c40ab4.m4a","duration":123.333,"bpm":160.0,"activeStart":1.645,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"maidens_capriccio","title":"Maiden's Capriccio","artist":"JUN.A","file":"audio/tracks/maidens-capriccio.393d3e0cea.m4a","duration":273.434,"bpm":160.0,"activeStart":2.82,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"masquerade","title":"Masquerade","artist":"M2U","file":"audio/tracks/masquerade.6906cccd76.m4a","duration":139.163,"bpm":256.4,"activeStart":0.415,"audioOffset":-0.02,"stage":"dusk","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"megaburn","title":"Megaburn","artist":"M2U","file":"audio/tracks/megaburn.5c048ad728.m4a","duration":122.527,"bpm":172.9,"activeStart":0.447,"audioOffset":-0.02,"stage":"late","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"nb_blast","title":"NB Blast","artist":"M2U","file":"audio/tracks/nb-blast.fdcc50c6b2.m4a","duration":144.615,"bpm":280.4,"activeStart":0.612,"audioOffset":-0.02,"stage":"dusk","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"necro_fantasy","title":"Necro-Fantasy","artist":"Unknown Artist","file":"audio/tracks/necro-fantasy.6e6a8f597a.m4a","duration":197.514,"bpm":163.9,"activeStart":3.063,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"night_of_fire","title":"Night of Fire","artist":"Niko","file":"audio/tracks/night of fire.6b3bb6e399.m4a","duration":148.325,"bpm":155.0,"activeStart":2.772,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"open_the_fruit_stand!","title":"Open The Fruit Stand!","artist":"Demo Audio","file":"audio/tracks/Open the Fruit Stand!.1b64b455da.m4a","duration":73.005,"bpm":262.0,"activeStart":0.182,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"please","title":"Please","artist":"R300K","file":"audio/tracks/please.45dd9b8da3.m4a","duration":121.998,"bpm":160.9,"activeStart":0.509,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"purple_passion","title":"Purple Passion","artist":"Diana Boncheva","file":"audio/tracks/purple-passion.6efa9e844b.m4a","duration":223.103,"bpm":168.1,"activeStart":0.33,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"qua_vadis","title":"Qua Vadis","artist":"M2U","file":"audio/tracks/qua-vadis.c20c7c86f4.m4a","duration":142.153,"bpm":160.0,"activeStart":0.779,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"seeker","title":"Seeker","artist":"M2U","file":"audio/tracks/seeker.c1bebe3f09.m4a","duration":132.177,"bpm":300.0,"activeStart":1.375,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"toy_war","title":"Toy War","artist":"M2U","file":"audio/tracks/toy-war.ebbd67a510.m4a","duration":112.891,"bpm":160.0,"activeStart":0.39,"audioOffset":-0.02,"stage":"night","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"tutorial","title":"Tutorial","artist":"Demo Audio","file":"audio/tracks/tutorial.de14dde5a1.m4a","duration":54.677,"bpm":262.0,"activeStart":0.0,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"unwelcome_school","title":"Unwelcome School","artist":"mitsukiyo","file":"audio/tracks/unwelcome-school.a0a961cd00.m4a","duration":119.303,"bpm":180.2,"activeStart":0.136,"audioOffset":-0.02,"stage":"day","type":"track","difficulties":["easy","normal","hard","expert"]},{"id":"wings_of_silence","title":"Wings of Silence","artist":"M2U","file":"audio/tracks/wings-of-silence.e72e5829a1.m4a","duration":143.645,"bpm":180.2,"activeStart":0.645,"audioOffset":-0.02,"stage":"late","type":"track","difficulties":["easy","normal","hard","expert"]}]}
+{
+  "$schema": "songs schema v1; matches src/data/types.js#Song",
+  "songs": [
+    {
+      "id": "lemon_water",
+      "type": "service",
+      "title": "Lemon Water",
+      "artist": "Demo Audio",
+      "file": "audio/service/lemon_water.m4a",
+      "duration": 32.451,
+      "bpm": 118.1,
+      "activeStart": 0.0,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "service"
+      ]
+    },
+    {
+      "id": "ark_light",
+      "title": "Ark Light",
+      "artist": "M2U & 7 Sequence",
+      "file": "audio/tracks/ark-light.m4a",
+      "duration": 139.631,
+      "bpm": 155.0,
+      "activeStart": 0.56,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "asura",
+      "title": "Asura",
+      "artist": "Nari.D (AstroKid)",
+      "file": "audio/tracks/asura.m4a",
+      "duration": 112.801,
+      "bpm": 177.0,
+      "activeStart": 11.791,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "beethoven",
+      "title": "Beethoven Virus",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/Beethoven.m4a",
+      "duration": 214.185,
+      "bpm": 155.8,
+      "activeStart": 0.323,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "drama",
+      "title": "Drama",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/drama.m4a",
+      "duration": 204.625,
+      "bpm": 267.9,
+      "activeStart": 12.979,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "faraway",
+      "title": "Faraway",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/faraway.m4a",
+      "duration": 208.113,
+      "bpm": 215.8,
+      "activeStart": 1.17,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "felis",
+      "title": "Felis",
+      "artist": "M2U",
+      "file": "audio/tracks/felis.m4a",
+      "duration": 133.357,
+      "bpm": 155.0,
+      "activeStart": 0.0,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "first_choice",
+      "title": "First Choice",
+      "artist": "M2U",
+      "file": "audio/tracks/first-choice.m4a",
+      "duration": 70.61,
+      "bpm": 300.0,
+      "activeStart": 0.209,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "grafiore",
+      "title": "Grafiore",
+      "artist": "M2U",
+      "file": "audio/tracks/grafiore.m4a",
+      "duration": 168.915,
+      "bpm": 274.0,
+      "activeStart": 0.74,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "gypsy_tronic",
+      "title": "Gypsy Tronic",
+      "artist": "M2U",
+      "file": "audio/tracks/grypsy-tronic.m4a",
+      "duration": 144.708,
+      "bpm": 250.0,
+      "activeStart": 0.708,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "ineffabilis",
+      "title": "Ineffabilis",
+      "artist": "M2U & Gentle Stick",
+      "file": "audio/tracks/ineffable.m4a",
+      "duration": 144.325,
+      "bpm": 160.0,
+      "activeStart": 0.325,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "lunatic_sky",
+      "title": "Lunatic Sky",
+      "artist": "M2U",
+      "file": "audio/tracks/lunatic-sky.m4a",
+      "duration": 123.333,
+      "bpm": 160.0,
+      "activeStart": 1.645,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "maidens_capriccio",
+      "title": "Maiden's Capriccio",
+      "artist": "JUN.A",
+      "file": "audio/tracks/maidens-capriccio.m4a",
+      "duration": 273.434,
+      "bpm": 160.0,
+      "activeStart": 2.82,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "masquerade",
+      "title": "Masquerade",
+      "artist": "M2U",
+      "file": "audio/tracks/masquerade.m4a",
+      "duration": 139.163,
+      "bpm": 256.4,
+      "activeStart": 0.415,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "megaburn",
+      "title": "Megaburn",
+      "artist": "M2U",
+      "file": "audio/tracks/megaburn.m4a",
+      "duration": 122.527,
+      "bpm": 172.9,
+      "activeStart": 0.447,
+      "audioOffset": -0.02,
+      "stage": "late",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "nb_blast",
+      "title": "NB Blast",
+      "artist": "M2U",
+      "file": "audio/tracks/nb-blast.m4a",
+      "duration": 144.615,
+      "bpm": 280.4,
+      "activeStart": 0.612,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "necro_fantasy",
+      "title": "Necro-Fantasy",
+      "artist": "Unknown Artist",
+      "file": "audio/tracks/necro-fantasy.m4a",
+      "duration": 197.514,
+      "bpm": 163.9,
+      "activeStart": 3.063,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "night_of_fire",
+      "title": "Night of Fire",
+      "artist": "Niko",
+      "file": "audio/tracks/night of fire.m4a",
+      "duration": 148.325,
+      "bpm": 155.0,
+      "activeStart": 2.772,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "open_the_fruit_stand!",
+      "title": "Open The Fruit Stand!",
+      "artist": "Demo Audio",
+      "file": "audio/tracks/Open the Fruit Stand!.m4a",
+      "duration": 73.005,
+      "bpm": 262.0,
+      "activeStart": 0.182,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "please",
+      "title": "Please",
+      "artist": "R300K",
+      "file": "audio/tracks/please.m4a",
+      "duration": 121.998,
+      "bpm": 160.9,
+      "activeStart": 0.509,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "purple_passion",
+      "title": "Purple Passion",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/purple-passion.m4a",
+      "duration": 223.103,
+      "bpm": 168.1,
+      "activeStart": 0.33,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "qua_vadis",
+      "title": "Qua Vadis",
+      "artist": "M2U",
+      "file": "audio/tracks/qua-vadis.m4a",
+      "duration": 142.153,
+      "bpm": 160.0,
+      "activeStart": 0.779,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "seeker",
+      "title": "Seeker",
+      "artist": "M2U",
+      "file": "audio/tracks/seeker.m4a",
+      "duration": 132.177,
+      "bpm": 300.0,
+      "activeStart": 1.375,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "toy_war",
+      "title": "Toy War",
+      "artist": "M2U",
+      "file": "audio/tracks/toy-war.m4a",
+      "duration": 112.891,
+      "bpm": 160.0,
+      "activeStart": 0.39,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "tutorial",
+      "title": "Tutorial",
+      "artist": "Demo Audio",
+      "file": "audio/tracks/tutorial.m4a",
+      "duration": 54.677,
+      "bpm": 262.0,
+      "activeStart": 0.0,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "unwelcome_school",
+      "title": "Unwelcome School",
+      "artist": "mitsukiyo",
+      "file": "audio/tracks/unwelcome-school.m4a",
+      "duration": 119.303,
+      "bpm": 180.2,
+      "activeStart": 0.136,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "wings_of_silence",
+      "title": "Wings of Silence",
+      "artist": "M2U",
+      "file": "audio/tracks/wings-of-silence.m4a",
+      "duration": 143.645,
+      "bpm": 180.2,
+      "activeStart": 0.645,
+      "audioOffset": -0.02,
+      "stage": "late",
+      "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    }
+  ]
+}

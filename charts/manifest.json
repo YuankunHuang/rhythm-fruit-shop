@@ -4,190 +4,190 @@
       "id": "lemon_water",
       "type": "service",
       "title": "Lemon Water",
-      "song": "audio/service/lemon_water.24b11780cb.m4a",
-      "file": "service/lemon_water.f5c3bf7660.json"
+      "song": "audio/service/lemon_water.m4a",
+      "file": "service/lemon_water.json"
     },
     {
       "id": "ark_light",
       "type": "track",
       "title": "Ark Light",
-      "song": "audio/tracks/ark-light.ff25c3dbcd.m4a",
-      "file": "tracks/ark-light.d41fe291a2.json"
+      "song": "audio/tracks/ark-light.m4a",
+      "file": "tracks/ark-light.json"
     },
     {
       "id": "asura",
       "type": "track",
       "title": "Asura",
-      "song": "audio/tracks/asura.e8d0f9b7e2.m4a",
-      "file": "tracks/asura.09d15be4fb.json"
+      "song": "audio/tracks/asura.m4a",
+      "file": "tracks/asura.json"
     },
     {
       "id": "beethoven",
       "type": "track",
       "title": "Beethoven",
-      "song": "audio/tracks/Beethoven.d5b14a2b64.m4a",
-      "file": "tracks/beethoven.6138635194.json"
+      "song": "audio/tracks/Beethoven.m4a",
+      "file": "tracks/beethoven.json"
     },
     {
       "id": "drama",
       "type": "track",
       "title": "Drama",
-      "song": "audio/tracks/drama.72f27ea926.m4a",
-      "file": "tracks/drama.edc43e6378.json"
+      "song": "audio/tracks/drama.m4a",
+      "file": "tracks/drama.json"
     },
     {
       "id": "faraway",
       "type": "track",
       "title": "Faraway",
-      "song": "audio/tracks/faraway.c4539bc274.m4a",
-      "file": "tracks/faraway.c95044a8ba.json"
+      "song": "audio/tracks/faraway.m4a",
+      "file": "tracks/faraway.json"
     },
     {
       "id": "felis",
       "type": "track",
       "title": "Felis",
-      "song": "audio/tracks/felis.b50879efb7.m4a",
-      "file": "tracks/felis.a6bf9e3ca8.json"
+      "song": "audio/tracks/felis.m4a",
+      "file": "tracks/felis.json"
     },
     {
       "id": "first_choice",
       "type": "track",
       "title": "First Choice",
-      "song": "audio/tracks/first-choice.49fa3b8e0a.m4a",
-      "file": "tracks/first-choice.be6d2f0319.json"
+      "song": "audio/tracks/first-choice.m4a",
+      "file": "tracks/first-choice.json"
     },
     {
       "id": "grafiore",
       "type": "track",
       "title": "Grafiore",
-      "song": "audio/tracks/grafiore.b0663d95c0.m4a",
-      "file": "tracks/grafiore.67a3d0e95d.json"
+      "song": "audio/tracks/grafiore.m4a",
+      "file": "tracks/grafiore.json"
     },
     {
       "id": "grypsy_tronic",
       "type": "track",
       "title": "Grypsy Tronic",
-      "song": "audio/tracks/grypsy-tronic.3f4e975cbe.m4a",
-      "file": "tracks/grypsy-tronic.a7860caed2.json"
+      "song": "audio/tracks/grypsy-tronic.m4a",
+      "file": "tracks/grypsy-tronic.json"
     },
     {
       "id": "ineffable",
       "type": "track",
       "title": "Ineffable",
-      "song": "audio/tracks/ineffable.38f04bab56.m4a",
-      "file": "tracks/ineffable.36acd72c32.json"
+      "song": "audio/tracks/ineffable.m4a",
+      "file": "tracks/ineffable.json"
     },
     {
       "id": "lunatic_sky",
       "type": "track",
       "title": "Lunatic Sky",
-      "song": "audio/tracks/lunatic-sky.f8c4c40ab4.m4a",
-      "file": "tracks/lunatic-sky.2082a3b425.json"
+      "song": "audio/tracks/lunatic-sky.m4a",
+      "file": "tracks/lunatic-sky.json"
     },
     {
       "id": "maidens_capriccio",
       "type": "track",
       "title": "Maidens Capriccio",
-      "song": "audio/tracks/maidens-capriccio.393d3e0cea.m4a",
-      "file": "tracks/maidens-capriccio.fb7c707f76.json"
+      "song": "audio/tracks/maidens-capriccio.m4a",
+      "file": "tracks/maidens-capriccio.json"
     },
     {
       "id": "masquerade",
       "type": "track",
       "title": "Masquerade",
-      "song": "audio/tracks/masquerade.6906cccd76.m4a",
-      "file": "tracks/masquerade.9b3990192f.json"
+      "song": "audio/tracks/masquerade.m4a",
+      "file": "tracks/masquerade.json"
     },
     {
       "id": "megaburn",
       "type": "track",
       "title": "Megaburn",
-      "song": "audio/tracks/megaburn.5c048ad728.m4a",
-      "file": "tracks/megaburn.cce1c90c9c.json"
+      "song": "audio/tracks/megaburn.m4a",
+      "file": "tracks/megaburn.json"
     },
     {
       "id": "nb_blast",
       "type": "track",
       "title": "Nb Blast",
-      "song": "audio/tracks/nb-blast.fdcc50c6b2.m4a",
-      "file": "tracks/nb-blast.c32a2a5bef.json"
+      "song": "audio/tracks/nb-blast.m4a",
+      "file": "tracks/nb-blast.json"
     },
     {
       "id": "necro_fantasy",
       "type": "track",
       "title": "Necro Fantasy",
-      "song": "audio/tracks/necro-fantasy.6e6a8f597a.m4a",
-      "file": "tracks/necro-fantasy.a4d3ca6a79.json"
+      "song": "audio/tracks/necro-fantasy.m4a",
+      "file": "tracks/necro-fantasy.json"
     },
     {
       "id": "night_of_fire",
       "type": "track",
       "title": "Night Of Fire",
-      "song": "audio/tracks/night of fire.6b3bb6e399.m4a",
-      "file": "tracks/night-of-fire.2bebfc57bc.json"
+      "song": "audio/tracks/night of fire.m4a",
+      "file": "tracks/night-of-fire.json"
     },
     {
       "id": "open_the_fruit_stand!",
       "type": "track",
       "title": "Open The Fruit Stand!",
-      "song": "audio/tracks/Open the Fruit Stand!.1b64b455da.m4a",
-      "file": "tracks/open-the-fruit-stand!.869d1b2570.json"
+      "song": "audio/tracks/Open the Fruit Stand!.m4a",
+      "file": "tracks/open-the-fruit-stand!.json"
     },
     {
       "id": "please",
       "type": "track",
       "title": "Please",
-      "song": "audio/tracks/please.45dd9b8da3.m4a",
-      "file": "tracks/please.15bb27e465.json"
+      "song": "audio/tracks/please.m4a",
+      "file": "tracks/please.json"
     },
     {
       "id": "purple_passion",
       "type": "track",
       "title": "Purple Passion",
-      "song": "audio/tracks/purple-passion.6efa9e844b.m4a",
-      "file": "tracks/purple-passion.643fc16fe1.json"
+      "song": "audio/tracks/purple-passion.m4a",
+      "file": "tracks/purple-passion.json"
     },
     {
       "id": "qua_vadis",
       "type": "track",
       "title": "Qua Vadis",
-      "song": "audio/tracks/qua-vadis.c20c7c86f4.m4a",
-      "file": "tracks/qua-vadis.b7fb74ae81.json"
+      "song": "audio/tracks/qua-vadis.m4a",
+      "file": "tracks/qua-vadis.json"
     },
     {
       "id": "seeker",
       "type": "track",
       "title": "Seeker",
-      "song": "audio/tracks/seeker.c1bebe3f09.m4a",
-      "file": "tracks/seeker.7a4067e468.json"
+      "song": "audio/tracks/seeker.m4a",
+      "file": "tracks/seeker.json"
     },
     {
       "id": "toy_war",
       "type": "track",
       "title": "Toy War",
-      "song": "audio/tracks/toy-war.ebbd67a510.m4a",
-      "file": "tracks/toy-war.c427dfd171.json"
+      "song": "audio/tracks/toy-war.m4a",
+      "file": "tracks/toy-war.json"
     },
     {
       "id": "tutorial",
       "type": "track",
       "title": "Tutorial",
-      "song": "audio/tracks/tutorial.de14dde5a1.m4a",
-      "file": "tracks/tutorial.d207a4bcaa.json"
+      "song": "audio/tracks/tutorial.m4a",
+      "file": "tracks/tutorial.json"
     },
     {
       "id": "unwelcome_school",
       "type": "track",
       "title": "Unwelcome School",
-      "song": "audio/tracks/unwelcome-school.a0a961cd00.m4a",
-      "file": "tracks/unwelcome-school.9b78b6eea7.json"
+      "song": "audio/tracks/unwelcome-school.m4a",
+      "file": "tracks/unwelcome-school.json"
     },
     {
       "id": "wings_of_silence",
       "type": "track",
       "title": "Wings Of Silence",
-      "song": "audio/tracks/wings-of-silence.e72e5829a1.m4a",
-      "file": "tracks/wings-of-silence.93ba2ba6fc.json"
+      "song": "audio/tracks/wings-of-silence.m4a",
+      "file": "tracks/wings-of-silence.json"
     }
   ]
 }

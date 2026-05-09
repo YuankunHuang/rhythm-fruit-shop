@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style 05 - Neon Night Market</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#060817;color:#f6f8ff;font-family:Inter,system-ui,sans-serif}.app{min-height:100vh;padding:28px;display:grid;grid-template-columns:1fr 380px;gap:22px;background:radial-gradient(circle at 20% 0,#392072,transparent 35%),radial-gradient(circle at 80% 20%,#123d52,transparent 32%),#060817}.panel{background:#0d1228cc;border:1px solid #ffffff22;border-radius:28px;padding:24px;box-shadow:0 0 60px #8cffc122}.hero{display:grid;grid-template-columns:320px 1fr;gap:22px}.title{font-size:50px;line-height:1;margin:0;background:linear-gradient(90deg,#8cffc1,#ff8aa6,#ffd98c);-webkit-background-clip:text;color:transparent}.btn{border:1px solid #8cffc1;border-radius:999px;padding:13px 22px;background:#8cffc122;color:#8cffc1;font-weight:950}.game{position:relative;height:620px;border-radius:32px;background:linear-gradient(#101735,#060817);overflow:hidden;border:1px solid #8cffc144}.sign{position:absolute;left:24px;top:22px;color:#ff8aa6;font-weight:950;text-shadow:0 0 18px #ff8aa6}.hud{position:absolute;right:24px;top:22px;text-align:right;color:#8cffc1;font-weight:950}.lane{position:absolute;left:50%;top:100px;bottom:90px;width:330px;transform:translateX(-50%);background:#ffffff08;border:1px solid #8cffc133;border-radius:30px;box-shadow:inset 0 0 40px #8cffc111}.hit{position:absolute;left:21%;right:21%;bottom:115px;height:12px;border-radius:999px;background:#ffd98c;box-shadow:0 0 32px #ffd98c}.note{position:absolute;width:60px;height:60px;border-radius:50%;background:#ff8aa6;border:2px solid #fff;box-shadow:0 0 24px #ff8aa6}.n1{left:48%;top:145px}.n2{left:39%;top:265px;background:#8cffc1;box-shadow:0 0 24px #8cffc1}.n3{left:56%;top:410px;background:#ffd98c;box-shadow:0 0 24px #ffd98c}.side{display:grid;gap:14px}.ticket{background:#101735;border:1px solid #ffffff22;border-radius:22px;padding:18px}.ticket b{color:#ffd98c}.bar{height:13px;border-radius:999px;background:#ffffff18;overflow:hidden}.bar i{display:block;height:100%;width:84%;background:linear-gradient(90deg,#8cffc1,#ff8aa6)}.song{padding:14px;border-radius:18px;background:#ffffff0b;margin-top:10px}.song.active{outline:1px solid #ff8aa6;color:#fff}@media(max-width:980px){.app,.hero{grid-template-columns:1fr}.game{height:520px}}
+</style>
+</head>
+<body>
+<main class="app">
+<section class="hero"><div class="panel"><h1 class="title">霓虹夜市<br>果汁摊</h1><p>保留当前暗色优势，用作夜间、高难、电子曲风。爽感来自发光、脉冲和舞台氛围。</p><button class="btn">进入夜市</button></div><div class="game"><div class="sign">OPEN 24H</div><div class="hud">SCORE 456780<br>COMBO 188</div><div class="lane"></div><div class="note n1"></div><div class="note n2"></div><div class="note n3"></div><div class="hit"></div></div></section>
+<aside class="side"><div class="ticket"><b>夜市订单</b><p>招牌混合果汁 12/14</p><div class="bar"><i></i></div></div><div class="ticket"><b>曲目</b><div class="song active">Night of Fire / Hard</div><div class="song">Purple Passion / Expert</div><div class="song">Megaburn / Expert</div></div><div class="ticket"><b>顾客反应</b><p>“灯光、节奏、果汁都太上头。”</p></div></aside>
+</main>
+</body>
+</html>

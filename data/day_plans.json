@@ -1,1 +1,29 @@
-{"$schema":"per-day plan + per-day song unlock conditions v1","firstDaySongs":["open_the_fruit_stand!","seeker"],"plans":[{"day":1,"slots":["day"],"menuIds":["fruitCup"]},{"day":2,"slots":["day"],"menuIds":["grapeSmoothie"]},{"day":3,"slots":["day","dusk"],"menuIds":["fruitCup","grapeSmoothie"]},{"day":4,"slots":["day","dusk"],"menuIds":["fruitCup","grapeSmoothie"]},{"day":5,"slots":["day","dusk","night"],"menuIds":["fruitCup","citrusFizz"]},{"day":6,"slots":["day","dusk","night"],"menuIds":["grapeSmoothie","criticSpecial"]},{"day":7,"slots":["day","dusk","night"],"menuIds":["citrusFizz","criticSpecial"]},{"day":8,"slots":["day","dusk","night"],"menuIds":["fruitCup","rushBox","criticSpecial"]},{"day":9,"slots":["day","dusk","night"],"menuIds":["citrusFizz","grapeSmoothie","criticSpecial"]},{"day":10,"slots":["day","dusk","night"],"menuIds":["fruitCup","rushBox","criticSpecial"]}],"unlocks":[{"day":1,"songId":"open_the_fruit_stand!","conditions":{"complete":true}},{"day":1,"songId":"seeker","conditions":{"complete":true}},{"day":2,"songId":"drama","conditions":{"complete":true}},{"day":3,"songId":"please","conditions":{"complete":true,"best":76,"missMax":16}},{"day":4,"songId":"night_of_fire","conditions":{"complete":true,"best":78,"missMax":16}},{"day":5,"songId":"purple_passion","conditions":{"complete":true,"best":80,"missMax":14}},{"day":6,"songId":"grafiore","conditions":{"complete":true,"best":82,"missMax":14}},{"day":7,"songId":"toy_war","conditions":{"complete":true,"best":84,"missMax":12}},{"day":8,"songId":"ark_light","conditions":{"complete":true,"best":84,"missMax":12}},{"day":9,"songId":"faraway","conditions":{"complete":true,"best":86,"missMax":10}},{"day":10,"songId":"beethoven","conditions":{"complete":true,"best":86,"missMax":10}}]}
+{
+  "$schema": "per-day plan + per-day song unlock conditions v1",
+  "firstDaySongs": ["open_the_fruit_stand!", "seeker"],
+  "plans": [
+    { "day": 1,  "slots": ["day"],                  "menuIds": ["fruitCup"] },
+    { "day": 2,  "slots": ["day"],                  "menuIds": ["grapeSmoothie"] },
+    { "day": 3,  "slots": ["day", "dusk"],          "menuIds": ["fruitCup", "grapeSmoothie"] },
+    { "day": 4,  "slots": ["day", "dusk"],          "menuIds": ["fruitCup", "grapeSmoothie"] },
+    { "day": 5,  "slots": ["day", "dusk", "night"], "menuIds": ["fruitCup", "citrusFizz"] },
+    { "day": 6,  "slots": ["day", "dusk", "night"], "menuIds": ["grapeSmoothie", "criticSpecial"] },
+    { "day": 7,  "slots": ["day", "dusk", "night"], "menuIds": ["citrusFizz", "criticSpecial"] },
+    { "day": 8,  "slots": ["day", "dusk", "night"], "menuIds": ["fruitCup", "rushBox", "criticSpecial"] },
+    { "day": 9,  "slots": ["day", "dusk", "night"], "menuIds": ["citrusFizz", "grapeSmoothie", "criticSpecial"] },
+    { "day": 10, "slots": ["day", "dusk", "night"], "menuIds": ["fruitCup", "rushBox", "criticSpecial"] }
+  ],
+  "unlocks": [
+    { "day": 1,  "songId": "open_the_fruit_stand!", "conditions": { "complete": true } },
+    { "day": 1,  "songId": "seeker",                "conditions": { "complete": true } },
+    { "day": 2,  "songId": "drama",                 "conditions": { "complete": true } },
+    { "day": 3,  "songId": "please",                "conditions": { "complete": true, "best": 76, "missMax": 16 } },
+    { "day": 4,  "songId": "night_of_fire",         "conditions": { "complete": true, "best": 78, "missMax": 16 } },
+    { "day": 5,  "songId": "purple_passion",        "conditions": { "complete": true, "best": 80, "missMax": 14 } },
+    { "day": 6,  "songId": "grafiore",              "conditions": { "complete": true, "best": 82, "missMax": 14 } },
+    { "day": 7,  "songId": "toy_war",               "conditions": { "complete": true, "best": 84, "missMax": 12 } },
+    { "day": 8,  "songId": "ark_light",             "conditions": { "complete": true, "best": 84, "missMax": 12 } },
+    { "day": 9,  "songId": "faraway",               "conditions": { "complete": true, "best": 86, "missMax": 10 } },
+    { "day": 10, "songId": "beethoven",             "conditions": { "complete": true, "best": 86, "missMax": 10 } }
+  ]
+}

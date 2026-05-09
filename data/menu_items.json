@@ -1,1 +1,21 @@
-{"$schema":"menu items v1; needs key references must exist in resourceLabels","resourceLabels":{"chunks":"杯料","juice":"果汁","combo":"连击","apple":"苹果","orange":"橙子","lime":"青柠","grape":"葡萄","premium":"特调","sparkle":"气泡"},"menuItems":[{"id":"fruitCup","name":"彩虹鲜果杯","kind":"chunks","needBase":8,"color":"#ffd98c","needs":{"chunks":1,"apple":1},"reward":{"money":35,"rep":1},"desc":"稳定鲜果杯"},{"id":"citrusFizz","name":"青柠气泡饮","kind":"combo","needBase":14,"color":"#8cffc1","needs":{"lime":1,"sparkle":1,"combo":1},"reward":{"money":45,"rep":2},"desc":"需要连击和青柠"},{"id":"grapeSmoothie","name":"葡萄冰沙","kind":"juice","needBase":5,"color":"#a77cff","needs":{"grape":1,"juice":1},"reward":{"money":50,"rep":2},"desc":"长按榨汁特化"},{"id":"criticSpecial","name":"评论家特调","kind":"quality","needBase":82,"color":"#80b7ff","needs":{"premium":1,"juice":1},"reward":{"money":30,"rep":6},"desc":"要求高满意度"},{"id":"rushBox","name":"高峰便当杯","kind":"orders","needBase":3,"color":"#ffb14c","needs":{"chunks":1,"combo":1},"reward":{"money":55,"rep":1},"desc":"黄昏高峰专用"}]}
+{
+  "$schema": "menu items v1; needs key references must exist in resourceLabels",
+  "resourceLabels": {
+    "chunks":  "杯料",
+    "juice":   "果汁",
+    "combo":   "连击",
+    "apple":   "苹果",
+    "orange":  "橙子",
+    "lime":    "青柠",
+    "grape":   "葡萄",
+    "premium": "特调",
+    "sparkle": "气泡"
+  },
+  "menuItems": [
+    { "id": "fruitCup",       "name": "彩虹鲜果杯",       "kind": "chunks",  "needBase": 8,  "color": "#ffd98c", "needs": { "chunks": 1, "apple": 1 },              "reward": { "money": 35, "rep": 1 }, "desc": "稳定鲜果杯" },
+    { "id": "citrusFizz",     "name": "青柠气泡饮",       "kind": "combo",   "needBase": 14, "color": "#8cffc1", "needs": { "lime": 1, "sparkle": 1, "combo": 1 },  "reward": { "money": 45, "rep": 2 }, "desc": "需要连击和青柠" },
+    { "id": "grapeSmoothie",  "name": "葡萄冰沙",         "kind": "juice",   "needBase": 5,  "color": "#a77cff", "needs": { "grape": 1, "juice": 1 },               "reward": { "money": 50, "rep": 2 }, "desc": "长按榨汁特化" },
+    { "id": "criticSpecial",  "name": "评论家特调",       "kind": "quality", "needBase": 82, "color": "#80b7ff", "needs": { "premium": 1, "juice": 1 },             "reward": { "money": 30, "rep": 6 }, "desc": "要求高满意度" },
+    { "id": "rushBox",        "name": "高峰便当杯",       "kind": "orders",  "needBase": 3,  "color": "#ffb14c", "needs": { "chunks": 1, "combo": 1 },              "reward": { "money": 55, "rep": 1 }, "desc": "黄昏高峰专用" }
+  ]
+}

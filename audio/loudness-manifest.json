@@ -1,0 +1,1113 @@
+{
+  "version": 1,
+  "target": {
+    "i": -16.0,
+    "tp": -1.5,
+    "lra": 11.0
+  },
+  "files": {
+    "audio/bgm/Open the Fruit Stand!_Loop.m4a": {
+      "source": "audio/bgm/Open the Fruit Stand!_Loop.m4a",
+      "output": "audio/bgm/Open the Fruit Stand!_Loop.m4a",
+      "source_sha256": "c2d843192649991b55dc599748b41f19f0768b494660526ebc10b58b0893d46f",
+      "output_sha256": "65f348b9e095111d82367db52d8ced35f3ec7015eae622dfe42e73b39293578d",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.76",
+        "input_tp": "-2.54",
+        "input_lra": "2.90",
+        "input_thresh": "-24.76",
+        "output_i": "-15.14",
+        "output_tp": "-2.69",
+        "output_lra": "1.40",
+        "output_thresh": "-25.14",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.86"
+      },
+      "result": {
+        "input_i": "-14.71",
+        "input_tp": "-2.65",
+        "input_lra": "2.80",
+        "input_thresh": "-24.71",
+        "output_i": "-15.95",
+        "output_tp": "-3.89",
+        "output_lra": "2.90",
+        "output_thresh": "-25.95",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:31.061533+00:00"
+    },
+    "audio/bgm/Open the Fruit Stand!_MiniLoop.m4a": {
+      "source": "audio/bgm/Open the Fruit Stand!_MiniLoop.m4a",
+      "output": "audio/bgm/Open the Fruit Stand!_MiniLoop.m4a",
+      "source_sha256": "4093a23714f40067810704dc45ae575be1b81ea06ad7f8c9ae1f8209bb351a63",
+      "output_sha256": "153b33fb3665040133f3fb27d2d512190f3e14a8ba13a7602bceaab0af67808c",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-15.66",
+        "input_tp": "-2.41",
+        "input_lra": "0.90",
+        "input_thresh": "-25.66",
+        "output_i": "-15.94",
+        "output_tp": "-2.65",
+        "output_lra": "0.90",
+        "output_thresh": "-25.94",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.06"
+      },
+      "result": {
+        "input_i": "-15.63",
+        "input_tp": "-2.43",
+        "input_lra": "0.90",
+        "input_thresh": "-25.63",
+        "output_i": "-15.97",
+        "output_tp": "-2.77",
+        "output_lra": "0.90",
+        "output_thresh": "-25.97",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:35.759383+00:00"
+    },
+    "audio/service/lemon_water.m4a": {
+      "source": "audio/service/lemon_water.m4a",
+      "output": "audio/service/lemon_water.m4a",
+      "source_sha256": "775068f607bce1380c6ae4652a267abb705792b3f8ab96aa1652284103f772d7",
+      "output_sha256": "599d4d5ea311ff96d5ffcb825e29f174bed490f73d56f3a901744956047e6f55",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.80",
+        "input_tp": "-2.36",
+        "input_lra": "1.80",
+        "input_thresh": "-24.90",
+        "output_i": "-15.75",
+        "output_tp": "-3.35",
+        "output_lra": "1.30",
+        "output_thresh": "-25.80",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.25"
+      },
+      "result": {
+        "input_i": "-14.75",
+        "input_tp": "-2.36",
+        "input_lra": "1.50",
+        "input_thresh": "-24.80",
+        "output_i": "-15.95",
+        "output_tp": "-3.56",
+        "output_lra": "1.50",
+        "output_thresh": "-26.00",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:37.395046+00:00"
+    },
+    "audio/tracks/ark-light.m4a": {
+      "source": "audio/tracks/ark-light.m4a",
+      "output": "audio/tracks/ark-light.m4a",
+      "source_sha256": "fe4c6806ab403d2ddf93bb9bb6d043d562e53883447a3bb959f59ab1117a90c8",
+      "output_sha256": "4ed7e1bec81f9ab78a4079dde6d3e0df25fe5e243476f1ef10d4714bf031caef",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.10",
+        "input_tp": "2.37",
+        "input_lra": "6.10",
+        "input_thresh": "-17.23",
+        "output_i": "-14.67",
+        "output_tp": "-3.06",
+        "output_lra": "3.10",
+        "output_thresh": "-24.73",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.33"
+      },
+      "result": {
+        "input_i": "-7.05",
+        "input_tp": "2.37",
+        "input_lra": "5.90",
+        "input_thresh": "-17.12",
+        "output_i": "-15.95",
+        "output_tp": "-6.53",
+        "output_lra": "5.90",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:43.622374+00:00"
+    },
+    "audio/tracks/asura.m4a": {
+      "source": "audio/tracks/asura.m4a",
+      "output": "audio/tracks/asura.m4a",
+      "source_sha256": "32ad2ed03ca02838f43ae1a0449e1b83b38d7450de03e609bbe2160f0d71ca5f",
+      "output_sha256": "605f96b59bf1328a218303169054f0ae2ab4601ef60ebe940c70a9c151c2b731",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-10.00",
+        "input_tp": "0.68",
+        "input_lra": "7.60",
+        "input_thresh": "-20.25",
+        "output_i": "-14.74",
+        "output_tp": "-1.50",
+        "output_lra": "5.10",
+        "output_thresh": "-24.85",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.26"
+      },
+      "result": {
+        "input_i": "-9.97",
+        "input_tp": "0.37",
+        "input_lra": "5.80",
+        "input_thresh": "-20.12",
+        "output_i": "-15.97",
+        "output_tp": "-5.63",
+        "output_lra": "5.80",
+        "output_thresh": "-26.12",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:48.854678+00:00"
+    },
+    "audio/tracks/Beethoven.m4a": {
+      "source": "audio/tracks/Beethoven.m4a",
+      "output": "audio/tracks/Beethoven.m4a",
+      "source_sha256": "5d560d273177514b53a7c7e868c5b5210953523f99cc3bb592afab5c2161822c",
+      "output_sha256": "f2a0e423dd9b85ecb4968cdd7d1d874b1d416712f9bed7c77414cce742c9a48e",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-8.77",
+        "input_tp": "2.67",
+        "input_lra": "4.00",
+        "input_thresh": "-18.95",
+        "output_i": "-15.52",
+        "output_tp": "-1.50",
+        "output_lra": "4.70",
+        "output_thresh": "-25.56",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.48"
+      },
+      "result": {
+        "input_i": "-8.74",
+        "input_tp": "2.64",
+        "input_lra": "4.10",
+        "input_thresh": "-18.88",
+        "output_i": "-15.97",
+        "output_tp": "-4.59",
+        "output_lra": "4.00",
+        "output_thresh": "-26.11",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:46:59.363363+00:00"
+    },
+    "audio/tracks/drama.m4a": {
+      "source": "audio/tracks/drama.m4a",
+      "output": "audio/tracks/drama.m4a",
+      "source_sha256": "3cb1bc160536ec1dbb66a734d05a7a06269f88b8f7182346082d000370039978",
+      "output_sha256": "1ea593323f53f7fb21f8492ce5dfc5c53d6981d1895c5b8fd857f5e0cedca753",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.67",
+        "input_tp": "3.36",
+        "input_lra": "4.30",
+        "input_thresh": "-19.98",
+        "output_i": "-14.69",
+        "output_tp": "-1.50",
+        "output_lra": "3.00",
+        "output_thresh": "-24.75",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.31"
+      },
+      "result": {
+        "input_i": "-9.63",
+        "input_tp": "3.34",
+        "input_lra": "4.00",
+        "input_thresh": "-19.88",
+        "output_i": "-15.96",
+        "output_tp": "-2.99",
+        "output_lra": "4.00",
+        "output_thresh": "-26.21",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:09.531142+00:00"
+    },
+    "audio/tracks/faraway.m4a": {
+      "source": "audio/tracks/faraway.m4a",
+      "output": "audio/tracks/faraway.m4a",
+      "source_sha256": "86571c5df0a8d26f3bd5496a4eb232d901c2ab95dd32191c5103a56e7635c142",
+      "output_sha256": "8016c52ead4db03e9baec8762bca7ad7c8e4c351060e8ec2bebb71102fa4bfeb",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.29",
+        "input_tp": "2.08",
+        "input_lra": "6.90",
+        "input_thresh": "-19.58",
+        "output_i": "-15.03",
+        "output_tp": "-1.50",
+        "output_lra": "5.60",
+        "output_thresh": "-25.12",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.97"
+      },
+      "result": {
+        "input_i": "-9.25",
+        "input_tp": "1.96",
+        "input_lra": "7.00",
+        "input_thresh": "-19.50",
+        "output_i": "-15.96",
+        "output_tp": "-4.75",
+        "output_lra": "7.00",
+        "output_thresh": "-26.21",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:20.137623+00:00"
+    },
+    "audio/tracks/felis.m4a": {
+      "source": "audio/tracks/felis.m4a",
+      "output": "audio/tracks/felis.m4a",
+      "source_sha256": "ad6292a83db3bd20007b94806b19d4de631e67dc0b6a5f0e0a59b081658c480d",
+      "output_sha256": "cc04ef9bb6f5c3fa67a3b2352787e7d8a2876b5f300c1c3b16a099fb97891be8",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.39",
+        "input_tp": "3.52",
+        "input_lra": "6.00",
+        "input_thresh": "-19.49",
+        "output_i": "-15.04",
+        "output_tp": "-2.92",
+        "output_lra": "4.50",
+        "output_thresh": "-25.10",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.96"
+      },
+      "result": {
+        "input_i": "-9.32",
+        "input_tp": "2.84",
+        "input_lra": "5.80",
+        "input_thresh": "-19.38",
+        "output_i": "-15.94",
+        "output_tp": "-3.77",
+        "output_lra": "5.80",
+        "output_thresh": "-25.99",
+        "normalization_type": "linear",
+        "target_offset": "-0.06"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:26.423743+00:00"
+    },
+    "audio/tracks/first-choice.m4a": {
+      "source": "audio/tracks/first-choice.m4a",
+      "output": "audio/tracks/first-choice.m4a",
+      "source_sha256": "e50469f4691bd982fb889516b6123361636a88ef1a747fbb95395c8eeba58bfd",
+      "output_sha256": "902ec39b07c179d37ba384308a35a94657d4e525a02418b4c75da5c8b26fa004",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-8.20",
+        "input_tp": "2.59",
+        "input_lra": "2.10",
+        "input_thresh": "-18.59",
+        "output_i": "-15.41",
+        "output_tp": "-1.50",
+        "output_lra": "2.30",
+        "output_thresh": "-25.64",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.59"
+      },
+      "result": {
+        "input_i": "-8.17",
+        "input_tp": "2.45",
+        "input_lra": "2.10",
+        "input_thresh": "-18.39",
+        "output_i": "-15.97",
+        "output_tp": "-5.35",
+        "output_lra": "2.10",
+        "output_thresh": "-26.19",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:30.088962+00:00"
+    },
+    "audio/tracks/grafiore.m4a": {
+      "source": "audio/tracks/grafiore.m4a",
+      "output": "audio/tracks/grafiore.m4a",
+      "source_sha256": "0b6cf5252d7eaa3fff9c2759324457746534a45da9294ce13caf84b5b77be10a",
+      "output_sha256": "59c22eb950487bb01a7df0440dc4f9c64d02c2ba720cdaa19e4a4113e387270c",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.59",
+        "input_tp": "1.95",
+        "input_lra": "8.80",
+        "input_thresh": "-19.79",
+        "output_i": "-15.85",
+        "output_tp": "-4.33",
+        "output_lra": "7.20",
+        "output_thresh": "-25.95",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.15"
+      },
+      "result": {
+        "input_i": "-9.55",
+        "input_tp": "1.82",
+        "input_lra": "7.60",
+        "input_thresh": "-19.68",
+        "output_i": "-15.96",
+        "output_tp": "-4.59",
+        "output_lra": "7.60",
+        "output_thresh": "-26.09",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:38.689094+00:00"
+    },
+    "audio/tracks/grypsy-tronic.m4a": {
+      "source": "audio/tracks/grypsy-tronic.m4a",
+      "output": "audio/tracks/grypsy-tronic.m4a",
+      "source_sha256": "862c9898c0bd992340872980b219ce76b798d646939b03d950bd861f2cedf596",
+      "output_sha256": "ed501d4ed2ed8eb8b0bcd3c13ef2a6795375873d498ff47597f80477c40bb234",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-6.47",
+        "input_tp": "4.34",
+        "input_lra": "1.30",
+        "input_thresh": "-16.66",
+        "output_i": "-15.72",
+        "output_tp": "-3.96",
+        "output_lra": "1.20",
+        "output_thresh": "-25.77",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.28"
+      },
+      "result": {
+        "input_i": "-6.43",
+        "input_tp": "3.84",
+        "input_lra": "1.40",
+        "input_thresh": "-16.54",
+        "output_i": "-15.96",
+        "output_tp": "-5.69",
+        "output_lra": "1.30",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:45.085053+00:00"
+    },
+    "audio/tracks/ineffable.m4a": {
+      "source": "audio/tracks/ineffable.m4a",
+      "output": "audio/tracks/ineffable.m4a",
+      "source_sha256": "f265a4c705ed9f33a5efb4a7f0cb3432edc1e9a253e02cfcb1f279b89c0496e6",
+      "output_sha256": "ae4cfa008ed1a419f5748999ed5a5ccdaddf4e5e3ace9d83302ee8c5b88b79b3",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-6.95",
+        "input_tp": "4.85",
+        "input_lra": "1.50",
+        "input_thresh": "-17.14",
+        "output_i": "-15.77",
+        "output_tp": "-3.74",
+        "output_lra": "1.30",
+        "output_thresh": "-25.88",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.23"
+      },
+      "result": {
+        "input_i": "-6.91",
+        "input_tp": "3.78",
+        "input_lra": "1.50",
+        "input_thresh": "-17.03",
+        "output_i": "-15.96",
+        "output_tp": "-5.27",
+        "output_lra": "1.50",
+        "output_thresh": "-26.08",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:51.417475+00:00"
+    },
+    "audio/tracks/lunatic-sky.m4a": {
+      "source": "audio/tracks/lunatic-sky.m4a",
+      "output": "audio/tracks/lunatic-sky.m4a",
+      "source_sha256": "f8d5480dcca48bed5f588e6baccf516e0bc1d7db95597161968297c65068c3ba",
+      "output_sha256": "902e4b7e0e19a2599fa0f3f7728d0e7b32b3443b2eae578e13db4ae2057e6ca0",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.66",
+        "input_tp": "4.38",
+        "input_lra": "3.10",
+        "input_thresh": "-17.98",
+        "output_i": "-15.27",
+        "output_tp": "-2.95",
+        "output_lra": "2.20",
+        "output_thresh": "-25.48",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.73"
+      },
+      "result": {
+        "input_i": "-7.63",
+        "input_tp": "4.25",
+        "input_lra": "3.10",
+        "input_thresh": "-17.85",
+        "output_i": "-15.97",
+        "output_tp": "-4.09",
+        "output_lra": "3.10",
+        "output_thresh": "-26.19",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:47:57.472055+00:00"
+    },
+    "audio/tracks/maidens-capriccio.m4a": {
+      "source": "audio/tracks/maidens-capriccio.m4a",
+      "output": "audio/tracks/maidens-capriccio.m4a",
+      "source_sha256": "acc1c82e4e83cd1e919a498edee02ed193dcdb2da54fb56a8172b936c7c5e85f",
+      "output_sha256": "c6eb42fbfaed89774e070e2aef0d80e59af8dc1a4142183f128a7bf4d6887807",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-8.98",
+        "input_tp": "0.51",
+        "input_lra": "0.90",
+        "input_thresh": "-19.09",
+        "output_i": "-15.96",
+        "output_tp": "-6.19",
+        "output_lra": "1.00",
+        "output_thresh": "-26.01",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.04"
+      },
+      "result": {
+        "input_i": "-8.94",
+        "input_tp": "0.33",
+        "input_lra": "0.90",
+        "input_thresh": "-19.01",
+        "output_i": "-15.96",
+        "output_tp": "-6.69",
+        "output_lra": "0.90",
+        "output_thresh": "-26.03",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:09.941035+00:00"
+    },
+    "audio/tracks/masquerade.m4a": {
+      "source": "audio/tracks/masquerade.m4a",
+      "output": "audio/tracks/masquerade.m4a",
+      "source_sha256": "1818423be3f50354773c1fe4ddce406b24bf1a1d2c2b8e56f9aac06f6a33a821",
+      "output_sha256": "1ecd972635011bdf573bdc092d809e41d8e5d96aed2bda958a787904ff11e060",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-10.01",
+        "input_tp": "0.75",
+        "input_lra": "5.40",
+        "input_thresh": "-20.11",
+        "output_i": "-15.00",
+        "output_tp": "-3.06",
+        "output_lra": "5.00",
+        "output_thresh": "-25.06",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.00"
+      },
+      "result": {
+        "input_i": "-9.98",
+        "input_tp": "0.75",
+        "input_lra": "5.40",
+        "input_thresh": "-20.03",
+        "output_i": "-15.97",
+        "output_tp": "-5.24",
+        "output_lra": "5.40",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:15.968448+00:00"
+    },
+    "audio/tracks/megaburn.m4a": {
+      "source": "audio/tracks/megaburn.m4a",
+      "output": "audio/tracks/megaburn.m4a",
+      "source_sha256": "561252c34cb51d3bb2dc955bc157ea30ffce62d9ed47a4c363836c848f045178",
+      "output_sha256": "8ebd697008b6c6c77483155106f90e26dd7356cfa8298ca03f39f36cc89fbd40",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.64",
+        "input_tp": "5.21",
+        "input_lra": "2.90",
+        "input_thresh": "-17.79",
+        "output_i": "-15.44",
+        "output_tp": "-1.83",
+        "output_lra": "1.80",
+        "output_thresh": "-25.51",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.56"
+      },
+      "result": {
+        "input_i": "-7.59",
+        "input_tp": "3.61",
+        "input_lra": "2.80",
+        "input_thresh": "-17.66",
+        "output_i": "-15.95",
+        "output_tp": "-4.75",
+        "output_lra": "2.70",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:21.654141+00:00"
+    },
+    "audio/tracks/nb-blast.m4a": {
+      "source": "audio/tracks/nb-blast.m4a",
+      "output": "audio/tracks/nb-blast.m4a",
+      "source_sha256": "7f7c3115ad80cfbdfa00b9d24a23c35dea8e888e94ed79e55bbdb76f53e26ad2",
+      "output_sha256": "ce5ece707a1098236a8c363b144e11ee98b0ceac9fb36c41e5add44ea536f081",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.51",
+        "input_tp": "4.69",
+        "input_lra": "4.40",
+        "input_thresh": "-17.53",
+        "output_i": "-15.04",
+        "output_tp": "-2.26",
+        "output_lra": "3.10",
+        "output_thresh": "-25.05",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.96"
+      },
+      "result": {
+        "input_i": "-7.44",
+        "input_tp": "4.69",
+        "input_lra": "3.30",
+        "input_thresh": "-17.45",
+        "output_i": "-15.93",
+        "output_tp": "-3.80",
+        "output_lra": "3.30",
+        "output_thresh": "-25.94",
+        "normalization_type": "linear",
+        "target_offset": "-0.07"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:29.065555+00:00"
+    },
+    "audio/tracks/necro-fantasy.m4a": {
+      "source": "audio/tracks/necro-fantasy.m4a",
+      "output": "audio/tracks/necro-fantasy.m4a",
+      "source_sha256": "c2a8e5d5f3858fdd5fd1f7bee4daeb4ba42739824425941d15dcf183c85e159e",
+      "output_sha256": "c98f24f693bc3d4e5ab12cf4107a9b48f0506a03b95f99065aab606c37d6ee73",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-6.77",
+        "input_tp": "2.62",
+        "input_lra": "2.20",
+        "input_thresh": "-16.77",
+        "output_i": "-15.43",
+        "output_tp": "-4.90",
+        "output_lra": "1.80",
+        "output_thresh": "-25.43",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.57"
+      },
+      "result": {
+        "input_i": "-6.69",
+        "input_tp": "2.42",
+        "input_lra": "2.20",
+        "input_thresh": "-16.69",
+        "output_i": "-15.92",
+        "output_tp": "-6.81",
+        "output_lra": "2.20",
+        "output_thresh": "-25.92",
+        "normalization_type": "linear",
+        "target_offset": "-0.08"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:37.992741+00:00"
+    },
+    "audio/tracks/night of fire.m4a": {
+      "source": "audio/tracks/night of fire.m4a",
+      "output": "audio/tracks/night of fire.m4a",
+      "source_sha256": "a511cd715435a871d346b88581d36bb5830548b99fb86446d38c8559827f5fba",
+      "output_sha256": "29a179053b2a5c8b14e8cd59943229e82dbfd6244b7098acb29a6183cb4b2c23",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-8.02",
+        "input_tp": "0.81",
+        "input_lra": "2.60",
+        "input_thresh": "-18.18",
+        "output_i": "-15.47",
+        "output_tp": "-4.92",
+        "output_lra": "1.50",
+        "output_thresh": "-25.56",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.53"
+      },
+      "result": {
+        "input_i": "-7.97",
+        "input_tp": "0.73",
+        "input_lra": "2.40",
+        "input_thresh": "-18.07",
+        "output_i": "-15.95",
+        "output_tp": "-7.25",
+        "output_lra": "2.40",
+        "output_thresh": "-26.05",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:44.894709+00:00"
+    },
+    "audio/tracks/Open the Fruit Stand!.m4a": {
+      "source": "audio/tracks/Open the Fruit Stand!.m4a",
+      "output": "audio/tracks/Open the Fruit Stand!.m4a",
+      "source_sha256": "d2502242078d9347d9ae46794fc55594c274bdda1fb7346b291e1f114d0422df",
+      "output_sha256": "6c5f51aabfbb6ef8cba806b00c5168cc9260fe79be34cadeaaa18f6053d1660c",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.62",
+        "input_tp": "-2.92",
+        "input_lra": "2.80",
+        "input_thresh": "-24.62",
+        "output_i": "-15.22",
+        "output_tp": "-2.69",
+        "output_lra": "1.50",
+        "output_thresh": "-25.22",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.78"
+      },
+      "result": {
+        "input_i": "-14.54",
+        "input_tp": "-3.01",
+        "input_lra": "2.80",
+        "input_thresh": "-24.54",
+        "output_i": "-15.92",
+        "output_tp": "-4.39",
+        "output_lra": "2.80",
+        "output_thresh": "-25.92",
+        "normalization_type": "linear",
+        "target_offset": "-0.08"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:48.364638+00:00"
+    },
+    "audio/tracks/please.m4a": {
+      "source": "audio/tracks/please.m4a",
+      "output": "audio/tracks/please.m4a",
+      "source_sha256": "90c1bfa9df244b0fe38b9b993ae3e7b344783f5adbdeedfe689540f6d8a4ba89",
+      "output_sha256": "2565848512361317e8d014bb3d1513a5c1e8534836dcdad4033861a36da70159",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-6.30",
+        "input_tp": "7.51",
+        "input_lra": "3.50",
+        "input_thresh": "-16.31",
+        "output_i": "-15.50",
+        "output_tp": "-1.50",
+        "output_lra": "2.90",
+        "output_thresh": "-25.51",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.50"
+      },
+      "result": {
+        "input_i": "-6.24",
+        "input_tp": "7.51",
+        "input_lra": "3.40",
+        "input_thresh": "-16.25",
+        "output_i": "-15.94",
+        "output_tp": "-2.19",
+        "output_lra": "3.40",
+        "output_thresh": "-25.95",
+        "normalization_type": "linear",
+        "target_offset": "-0.06"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:48:54.021254+00:00"
+    },
+    "audio/tracks/purple-passion.m4a": {
+      "source": "audio/tracks/purple-passion.m4a",
+      "output": "audio/tracks/purple-passion.m4a",
+      "source_sha256": "a2007c4d679bf5ce254a2ec9d28490150ede9eb01c1c80f4844e58e6465b99f3",
+      "output_sha256": "a39642b8cebe03950e047c96c80a8ad6ca6636c18ebd229247099504faf32fb8",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.03",
+        "input_tp": "2.90",
+        "input_lra": "5.40",
+        "input_thresh": "-19.13",
+        "output_i": "-14.84",
+        "output_tp": "-1.50",
+        "output_lra": "2.90",
+        "output_thresh": "-24.86",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.16"
+      },
+      "result": {
+        "input_i": "-9.00",
+        "input_tp": "2.47",
+        "input_lra": "5.50",
+        "input_thresh": "-19.09",
+        "output_i": "-15.97",
+        "output_tp": "-4.50",
+        "output_lra": "5.50",
+        "output_thresh": "-26.06",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:04.236185+00:00"
+    },
+    "audio/tracks/qua-vadis.m4a": {
+      "source": "audio/tracks/qua-vadis.m4a",
+      "output": "audio/tracks/qua-vadis.m4a",
+      "source_sha256": "258b5b101b8aa79a797765ce4331b4283f80f73032d4ec788427a178ae71113d",
+      "output_sha256": "dbbfcc3edb1527fd9dc6bb6e35ad128f62308c324f81d80fa392b5f40baa4326",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.75",
+        "input_tp": "3.00",
+        "input_lra": "2.60",
+        "input_thresh": "-17.82",
+        "output_i": "-15.45",
+        "output_tp": "-2.91",
+        "output_lra": "2.00",
+        "output_thresh": "-25.48",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.55"
+      },
+      "result": {
+        "input_i": "-7.71",
+        "input_tp": "2.61",
+        "input_lra": "2.40",
+        "input_thresh": "-17.75",
+        "output_i": "-15.96",
+        "output_tp": "-5.64",
+        "output_lra": "2.40",
+        "output_thresh": "-26.00",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:11.141456+00:00"
+    },
+    "audio/tracks/seeker.m4a": {
+      "source": "audio/tracks/seeker.m4a",
+      "output": "audio/tracks/seeker.m4a",
+      "source_sha256": "86fe62affe1f2a9a9159d982f2c63c5b9a8f3b8e248bbf443854edafcb1f786b",
+      "output_sha256": "c6fda0026728f5a10cb374bf83cb9dee4f4318a96328eecabbda2b5d522c3306",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-8.50",
+        "input_tp": "2.69",
+        "input_lra": "4.40",
+        "input_thresh": "-18.72",
+        "output_i": "-14.88",
+        "output_tp": "-3.25",
+        "output_lra": "2.20",
+        "output_thresh": "-25.00",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.12"
+      },
+      "result": {
+        "input_i": "-8.46",
+        "input_tp": "2.23",
+        "input_lra": "4.50",
+        "input_thresh": "-18.60",
+        "output_i": "-15.96",
+        "output_tp": "-5.27",
+        "output_lra": "4.50",
+        "output_thresh": "-26.10",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:17.173771+00:00"
+    },
+    "audio/tracks/toy-war.m4a": {
+      "source": "audio/tracks/toy-war.m4a",
+      "output": "audio/tracks/toy-war.m4a",
+      "source_sha256": "782f714388dbde66fb6ad7c5daf68cacf3423ca2deaf94a6cf0ae714eb33b8ae",
+      "output_sha256": "12ac8e818eb9137fe758c0676700e15759a5d1419a72650a9f8124e8282d57fb",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.33",
+        "input_tp": "1.89",
+        "input_lra": "3.20",
+        "input_thresh": "-19.40",
+        "output_i": "-15.60",
+        "output_tp": "-2.59",
+        "output_lra": "1.90",
+        "output_thresh": "-25.63",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.40"
+      },
+      "result": {
+        "input_i": "-9.24",
+        "input_tp": "1.89",
+        "input_lra": "2.10",
+        "input_thresh": "-19.28",
+        "output_i": "-15.91",
+        "output_tp": "-4.78",
+        "output_lra": "2.20",
+        "output_thresh": "-25.94",
+        "normalization_type": "linear",
+        "target_offset": "-0.09"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:23.002779+00:00"
+    },
+    "audio/tracks/tutorial.m4a": {
+      "source": "audio/tracks/tutorial.m4a",
+      "output": "audio/tracks/tutorial.m4a",
+      "source_sha256": "f5d2c680ee160c20bf44acbb56c0541f42062f13aeb9af2b0fc88fb6f22ff2cc",
+      "output_sha256": "0fc15e1d9ca142832854111085c4571c16dfb7890ee1483531421ea171a1bba1",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.78",
+        "input_tp": "-2.86",
+        "input_lra": "3.20",
+        "input_thresh": "-25.01",
+        "output_i": "-15.16",
+        "output_tp": "-2.57",
+        "output_lra": "1.50",
+        "output_thresh": "-25.27",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.84"
+      },
+      "result": {
+        "input_i": "-14.72",
+        "input_tp": "-2.87",
+        "input_lra": "2.80",
+        "input_thresh": "-24.83",
+        "output_i": "-15.93",
+        "output_tp": "-4.09",
+        "output_lra": "2.90",
+        "output_thresh": "-26.05",
+        "normalization_type": "linear",
+        "target_offset": "-0.07"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:25.736282+00:00"
+    },
+    "audio/tracks/unwelcome-school.m4a": {
+      "source": "audio/tracks/unwelcome-school.m4a",
+      "output": "audio/tracks/unwelcome-school.m4a",
+      "source_sha256": "99821548657276cdb1ace163af488625217cb12f531a6cbc0309530c3c0e7962",
+      "output_sha256": "6a117ed911bee2a738c513b509ee4ce840c3b320cf03822e4bcd33f644c0d749",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-7.91",
+        "input_tp": "2.82",
+        "input_lra": "6.70",
+        "input_thresh": "-17.97",
+        "output_i": "-15.10",
+        "output_tp": "-1.50",
+        "output_lra": "4.60",
+        "output_thresh": "-25.12",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.90"
+      },
+      "result": {
+        "input_i": "-7.85",
+        "input_tp": "2.72",
+        "input_lra": "4.20",
+        "input_thresh": "-17.88",
+        "output_i": "-15.94",
+        "output_tp": "-5.37",
+        "output_lra": "4.20",
+        "output_thresh": "-25.96",
+        "normalization_type": "linear",
+        "target_offset": "-0.06"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:31.316467+00:00"
+    },
+    "audio/tracks/wings-of-silence.m4a": {
+      "source": "audio/tracks/wings-of-silence.m4a",
+      "output": "audio/tracks/wings-of-silence.m4a",
+      "source_sha256": "d2b545e8a49f234e42ded9f2d135f5671ccfacc804406a065b2f613ebb88b405",
+      "output_sha256": "53ba4a50920754759f51a9266f4cceaa594facff85cabd7f63cf7b3701294b08",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.45",
+        "input_tp": "2.39",
+        "input_lra": "5.70",
+        "input_thresh": "-19.56",
+        "output_i": "-15.44",
+        "output_tp": "-2.95",
+        "output_lra": "5.40",
+        "output_thresh": "-25.50",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.56"
+      },
+      "result": {
+        "input_i": "-9.40",
+        "input_tp": "2.28",
+        "input_lra": "5.60",
+        "input_thresh": "-19.46",
+        "output_i": "-15.95",
+        "output_tp": "-4.27",
+        "output_lra": "5.70",
+        "output_thresh": "-26.01",
+        "normalization_type": "linear",
+        "target_offset": "-0.05"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-05T19:49:38.332143+00:00"
+    }
+  },
+  "updated_at": "2026-05-05T19:49:38.332279+00:00"
+}

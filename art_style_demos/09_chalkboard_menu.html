@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Style 09 - Chalkboard Menu</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#2b1c12;color:#fff8e7;font-family:"Comic Sans MS","Segoe Print",system-ui,sans-serif}.shop{min-height:100vh;padding:30px;display:grid;grid-template-columns:340px 1fr;gap:24px;background:linear-gradient(#5b3622,#2b1c12)}.board{background:#173b30;border:12px solid #9a633e;border-radius:22px;padding:24px;box-shadow:0 24px 70px #0008}.title{font-size:44px;line-height:1.05;margin:0;color:#fff8e7;text-shadow:2px 2px 0 #000}.chalk{color:#c7f9d4;line-height:1.7}.btn{border:3px solid #fff8e7;background:transparent;color:#fff8e7;border-radius:999px;padding:13px 20px;font-weight:950}.game{position:relative;height:620px;background:#173b30;border:12px solid #9a633e;border-radius:28px;overflow:hidden}.hud{position:absolute;left:24px;top:22px;color:#fff8e7;font-weight:950}.lane{position:absolute;left:50%;top:95px;bottom:90px;width:320px;transform:translateX(-50%);border:3px dashed #fff8e777;border-radius:26px;background:#ffffff08}.hit{position:absolute;left:22%;right:22%;bottom:116px;height:14px;border-radius:999px;background:#fff8e7}.note{position:absolute;width:58px;height:58px;border-radius:50%;background:#ff9aa2;border:4px solid #fff8e7;box-shadow:0 0 0 3px #0002}.n1{left:48%;top:145px}.n2{left:40%;top:280px;background:#ffd166}.n3{left:56%;top:405px;background:#95e1a8}.ticket{margin-top:18px;border-top:3px dashed #fff8e777;padding-top:14px}.bar{height:14px;border:2px solid #fff8e7;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;width:73%;background:#95e1a8}.menu{display:grid;gap:12px}.item{padding:13px;border-bottom:2px dashed #fff8e777}.item.active{color:#ffd166}@media(max-width:900px){.shop{grid-template-columns:1fr}.game{height:520px}}
+</style>
+</head>
+<body>
+<main class="shop">
+<section class="board"><h1 class="title">今日鲜榨<br>黑板菜单</h1><p class="chalk">手绘粉笔风：经营感最强，像小店菜单、每日推荐和顾客留言。适合强化“开店”的温度。</p><button class="btn">写下今日菜单</button><div class="ticket"><b>Today's Special</b><p>草莓鲜果杯 7/10</p><div class="bar"><i></i></div></div></section>
+<section class="game"><div class="hud">SCORE 210980<br>COMBO 77<br>速度 2</div><div class="lane"></div><div class="note n1"></div><div class="note n2"></div><div class="note n3"></div><div class="hit"></div></section>
+<aside class="board" style="grid-column:1/3"><div class="menu"><div class="item active">粉笔小调 / Easy</div><div class="item">放学高峰 / Normal</div><div class="item">夜间菜单 / Hard</div></div></aside>
+</main>
+</body>
+</html>
