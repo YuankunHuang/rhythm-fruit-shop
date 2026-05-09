@@ -727,7 +727,22 @@ html.theme-night .resource-help-list b{color:#fff}
       <p class="small">&#x9047;&#x5230;&#x624b;&#x673a;&#x7aef;&#x65e7;&#x7248;&#x672c;&#x8d44;&#x6e90;&#x3001;&#x6b4c;&#x66f2;&#x63d0;&#x524d;&#x7ed3;&#x7b97;&#x7b49;&#x5f02;&#x5e38;&#x65f6;&#x4f7f;&#x7528;&#xff1b;&#x4e0d;&#x4f1a;&#x6e05;&#x9664;&#x91d1;&#x5e01;&#x548c;&#x8fdb;&#x5ea6;&#x3002;</p>
       <button id="resetProgressButton" class="quiet danger-btn">&#x1f504; &#x91cd;&#x7f6e;&#x5168;&#x90e8;&#x8fdb;&#x5ea6;</button>
     </div>
+    <div class="settings-section settings-danger hidden" id="settingsAbandonSection">
+      <button id="settingsAbandonButton" class="quiet danger-btn">&#x653e;&#x5f03;&#x4eca;&#x5929;</button>
+      <p class="small">&#x8fd4;&#x56de;&#x4e3b;&#x754c;&#x9762;&#xff0c;&#x4eca;&#x5929;&#x7684;&#x8fdb;&#x5ea6;&#x5c06;&#x5168;&#x90e8;&#x4e22;&#x5931;&#x3002;</p>
+    </div>
     <div class="panel-actions"><button id="settingsBackButton" class="secondary">&#x8fd4;&#x56de;</button></div>
+  </div>
+  <div id="trackDiffPanel" class="panel hidden">
+    <p class="eyebrow" id="trackDiffEyebrow">VIP &#x7279;&#x6b8a;&#x4e8b;&#x4ef6;</p>
+    <h1 id="trackDiffSongTitle">&#x9009;&#x62e9;&#x96be;&#x5ea6;</h1>
+    <p class="subtitle" id="trackDiffArtist"></p>
+    <p class="small" id="trackDiffHint">&#x96be;&#x5ea6;&#x8d8a;&#x9ad8;&#xff0c;&#x6536;&#x76ca;&#x4e0e;&#x53e3;&#x7891;&#x52a0;&#x6210;&#x8d8a;&#x5927;&#xff1b;&#x5931;&#x8bef;&#x4ee3;&#x4ef7;&#x4e5f;&#x8d8a;&#x5927;&#x3002;&#x5b8c;&#x6210;&#x5373;&#x89e3;&#x9501;&#x8be5;&#x66f2;&#x76ee;&#x3002;</p>
+    <div id="trackDiffRow" class="diff-row"></div>
+    <div class="panel-actions">
+      <button id="trackDiffStartButton">&#x5f00;&#x59cb;</button>
+      <button id="trackDiffCancelButton" class="secondary">&#x53d6;&#x6d88;</button>
+    </div>
   </div>
   <div id="resetConfirmModal" class="modal-overlay hidden">
     <div class="modal-card">
@@ -753,7 +768,7 @@ html.theme-night .resource-help-list b{color:#fff}
     <p class="eyebrow">&#x7ec3;&#x4e60;&#x9009;&#x66f2;</p>
     <h1>&#x9009;&#x62e9;&#x66f2;&#x76ee;</h1>
     <p class="subtitle">&#x81ea;&#x7531;&#x8bd5;&#x542c;&#x548c;&#x7ec3;&#x4e60;&#x66f2;&#x76ee;&#xff1b;&#x7ec3;&#x4e60;&#x6a21;&#x5f0f;&#x53ea;&#x8bb0;&#x5f55;&#x8bc4;&#x5206;&#xff0c;&#x4e0d;&#x63a8;&#x8fdb;&#x5e97;&#x94fa;&#x7ecf;&#x8425;&#x3002;</p>
-    <div id="songPreview" class="song-preview"><div id="songCover" class="song-cover"><div id="songCoverLevel" class="chart-level-badge"></div><div class="song-cover-title"><b id="songCoverTitle">Ark Light</b><span id="songCoverMeta">&#x8bd5;&#x542c;&#x51c6;&#x5907;&#x4e2d;</span><div id="songPreviewBadges" class="preview-badges"></div></div></div></div>
+    <div id="songPreview" class="song-preview"><div id="songCover" class="song-cover"><div id="songCoverLevel" class="chart-level-badge"></div><div class="song-cover-title"><b id="songCoverTitle"></b><span id="songCoverMeta"></span><div id="songPreviewBadges" class="preview-badges"></div></div></div></div>
     <div id="songGrid" class="song-grid"></div><div id="diffRow" class="diff-row"></div><div id="songSpeedRow" class="speed-row"></div>
     <div class="panel-actions"><button id="startButton">&#x5f00;&#x59cb;&#x7ec3;&#x4e60;</button><button id="backHomeButton" class="secondary">&#x8fd4;&#x56de;&#x4e3b;&#x754c;&#x9762;</button></div>
     <p class="small">&#x6b63;&#x5f0f;&#x8425;&#x4e1a;&#x8bf7;&#x4ece;&#x4eca;&#x65e5;&#x6392;&#x73ed;&#x8fdb;&#x5165;&#xff1b;&#x8fd9;&#x91cc;&#x7528;&#x4e8e;&#x6d4b;&#x8bd5;&#x8c31;&#x9762;&#x3001;&#x901f;&#x5ea6;&#x548c;&#x96be;&#x5ea6;&#x624b;&#x611f;&#x3002;</p>
@@ -773,6 +788,6 @@ html.theme-night .resource-help-list b{color:#fff}
 (function(){try{var d={sessionId:'ae9c9d',runId:'pre-fix',hypothesisId:'H1',location:'index.html:inline-bootstrap',message:'before ES module load',data:{protocol:String(location.protocol),origin:String(location.origin||'null'),moduleSrc:'src/main.js'},timestamp:Date.now()};fetch('http://127.0.0.1:7744/ingest/52e4e899-f2e1-461f-9a1d-e9b76cbac13b',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'ae9c9d'},body:JSON.stringify(d)}).catch(function(){})}catch(_){}})();
 // #endregion
 </script>
-<script type="module" src="src/main.js?v=2026-05-05b"></script>
+<script type="module" src="src/main.js?v=2026-05-09b"></script>
 </body>
 </html>

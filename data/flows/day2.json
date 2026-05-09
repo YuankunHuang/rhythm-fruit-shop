@@ -1,0 +1,187 @@
+{
+  "id": "day2",
+  "title": "第2天",
+  "slots": ["day"],
+  "menuIds": ["grapeSmoothie"],
+  "unlocks": [
+    { "songId": "drama", "conditions": { "complete": true } }
+  ],
+  "phases": [
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "柚子", "text": "今天主打葡萄冰沙。厚一点，不要打太碎。" },
+        { "speaker": "你", "text": "……明白。" },
+        { "speaker": "柚子", "text": "昨天算及格了。继续。" },
+        { "speaker": "", "text": "她把调试单压在台面上，走了。" }
+      ]
+    },
+    {
+      "id": "visit_ashen",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "门开了。戴眼镜，指甲剪得很短，手机掌心朝下拿着。" },
+        { "speaker": "阿晟", "text": "葡萄冰沙有吗。" },
+        { "speaker": "你", "text": "有。" },
+        { "speaker": "阿晟", "text": "最稠的那种。打完之后，吸管要能感觉到阻力。" },
+        { "speaker": "你", "text": "……我尽量。" },
+        { "speaker": "阿晟", "text": "能打包吗。" },
+        { "speaker": "你", "text": "能，纸杯。" },
+        { "speaker": "阿晟", "text": "好。" },
+        { "speaker": "", "text": "他站在吧台前，没有坐。把手机屏朝下扣在台面上，然后不动了。" },
+        { "speaker": "你", "text": "在等人？" },
+        { "speaker": "阿晟", "text": "等电话。" },
+        { "speaker": "", "text": "停了一下。" },
+        { "speaker": "阿晟", "text": "……不算等人。" },
+        { "speaker": "", "text": "你开始做。榨汁机响了一会儿。" },
+        { "speaker": "阿晟", "text": "冰少一点。" },
+        { "speaker": "你", "text": "已经少了。" },
+        { "speaker": "阿晟", "text": "再少。冰多了以后稠度会——" },
+        { "speaker": "", "text": "他停了一下，像在审阅自己刚才说的词。" },
+        { "speaker": "阿晟", "text": "……会失准。" },
+        { "speaker": "订单", "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>最稠 · 打包 · 等一个不确定会来的电话</span></div>", "action": "startService" }
+      ]
+    },
+    {
+      "id": "service_ashen",
+      "type": "service",
+      "songId": "grape_smoothie_still",
+      "menuId": "grapeSmoothie",
+      "slotId": "day"
+    },
+    {
+      "id": "after_ashen",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "阿晟", "text": "有实感。" },
+            { "speaker": "", "text": "他扫码，把找零的几枚硬币放在吧台上，按大小排成一行——一块、五毛、一毛——用手指从大到小数了一遍，才收进口袋。" },
+            { "speaker": "", "text": "（……）" },
+            { "speaker": "阿晟", "text": "（没抬头）不习惯的话不用理解。" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "阿晟", "text": "差一点。" },
+            { "speaker": "", "text": "他接过去，吸了一口，停了一下。" },
+            { "speaker": "阿晟", "text": "稠度在这里——" },
+            { "speaker": "", "text": "他在空中比了一个说不清是什么的手势，然后放下。" },
+            { "speaker": "阿晟", "text": "下次再调。" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "阿晟", "text": "冰多了。" },
+            { "speaker": "你", "text": "……抱歉。" },
+            { "speaker": "阿晟", "text": "不是批评。就是失准了。" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "", "text": "他拿起纸杯，看了你一眼，点了下头，往外走。" },
+        { "speaker": "", "text": "到门口，手机响了。他接起来，声音压得很低，出去了。" },
+        { "speaker": "", "text": "他喝没喝，你不知道。" }
+      ]
+    },
+    {
+      "id": "visit_linxiaomo",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "书包上挂着七八个小挂件，叮叮当当的。比上次多了几个，颜色也不一样了。" },
+        { "speaker": "林小末", "text": "还是柠檬水，最便宜那种。" },
+        { "speaker": "你", "text": "还得留钱坐车？" },
+        { "speaker": "林小末", "text": "（愣了一下）你记得啊。" },
+        { "speaker": "你", "text": "说过两次了。" },
+        { "speaker": "林小末", "text": "哦。" },
+        { "speaker": "", "text": "她把书包放下来，坐在吧台前。那些挂件碰到椅背上，响了一声。" },
+        { "speaker": "你", "text": "挂件换了？" },
+        { "speaker": "林小末", "text": "嗯，换了几个。" },
+        { "speaker": "你", "text": "哪里买的。" },
+        { "speaker": "林小末", "text": "捡的，或者别人不要的。" },
+        { "speaker": "", "text": "她说得很自然，翻了翻书包盖上的一个小琥珀色挂件，里面有一只虫子。" },
+        { "speaker": "你", "text": "这个也是捡的？" },
+        { "speaker": "林小末", "text": "（摸了摸）……也是。" },
+        { "speaker": "", "text": "（这个大概不是。）" },
+        { "speaker": "林小末", "text": "你上学的时候有没有哪门课特别不想上？" },
+        { "speaker": "你", "text": "有。" },
+        { "speaker": "林小末", "text": "哪门。" },
+        { "speaker": "你", "text": "数学。" },
+        { "speaker": "林小末", "text": "为什么不喜欢？" },
+        { "speaker": "你", "text": "……不知道，就是不行。" },
+        { "speaker": "林小末", "text": "（想了一下）我知道我哪门不行，但我知道问题出在哪——就是写不出来。" },
+        { "speaker": "订单", "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 知道对在哪但写不出来</span></div>", "action": "startService" }
+      ]
+    },
+    {
+      "id": "service_lin",
+      "type": "service",
+      "songId": "lemon_water",
+      "menuId": "",
+      "slotId": "day"
+    },
+    {
+      "id": "after_lin",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "林小末", "text": "比上次好诶。" },
+            { "speaker": "你", "text": "上次不好吗。" },
+            { "speaker": "林小末", "text": "没有，都挺好的，这次更好。" },
+            { "speaker": "", "text": "她喝了一口，顿了一下。" },
+            { "speaker": "林小末", "text": "老师说「知道」和「能做到」是一回事，但感觉不一样吧。" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "林小末", "text": "嗯，能喝。" },
+            { "speaker": "", "text": "她喝了一口，把吸管戳进去转了两圈。" },
+            { "speaker": "林小末", "text": "下周有个补考，不难，就是烦。" },
+            { "speaker": "你", "text": "考什么？" },
+            { "speaker": "林小末", "text": "数学，会的，就是上次写漏了一步。" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "林小末", "text": "今天有点淡？" },
+            { "speaker": "你", "text": "……对不起。" },
+            { "speaker": "林小末", "text": "没事儿。也许是我今天嘴不对。" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "", "text": "她好像没意识到刚才说了什么，已经开始看手机了。" },
+        { "speaker": "林小末", "text": "（喝完了，站起来）好了，走了，还有作业没写。" },
+        { "speaker": "你", "text": "补考加油。" },
+        { "speaker": "林小末", "text": "嗯，不难的。" },
+        { "speaker": "", "text": "她走了，挂件叮叮当当消失在门外。" },
+        { "speaker": "", "text": "「知道对在哪，但写不出来」——这句话放在那里，你没有时间细想，窗外的天已经暗下去一点了。" },
+        { "speaker": "柚子", "text": "（从后厨探头）走了？" },
+        { "speaker": "你", "text": "走了。" },
+        { "speaker": "柚子", "text": "今天不错。" },
+        { "speaker": "", "text": "（就这么一句。）" },
+        { "speaker": "系统", "text": "葡萄汁的颜色在光里深了一层，你把机器擦干净，转身关灯。", "action": "settlement" }
+      ]
+    },
+    {
+      "id": "settle",
+      "type": "settlement"
+    }
+  ]
+}

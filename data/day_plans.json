@@ -1,6 +1,6 @@
 {
-  "$schema": "per-day plan + per-day song unlock conditions v1",
-  "firstDaySongs": ["open_the_fruit_stand!", "seeker"],
+  "$schema": "per-day plan + per-day song unlock conditions v2",
+  "firstDaySongs": ["open_the_fruit_stand!"],
   "plans": [
     { "day": 1,  "slots": ["day"],                  "menuIds": ["fruitCup"] },
     { "day": 2,  "slots": ["day"],                  "menuIds": ["grapeSmoothie"] },
@@ -14,16 +14,15 @@
     { "day": 10, "slots": ["day", "dusk", "night"], "menuIds": ["fruitCup", "rushBox", "criticSpecial"] }
   ],
   "unlocks": [
-    { "day": 1,  "songId": "open_the_fruit_stand!", "conditions": { "complete": true } },
-    { "day": 1,  "songId": "seeker",                "conditions": { "complete": true } },
-    { "day": 2,  "songId": "drama",                 "conditions": { "complete": true } },
-    { "day": 3,  "songId": "please",                "conditions": { "complete": true, "best": 76, "missMax": 16 } },
-    { "day": 4,  "songId": "night_of_fire",         "conditions": { "complete": true, "best": 78, "missMax": 16 } },
-    { "day": 5,  "songId": "purple_passion",        "conditions": { "complete": true, "best": 80, "missMax": 14 } },
-    { "day": 6,  "songId": "grafiore",              "conditions": { "complete": true, "best": 82, "missMax": 14 } },
-    { "day": 7,  "songId": "toy_war",               "conditions": { "complete": true, "best": 84, "missMax": 12 } },
-    { "day": 8,  "songId": "ark_light",             "conditions": { "complete": true, "best": 84, "missMax": 12 } },
-    { "day": 9,  "songId": "faraway",               "conditions": { "complete": true, "best": 86, "missMax": 10 } },
-    { "day": 10, "songId": "beethoven",             "conditions": { "complete": true, "best": 86, "missMax": 10 } }
+    { "day": 4,  "songId": "unwelcome_school", "conditions": { "via": "track_event" } },
+    { "day": 4,  "songId": "seeker",           "conditions": { "via": "track_event" } },
+    { "day": 5,  "songId": "drama",            "conditions": { "via": "track_event" } },
+    { "day": 6,  "songId": "purple_passion",   "conditions": { "via": "track_event" } },
+    { "day": 6,  "songId": "grafiore",         "conditions": { "via": "track_event" } },
+    { "day": 7,  "songId": "please",           "conditions": { "via": "track_event" } },
+    { "day": 7,  "songId": "night_of_fire",    "conditions": { "via": "track_event" } },
+    { "day": 8,  "songId": "ark_light",        "conditions": { "via": "track_event" } },
+    { "day": 9,  "songId": "faraway",          "conditions": { "via": "track_event" } },
+    { "day": 10, "songId": "beethoven",        "conditions": { "via": "track_event" } }
   ]
 }

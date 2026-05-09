@@ -200,7 +200,7 @@ def display_path(path: Path) -> str:
         return str(path)
 
 
-def import_osu(path: Path, diff: str, audio_key: str | None, charts_dir: Path, index_path: Path, sync: bool) -> Path:
+def import_osu(path: Path, diff: str, audio_key: str | None, charts_dir: Path, songs_path: Path, sync: bool) -> Path:
     if diff not in CHART_KEYS:
         raise RuntimeError(f"Unknown chart key `{diff}`. Expected one of: {', '.join(CHART_KEYS)}")
     sections, source_name = read_sections(path)
@@ -226,7 +226,7 @@ def import_osu(path: Path, diff: str, audio_key: str | None, charts_dir: Path, i
     payload = merge_chart(chart_path, song_key, diff, beats, downbeats, notes)
     chart_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if sync:
-        sync_to_game(charts_dir, index_path)
+        sync_to_game(charts_dir, songs_path)
 
     title = metadata.get("TitleUnicode") or metadata.get("Title") or path.stem
     final_notes = payload["charts"][diff]
@@ -251,12 +251,12 @@ def main() -> None:
     parser.add_argument("--difficulty", choices=CHART_KEYS, default="expert")
     parser.add_argument("--audio-key", help="Project audio key, for example audio/tracks/drama.m4a")
     parser.add_argument("--charts-dir", type=Path, default=ROOT / "charts")
-    parser.add_argument("--index", type=Path, default=ROOT / "index.html")
+    parser.add_argument("--songs", type=Path, default=ROOT / "data" / "songs.json")
     parser.add_argument("--no-sync", action="store_true", help="Only write charts/*.json; do not refresh manifest/song metadata")
     args = parser.parse_args()
 
     osu_path = args.osu if args.osu.is_absolute() else ROOT / args.osu
-    import_osu(osu_path, args.difficulty, args.audio_key, args.charts_dir, args.index, not args.no_sync)
+    import_osu(osu_path, args.difficulty, args.audio_key, args.charts_dir, args.songs, not args.no_sync)
 
 
 if __name__ == "__main__":

@@ -82,3 +82,11 @@ export const slotUnlockDay = (slotId) => {
   const p = GameData.dayPlans.find(x => (x.slots || []).includes(slotId));
   return p ? p.day : 1;
 };
+
+export async function loadDayFlow(day) {
+  try {
+    const res = await fetch(versionedUrl(`data/flows/day${day}.json`), { cache: 'reload' });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}

@@ -1,11 +1,95 @@
 {
   "charts": [
     {
+      "id": "citrus_fizz",
+      "type": "service",
+      "title": "Citrus Fizz",
+      "song": "audio/service/citrus_fizz.m4a",
+      "file": "service/citrus-fizz.json"
+    },
+    {
+      "id": "fresh_orange_juice",
+      "type": "service",
+      "title": "Fresh Orange Juice",
+      "song": "audio/service/fresh_orange_juice.m4a",
+      "file": "service/fresh-orange-juice.json"
+    },
+    {
+      "id": "fruit_cup_quiet",
+      "type": "service",
+      "title": "Fruit Cup Quiet",
+      "song": "audio/service/fruit_cup_quiet.m4a",
+      "file": "service/fruit-cup-quiet.json"
+    },
+    {
+      "id": "fruit_cup",
+      "type": "service",
+      "title": "Fruit Cup",
+      "song": "audio/service/fruit_cup.m4a",
+      "file": "service/fruit-cup.json"
+    },
+    {
+      "id": "fruit_platter",
+      "type": "service",
+      "title": "Fruit Platter",
+      "song": "audio/service/fruit_platter.m4a",
+      "file": "service/fruit-platter.json"
+    },
+    {
+      "id": "grape_smoothie_afterglow",
+      "type": "service",
+      "title": "Grape Smoothie Afterglow",
+      "song": "audio/service/grape_smoothie_afterglow.m4a",
+      "file": "service/grape-smoothie-afterglow.json"
+    },
+    {
+      "id": "grape_smoothie_smolder",
+      "type": "service",
+      "title": "Grape Smoothie Smolder",
+      "song": "audio/service/grape_smoothie_smolder.m4a",
+      "file": "service/grape-smoothie-smolder.json"
+    },
+    {
+      "id": "grape_smoothie_still",
+      "type": "service",
+      "title": "Grape Smoothie Still",
+      "song": "audio/service/grape_smoothie_still.m4a",
+      "file": "service/grape-smoothie-still.json"
+    },
+    {
+      "id": "hot_orange_juice",
+      "type": "service",
+      "title": "Hot Orange Juice",
+      "song": "audio/service/hot_orange_juice.m4a",
+      "file": "service/hot-orange-juice.json"
+    },
+    {
+      "id": "lemon_water_light",
+      "type": "service",
+      "title": "Lemon Water Light",
+      "song": "audio/service/lemon_water_light.m4a",
+      "file": "service/lemon-water-light.json"
+    },
+    {
       "id": "lemon_water",
       "type": "service",
       "title": "Lemon Water",
       "song": "audio/service/lemon_water.m4a",
       "file": "service/lemon_water.json"
+    },
+    {
+      "id": "lychee_juice",
+      "type": "service",
+      "title": "Lychee Juice",
+      "song": "audio/service/lychee_juice.m4a",
+      "file": "service/lychee-juice.json"
+    },
+    {
+      "id": "warm_lemon_water",
+      "type": "service",
+      "title": "Warm Lemon Water",
+      "song": "audio/service/warm_lemon_water.m4a",
+      "file": "service/warm-lemon-water.json"
     },
     {
       "id": "ark_light",
