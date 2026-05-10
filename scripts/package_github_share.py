@@ -473,8 +473,8 @@ def patch_song_cover_lookup(target: Path, mapping: dict[str, str]) -> None:
         js = js.replace("function songByline(", lookup + "\nfunction songByline(", 1)
 
     js = re.sub(
-        r"function songSnapshot\(s\)\{return versionedUrl\(`assets/songs/\$\{s\.id\}/cover\.(?:png|webp)`\)\}",
-        "function songSnapshot(s){return versionedUrl(SONG_COVERS[s.id]||`assets/songs/${s.id}/cover.webp`)}",
+        r"function songSnapshot\(s\)\{return s\.cover\?versionedUrl\(s\.cover\):''\}",
+        "function songSnapshot(s){const c=SONG_COVERS[s.id];return c?versionedUrl(c):(s.cover?versionedUrl(s.cover):'')}",
         js,
         count=1,
     )
