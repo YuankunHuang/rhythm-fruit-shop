@@ -1,1 +1,750 @@
-﻿{"id":"day6","title":"第6天","slots":["day","dusk","night"],"menuIds":["grapeSmoothie","criticSpecial"],"phases":[{"id":"morning","type":"dialogue","nodes":[{"speaker":"柚子","text":"今天黄昏和晚上都有单，撑住。"},{"speaker":"你","text":"……好。"}]},{"id":"visit_guiwei","type":"dialogue","nodes":[{"speaker":"","text":"进来一个女生，手上有洗不干净的颜料——不深，但就是洗不干净。包里有个旧的手绘本，磨得很软了。"},{"speaker":"顾薇","text":"葡萄冰沙，要能看到颗粒，不要打太碎。"},{"speaker":"你","text":"……留点阻力？"},{"speaker":"顾薇","text":"对，太顺滑了反而不安心。"},{"speaker":"","text":"她坐下来，随手把手绘本放在桌上，翻开，拿起笔画了几笔。"},{"speaker":"顾薇","text":"（看了看）这个配色感觉怎样。"},{"speaker":"你","text":"（凑过去）……左边那块有点暗了。"},{"speaker":"顾薇","text":"（停了一下，在空中虚比了一个形状）对，这里。"},{"speaker":"","text":"她把那块颜色调了一下，合上本子，往桌边推了推。"},{"speaker":"顾薇","text":"谢，比想象中有用。"},{"speaker":"你","text":"我也没说什么。"},{"speaker":"顾薇","text":"但你说了「左边暗了」，这已经够了。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e葡萄冰沙\u003c/span\u003e\u003cb\u003e顾薇\u003c/b\u003e\u003cspan\u003e要颗粒 · 手上有颜料 · 配色问了你\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_guiwei","type":"service","songId":"grape_smoothie_smolder","menuId":"grapeSmoothie","slotId":"day"},{"id":"after_guiwei","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"顾薇","text":"颗粒留到了。"},{"speaker":"","text":"她把手绘本翻到新的一页，边喝边画了几条线，没说什么。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"顾薇","text":"差不多。"},{"speaker":"","text":"她喝了一口，把杯子转了一圈看了看颜色。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"顾薇","text":"打碎了。"},{"speaker":"你","text":"……对不起，下次留阻力。"},{"speaker":"顾薇","text":"没关系，我喝完。"}]}],"after":[{"speaker":"","text":"她喝完，把本子收起来。"},{"speaker":"顾薇","text":"最近接了个大单。"},{"speaker":"你","text":"好事吗。"},{"speaker":"顾薇","text":"（想了一下）终于。"},{"speaker":"","text":"说这个词的时候语气不像高兴，更像是某种交代。"},{"speaker":"顾薇","text":"明天还来。"},{"speaker":"你","text":"来吧。"}]},{"id":"track_event_guiwei","type":"track_event","songId":"purple_passion","vipName":"顾薇","nodes_before":[{"speaker":"","text":"她翻开手绘本，找到一页——空白比用过的多。一行很淡的铅笔线。"},{"speaker":"顾薇","text":"这个声音在我脑子里待了好几个月了，但我画不出来。"},{"speaker":"","text":"她用手指在那行线上轻轻划了一下，然后看着你。"},{"speaker":"顾薇","text":"你能打出来吗？不是要你完成它，就是想知道它打出来是什么样子。"}],"branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"","text":"她抬头，手停在笔记本上没动。"},{"speaker":"顾薇","text":"（小声）……就是这个。"},{"speaker":"","text":"她拿起笔，在那行铅笔线旁边写了什么，合上本。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"顾薇","text":"有点像。"},{"speaker":"","text":"她停了一下，用手指虚比了个形状，然后放下。"},{"speaker":"顾薇","text":"再往这个方向。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"顾薇","text":"不是这个。"},{"speaker":"","text":"她说得很平，本子还是开着。"}]}],"after":[{"speaker":"","text":"她把手绘本合上放进包里。手上还有洗不掉的颜色。"},{"speaker":"顾薇","text":"谢谢。回头再来。"},{"speaker":"","text":"走了。那行铅笔线不知道被写了什么，但她的步子比来时快了一点。"}]},{"id":"dusk_intro","type":"dialogue","nodes":[{"speaker":"","text":"黄昏，铺子外面的光压下去，里面反而亮了。"}]},{"id":"visit_laoxian","type":"dialogue","nodes":[{"speaker":"","text":"进来一个男的，背是直的，走路不慌不忙。坐下来之前，没有看椅子。"},{"speaker":"老弦","text":"荔枝汁，只要荔枝，别加别的。"},{"speaker":"你","text":"……荔枝汁我们有，纯的。"},{"speaker":"老弦","text":"好。"},{"speaker":"","text":"他坐下来，把手放在桌上。你注意到他接杯子的方式：四根手指托着，大拇指没有参与。"},{"speaker":"你","text":"大拇指……"},{"speaker":"老弦","text":"（低头看了一眼）习惯了。"},{"speaker":"","text":"停了一下。"},{"speaker":"老弦","text":"以前拉二胡。"},{"speaker":"你","text":"现在不拉了？"},{"speaker":"老弦","text":"现在……录东西。"},{"speaker":"","text":"说这两个字的时候停了一下，像在确认这个说法够不够准。"},{"speaker":"你","text":"录什么。"},{"speaker":"老弦","text":"情感样本。给 AI 学。"},{"speaker":"","text":"停了一下。"},{"speaker":"老弦","text":"它学得很快。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e荔枝汁\u003c/span\u003e\u003cb\u003e老弦\u003c/b\u003e\u003cspan\u003e只要荔枝 · 大拇指没参与 · 它学得很快\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_laoxian","type":"service","songId":"lychee_juice","menuId":"","slotId":"dusk"},{"id":"after_laoxian","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"老弦","text":"准。"},{"speaker":"","text":"他喝了一口，用四根手指慢慢转了转杯子。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"老弦","text":"还行。"},{"speaker":"","text":"他喝了一口，放下来，继续看窗外。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"老弦","text":"偏了一点。"},{"speaker":"你","text":"……偏什么了？"},{"speaker":"老弦","text":"甜了还是淡了——说不准，反正偏了。"}]}],"after":[{"speaker":"","text":"他没有特别要说的，就是坐着。铺子里也没有别的客人。"},{"speaker":"你","text":"今天不想回家？"},{"speaker":"老弦","text":"（停了一下）哪里都差不多。"},{"speaker":"","text":"他说这话的时候不像悲观，只是陈述。"},{"speaker":"老弦","text":"（站起来）喝完了，走了。"},{"speaker":"你","text":"慢走。"}]},{"id":"track_event_laoxian","type":"track_event","songId":"grafiore","vipName":"老弦","nodes_before":[{"speaker":"老弦","text":"我录了几十年，有一段从来没提交过。"},{"speaker":"","text":"他拿杯子的方式还是四根手指——大拇指留着。"},{"speaker":"老弦","text":"不是因为它不好，是因为它太准了——准到我不确定该不该让系统学走。"},{"speaker":"老弦","text":"今晚想听一次。你帮我打吗？"}],"branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"老弦","text":"准。"},{"speaker":"","text":"他把杯子放下，靠着椅背，看着铺子里什么都没说。"},{"speaker":"老弦","text":"……还好没提交。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"老弦","text":"差一点。"},{"speaker":"","text":"他停了一下，用「准不准」来衡量，然后点头。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"老弦","text":"不太准。"},{"speaker":"","text":"他没有不满，只是如实。"},{"speaker":"老弦","text":"可能是我记错了细节。"}]}],"after":[{"speaker":"","text":"他站起来，把杯子两根手指捏着放进垃圾桶——大拇指还是没参与。"},{"speaker":"老弦","text":"那段我备份了。在家里硬盘上。"},{"speaker":"","text":"他没有继续解释，走了。"}]},{"id":"night_intro","type":"dialogue","nodes":[{"speaker":"","text":"夜里，街上安静下来，铺子的灯在外面显得格外亮。"}]},{"id":"visit_laosong","type":"dialogue","nodes":[{"speaker":"","text":"来了一个男的，很晚。西装，领带没系，袖扣松着，像刚从某个场合出来还没来得及脱角色。"},{"speaker":"","text":"他选了个角落的位子，坐下来，没有马上说话。"},{"speaker":"老宋","text":"有什么需要等一下才能好的？"},{"speaker":"你","text":"……评论家特调需要多一点时间。"},{"speaker":"老宋","text":"那就这个。等等没关系，我不急。"},{"speaker":"","text":"他把手机扣在桌上，靠在椅背上，看向门口。那个方向什么都没有。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e评论家特调\u003c/span\u003e\u003cb\u003e老宋\u003c/b\u003e\u003cspan\u003e等等没关系 · 看着门口 · 那个人不来\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_laosong","type":"service","songId":"","menuId":"criticSpecial","slotId":"night"},{"id":"after_laosong","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"你","text":"（端过去）久等了。"},{"speaker":"老宋","text":"没事，我习惯等。"},{"speaker":"","text":"他喝了一口，停了一下，点了点头。没有别的话。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"你","text":"（端过去）等了一会儿。"},{"speaker":"老宋","text":"没事。"},{"speaker":"","text":"他喝了一口，没有评价，就是喝了。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"你","text":"（端过去）……这次不太好，对不起。"},{"speaker":"老宋","text":"没关系，能喝就行。"},{"speaker":"","text":"他喝了一口，没有改变表情。"}]}],"after":[{"speaker":"","text":"停了一下。"},{"speaker":"老宋","text":"我们公司以前……"},{"speaker":"","text":"他停了一下，像是听见了自己刚才说的话。"},{"speaker":"老宋","text":"……以前开会喜欢拖。习惯了。"},{"speaker":"","text":"（……）"},{"speaker":"","text":"他喝完，站起来，整了整袖扣——扣上了，又松开了。"},{"speaker":"老宋","text":"谢谢。"},{"speaker":"你","text":"慢走。"},{"speaker":"柚子","text":"（从后厨探头）都走了？"},{"speaker":"你","text":"都走了。"},{"speaker":"柚子","text":"最后那个走得慢。"},{"speaker":"你","text":"他说他不急。"},{"speaker":"柚子","text":"有些人的「不急」和「没地方去」不太一样。"},{"speaker":"系统","text":"你锁门，街上没什么人了。那个角落还有一点残温，像有人刚刚在那里坐过很久。","action":"settlement"}]},{"id":"settle","type":"settlement"}]}
+﻿{
+  "id": "day6",
+  "title": "第6天",
+  "slots": [
+    "day",
+    "dusk",
+    "night"
+  ],
+  "menuIds": [
+    "grapeSmoothie",
+    "criticSpecial"
+  ],
+  "phases": [
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "柚子进来，扫了一眼台面，没有说话。"
+        },
+        {
+          "speaker": "你",
+          "text": "今天有黄昏和晚上的单——"
+        },
+        {
+          "speaker": "柚子",
+          "text": "知道了。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "",
+          "text": "她去后厨了，没有继续。等了一会儿，没有再出来。"
+        },
+        {
+          "speaker": "",
+          "text": "（窗外的天是白色的，说不上晴还是不晴。今天她话少，有时候这样——她有什么在想，但不说。）"
+        },
+        {
+          "speaker": "柚子",
+          "text": "（隔着门）台面左下角有一块死角，你注意一下。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "……好。"
+        },
+        {
+          "speaker": "",
+          "text": "（她知道每一寸台面在哪里。）"
+        }
+      ]
+    },
+    {
+      "id": "visit_guiwei",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "进来一个女生，手上有洗不干净的颜料——不深，但就是洗不干净。包里有个旧的手绘本，磨得很软了。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "葡萄冰沙，要能看到颗粒，不要打太碎。"
+        },
+        {
+          "speaker": "你",
+          "text": "……留点阻力？"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "对，太顺滑了反而不安心。"
+        },
+        {
+          "speaker": "",
+          "text": "她坐下来，随手把手绘本放在桌上，翻开，拿起笔画了几笔。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "（看了看）这个配色感觉怎样。"
+        },
+        {
+          "speaker": "你",
+          "text": "（凑过去）……左边那块有点暗了。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "（停了一下，在空中虚比了一个形状）对，这里。"
+        },
+        {
+          "speaker": "",
+          "text": "她把那块颜色调了一下，合上本子，往桌边推了推。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "谢，比想象中有用。"
+        },
+        {
+          "speaker": "你",
+          "text": "我也没说什么。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "但你说了「左边暗了」，这已经够了。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>顾薇</b><span>要颗粒 · 手上有颜料 · 配色问了你</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_guiwei",
+      "type": "service",
+      "songId": "grape_smoothie_smolder",
+      "menuId": "grapeSmoothie",
+      "slotId": "day"
+    },
+    {
+      "id": "after_guiwei",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "颗粒留到了。"
+            },
+            {
+              "speaker": "",
+              "text": "她把手绘本翻到新的一页，边喝边画了几条线，没说什么。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "差不多。"
+            },
+            {
+              "speaker": "",
+              "text": "她喝了一口，把杯子转了一圈看了看颜色。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "打碎了。"
+            },
+            {
+              "speaker": "你",
+              "text": "……对不起，下次留阻力。"
+            },
+            {
+              "speaker": "顾薇",
+              "text": "没关系，我喝完。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "她喝完，把本子收起来。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "最近接了个大单。"
+        },
+        {
+          "speaker": "你",
+          "text": "好事吗。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "（想了一下）终于。"
+        },
+        {
+          "speaker": "",
+          "text": "说这个词的时候语气不像高兴，更像是某种交代。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "明天还来。"
+        },
+        {
+          "speaker": "你",
+          "text": "来吧。"
+        }
+      ]
+    },
+    {
+      "id": "track_event_guiwei",
+      "type": "track_event",
+      "songId": "purple_passion",
+      "vipName": "顾薇",
+      "nodes_before": [
+        {
+          "speaker": "",
+          "text": "她翻开手绘本，找到一页——空白比用过的多。一行很淡的铅笔线。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "这个声音在我脑子里待了好几个月了，但我画不出来。"
+        },
+        {
+          "speaker": "",
+          "text": "她用手指在那行线上轻轻划了一下，然后看着你。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "你能打出来吗？不是要你完成它，就是想知道它打出来是什么样子。"
+        }
+      ],
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "她抬头，手停在笔记本上没动。"
+            },
+            {
+              "speaker": "顾薇",
+              "text": "（小声）……就是这个。"
+            },
+            {
+              "speaker": "",
+              "text": "她拿起笔，在那行铅笔线旁边写了什么，合上本。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "有点像。"
+            },
+            {
+              "speaker": "",
+              "text": "她停了一下，用手指虚比了个形状，然后放下。"
+            },
+            {
+              "speaker": "顾薇",
+              "text": "再往这个方向。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "不是这个。"
+            },
+            {
+              "speaker": "",
+              "text": "她说得很平，本子还是开着。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "她把手绘本合上放进包里。手上还有洗不掉的颜色。"
+        },
+        {
+          "speaker": "顾薇",
+          "text": "谢谢。回头再来。"
+        },
+        {
+          "speaker": "",
+          "text": "走了。那行铅笔线不知道被写了什么，但她的步子比来时快了一点。"
+        }
+      ]
+    },
+    {
+      "id": "dusk_intro",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "黄昏，铺子外面的光压下去，里面反而亮了。"
+        }
+      ]
+    },
+    {
+      "id": "visit_laoxian",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "进来一个男的，背是直的，走路不慌不忙。坐下来之前，没有看椅子。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "荔枝汁，只要荔枝，别加别的。"
+        },
+        {
+          "speaker": "你",
+          "text": "……荔枝汁我们有，纯的。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "好。"
+        },
+        {
+          "speaker": "",
+          "text": "他坐下来，把手放在桌上。你注意到他接杯子的方式：四根手指托着，大拇指没有参与。"
+        },
+        {
+          "speaker": "你",
+          "text": "大拇指……"
+        },
+        {
+          "speaker": "老弦",
+          "text": "（低头看了一眼）习惯了。"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "以前拉二胡。"
+        },
+        {
+          "speaker": "你",
+          "text": "现在不拉了？"
+        },
+        {
+          "speaker": "老弦",
+          "text": "现在……录东西。"
+        },
+        {
+          "speaker": "",
+          "text": "说这两个字的时候停了一下，像在确认这个说法够不够准。"
+        },
+        {
+          "speaker": "你",
+          "text": "录什么。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "情感样本。给 AI 学。"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "它学得很快。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>荔枝汁</span><b>老弦</b><span>只要荔枝 · 大拇指没参与 · 它学得很快</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_laoxian",
+      "type": "service",
+      "songId": "lychee_juice",
+      "menuId": "",
+      "slotId": "dusk"
+    },
+    {
+      "id": "after_laoxian",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "准。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，用四根手指慢慢转了转杯子。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "还行。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，放下来，继续看窗外。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "偏了一点。"
+            },
+            {
+              "speaker": "你",
+              "text": "……偏什么了？"
+            },
+            {
+              "speaker": "老弦",
+              "text": "甜了还是淡了——说不准，反正偏了。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "他没有特别要说的，就是坐着。铺子里也没有别的客人。"
+        },
+        {
+          "speaker": "你",
+          "text": "今天不想回家？"
+        },
+        {
+          "speaker": "老弦",
+          "text": "（停了一下）哪里都差不多。"
+        },
+        {
+          "speaker": "",
+          "text": "他说这话的时候不像悲观，只是陈述。"
+        },
+        {
+          "speaker": "",
+          "text": "他抬头看了一眼铺子，然后回到了杯子上。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "这里好在安静。"
+        },
+        {
+          "speaker": "你",
+          "text": "好几个客人来就是因为这个。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "（点头）嗯。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "（站起来）喝完了，走了。"
+        },
+        {
+          "speaker": "你",
+          "text": "慢走。"
+        }
+      ]
+    },
+    {
+      "id": "track_event_laoxian",
+      "type": "track_event",
+      "songId": "grafiore",
+      "vipName": "老弦",
+      "nodes_before": [
+        {
+          "speaker": "老弦",
+          "text": "我录了几十年，有一段从来没提交过。"
+        },
+        {
+          "speaker": "",
+          "text": "他拿杯子的方式还是四根手指——大拇指留着。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "不是因为它不好，是因为它太准了——准到我不确定该不该让系统学走。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "今晚想听一次。你帮我打吗？"
+        }
+      ],
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "准。"
+            },
+            {
+              "speaker": "",
+              "text": "他把杯子放下，靠着椅背，看着铺子里什么都没说。"
+            },
+            {
+              "speaker": "老弦",
+              "text": "……还好没提交。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "差一点。"
+            },
+            {
+              "speaker": "",
+              "text": "他停了一下，用「准不准」来衡量，然后点头。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "老弦",
+              "text": "不太准。"
+            },
+            {
+              "speaker": "",
+              "text": "他没有不满，只是如实。"
+            },
+            {
+              "speaker": "老弦",
+              "text": "可能是我记错了细节。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "他站起来，把杯子两根手指捏着放进垃圾桶——大拇指还是没参与。"
+        },
+        {
+          "speaker": "老弦",
+          "text": "那段我备份了。在家里硬盘上。"
+        },
+        {
+          "speaker": "",
+          "text": "他没有继续解释，走了。"
+        }
+      ]
+    },
+    {
+      "id": "night_intro",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "夜里，街上安静下来，铺子的灯在外面显得格外亮。"
+        }
+      ]
+    },
+    {
+      "id": "visit_laosong",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "来了一个男的，很晚。白衬衫，领带没系，袖子卷着，像刚从某个场合出来还没来得及脱角色。"
+        },
+        {
+          "speaker": "",
+          "text": "他选了个角落的位子，坐下来，没有马上说话。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "有什么需要等一下才能好的？"
+        },
+        {
+          "speaker": "你",
+          "text": "……评论家特调需要多一点时间。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "那就这个。等等没关系，我不急。"
+        },
+        {
+          "speaker": "",
+          "text": "他把手机扣在桌上，靠在椅背上，看向门口。那个方向什么都没有。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>评论家特调</span><b>老宋</b><span>等等没关系 · 看着门口 · 那个人不来</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_laosong",
+      "type": "service",
+      "songId": "wings_of_silence",
+      "menuId": "criticSpecial",
+      "slotId": "night"
+    },
+    {
+      "id": "after_laosong",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）久等了。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "没事，我习惯等。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，停了一下，点了点头。没有别的话。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）等了一会儿。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "没事。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，没有评价，就是喝了。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）……这次不太好，对不起。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "没关系，能喝就行。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，没有改变表情。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "我们公司以前……"
+        },
+        {
+          "speaker": "",
+          "text": "他停了一下，像是听见了自己刚才说的话。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "……以前开会喜欢拖。习惯了。"
+        },
+        {
+          "speaker": "",
+          "text": "（……）"
+        },
+        {
+          "speaker": "",
+          "text": "他喝完，站起来，整了整袖扣——扣上了，又松开了。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "谢谢。"
+        },
+        {
+          "speaker": "你",
+          "text": "慢走。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "（从后厨探头）都走了？",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "都走了。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "最后那个走得慢。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "他说他不急。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "有些人的「不急」和「没地方去」不太一样。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "系统",
+          "text": "你锁门，街上没什么人了。那个角落还有一点残温，像有人刚刚在那里坐过很久。",
+          "action": "settlement"
+        }
+      ]
+    },
+    {
+      "id": "settle",
+      "type": "settlement"
+    }
+  ]
+}

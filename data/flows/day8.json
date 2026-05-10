@@ -1,1 +1,613 @@
-﻿{"id":"day8","title":"第8天","slots":["day","dusk","night"],"menuIds":["fruitCup","rushBox","criticSpecial"],"phases":[{"id":"morning","type":"dialogue","nodes":[{"speaker":"柚子","text":"今天有急速套装，黄昏开始卖。"},{"speaker":"你","text":"什么东西。"},{"speaker":"柚子","text":"快的，打包好的，出品不超过两分钟。有需要的人会懂。"}]},{"id":"visit_fang2","type":"dialogue","nodes":[{"speaker":"","text":"老方进来，没有带袋子，也没有站点马甲。这次只买一份。"},{"speaker":"老方","text":"彩虹果杯，一份就好。"},{"speaker":"你","text":"这次不带走给大家？"},{"speaker":"老方","text":"（停了一下）今天少一个人。"},{"speaker":"你","text":"……"},{"speaker":"老方","text":"没事，大家都有时候单独吃东西。"},{"speaker":"","text":"他坐了下来，把拉链拉到马甲一半的位置，停了。"},{"speaker":"老方","text":"今天……很累。"},{"speaker":"你","text":"什么事。"},{"speaker":"老方","text":"没什么大事，就是很多事。"},{"speaker":"","text":"他没有继续，你也没有再问。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e彩虹鲜果杯\u003c/span\u003e\u003cb\u003e老方\u003c/b\u003e\u003cspan\u003e一份 · 今天少一个人 · 很累\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_fang2","type":"service","songId":"fruit_cup","menuId":"fruitCup","slotId":"day"},{"id":"after_fang2","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"","text":"他接过来，拍了一张，看了一会儿。"},{"speaker":"老方","text":"每次颜色都不一样。"},{"speaker":"","text":"他把手机收起来，开始吃，慢慢的。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"老方","text":"谢啊。"},{"speaker":"","text":"他接过来，没有评价，就是吃了。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"老方","text":"今天的颜色搭得……"},{"speaker":"","text":"他停了一下。"},{"speaker":"老方","text":"……没事，挺好的。"}]}],"after":[{"speaker":"","text":"他吃完，坐了一会儿，没说话，就是坐着。"},{"speaker":"老方","text":"你知道吧——有时候一个人出事，别人就算不说，也都知道。"},{"speaker":"你","text":"……嗯。"},{"speaker":"老方","text":"大家都这样，反正我是这样。"},{"speaker":"","text":"他站起来，往外走，门口的广告牌今天是直的，他路过，没有停。"}]},{"id":"track_event_fang","type":"track_event","songId":"ark_light","vipName":"老方","nodes_before":[{"speaker":"老方","text":"我们站点以前关门前会放一首歌，谁都不说话，就放着。"},{"speaker":"","text":"他把袋子挂在手腕上，没走。"},{"speaker":"老方","text":"后来大家陆续走散了，这个习惯也没了。"},{"speaker":"老方","text":"你能帮我打一次吗，就一次。"}],"branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"","text":"他站在那里，没动。"},{"speaker":"老方","text":"（点头）……对，就是那个。"},{"speaker":"","text":"他扶了一下拉链，到嗓子眼那里停住了。没有说话。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"老方","text":"差不多。"},{"speaker":"","text":"他往外看了一眼。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"老方","text":"跟我记的不太一样。"},{"speaker":"","text":"他没有给你看脸，只是低头拉了拉马甲的拉链。"}]}],"after":[{"speaker":"","text":"他把袋子整了整，往外走。到门口，扶了一下那块广告牌。"},{"speaker":"老方","text":"谢了。"},{"speaker":"","text":"走了。他今天没说「大家都」。"}]},{"id":"dusk_intro","type":"dialogue","nodes":[{"speaker":"","text":"黄昏，外面路上开始堵，外卖的单子多了起来。"}]},{"id":"visit_mianju","type":"dialogue","nodes":[{"speaker":"","text":"黄昏，进来一个女生，非常普通——普通到你后来才意识到，你一直在看她，但说不出她哪里特别。"},{"speaker":"面具","text":"鲜果拼盘，随便搭，你觉得好看就行，我懒得想。"},{"speaker":"你","text":"好看的标准是什么。"},{"speaker":"面具","text":"你的标准，不是我的。"},{"speaker":"","text":"她找了个位子坐下来，拿出手机刷了一下，很快锁屏了。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e鲜果拼盘\u003c/span\u003e\u003cb\u003e面具\u003c/b\u003e\u003cspan\u003e随便搭 · 你的标准 · 很普通\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_mianju","type":"service","songId":"fruit_platter","menuId":"","slotId":"dusk"},{"id":"after_mianju","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"","text":"你端过去，她看了一眼。"},{"speaker":"面具","text":"行。"},{"speaker":"","text":"就一个字，但她真的看了很认真。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"","text":"你端过去，她接过来，看了一眼。"},{"speaker":"面具","text":"嗯。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"","text":"你端过去，她看了一眼，停了一下。"},{"speaker":"面具","text":"不太好看。"},{"speaker":"你","text":"……我搭配没搭好。"},{"speaker":"面具","text":"没关系，我本来也懒得想的。"}]}],"after":[{"speaker":"","text":"她吃着，偶尔看一眼手机，又锁屏。"},{"speaker":"面具","text":"这里晚上来的人多吗。"},{"speaker":"你","text":"不一定，有时候多，有时候少。"},{"speaker":"面具","text":"（看了看四周）……算了，不重要。"},{"speaker":"","text":"她把那半句话吞了回去，站起来。"},{"speaker":"面具","text":"谢。"},{"speaker":"你","text":"慢走。"}]},{"id":"night_intro","type":"dialogue","nodes":[{"speaker":"","text":"夜里，铺子里只剩灯光和你。"}]},{"id":"visit_laosong2","type":"dialogue","nodes":[{"speaker":"","text":"他又来了，同样的角落，同样的姿态。领带还是没系。"},{"speaker":"老宋","text":"还有特调吗。"},{"speaker":"你","text":"有，等一下。"},{"speaker":"老宋","text":"没事，我不急。"},{"speaker":"订单","html":"\u003cdiv class=\"order-card\"\u003e\u003cspan\u003e评论家特调\u003c/span\u003e\u003cb\u003e老宋\u003c/b\u003e\u003cspan\u003e还有话要说 · 还是这个角落\u003c/span\u003e\u003c/div\u003e","action":"startService"}]},{"id":"service_laosong2","type":"service","songId":"","menuId":"criticSpecial","slotId":"night"},{"id":"after_laosong2","type":"score_branch","variable":"customer","branches":[{"min":88,"label":"好评 (\u003e=88)","nodes":[{"speaker":"你","text":"（端过去）好了。"},{"speaker":"老宋","text":"谢谢。"},{"speaker":"","text":"他喝了一口，停了一下，点了点头。没有别的话。"}]},{"min":62,"label":"一般 (\u003e=62)","nodes":[{"speaker":"你","text":"（端过去）久等了。"},{"speaker":"老宋","text":"没事。"}]},{"min":0,"label":"较差","nodes":[{"speaker":"你","text":"（端过去）这次做得不好，对不起。"},{"speaker":"老宋","text":"没关系，能喝就行。我见过比这差很多的事。"}]}],"after":[{"speaker":"老宋","text":"有一件事……"},{"speaker":"","text":"停了一下，像在决定要不要说下去。"},{"speaker":"老宋","text":"之前在我们公司——"},{"speaker":"","text":"他停了一下，这次没有更正。"},{"speaker":"老宋","text":"有一次，我给一个女生发了裁员通知。项目做了一半，孩子刚生完，贷款还着。"},{"speaker":"","text":"停了一下。"},{"speaker":"老宋","text":"我措辞非常得体，每一个字都在正确的位置上。"},{"speaker":"","text":"（……）"},{"speaker":"老宋","text":"她回了一封邮件，说「好的，收到」。"},{"speaker":"","text":"他喝了一口，放下杯子。"},{"speaker":"老宋","text":"就这些。没有结论。"},{"speaker":"","text":"（……没有结论。你也没有结论。）"},{"speaker":"","text":"他喝完，站起来，把袖扣重新扣好了——这是今晚第一次扣好。"},{"speaker":"老宋","text":"谢谢。晚安。"},{"speaker":"你","text":"晚安。"},{"speaker":"系统","text":"他走了。「好的，收到」五个字在铺子里飘了一会儿，然后消失了。你关了灯，不确定自己该想什么。","action":"settlement"}]},{"id":"settle","type":"settlement"}]}
+﻿{
+  "id": "day8",
+  "title": "第8天",
+  "slots": [
+    "day",
+    "dusk",
+    "night"
+  ],
+  "menuIds": [
+    "fruitCup",
+    "rushBox",
+    "criticSpecial"
+  ],
+  "phases": [
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "柚子",
+          "text": "今天有急速套装，黄昏开始卖。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "你",
+          "text": "什么东西。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "快的，打包好的，出品不超过两分钟。有需要的人会懂。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下，她在切什么，声音很均匀。"
+        },
+        {
+          "speaker": "你",
+          "text": "急速套装……是谁会要？"
+        },
+        {
+          "speaker": "柚子",
+          "text": "有些人来，不是为了坐下来。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "他们拎着事来，拎着事走——坐下来反而更累。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "……那做给他们有意义吗。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "有意义。他们能来，就是意义。",
+          "expr": "relieved"
+        },
+        {
+          "speaker": "",
+          "text": "（你没有回答。她继续切水果，声音还是那么均匀。）"
+        }
+      ]
+    },
+    {
+      "id": "visit_fang2",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "老方进来，没有带袋子，也没有站点马甲。这次只买一份。"
+        },
+        {
+          "speaker": "老方",
+          "text": "彩虹果杯，一份就好。"
+        },
+        {
+          "speaker": "你",
+          "text": "这次不带走给大家？"
+        },
+        {
+          "speaker": "老方",
+          "text": "（停了一下）今天少一个人。"
+        },
+        {
+          "speaker": "你",
+          "text": "……"
+        },
+        {
+          "speaker": "老方",
+          "text": "没事，大家都有时候单独吃东西。"
+        },
+        {
+          "speaker": "",
+          "text": "他坐了下来，把拉链拉到马甲一半的位置，停了。"
+        },
+        {
+          "speaker": "老方",
+          "text": "今天……很累。"
+        },
+        {
+          "speaker": "你",
+          "text": "什么事。"
+        },
+        {
+          "speaker": "老方",
+          "text": "没什么大事，就是很多事。"
+        },
+        {
+          "speaker": "",
+          "text": "他没有继续，你也没有再问。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>彩虹鲜果杯</span><b>老方</b><span>一份 · 今天少一个人 · 很累</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_fang2",
+      "type": "service",
+      "songId": "fruit_cup",
+      "menuId": "fruitCup",
+      "slotId": "day"
+    },
+    {
+      "id": "after_fang2",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "他接过来，拍了一张，看了一会儿。"
+            },
+            {
+              "speaker": "老方",
+              "text": "每次颜色都不一样。"
+            },
+            {
+              "speaker": "",
+              "text": "他把手机收起来，开始吃，慢慢的。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "老方",
+              "text": "谢啊。"
+            },
+            {
+              "speaker": "",
+              "text": "他接过来，没有评价，就是吃了。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "老方",
+              "text": "今天的颜色搭得……"
+            },
+            {
+              "speaker": "",
+              "text": "他停了一下。"
+            },
+            {
+              "speaker": "老方",
+              "text": "……没事，挺好的。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "他吃完，坐了一会儿，没说话，就是坐着。"
+        },
+        {
+          "speaker": "老方",
+          "text": "你知道吧——有时候一个人出事，别人就算不说，也都知道。"
+        },
+        {
+          "speaker": "你",
+          "text": "……嗯。"
+        },
+        {
+          "speaker": "老方",
+          "text": "大家都这样，反正我是这样。"
+        },
+        {
+          "speaker": "",
+          "text": "他站起来，往外走，门口的广告牌今天是直的，他路过，没有停。"
+        }
+      ]
+    },
+    {
+      "id": "track_event_fang",
+      "type": "track_event",
+      "songId": "ark_light",
+      "vipName": "老方",
+      "nodes_before": [
+        {
+          "speaker": "老方",
+          "text": "我们站点以前关门前会放一首歌，谁都不说话，就放着。"
+        },
+        {
+          "speaker": "",
+          "text": "他把袋子挂在手腕上，没走。"
+        },
+        {
+          "speaker": "老方",
+          "text": "后来大家陆续走散了，这个习惯也没了。"
+        },
+        {
+          "speaker": "老方",
+          "text": "你能帮我打一次吗，就一次。"
+        }
+      ],
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "他站在那里，没动。"
+            },
+            {
+              "speaker": "老方",
+              "text": "（点头）……对，就是那个。"
+            },
+            {
+              "speaker": "",
+              "text": "他扶了一下拉链，到嗓子眼那里停住了。没有说话。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "老方",
+              "text": "差不多。"
+            },
+            {
+              "speaker": "",
+              "text": "他往外看了一眼。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "老方",
+              "text": "跟我记的不太一样。"
+            },
+            {
+              "speaker": "",
+              "text": "他没有给你看脸，只是低头拉了拉马甲的拉链。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "他把袋子整了整，往外走。到门口，扶了一下那块广告牌。"
+        },
+        {
+          "speaker": "老方",
+          "text": "谢了。"
+        },
+        {
+          "speaker": "",
+          "text": "走了。他今天没说「大家都」。"
+        }
+      ]
+    },
+    {
+      "id": "dusk_intro",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "黄昏，外面路上开始堵，外卖的单子多了起来。"
+        }
+      ]
+    },
+    {
+      "id": "visit_mianju",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "黄昏，进来一个女生，非常普通——普通到你后来才意识到，你一直在看她，但说不出她哪里特别。"
+        },
+        {
+          "speaker": "面具",
+          "text": "鲜果拼盘，随便搭，你觉得好看就行，我懒得想。"
+        },
+        {
+          "speaker": "你",
+          "text": "好看的标准是什么。"
+        },
+        {
+          "speaker": "面具",
+          "text": "你的标准，不是我的。"
+        },
+        {
+          "speaker": "",
+          "text": "她找了个位子坐下来，拿出手机刷了一下，很快锁屏了。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>鲜果拼盘</span><b>面具</b><span>随便搭 · 你的标准 · 很普通</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_mianju",
+      "type": "service",
+      "songId": "fruit_platter",
+      "menuId": "",
+      "slotId": "dusk"
+    },
+    {
+      "id": "after_mianju",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "你端过去，她看了一眼。"
+            },
+            {
+              "speaker": "面具",
+              "text": "行。"
+            },
+            {
+              "speaker": "",
+              "text": "就一个字，但她真的看了很认真。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "你端过去，她接过来，看了一眼。"
+            },
+            {
+              "speaker": "面具",
+              "text": "嗯。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "你端过去，她看了一眼，停了一下。"
+            },
+            {
+              "speaker": "面具",
+              "text": "不太好看。"
+            },
+            {
+              "speaker": "你",
+              "text": "……我搭配没搭好。"
+            },
+            {
+              "speaker": "面具",
+              "text": "没关系，我本来也懒得想的。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "她吃着，偶尔看一眼手机，又锁屏。"
+        },
+        {
+          "speaker": "",
+          "text": "（你注意到她大概在这里坐了十分钟了——然后意识到你一直在留意她——然后又把这件事忘了。）"
+        },
+        {
+          "speaker": "面具",
+          "text": "这里晚上来的人多吗。"
+        },
+        {
+          "speaker": "你",
+          "text": "不一定，有时候多，有时候少。"
+        },
+        {
+          "speaker": "面具",
+          "text": "（看了看四周）……算了，不重要。"
+        },
+        {
+          "speaker": "",
+          "text": "她把那半句话吞了回去，站起来。"
+        },
+        {
+          "speaker": "面具",
+          "text": "谢。"
+        },
+        {
+          "speaker": "你",
+          "text": "慢走。"
+        },
+        {
+          "speaker": "",
+          "text": "（她走了。你后来想了一下，发现你说不出她今天穿了什么颜色的衣服。）"
+        }
+      ]
+    },
+    {
+      "id": "night_intro",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "夜里，铺子里只剩灯光和你。"
+        }
+      ]
+    },
+    {
+      "id": "visit_laosong2",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "他又来了，同样的角落，同样的姿态。领带还是没系。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "还有特调吗。"
+        },
+        {
+          "speaker": "你",
+          "text": "有，等一下。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "没事，我不急。"
+        },
+        {
+          "speaker": "订单",
+          "html": "<div class=\"order-card\"><span>评论家特调</span><b>老宋</b><span>还有话要说 · 还是这个角落</span></div>",
+          "action": "startService"
+        }
+      ]
+    },
+    {
+      "id": "service_laosong2",
+      "type": "service",
+      "songId": "faraway",
+      "menuId": "criticSpecial",
+      "slotId": "night"
+    },
+    {
+      "id": "after_laosong2",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）好了。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "谢谢。"
+            },
+            {
+              "speaker": "",
+              "text": "他喝了一口，停了一下，点了点头。没有别的话。"
+            }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）久等了。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "没事。"
+            }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            {
+              "speaker": "你",
+              "text": "（端过去）这次做得不好，对不起。"
+            },
+            {
+              "speaker": "老宋",
+              "text": "没关系，能喝就行。我见过比这差很多的事。"
+            }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "老宋",
+          "text": "有一件事……"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下，像在决定要不要说下去。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "之前在我们公司——"
+        },
+        {
+          "speaker": "",
+          "text": "他停了一下，这次没有更正。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "有一次，我给一个女生发了裁员通知。项目做了一半，孩子刚生完，贷款还着。"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "我措辞非常得体，每一个字都在正确的位置上。"
+        },
+        {
+          "speaker": "",
+          "text": "（……）"
+        },
+        {
+          "speaker": "老宋",
+          "text": "她回了一封邮件，说「好的，收到」。"
+        },
+        {
+          "speaker": "",
+          "text": "他喝了一口，放下杯子。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "就这些。没有结论。"
+        },
+        {
+          "speaker": "",
+          "text": "（……没有结论。你也没有结论。）"
+        },
+        {
+          "speaker": "",
+          "text": "他喝完，站起来，把袖扣重新扣好了——这是今晚第一次扣好。"
+        },
+        {
+          "speaker": "老宋",
+          "text": "谢谢。晚安。"
+        },
+        {
+          "speaker": "你",
+          "text": "晚安。"
+        },
+        {
+          "speaker": "系统",
+          "text": "他走了。「好的，收到」五个字在铺子里飘了一会儿，然后消失了。你关了灯，不确定自己该想什么。",
+          "action": "settlement"
+        }
+      ]
+    },
+    {
+      "id": "settle",
+      "type": "settlement"
+    }
+  ]
+}
