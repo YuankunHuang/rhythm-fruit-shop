@@ -1,6 +1,6 @@
 // localStorage 命名空间 + 存档读写。结构定义见 docs/save_schema.md。
 
-export const APP_CACHE_VERSION = '2026-05-09b';
+export const APP_CACHE_VERSION = '2026-05-10v';
 export const SAVE_SCHEMA_VERSION = 2;
 export const SAVE_SLOT_COUNT = 3;
 

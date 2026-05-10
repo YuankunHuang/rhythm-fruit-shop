@@ -495,7 +495,7 @@ html.theme-night .home-ledger-card b,html.theme-night .home-asset-card b{color:#
 #menuEditPanel #menuSongGrid .menu-song-cover{width:calc(52px * var(--ui-scale));height:calc(40px * var(--ui-scale))}
 #menuEditPanel #menuSongGrid .song-title{font-size:calc(16px * var(--ui-scale));line-height:1.08;margin-bottom:calc(1px * var(--ui-scale))}
 #menuEditPanel #menuSongGrid .song-icons{font-size:calc(11px * var(--ui-scale));line-height:1.22;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#flowPanel.cinematic{width:100vw;height:100dvh;max-height:none;border:0;border-radius:0;box-shadow:none;background:rgba(6,8,18,.34);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;place-items:center;padding:0;animation:cinematicFade .9s ease both}
+#flowPanel.cinematic{position:fixed;inset:0;width:auto;height:auto;max-height:none;border:0;border-radius:0;box-shadow:none;background:rgba(6,8,18,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;padding:0;animation:cinematicFade .9s ease both;pointer-events:none}
 #flowPanel.cinematic #flowVisual,#flowPanel.cinematic #flowTitle,#flowPanel.cinematic #flowBody,#flowPanel.cinematic .panel-actions{display:none}
 #flowPanel.cinematic #flowBig{font-size:clamp(calc(56px * var(--ui-scale)),13vw,calc(132px * var(--ui-scale)));color:#fff;text-shadow:0 14px 38px rgba(0,0,0,.38);animation:dayTitleFade .85s ease both}
 @keyframes cinematicFade{0%{opacity:0}20%,72%{opacity:1}100%{opacity:0}}
@@ -574,7 +574,8 @@ html.theme-sunny .schedule-supply-row{background:rgba(255,255,255,.58)}
 .vn-character{position:absolute;bottom:calc(130px * var(--ui-scale));height:min(calc(600px * var(--ui-scale)),72dvh);max-width:46vw;object-fit:contain;object-position:bottom center;filter:drop-shadow(0 calc(18px * var(--ui-scale)) calc(28px * var(--ui-scale)) rgba(38,48,68,.22));opacity:0;transform:translateY(calc(18px * var(--ui-scale))) scale(.985);transition:opacity .22s ease,transform .28s ease,filter .22s ease}
 .vn-character.show{opacity:1;transform:translateY(0) scale(1)}
 .vn-character.dim{opacity:.56;filter:drop-shadow(0 calc(14px * var(--ui-scale)) calc(24px * var(--ui-scale)) rgba(38,48,68,.16)) saturate(.86)}
-.vn-character.left{left:max(calc(18px * var(--ui-scale)),env(safe-area-inset-left))}
+.vn-character.left{left:max(calc(18px * var(--ui-scale)),env(safe-area-inset-left));transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}
+.vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}
 .vn-character.right{right:max(calc(18px * var(--ui-scale)),env(safe-area-inset-right))}
 .vn-speaker{display:block;color:#2f7a46;font-weight:1000;font-size:calc(26px * var(--ui-scale));line-height:1.05;margin-bottom:calc(14px * var(--ui-scale))}
 .vn-line{align-self:flex-start;width:100%;font-size:calc(21px * var(--ui-scale));font-weight:850;line-height:1.55;color:#263044;margin:0;text-align:left}
@@ -592,7 +593,7 @@ html.theme-night .vn-narration{color:#b9c7dc}
 html.theme-night .vn-hint,html.theme-night .order-card span{color:#b9c7dc}
 html.theme-sunny .flow-panel.vn-panel{background:rgba(255,252,226,.84)}
 html.theme-sunny .flow-shop-shot{background-image:linear-gradient(140deg,rgba(255,255,255,.10),rgba(255,174,42,.10)),url('assets/game_art/sunny_shop/shop_interior_landscape.png')}
-@media(max-width:760px){.flow-panel.vn-panel{margin-bottom:calc(12px * var(--ui-scale));padding:calc(16px * var(--ui-scale));border-radius:calc(22px * var(--ui-scale))}.vn-panel #flowVisual{height:calc(82px * var(--ui-scale));margin-bottom:calc(10px * var(--ui-scale))}.vn-line{font-size:calc(18px * var(--ui-scale))}.vn-character{bottom:calc(190px * var(--ui-scale));height:min(calc(430px * var(--ui-scale)),58dvh);max-width:54vw}.vn-character.left{left:calc(-36px * var(--ui-scale))}.vn-character.right{right:calc(-42px * var(--ui-scale))}}
+@media(max-width:760px){.flow-panel.vn-panel{margin-bottom:calc(12px * var(--ui-scale));padding:calc(16px * var(--ui-scale));border-radius:calc(22px * var(--ui-scale))}.vn-panel #flowVisual{height:calc(82px * var(--ui-scale));margin-bottom:calc(10px * var(--ui-scale))}.vn-line{font-size:calc(18px * var(--ui-scale))}.vn-character{bottom:calc(190px * var(--ui-scale));height:min(calc(430px * var(--ui-scale)),58dvh);max-width:54vw}.vn-character.left{left:calc(-36px * var(--ui-scale));transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}.vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}.vn-character.right{right:calc(-42px * var(--ui-scale))}}
 .resource-help-list{display:grid;gap:calc(9px * var(--ui-scale));margin:calc(12px * var(--ui-scale)) 0;text-align:left}
 .resource-help-list p{margin:0!important;padding:calc(10px * var(--ui-scale)) calc(12px * var(--ui-scale));border-radius:calc(14px * var(--ui-scale));background:rgba(113,203,135,.08);color:#607086}
 .resource-help-list b{color:#263044}
@@ -730,6 +731,10 @@ html.theme-night .resource-help-list b{color:#fff}
     <div class="settings-section settings-danger hidden" id="settingsAbandonSection">
       <button id="settingsAbandonButton" class="quiet danger-btn">&#x653e;&#x5f03;&#x4eca;&#x5929;</button>
       <p class="small">&#x8fd4;&#x56de;&#x4e3b;&#x754c;&#x9762;&#xff0c;&#x4eca;&#x5929;&#x7684;&#x8fdb;&#x5ea6;&#x5c06;&#x5168;&#x90e8;&#x4e22;&#x5931;&#x3002;</p>
+    </div>
+    <div class="settings-section settings-danger hidden" id="settingsSkipSection">
+      <button id="settingsSkipButton" class="quiet danger-btn">&#x8df3;&#x8fc7;&#xff08;&#x6ee1;&#x5206;&#xff09;</button>
+      <p class="small">&#x4ec5;&#x4f9b;&#x6d4b;&#x8bd5;&#xff1a;&#x4ee5;&#x6ee1;&#x5206;&#x76f4;&#x63a5;&#x7ed3;&#x7b97;&#x5f53;&#x524d;&#x6b4c;&#x66f2;&#x3002;</p>
     </div>
     <div class="panel-actions"><button id="settingsBackButton" class="secondary">&#x8fd4;&#x56de;</button></div>
   </div>

@@ -1,25 +1,88 @@
 {
   "id": "day1",
   "title": "第1天",
-  "slots": ["day"],
-  "menuIds": ["fruitCup"],
-  "unlocks": [
-    { "songId": "open_the_fruit_stand!", "conditions": { "complete": true } },
-    { "songId": "seeker", "conditions": { "complete": true } }
+  "slots": [
+    "day"
+  ],
+  "menuIds": [
+    "fruitCup"
   ],
   "phases": [
     {
       "id": "morning",
       "type": "dialogue",
       "nodes": [
-        { "speaker": "柚子", "text": "冷柜今天还算老实。别高兴太早。" },
-        { "speaker": "你", "text": "……早。" },
-        { "speaker": "柚子", "text": "今天的单子主要是彩虹鲜果杯。之前讲过的，记得吗？" },
-        { "speaker": "你", "text": "大概记得。" },
-        { "speaker": "柚子", "text": "「大概」不行，上了台就是真刀真枪。不过——" },
-        { "speaker": "柚子", "text": "——别创新。熟能生巧，先把标准版做熟。" },
-        { "speaker": "", "text": "她把今天的备料清单拍到台面上，转身去开后厨的灯了。" },
-        { "speaker": "", "text": "（……清单上的字，她写得很快，但每行都是直的。）" }
+        {
+          "speaker": "",
+          "text": "柚子进来，没有寒暄——直接去拍了拍冷柜。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "今天还算老实。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "……早。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "别高兴太早。它通常在你最需要它的时候才发作。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "",
+          "text": "她把备料清单扫了一眼，拍到台面上。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "彩虹鲜果杯。今天只有这个，记得吗？",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "大概记得。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "「大概」不行。",
+          "expr": "annoyed"
+        },
+        {
+          "speaker": "",
+          "text": "停了一下。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "上了台就是真刀真枪。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "昨天练过了——"
+        },
+        {
+          "speaker": "柚子",
+          "text": "昨天是练手。今天是真的。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "",
+          "text": "她转身去开后厨的灯，说话的方向变了，但声音还是平稳的。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "对了——别创新。熟能生巧，先把标准版做熟。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "……好。"
+        },
+        {
+          "speaker": "",
+          "text": "（清单上的字，她写得很快，但每行都是直的。）"
+        }
       ]
     },
     {
@@ -38,37 +101,108 @@
           "min": 88,
           "label": "好评 (>=88)",
           "nodes": [
-            { "speaker": "柚子", "text": "不错。比昨天像样多了。" },
-            { "speaker": "柚子", "text": "颜色层次对了，这个最难。不是技术，是耐心。" }
+            {
+              "speaker": "",
+              "text": "她在台面上停了一下。"
+            },
+            {
+              "speaker": "柚子",
+              "text": "有节奏感了。",
+              "expr": "smile"
+            },
+            {
+              "speaker": "你",
+              "text": "……是吗。"
+            },
+            {
+              "speaker": "柚子",
+              "text": "颜色层次对了，这个最难不是技术，是耐心。",
+              "expr": "smile"
+            },
+            {
+              "speaker": "",
+              "text": "（她没有继续，去整理后厨了。说「有节奏感了」四个字，语气和说「还行」差不多——但不一样。）"
+            }
           ]
         },
         {
           "min": 62,
           "label": "一般 (>=62)",
           "nodes": [
-            { "speaker": "柚子", "text": "还行。" },
-            { "speaker": "柚子", "text": "手稳了，但配比再练练。不着急，第二天都这样。" }
+            {
+              "speaker": "柚子",
+              "text": "还行。",
+              "expr": "deadpan"
+            },
+            {
+              "speaker": "",
+              "text": "停了一下。"
+            },
+            {
+              "speaker": "柚子",
+              "text": "手稳了。配比再练练。不着急，第一天都这样。",
+              "expr": "relieved"
+            }
           ]
         },
         {
           "min": 0,
           "label": "较差",
           "nodes": [
-            { "speaker": "柚子", "text": "慢慢来。" },
-            { "speaker": "你", "text": "……是我节奏没跟上。" },
-            { "speaker": "柚子", "text": "节奏是练出来的，不是找出来的。找，找不到的。" }
+            {
+              "speaker": "柚子",
+              "text": "慢慢来。",
+              "expr": "neutral"
+            },
+            {
+              "speaker": "你",
+              "text": "……我节奏没跟上。"
+            },
+            {
+              "speaker": "柚子",
+              "text": "节奏是练出来的，不是找出来的——找，找不到的。",
+              "expr": "serious"
+            }
           ]
         }
       ],
       "after": [
-        { "speaker": "柚子", "text": "今天就到这里。" },
-        { "speaker": "柚子", "text": "走之前把刀具归位。不是规矩，是明天早上你自己会感谢你自己。" },
-        { "speaker": "你", "text": "……好。" },
-        { "speaker": "柚子", "text": "（去后厨了，停在门边回头）对了——" },
-        { "speaker": "柚子", "text": "你那个「大概」，明天换成「记住了」。" },
-        { "speaker": "你", "text": "……记住了。" },
-        { "speaker": "", "text": "（没再回头）" },
-        { "speaker": "系统", "text": "窗外的天在一点点暗。你把刀具放回了原来的位置，比你以为的更快找到了那个位置。", "action": "settlement" }
+        {
+          "speaker": "柚子",
+          "text": "走之前把刀具归位。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "好。"
+        },
+        {
+          "speaker": "",
+          "text": "她停在门边，回头。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "今天那个「大概」——",
+          "expr": "smile"
+        },
+        {
+          "speaker": "你",
+          "text": "……明天换成「记住了」。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "（停了一下）嗯。",
+          "expr": "smile"
+        },
+        {
+          "speaker": "",
+          "text": "（没再回头。）"
+        },
+        {
+          "speaker": "系统",
+          "text": "窗外的天在一点点暗。你把刀具放回了原来的位置，比你以为的更快找到了那个位置。",
+          "action": "settlement"
+        }
       ]
     },
     {

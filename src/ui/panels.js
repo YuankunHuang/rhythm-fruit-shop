@@ -25,7 +25,7 @@ export function createPanelManager(overlay) {
     screens: [
       'homePanel', 'savePanel', 'flowPanel', 'menuEditPanel',
       'dayOverviewPanel', 'songPanel', 'resultPanel',
-      'upgradePanel', 'settingsPanel',
+      'upgradePanel', 'settingsPanel', 'trackDiffPanel',
     ],
     modals: ['resetConfirmModal', 'resultPhotoModal', 'resourceIntroModal'],
     stack: [],
@@ -37,6 +37,8 @@ export function createPanelManager(overlay) {
     showOnly(id) {
       if (_currentScreen !== id) { _currentScreen = id; _serial++; }
       this.screens.forEach(pid => $(pid)?.classList.toggle('hidden', pid !== id));
+      const shown = $(id);
+      if (shown) shown.scrollTop = 0;
       overlay.classList.add('overlay-shell-active');
       overlay.style.pointerEvents = 'auto';
       const onHome = id === 'homePanel';
@@ -99,6 +101,7 @@ export function createPanelManager(overlay) {
       const el = $(id);
       if (!el) return;
       if (!this.modalStack.includes(id)) this.modalStack.push(id);
+      el.scrollTop = 0;
       el.classList.remove('hidden');
     },
 
