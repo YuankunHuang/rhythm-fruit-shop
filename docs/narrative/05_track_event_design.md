@@ -144,7 +144,7 @@ VIP 提出特殊需求（nodes_before 对话节点）
 | Day 6 | day | 顾薇 | purple_passion | 第 1 次 |
 | Day 6 | dusk | 老弦 | grafiore | 第 1 次 |
 | Day 7 | day | 谢音 | please | 第 1 次 |
-| Day 7 | night | 焰子 | night_of_fire | 第 2 次 |
+| Day 7 | night | 焰子 | lets_drive | 第 2 次 |
 | Day 8 | day | 老方 | ark_light | 第 2 次 |
 | Day 9 | dusk | 远哥 | faraway | 第 1 次 |
 | Day 10 | dusk | 老贝 | beethoven | 第 1 次 |

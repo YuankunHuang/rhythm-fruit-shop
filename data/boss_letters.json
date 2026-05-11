@@ -1,0 +1,78 @@
+{
+  "$schema": "milestone boss letters v1",
+  "letters": [
+    {
+      "id": "boss_welcome_first",
+      "priority": 0,
+      "placement": { "type": "after_day_home" },
+      "delivery": "mailbox_intro",
+      "kicker": "第一封",
+      "title": "新来的都能看见",
+      "milestone": { "type": "no_boss_letters_seen" },
+      "paragraphs": [
+        "孩子们，干得漂亮。咱们店的好名声都飘到八百里外了。不愧是我看上的员工！",
+        "ps.要好好相处哦~"
+      ],
+      "sign": "——老板"
+    },
+    {
+      "id": "boss_rent_eve",
+      "priority": 1,
+      "placement": { "type": "day_start" },
+      "delivery": "plain_read",
+      "kicker": "写两笔",
+      "title": "明天对账",
+      "milestone": { "type": "rent_days_left_eq", "value": 1 },
+      "paragraphs": [
+        "同志们。明天是对账的日子，可马虎不得。收银台的事把好关，平时上班摸鱼的事儿我就不计较了~",
+        "大家都要向新来的小同志学习。就得有这股认真负责的劲头。"
+      ],
+      "sign": "——老板"
+    },
+    {
+      "id": "boss_floor_upgrade",
+      "priority": 2,
+      "placement": { "type": "after_flow_phase", "afterPhaseId": "morning" },
+      "delivery": "postman_knock",
+      "kicker": "挪一挪",
+      "title": "休息室往上",
+      "milestone": { "type": "shop_level_gte", "value": 3 },
+      "paragraphs": [
+        "休息室往上挪半截楼梯。门口招财猫向右平移5厘米。",
+        "有客人反应咱的「陋室」不够敞亮。",
+        "灯带备件在工具箱最底层。别搞得像开演唱会，也别黑成鬼屋，差不多够用就行。"
+      ],
+      "sign": "——老板"
+    },
+    {
+      "id": "boss_rep_growth",
+      "priority": 5,
+      "placement": { "type": "after_day_home" },
+      "delivery": "mailbox_intro",
+      "kicker": "街上有人夸了",
+      "title": "「还行」也是硬通货",
+      "milestone": { "type": "reputation_gte", "value": 50 },
+      "paragraphs": [
+        "我在外头听见有人用「还行」形容咱们店——别嫌词儿土，在街坊嘴里这俩字约等于「下回我还来」。口碑是慢慢垫起来的，不是喊出来的。",
+        "别急着追爆款配方，先让同一杯味道两天别飘。笨功夫做稳了，排队才站得住，不是一阵风。",
+        "最忙那一阵随手记个时间点，省得下周对账时怀疑自己的脑子。需要搭手就跟柚子直说，她嘴快，手也快。"
+      ],
+      "sign": "——老板"
+    },
+    {
+      "id": "boss_rep_hot",
+      "priority": 6,
+      "placement": { "type": "after_day_home" },
+      "delivery": "yuzu_hands_you",
+      "kicker": "队尾见尾",
+      "title": "热闹是体面，也是考试",
+      "milestone": { "type": "reputation_gte", "value": 200 },
+      "paragraphs": [
+        "【店务提醒】现在「排队」俩字能跟咱们招牌绑一块儿了——好事，也是压力。灯越亮，杯沿和台面越要经得起照；别给闲嘴留素材。",
+        "备货按平常多一成；多出来的，送给顺眼的人当人情。短了货你们自己跟客人陪笑，检讨书我这儿管够，但不代写。",
+        "真忙到脚不沾地，给柚子递张条。她数落归数落，捞人比谁都快。内讧比缺货更丢人，记住了。"
+      ],
+      "sign": "——老板"
+    }
+  ]
+}

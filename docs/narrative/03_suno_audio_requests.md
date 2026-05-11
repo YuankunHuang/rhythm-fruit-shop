@@ -204,7 +204,7 @@ BPM 60, late night warmth, retired teacher energy, memory preservation, no vocal
 ### S12 · 柑橘碳酸
 
 **菜单项**：柑橘碳酸  
-**情绪灵感**：焰子（Night of Fire 线）  
+**情绪灵感**：焰子（Lets Drive / 骑手夜线）  
 **目标文件**：`audio/service/citrus_fizz.m4a`  
 **状态**：**已生成** ✓
 

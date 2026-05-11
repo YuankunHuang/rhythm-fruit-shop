@@ -61,6 +61,9 @@ type PlayerSave = {
   learnedSongs: string[];                       // 永远以 firstDaySongs 为基底
   unlockHistory: { day: number; songId: string }[];
 
+  // 老板来信 milestones：读信链走完才写入 id；演出为流程内对白（见 data/boss_letters.json 的 placement）
+  bossLettersSeen: string[];
+
   // 上下文聚光灯（dayIntro 等）；首日上岗练习另有 tutorialSeen.day1ShiftTutorial，并与 firstShiftDone 载入时同步
   tutorialSeen: { [tutorialId: string]: 1 };
 };
@@ -99,6 +102,7 @@ struct FPlayerSave {
     TArray<FSlotEntry>   CurrentMenu;
     TArray<FString>      LearnedSongs;
     TArray<FUnlockEntry> UnlockHistory;
+    TArray<FString>      BossLettersSeen;
     TMap<FName, int32>   TutorialSeen;
 };
 ```

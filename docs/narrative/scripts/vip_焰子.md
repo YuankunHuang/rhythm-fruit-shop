@@ -1,6 +1,6 @@
 # 焰子 · 首次登场对白草稿
 
-> 曲目：*Night of Fire*（Niko，Super Eurobeat，155 BPM）  
+> 剧情特调 / 曲目 id：`lets_drive`（器乐 Demo，`audio/tracks/lets_drive.m4a`，155 BPM 量级）；叙事上客人要的是 **杯中的特调出品** ，不向玩家推销「人声单曲」话术。  
 > 场景：Day 5，夜晚，外卖高峰刚过一半。  
 > 目标：让人记住那只后座上绑着的褪色塑料恐龙，以及她待了三十秒就走的节奏。
 

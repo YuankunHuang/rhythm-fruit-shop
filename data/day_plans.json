@@ -20,7 +20,7 @@
     { "day": 6,  "songId": "purple_passion",   "conditions": { "via": "track_event" } },
     { "day": 6,  "songId": "grafiore",         "conditions": { "via": "track_event" } },
     { "day": 7,  "songId": "please",           "conditions": { "via": "track_event" } },
-    { "day": 7,  "songId": "night_of_fire",    "conditions": { "via": "track_event" } },
+    { "day": 7,  "songId": "lets_drive",    "conditions": { "via": "track_event" } },
     { "day": 8,  "songId": "ark_light",        "conditions": { "via": "track_event" } },
     { "day": 9,  "songId": "faraway",          "conditions": { "via": "track_event" } },
     { "day": 10, "songId": "beethoven",        "conditions": { "via": "track_event" } }

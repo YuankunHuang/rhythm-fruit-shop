@@ -20,6 +20,8 @@ export const GameData = {
   stageLabels: {},
   ambientMusic: { homeLoop: '', subLoop: '' },
 
+  bossLetters: [],
+
   firstDaySongs: [],
   dayPlans: [],
   dayUnlocks: [],
@@ -34,13 +36,14 @@ async function fetchJson(path) {
 }
 
 export async function loadGameData() {
-  const [songs, diffs, menus, shop, plans, prologue] = await Promise.all([
+  const [songs, diffs, menus, shop, plans, prologue, bossLetters] = await Promise.all([
     fetchJson('data/songs.json'),
     fetchJson('data/difficulties.json'),
     fetchJson('data/menu_items.json'),
     fetchJson('data/shop.json'),
     fetchJson('data/day_plans.json'),
     fetchJson('data/dialogue/prologue.json'),
+    fetchJson('data/boss_letters.json'),
   ]);
 
   GameData.songs = songs.songs || [];
@@ -65,6 +68,8 @@ export async function loadGameData() {
   GameData.dayUnlocks = plans.unlocks || [];
 
   GameData.prologue = prologue || GameData.prologue;
+
+  GameData.bossLetters = (bossLetters && bossLetters.letters) || [];
 
   return GameData;
 }

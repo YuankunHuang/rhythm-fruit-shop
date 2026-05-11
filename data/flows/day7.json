@@ -1,4 +1,4 @@
-﻿{
+{
   "id": "day7",
   "title": "第7天",
   "slots": [
@@ -688,12 +688,13 @@
     {
       "id": "track_event_yanzi",
       "type": "track_event",
-      "songId": "night_of_fire",
+      "songId": "lets_drive",
+      "slotId": "night",
       "vipName": "焰子",
       "nodes_before": [
         {
           "speaker": "焰子",
-          "text": "我跑单的时候一直有一首歌，没有歌词，就是那个速度感。"
+          "text": "耳机里一直有这段味儿——引擎嗡嗡的，像在催你往前。路上吵的时候它反而更清楚。"
         },
         {
           "speaker": "",
@@ -701,7 +702,7 @@
         },
         {
           "speaker": "焰子",
-          "text": "我一直想知道它打出来是什么样的。你帮我打一次，我去停一下车，回来再走。"
+          "text": "我想知道它做出来一版特调是什么样的。你去给我出一杯——我去把车停一下，回来再走。"
         }
       ],
       "branches": [
@@ -711,7 +712,7 @@
           "nodes": [
             {
               "speaker": "",
-              "text": "她回来的时候，你刚打完。"
+              "text": "她回来的时候，你这边出品刚收口。"
             },
             {
               "speaker": "焰子",
