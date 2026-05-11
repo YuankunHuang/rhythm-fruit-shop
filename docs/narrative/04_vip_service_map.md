@@ -29,7 +29,7 @@ VIP 的解锁 track（练习模式里的曲目）和服务时的 service 曲是�
 | 面具 | Masquerade | DUSK | 鲜果拼盘 | `fruitPlatter` ★ | **待制作** |
 | 老弦 | Grafiore | DUSK | 荔枝汁 | `lycheeJuice` ★ | **待制作** |
 | 老贝 | Beethoven Virus | NIGHT | 热柠檬水 | `warmLemonWater` ★ | **待制作** |
-| 焰子 | Lets Drive（剧情特调曲目；器乐 Demo） | NIGHT | 柑橘碳酸 | `citrusFizz` | **待制作** |
+| 焰子 | Let's Drive（剧情特调曲目；器乐 Demo） | NIGHT | 柑橘碳酸 | `citrusFizz` | **待制作** |
 | 小兵 | Toy War | NIGHT | 混合鲜果杯（随机） | `fruitCup`（变体） | 共用老方 |
 | 老宋 | Qua Vadis | NIGHT | 慢出品（特调） | `criticSpecial` | **待制作** |
 | 月叔 | Lunatic Sky | NIGHT | 菠萝汁 | `pineappleJuice` ★ | **待制作** |
@@ -384,7 +384,7 @@ elderly chinese man, early 60s, silver-grey hair, wearing glasses, holding or se
 
 ---
 
-### 焰子（Lets Drive / NIGHT）
+### 焰子（Let's Drive / NIGHT）
 
 **视觉记忆点**：头盔挂在手臂上；摩托后座（或背包上）绑着一只褪色的塑料小恐龙  
 **关键服饰**：骑手装备（夹克+骑行裤），头盔在手臂弯里，眼神一直在扫视环境

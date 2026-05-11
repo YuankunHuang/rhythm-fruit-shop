@@ -4,10 +4,11 @@ cd /d "%~dp0"
 
 echo Rhythm Fruit Aim - Convert runtime audio to M4A
 echo.
-echo This converts all non-M4A files under audio\ to loudness-normalized AAC/M4A in place,
-echo removes the old source files after successful conversion,
-echo writes audio\loudness-manifest.json,
-echo then rewrites charts and index metadata to point at the new .m4a files.
+echo This scans every audio\ file and processes only the ones that are missing
+echo from audio\loudness-manifest.json or whose hash no longer matches it
+echo (loudness-normalized AAC/M4A in place, source removed when applicable).
+echo Files already recorded in the manifest are skipped to avoid AAC re-encode loss.
+echo Use --force to re-normalize everything regardless of manifest state.
 echo.
 
 python --version >nul 2>&1

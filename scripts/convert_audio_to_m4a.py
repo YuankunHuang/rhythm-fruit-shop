@@ -37,11 +37,22 @@ def rel(path: Path) -> str:
         return str(path)
 
 
-def audio_files(audio_dir: Path, include_m4a: bool = False) -> list[Path]:
+def audio_files(audio_dir: Path, include_m4a: bool = True) -> list[Path]:
     if not audio_dir.exists():
         return []
     suffixes = RUNTIME_AUDIO_SUFFIXES if include_m4a else SOURCE_AUDIO_SUFFIXES
     return sorted(path for path in audio_dir.rglob("*") if path.is_file() and path.suffix.lower() in suffixes)
+
+
+def record_matches(record: dict | None, src: Path, dst: Path, kbps: int, target: dict) -> bool:
+    """Return True when the manifest record proves dst is already normalized for this src+settings."""
+    if not record or not record.get("normalized"):
+        return False
+    if record.get("target") != target or record.get("kbps") != kbps:
+        return False
+    if src.suffix.lower() == ".m4a" and src == dst:
+        return record.get("output_sha256") == sha256_file(dst)
+    return record.get("source_sha256") == sha256_file(src)
 
 
 def sha256_file(path: Path) -> str:
@@ -248,28 +259,48 @@ def main() -> None:
     parser.add_argument("--audio-dir", type=Path, default=ROOT / "audio")
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--kbps", type=int, default=128)
-    parser.add_argument("--force", action="store_true")
+    parser.add_argument("--force", action="store_true", help="Re-encode + re-normalize every file regardless of manifest state")
     parser.add_argument("--keep-source", action="store_true", help="Keep original non-m4a files after successful conversion")
     parser.add_argument("--no-normalize-audio", action="store_true", help="Skip EBU R128 loudness normalization")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     audio_dir = args.audio_dir if args.audio_dir.is_absolute() else ROOT / args.audio_dir
-    paths = audio_files(audio_dir, include_m4a=args.force)
-    print(f"Audio files to convert: {len(paths)}")
+    paths = audio_files(audio_dir, include_m4a=True)
+    print(f"Audio files scanned: {len(paths)}")
+    manifest_path = audio_dir / LOUDNESS_MANIFEST
+    manifest = load_loudness_manifest(manifest_path)
+    manifest_files = manifest.get("files", {}) if isinstance(manifest.get("files"), dict) else {}
+    normalize = not args.no_normalize_audio
     replacements: dict[str, str] = existing_m4a_replacements(audio_dir)
     loudness_records: list[dict[str, object]] = []
+    processed = skipped = 0
     for src in paths:
         dst = src.with_suffix(".m4a")
         old_rel = rel(src)
         new_rel = rel(dst)
         replacements[old_rel] = new_rel
-        print(f"{old_rel} -> {new_rel}")
+        already_normalized = not args.force and dst.exists() and record_matches(manifest_files.get(new_rel), src, dst, args.kbps, LOUDNORM_TARGET)
         if args.dry_run:
+            verb = "would skip" if already_normalized else "would convert"
+            print(f"  {verb} {new_rel}")
+            if already_normalized:
+                skipped += 1
+            else:
+                processed += 1
             continue
-        record = convert_one(src, dst, args.ffmpeg, args.kbps, args.force, not args.no_normalize_audio)
+        if already_normalized:
+            print(f"  skip {new_rel} (manifest match)")
+            skipped += 1
+            if src != dst and not args.keep_source and src.exists():
+                src.unlink()
+                print(f"  removed {old_rel}")
+            continue
+        print(f"{old_rel} -> {new_rel}")
+        record = convert_one(src, dst, args.ffmpeg, args.kbps, True, normalize)
         if record:
             loudness_records.append(record)
+            processed += 1
         if not args.keep_source and src.exists() and src != dst:
             src.unlink()
             print(f"  removed {old_rel}")
@@ -277,6 +308,7 @@ def main() -> None:
     if not args.dry_run:
         write_loudness_manifest(audio_dir, loudness_records)
         rewrite_references(replacements)
+    print(f"Done. processed={processed} skipped={skipped} total={len(paths)}")
 
 
 if __name__ == "__main__":

@@ -46,7 +46,7 @@
 
 0. 把运行时音频统一为 m4a：
 
-也可以双击 `00_convert_audio_to_m4a.bat`。它会递归转换 `audio/` 下的非 m4a 文件，并重写 `charts/` 与 `index.html` 的音频引用。
+也可以双击 `00_convert_audio_to_m4a.bat`。它扫所有运行时音频（含 `.m4a`），按 `audio/loudness-manifest.json` 的记录跳过已归一化的文件，只处理新加或被外部覆盖过 hash 不一致的；处理完会重写 `charts/` 与 `index.html` 的音频引用。要全量重跑加 `--force`。
 
 1. 把音乐放入 `audio/service/` 或 `audio/tracks/`，例如 `audio/tracks/drama.m4a`。只有这两个目录需要谱面。
 2. 准备 MuG Diffusion 更稳的 WAV 输入：
