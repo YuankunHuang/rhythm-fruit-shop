@@ -377,6 +377,24 @@
       ]
     },
     {
+      "id": "lets_drive",
+      "type": "track",
+      "title": "Lets Drive",
+      "artist": "Demo Audio",
+      "file": "audio/tracks/lets_drive.m4a",
+      "duration": 85.652,
+      "bpm": 155.0,
+      "activeStart": 0.493,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
       "id": "lunatic_sky",
       "title": "Lunatic Sky",
       "artist": "M2U",

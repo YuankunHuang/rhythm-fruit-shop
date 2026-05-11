@@ -32,6 +32,7 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
     learnedSongs: [...initialLearnedSongs],
     unlockHistory: [],
     tutorialSeen: {},
+    bossLettersSeen: [],
   };
 }
 
@@ -56,6 +57,7 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
   const mergedTutorialSeen = { ...asObject(raw.tutorialSeen) };
   const firstShiftDone = !!(raw.firstShiftDone || mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY]);
   if (firstShiftDone && !mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY]) mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY] = 1;
+  const bossLettersSeen = asArray(raw?.bossLettersSeen).filter(x => typeof x === 'string');
   return {
     ...base,
     ...raw,
@@ -65,6 +67,7 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
     learnedSongs: normalizeLearnedSongs(raw, initialLearnedSongs),
     unlockHistory: normalizeUnlockHistory(raw),
     tutorialSeen: mergedTutorialSeen,
+    bossLettersSeen,
   };
 }
 

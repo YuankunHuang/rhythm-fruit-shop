@@ -65,13 +65,14 @@ stateDiagram-v2
     RESUME_COUNTDOWN --> PLAYING : （update 触发，倒数归零）
     RESUME_COUNTDOWN --> PAUSED  : 再次暂停
 
-    ENDED --> HOME       : 回主界面
-    ENDED --> FLOW       : 推进到下一天
-    ENDED --> MENU_EDIT  : 排班（日程模式）
+    ENDED --> HOME       : 回住处 / 结束今天后返回主界面
+    ENDED --> MENU_EDIT  : 排班（日程模式）；日结后不由此进入下一天
     ENDED --> READY      : 重试
     ENDED --> SELECT     : 退出到选曲
     ENDED --> ENDED      : 重来今天（重置后立即触发下一班）
 ```
+
+**备注 — 日与下一天：** 当日经营的 **日结面板**（`resultMode === 'day'`）只提供「回住处」「升级店铺」等；不会在结算页 **`advanceDay()`**。进入下一游戏日须经 **主界面 HOME** →「开始新一天」。
 
 ## C++ 映射
 

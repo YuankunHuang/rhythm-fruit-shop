@@ -23,6 +23,6 @@ imports/
 
 ```text
 audio/service/lemon_water.m4a -> imports/lemon-water/mug/service.osu
-audio/tracks/night of fire.m4a -> imports/night-of-fire/mug/expert.osu
+audio/tracks/lets_drive.m4a -> imports/lets-drive/mug/easy.osz（或与难度同级的 .osu）
 audio/tracks/maidens-capriccio.m4a -> imports/maidens-capriccio/mug/expert.osu
 ```

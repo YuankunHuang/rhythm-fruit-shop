@@ -115,13 +115,13 @@ python scripts\import_all_osu_mania.py
 python scripts\import_all_osu_mania.py --overwrite
 ```
 
-批量导入器按 `audio` 文件 stem 进行匹配，例如 `audio/tracks/night of fire.m4a` 会寻找：
+批量导入器按 `audio` 文件 stem 进行匹配（与 `imports/<stem>/mug/` 目录对应），例如 `audio/tracks/lets_drive.m4a`（曲目 id：`lets_drive`）会寻找：
 
 ```text
-imports/night-of-fire/mug/easy.osu 或 easy.osz
-imports/night-of-fire/mug/normal.osu 或 normal.osz
-imports/night-of-fire/mug/hard.osu 或 hard.osz
-imports/night-of-fire/mug/expert.osu 或 expert.osz
+imports/lets-drive/mug/easy.osu 或 easy.osz
+imports/lets-drive/mug/normal.osu 或 normal.osz
+imports/lets-drive/mug/hard.osu 或 hard.osz
+imports/lets-drive/mug/expert.osu 或 expert.osz
 ```
 
 `audio/service/lemon_water.m4a` 会寻找：
