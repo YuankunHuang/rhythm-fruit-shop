@@ -1107,7 +1107,501 @@
       "normalized": true,
       "kbps": 128,
       "updated_at": "2026-05-05T19:49:38.332143+00:00"
+    },
+    "audio/service/citrus_fizz.m4a": {
+      "source": "audio/service/citrus_fizz.m4a",
+      "output": "audio/service/citrus_fizz.m4a",
+      "source_sha256": "17ac71498294475af15dd40944c4553be088ff46069bd02d9386386e4d427f94",
+      "output_sha256": "2c6ddaa33adadae1027349553b01023c2a54be03d33d2dbf4f0ccff9a19a3ce6",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-13.76",
+        "input_tp": "3.48",
+        "input_lra": "2.40",
+        "input_thresh": "-23.95",
+        "output_i": "-15.62",
+        "output_tp": "-1.50",
+        "output_lra": "1.30",
+        "output_thresh": "-25.73",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.38"
+      },
+      "result": {
+        "input_i": "-13.76",
+        "input_tp": "3.48",
+        "input_lra": "2.40",
+        "input_thresh": "-23.95",
+        "output_i": "-16.00",
+        "output_tp": "-1.50",
+        "output_lra": "1.30",
+        "output_thresh": "-26.11",
+        "normalization_type": "dynamic",
+        "target_offset": "0.00"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:15:53.319628+00:00"
+    },
+    "audio/service/fresh_orange_juice.m4a": {
+      "source": "audio/service/fresh_orange_juice.m4a",
+      "output": "audio/service/fresh_orange_juice.m4a",
+      "source_sha256": "5b14c17aa2b27c4b0cdc6b2dfbd6f97cde12e4a392329e378a29193a5fe87a36",
+      "output_sha256": "caa92ac4308b708591648fa4957b8c0a35b09e3f6218e0f2eb73e507398ea943",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-15.00",
+        "input_tp": "-1.52",
+        "input_lra": "11.40",
+        "input_thresh": "-25.67",
+        "output_i": "-15.37",
+        "output_tp": "-2.68",
+        "output_lra": "5.10",
+        "output_thresh": "-25.81",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.63"
+      },
+      "result": {
+        "input_i": "-15.00",
+        "input_tp": "-1.52",
+        "input_lra": "11.40",
+        "input_thresh": "-25.67",
+        "output_i": "-16.00",
+        "output_tp": "-3.31",
+        "output_lra": "5.10",
+        "output_thresh": "-26.44",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.00"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:15:56.009739+00:00"
+    },
+    "audio/service/fruit_cup.m4a": {
+      "source": "audio/service/fruit_cup.m4a",
+      "output": "audio/service/fruit_cup.m4a",
+      "source_sha256": "10ae927ad8e8aa3338663ca745495c594513bbcf68433f1d6f2a002f2f343ec9",
+      "output_sha256": "44b576c518b8286b06d84b677a2010efe8551f8e6861659e9d4a07970dc19067",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-13.08",
+        "input_tp": "-0.93",
+        "input_lra": "3.50",
+        "input_thresh": "-23.17",
+        "output_i": "-15.19",
+        "output_tp": "-1.50",
+        "output_lra": "3.00",
+        "output_thresh": "-25.24",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.81"
+      },
+      "result": {
+        "input_i": "-13.16",
+        "input_tp": "-1.00",
+        "input_lra": "3.90",
+        "input_thresh": "-23.25",
+        "output_i": "-16.08",
+        "output_tp": "-3.92",
+        "output_lra": "3.90",
+        "output_thresh": "-26.17",
+        "normalization_type": "linear",
+        "target_offset": "0.08"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:15:57.661877+00:00"
+    },
+    "audio/service/fruit_cup_quiet.m4a": {
+      "source": "audio/service/fruit_cup_quiet.m4a",
+      "output": "audio/service/fruit_cup_quiet.m4a",
+      "source_sha256": "ff3084553261c892dad9a6d3104bf72cc3827d43a55444ac6cbe632ca11529be",
+      "output_sha256": "e72c7af0d7e284a4d3a425426749cc6bee27c7e240b0e52923cb922a5579e86c",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.64",
+        "input_tp": "-0.50",
+        "input_lra": "4.50",
+        "input_thresh": "-24.68",
+        "output_i": "-15.09",
+        "output_tp": "-1.85",
+        "output_lra": "4.00",
+        "output_thresh": "-25.16",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.91"
+      },
+      "result": {
+        "input_i": "-14.61",
+        "input_tp": "-0.50",
+        "input_lra": "5.10",
+        "input_thresh": "-24.66",
+        "output_i": "-15.98",
+        "output_tp": "-1.86",
+        "output_lra": "5.10",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.02"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:15:59.578004+00:00"
+    },
+    "audio/service/fruit_platter.m4a": {
+      "source": "audio/service/fruit_platter.m4a",
+      "output": "audio/service/fruit_platter.m4a",
+      "source_sha256": "bb45ff5bb2247ccc19e27bc3691d039051a8c431761d20ba27d3fb0ea47922a4",
+      "output_sha256": "f398697bf685a84aa1d690469db0236523d0d96cdd6d2f9be1df945d49ea9bb1",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-13.87",
+        "input_tp": "-0.09",
+        "input_lra": "3.30",
+        "input_thresh": "-24.16",
+        "output_i": "-16.03",
+        "output_tp": "-2.43",
+        "output_lra": "2.50",
+        "output_thresh": "-26.19",
+        "normalization_type": "dynamic",
+        "target_offset": "0.03"
+      },
+      "result": {
+        "input_i": "-13.73",
+        "input_tp": "-1.62",
+        "input_lra": "2.50",
+        "input_thresh": "-23.89",
+        "output_i": "-15.86",
+        "output_tp": "-3.75",
+        "output_lra": "2.50",
+        "output_thresh": "-26.02",
+        "normalization_type": "linear",
+        "target_offset": "-0.14"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:01.149153+00:00"
+    },
+    "audio/service/grape_smoothie_afterglow.m4a": {
+      "source": "audio/service/grape_smoothie_afterglow.m4a",
+      "output": "audio/service/grape_smoothie_afterglow.m4a",
+      "source_sha256": "5958f668dfb249d2a7c58b75d450dc4c6878c3479795b153033c3600451e9192",
+      "output_sha256": "2eccb01ca7c7519dc4c3a5715dcacf1145e3b2e969dd3f44ad3394c92b809ac3",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-13.78",
+        "input_tp": "-0.58",
+        "input_lra": "6.30",
+        "input_thresh": "-24.26",
+        "output_i": "-15.51",
+        "output_tp": "-2.28",
+        "output_lra": "5.20",
+        "output_thresh": "-25.77",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.49"
+      },
+      "result": {
+        "input_i": "-13.65",
+        "input_tp": "-0.58",
+        "input_lra": "4.70",
+        "input_thresh": "-23.90",
+        "output_i": "-15.86",
+        "output_tp": "-2.80",
+        "output_lra": "4.70",
+        "output_thresh": "-26.11",
+        "normalization_type": "linear",
+        "target_offset": "-0.14"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:02.883792+00:00"
+    },
+    "audio/service/grape_smoothie_smolder.m4a": {
+      "source": "audio/service/grape_smoothie_smolder.m4a",
+      "output": "audio/service/grape_smoothie_smolder.m4a",
+      "source_sha256": "d2924e41dcb980c3242dc9b988003b028a4f10e08ab1c8d7d4fa04ed5bcef236",
+      "output_sha256": "86ce7e22f8ff0421224b36051948d8e2185f66c652541e8c7a252b199a04239c",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.37",
+        "input_tp": "-2.96",
+        "input_lra": "3.70",
+        "input_thresh": "-24.80",
+        "output_i": "-15.62",
+        "output_tp": "-4.56",
+        "output_lra": "3.50",
+        "output_thresh": "-25.91",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.38"
+      },
+      "result": {
+        "input_i": "-14.35",
+        "input_tp": "-3.00",
+        "input_lra": "3.70",
+        "input_thresh": "-24.66",
+        "output_i": "-15.99",
+        "output_tp": "-4.63",
+        "output_lra": "3.70",
+        "output_thresh": "-26.30",
+        "normalization_type": "linear",
+        "target_offset": "-0.01"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:04.573673+00:00"
+    },
+    "audio/service/grape_smoothie_still.m4a": {
+      "source": "audio/service/grape_smoothie_still.m4a",
+      "output": "audio/service/grape_smoothie_still.m4a",
+      "source_sha256": "6ee08baf8f4e0eed63a5e7414657ab9c3d527f9887b9673629e6db543283c845",
+      "output_sha256": "bf737f640e97443bddde3f48051e3608f652e3f3d8c6031f24b6df6c2200b210",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-15.06",
+        "input_tp": "-2.48",
+        "input_lra": "6.30",
+        "input_thresh": "-25.44",
+        "output_i": "-15.08",
+        "output_tp": "-1.50",
+        "output_lra": "3.60",
+        "output_thresh": "-25.29",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.92"
+      },
+      "result": {
+        "input_i": "-14.94",
+        "input_tp": "-2.49",
+        "input_lra": "3.80",
+        "input_thresh": "-25.14",
+        "output_i": "-15.87",
+        "output_tp": "-3.43",
+        "output_lra": "3.80",
+        "output_thresh": "-26.08",
+        "normalization_type": "linear",
+        "target_offset": "-0.13"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:06.241771+00:00"
+    },
+    "audio/service/hot_orange_juice.m4a": {
+      "source": "audio/service/hot_orange_juice.m4a",
+      "output": "audio/service/hot_orange_juice.m4a",
+      "source_sha256": "3ef2a0a87d2b45f4d35c81dbb03fd01db3c4e6a15cfb2f89954203598e6e55da",
+      "output_sha256": "ba0c6c8eac37b78401688e5e7ed8057040975244ffce2438181dbea726d5be62",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-13.87",
+        "input_tp": "0.45",
+        "input_lra": "11.10",
+        "input_thresh": "-24.54",
+        "output_i": "-15.67",
+        "output_tp": "-1.73",
+        "output_lra": "4.40",
+        "output_thresh": "-26.02",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.33"
+      },
+      "result": {
+        "input_i": "-13.87",
+        "input_tp": "0.45",
+        "input_lra": "11.10",
+        "input_thresh": "-24.54",
+        "output_i": "-16.00",
+        "output_tp": "-2.06",
+        "output_lra": "4.30",
+        "output_thresh": "-26.34",
+        "normalization_type": "dynamic",
+        "target_offset": "0.00"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:08.400267+00:00"
+    },
+    "audio/service/lemon_water_light.m4a": {
+      "source": "audio/service/lemon_water_light.m4a",
+      "output": "audio/service/lemon_water_light.m4a",
+      "source_sha256": "0a9ece4fdd585a2517ff52e8352e03c0c949c27a5e891c35997f22e3f0ed4f02",
+      "output_sha256": "58abd2c4a7996e60c7522bc023bc3977f7e0600b182e9b90ccad723d444c61f7",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-15.49",
+        "input_tp": "-2.79",
+        "input_lra": "4.10",
+        "input_thresh": "-25.79",
+        "output_i": "-14.77",
+        "output_tp": "-1.50",
+        "output_lra": "2.10",
+        "output_thresh": "-24.93",
+        "normalization_type": "dynamic",
+        "target_offset": "-1.23"
+      },
+      "result": {
+        "input_i": "-15.46",
+        "input_tp": "-2.85",
+        "input_lra": "4.20",
+        "input_thresh": "-25.63",
+        "output_i": "-15.97",
+        "output_tp": "-3.36",
+        "output_lra": "4.20",
+        "output_thresh": "-26.14",
+        "normalization_type": "linear",
+        "target_offset": "-0.03"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:10.187415+00:00"
+    },
+    "audio/service/lychee_juice.m4a": {
+      "source": "audio/service/lychee_juice.m4a",
+      "output": "audio/service/lychee_juice.m4a",
+      "source_sha256": "ac362f89720363283af95d415798e88d2ebb41584c1e2c188a170787410c9c9e",
+      "output_sha256": "5a5cc799236119e57d1f3b9a2b05efab8dddf88ea66cb6bef07836f5ed4298e2",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.34",
+        "input_tp": "-1.67",
+        "input_lra": "11.90",
+        "input_thresh": "-24.93",
+        "output_i": "-16.15",
+        "output_tp": "-4.02",
+        "output_lra": "7.30",
+        "output_thresh": "-26.53",
+        "normalization_type": "dynamic",
+        "target_offset": "0.15"
+      },
+      "result": {
+        "input_i": "-14.34",
+        "input_tp": "-1.67",
+        "input_lra": "11.90",
+        "input_thresh": "-24.93",
+        "output_i": "-16.00",
+        "output_tp": "-3.87",
+        "output_lra": "7.20",
+        "output_thresh": "-26.38",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.00"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:12.962498+00:00"
+    },
+    "audio/service/warm_lemon_water.m4a": {
+      "source": "audio/service/warm_lemon_water.m4a",
+      "output": "audio/service/warm_lemon_water.m4a",
+      "source_sha256": "70252e9cac42d11fc01984f9412ff3c25d5ad3b536c3882653d4c0367980cc55",
+      "output_sha256": "ca279e43f6451beebb1c4dbcda67e314c6faff4558095fb1368d92002b81d714",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-14.14",
+        "input_tp": "-3.05",
+        "input_lra": "3.80",
+        "input_thresh": "-24.30",
+        "output_i": "-15.54",
+        "output_tp": "-4.75",
+        "output_lra": "2.70",
+        "output_thresh": "-25.64",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.46"
+      },
+      "result": {
+        "input_i": "-13.99",
+        "input_tp": "-3.05",
+        "input_lra": "2.90",
+        "input_thresh": "-24.07",
+        "output_i": "-15.85",
+        "output_tp": "-4.91",
+        "output_lra": "2.80",
+        "output_thresh": "-25.93",
+        "normalization_type": "linear",
+        "target_offset": "-0.15"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:14.629524+00:00"
+    },
+    "audio/tracks/lets_drive.m4a": {
+      "source": "audio/tracks/lets_drive.m4a",
+      "output": "audio/tracks/lets_drive.m4a",
+      "source_sha256": "453656bb4d8e4c12b684cc2039869368673cf57eba65e59b4d40a764f0def7a0",
+      "output_sha256": "f85254a22744c396133140e0d8d8f8a16192d26b74fdf55e67994387b4bf71d3",
+      "target": {
+        "i": -16.0,
+        "tp": -1.5,
+        "lra": 11.0
+      },
+      "analysis": {
+        "input_i": "-9.82",
+        "input_tp": "1.81",
+        "input_lra": "6.50",
+        "input_thresh": "-20.17",
+        "output_i": "-15.38",
+        "output_tp": "-3.00",
+        "output_lra": "4.00",
+        "output_thresh": "-25.52",
+        "normalization_type": "dynamic",
+        "target_offset": "-0.62"
+      },
+      "result": {
+        "input_i": "-9.78",
+        "input_tp": "1.77",
+        "input_lra": "4.50",
+        "input_thresh": "-19.99",
+        "output_i": "-15.96",
+        "output_tp": "-4.41",
+        "output_lra": "4.50",
+        "output_thresh": "-26.17",
+        "normalization_type": "linear",
+        "target_offset": "-0.04"
+      },
+      "normalized": true,
+      "kbps": 128,
+      "updated_at": "2026-05-11T10:16:16.922653+00:00"
     }
   },
-  "updated_at": "2026-05-05T19:49:38.332279+00:00"
+  "updated_at": "2026-05-11T10:16:16.958787+00:00"
 }

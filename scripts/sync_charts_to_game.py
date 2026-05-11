@@ -9,7 +9,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import statistics
+import tempfile
+import time
 from pathlib import Path
 
 
@@ -169,6 +172,26 @@ def normalize_chart_file(data: dict, fallback_song: str = "", *, filter_conflict
     }
 
 
+def atomic_write_text(path: Path, text: str, encoding: str = "utf-8", retries: int = 5, delay: float = 0.25) -> None:
+    """Write text atomically: write a sibling temp file then os.replace.
+    Retries with small backoff on Windows EINVAL/permission flicker (AV / cloud sync filter / brief locks)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        tmp_fd, tmp_name = tempfile.mkstemp(prefix=path.name + ".", suffix=".tmp", dir=str(path.parent))
+        tmp_path = Path(tmp_name)
+        try:
+            with os.fdopen(tmp_fd, "w", encoding=encoding, newline="") as f:
+                f.write(text)
+            os.replace(tmp_path, path)
+            return
+        except OSError as e:
+            last_err = e
+            tmp_path.unlink(missing_ok=True)
+            time.sleep(delay * (attempt + 1))
+    raise last_err if last_err else RuntimeError(f"atomic_write_text failed: {path}")
+
+
 def write_manifest(charts_dir: Path) -> None:
     entries = []
     for path in chart_paths(charts_dir):
@@ -180,10 +203,7 @@ def write_manifest(charts_dir: Path) -> None:
             "song": data["song"],
             "file": path.relative_to(charts_dir).as_posix(),
         })
-    (charts_dir / "manifest.json").write_text(
-        json.dumps({"charts": entries}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    atomic_write_text(charts_dir / "manifest.json", json.dumps({"charts": entries}, ensure_ascii=False, indent=2) + "\n")
 
 
 def load_official_charts(charts_dir: Path) -> tuple[dict, dict]:
@@ -240,10 +260,7 @@ def sync_songs_json(songs_path: Path, charts: dict, beat_data: dict) -> None:
         })
         synced.append(current)
     data["songs"] = synced
-    songs_path.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    atomic_write_text(songs_path, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
 
 
 def sync_to_game(charts_dir: Path, songs_path: Path) -> None:

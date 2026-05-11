@@ -452,7 +452,7 @@
 
 ---
 
-### 焰子 · *Lets Drive*（Demo Audio，器乐 Eurobeat 向，155 BPM，约 86s）
+### 焰子 · *Let's Drive*（Demo Audio，器乐 Eurobeat 向，155 BPM，约 86s）
 
 **音乐气质**：项目内使用的 **器乐 Demo** ，保留 Eurobeat/Night-drive 的高速推进感——适合表现「停不下来的人」自己选择的速度。对白里不出现「人声歌名」执念；语境上这是 **店里的特调出品名** ，节奏是她熟悉的底层材料，不是我们对外卖的「柠檬水」同款产品话术。
 
