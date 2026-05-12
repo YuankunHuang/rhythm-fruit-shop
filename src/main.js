@@ -372,7 +372,7 @@ function enterOpening(){
   setTimeout(()=>openingScreen.classList.add('hidden'),1040);
 }
 function escHtml(v){return String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
-function matchBossMilestone(m){if(!m||!m.type)return false;if(m.type==='rent_days_left_eq')return rentDaysLeft()===+m.value;if(m.type==='shop_level_gte')return shopLevel()>=+m.value;if(m.type==='reputation_gte')return(shopState.reputation||0)>=+m.value;if(m.type==='no_boss_letters_seen')return(shopState.bossLettersSeen||[]).length===0;return false}
+function matchBossMilestone(m){if(!m||!m.type)return false;if(m.type==='rent_days_left_eq')return rentDaysLeft()===+m.value;if(m.type==='shop_level_gte')return shopLevel()>=+m.value;if(m.type==='reputation_gte')return(shopState.reputation||0)>=+m.value;if(m.type==='no_boss_letters_seen')return(shopState.bossLettersSeen||[]).length===0;if(m.type==='day_gte')return(shopState.day||1)>=+m.value;return false}
 function bossLetterPlacementType(L){const p=L&&L.placement;return(p&&p.type)||'day_start'}
 function pickBossLetterForPlacement(want){const letters=GameData.bossLetters||[],seen=new Set(shopState.bossLettersSeen||[]);let best=null;for(const L of letters){if(seen.has(L.id)||!matchBossMilestone(L.milestone)||bossLetterPlacementType(L)!==want)continue;if(!best||L.priority<best.priority)best=L}return best}
 let _pendingBossLetterId=null;
@@ -510,7 +510,7 @@ function hideVNCharacters(){vnCharacters.classList.add('hidden');[vnCharLeft,vnC
 function renderVNCharacters(node){const key=vnCharacterKey(node);if(!key||!VN_CHARACTERS[key]){hideVNCharacters();return}vnCharacters.classList.remove('hidden');const config=VN_CHARACTERS[key],activeImg=config.side==='left'?vnCharLeft:vnCharRight,inactiveImg=config.side==='left'?vnCharRight:vnCharLeft;setVNCharacterImage(activeImg,config,vnDefaultExpression(key,node));activeImg.classList.remove('dim');inactiveImg.classList.remove('show','dim');inactiveImg.removeAttribute('src')}
 function showVN(nodes,onDone=null){state=S.FLOW;showSceneBackdrop();setFlowInteriorVisual();vnState={nodes,index:0,onDone,locked:false};const panel=$('flowPanel');panel.classList.add('vn-panel');panel.classList.remove('cinematic','service-transition');$('flowBig').classList.add('hidden');$('flowPrimaryButton').classList.add('hidden');$('flowSecondaryButton').classList.add('hidden');$('flowVisual').classList.add('hidden');panel.onclick=e=>{if(e.target.closest('button'))return;advanceVN()};UI.replace('flowPanel');renderVNNode()}
 function speakerLabel(name){return{Yuzu:'柚子',Student:'学生',Order:'订单',System:'系统',You:'你',后厨:'后厨'}[name]||name}
-function renderVNNode(){const node=vnState.nodes[vnState.index];if(!node){const done=vnState.onDone;vnState.locked=false;hideVNCharacters();if(done)done();return}const narration=!node.speaker;renderVNCharacters(node);const panel=$('flowPanel');panel.classList.toggle('service-transition',!!node.transition);panel.classList.toggle('vn-narration-mode',narration);$('flowTitle').innerHTML=narration?'':`<span class="vn-speaker">${escHtml(speakerLabel(node.speaker))}</span>`;$('flowBody').innerHTML=node.html||`<p class="${narration?'vn-narration':'vn-line'}">${escHtml(node.text||'')}</p><div class="vn-hint">点击继续</div>`;if(node.action==='startService'){$('flowBody').innerHTML=(node.html||'')+'<div class="vn-hint">点击开始制作</div>'}}
+function renderVNNode(){const node=vnState.nodes[vnState.index];if(!node){const done=vnState.onDone;vnState.locked=false;hideVNCharacters();if(done)done();return}const narration=!node.speaker;renderVNCharacters(node);const panel=$('flowPanel');panel.classList.toggle('service-transition',!!node.transition);panel.classList.toggle('vn-narration-mode',narration);$('flowTitle').innerHTML=narration?'':`<span class="vn-speaker">${escHtml(speakerLabel(node.speaker))}</span>`;$('flowBody').innerHTML=node.html||`<p class="${narration?'vn-narration':'vn-line'}">${escHtml(node.text||'')}</p>`;if(node.action==='startService'){$('flowBody').innerHTML=(node.html||'')+'<div class="vn-hint">点击开始制作</div>'}}
 function advanceVN(){if(vnState.locked)return;const node=vnState.nodes[vnState.index];if(!node)return;if(node.action==='startService'){vnState.locked=true;if(flowRun.active){const sphase=flowRun.phases[flowRun.index++];startFlowServiceTransition(sphase)}else{startServiceTransition()}return}if(node.action==='settlement'){vnState.locked=true;if(flowRun.active){runNextFlowPhase()}else{showOneDaySettlement()}return}sfxPlay('ui.select');vnState.index++;renderVNNode()}
 async function startPrologue(){
   cancelTutorialOverlay();clearResultCelebration();clearResultPhoto();
@@ -538,8 +538,8 @@ function showServiceSelectPanel(phase){
   title.textContent=phase.selectTitle||'选择服务';
   hint.textContent=phase.selectHint||'根据顾客的需求，选择合适的饮品。';
   row.innerHTML='';
-  const options=phase.options||[];
-  let chosenId=options.length?options[0].songId:null;
+  const options=(phase.options||[]).slice().sort((a,b)=>{const ia=SONGS.findIndex(s=>s.id===a.songId);const ib=SONGS.findIndex(s=>s.id===b.songId);return(ia<0?999:ia)-(ib<0?999:ib)});
+  let chosenId=null;
   options.forEach(opt=>{
     const s=SONGS.find(x=>x.id===opt.songId);
     const el=document.createElement('div');
@@ -653,11 +653,13 @@ async function completeTutorialAndStartDay(){
   shopState.firstShiftDone = true;
   learnSong('open_the_fruit_stand!');
   markTutorialSeen(DAY1_SHIFT_TUTORIAL_ID);
+  const _savedResult=lastServiceResult;
   resetDay();
+  lastServiceResult=_savedResult;
   setIntroDifficulty();ensureDailyPlan();saveShopState();state=S.FLOW;updateMenuLoop();
   const _flowRaw=await loadDayFlow(1),_merged=_flowRaw&&_flowRaw.phases?prepareDayFlowWithBossLetters(_flowRaw,1):null
   if(_merged&&Array.isArray(_merged.phases)){
-    const _post=_merged.phases.filter(p=>p.id!=='morning'&&p.type!=='service'&&p.type!=='tutorial_complete'&&!String(p.id||'').startsWith('tutorial_'));
+    const _post=_merged.phases.filter(p=>p.id!=='morning'&&p.type!=='tutorial_complete'&&!String(p.id||'').startsWith('tutorial_'));
     if(_post.length){startDayFlow({..._merged,phases:_post});return}
   }
   showDaySummary();

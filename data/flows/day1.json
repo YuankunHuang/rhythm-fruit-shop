@@ -27,12 +27,12 @@
         },
         {
           "speaker": "柚子",
-          "text": "今天也很准时嘛。",
+          "text": "很准时嘛。",
           "expr": "smile"
         },
         {
           "speaker": "柚子",
-          "text": "别高兴太早。它通常在你最需要它的时候才发作。",
+          "text": "机器就是这样。没事的时候岁月静好，等你最需要它的时候才发作。",
           "expr": "deadpan"
         },
         {
@@ -41,7 +41,7 @@
         },
         {
           "speaker": "柚子",
-          "text": "彩虹鲜果杯。今天只有这个，记得吗？",
+          "text": "彩虹鲜果杯。今天出这个。还记得吗？",
           "expr": "serious"
         },
         {
@@ -55,7 +55,7 @@
         },
         {
           "speaker": "柚子",
-          "text": "上了台就是真刀真枪。",
+          "text": "上了台，就是真刀真枪。",
           "expr": "serious"
         },
         {
@@ -110,12 +110,17 @@
         },
         {
           "speaker": "柚子",
-          "text": "有问题吗？",
+          "text": "有什么问题吗？",
           "expr": "deadpan"
         },
         {
           "speaker": "你",
-          "text": "没有没有。"
+          "text": "没有没有，不敢不敢。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "这才对嘛。",
+          "expr": "smile"
         },
         {
           "speaker": "",
@@ -127,38 +132,105 @@
         },
         {
           "speaker": "",
-          "text": "她的步子慢了一点，肩膀放松了，像个随便逛进来的人。"
+          "text": "她的步子慵懒，肩膀放松，好奇的目光四处打量着，像极了一个无意中闯进路边小店的路人甲。"
         },
         {
           "speaker": "柚子",
-          "text": "……你好。请问——今天有什么招牌？",
-          "expr": "neutral"
+          "text": "这家店环境真不错！"
         },
         {
           "speaker": "",
-          "text": "（「请问」两个字说得格外认真。）"
+          "text": "（搞得跟真的一样）"
         },
         {
           "speaker": "你",
-          "text": "欢迎，今天的……"
+          "text": "您好，请问想……",
+          "expr": "neutral"
         },
         {
           "speaker": "柚子",
-          "text": "从菜单上选。",
+          "text": "来一份镇店之宝。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "你",
+          "text": "什……",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "柚子",
+          "text": "那特色单品总该有吧。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "你",
+          "text": "……"
+        },
+        {
+          "speaker": "柚子",
+          "text": "给我来一杯青柠翡翠冷萃。",
           "expr": "deadpan"
         },
         {
           "speaker": "你",
-          "text": "你先说话的——"
+          "text": "……没有。",
+          "expr": "neutral"
         },
         {
           "speaker": "柚子",
-          "text": "我是在「暗示」你。顾客不会直接报菜名的。",
+          "text": "那来一杯西瓜芭乐熔金。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "……没有。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "柚子",
+          "text": "蓝莓星冰饮总有吧。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "……也没有。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "柚子",
+          "text": "什么都没有还开店。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "柚子小姐，您是来找茬的吧。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "这叫「压力测试」。顾客可不会随便让你拿主意。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "柚子",
+          "text": "你的菜单就是军火库。快速反应！",
           "expr": "annoyed"
         },
         {
-          "speaker": "",
-          "text": "（暗示。……好。）"
+          "speaker": "你",
+          "text": "是！柚子小姐！"
+        },
+        {
+          "speaker": "你",
+          "text": "我们有新鲜原切水果，果汁现打，柠檬水、彩虹鲜果杯是客人的日常首选，都是现做。欢迎品尝！"
+        },
+        {
+          "speaker": "柚子",
+          "text": "哦？露两手瞧瞧。",
+          "expr": "teasing"
+        },
+        {
+          "speaker": "你",
+          "text": "献丑了！"
         }
       ]
     },
@@ -201,34 +273,27 @@
         },
         {
           "speaker": "柚子",
-          "text": "演练结束。",
+          "text": "演习结束。",
           "expr": "neutral"
         },
         {
           "speaker": "",
-          "text": "（复归本色的速度之快，令人叹为观止。）"
+          "text": "（回归本色的速度之快，令人叹为观止。）"
         },
         {
           "speaker": "你",
-          "text": "就……这样结束了？"
+          "text": "我通过了？"
         },
         {
           "speaker": "柚子",
-          "text": "接下来，是真的。",
-          "expr": "serious"
+          "text": "勉勉强强吧。算你过关。",
+          "expr": "teasing"
         }
       ]
     },
     {
       "id": "tutorial_complete",
       "type": "tutorial_complete"
-    },
-    {
-      "id": "service_1",
-      "type": "service",
-      "songId": "fruit_cup",
-      "menuId": "fruitCup",
-      "slotId": "day"
     },
     {
       "id": "after_1",
@@ -256,7 +321,7 @@
             {
               "speaker": "柚子",
               "text": "你刚才的状态，一眼就能看出与平时不同。"
-            },
+            }
           ]
         },
         {

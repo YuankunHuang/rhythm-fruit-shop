@@ -8,7 +8,7 @@
       "delivery": "mailbox_intro",
       "kicker": "第一封",
       "title": "新来的都能看见",
-      "milestone": { "type": "no_boss_letters_seen" },
+      "milestone": { "type": "day_gte", "value": 2 },
       "paragraphs": [
         "孩子们，干得漂亮。咱们店的好名声都飘到八百里外了。不愧是我看上的员工！",
         "ps.要好好相处哦~"
