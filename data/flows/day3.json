@@ -164,17 +164,34 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>彩虹鲜果杯 × 6</span><b>老方</b><span>哪个颜色都要 · 给骑手们带的 · 顺手扶了门口那块牌子</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>彩虹鲜果杯 × 6</span><b>老方</b><span>哪个颜色都要 · 给骑手们带的 · 顺手扶了门口那块牌子</span></div>"
         }
       ]
     },
     {
-      "id": "service_fang",
-      "type": "service",
-      "songId": "fruit_cup",
+      "id": "select_fang",
+      "type": "service_select",
+      "customer": "老方",
+      "correctId": "fruit_cup",
       "menuId": "fruitCup",
-      "slotId": "day"
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "色彩层次 · 多颜色" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽简单" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "浓稠 · 单一口味" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "老方", "text": "（摇头）不对，他们要彩色的——哪个颜色都要，我说的。" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "老方", "text": "冰沙？不是，要能看到颜色那种。彩的。" }
+        ],
+        "_default": [
+          { "speaker": "老方", "text": "……不对。" }
+        ]
+      }
     },
     {
       "id": "after_fang",
@@ -289,17 +306,37 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>柠檬水</span><b>猫小姐</b><span>室温 · 不用冰 · 猫不喝凉的</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>柠檬水</span><b>猫小姐</b><span>室温 · 不用冰 · 猫不喝凉的</span></div>"
         }
       ]
     },
     {
-      "id": "service_mao",
-      "type": "service",
-      "songId": "lemon_water_light",
+      "id": "select_mao",
+      "type": "service_select",
+      "customer": "猫小姐",
+      "correctId": "lemon_water_light",
       "menuId": "",
-      "slotId": "day"
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "lemon_water_light", "label": "柠檬水·清", "hint": "室温 · 不冰" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "标准 · 冰的" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "彩色水果" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "猫小姐", "text": "……这个有冰吗？" },
+          { "speaker": "你", "text": "有——" },
+          { "speaker": "猫小姐", "text": "猫不喝凉的。" },
+          { "speaker": "", "text": "（说得很理所当然。）" }
+        ],
+        "fruit_cup": [
+          { "speaker": "猫小姐", "text": "水果杯……不要水果杯。猫喜欢喝柠檬水的。" }
+        ],
+        "_default": [
+          { "speaker": "猫小姐", "text": "……不是这个。" }
+        ]
+      }
     },
     {
       "id": "after_mao",
@@ -529,7 +566,7 @@
         },
         {
           "speaker": "",
-          "text": "（……不知道这句话是说给你听还是说给自己听。）"
+          "text": "（……不知道这句话是说给你听还是说给她自己听。）"
         },
         {
           "speaker": "程晚",
@@ -537,17 +574,37 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>程晚</b><span>要酸的 · 妆未卸 · 帷幕刚落</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>程晚</b><span>要酸的 · 妆未卸 · 帷幕刚落</span></div>"
         }
       ]
     },
     {
-      "id": "service_chengwan",
-      "type": "service",
-      "songId": "grape_smoothie_afterglow",
+      "id": "select_chengwan",
+      "type": "service_select",
+      "customer": "程晚",
+      "correctId": "grape_smoothie_afterglow",
       "menuId": "grapeSmoothie",
-      "slotId": "dusk"
+      "slotId": "dusk",
+      "allowRetry": true,
+      "options": [
+        { "songId": "grape_smoothie_afterglow", "label": "葡萄冰沙·余韵", "hint": "偏酸 · 演出后的味道" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "标准稠度" },
+        { "songId": "lemon_water_light", "label": "柠檬水·清", "hint": "室温 · 清淡" }
+      ],
+      "onWrong": {
+        "grape_smoothie_still": [
+          { "speaker": "程晚", "text": "这个……是酸的吗？" },
+          { "speaker": "你", "text": "标准口味，不特别酸——" },
+          { "speaker": "程晚", "text": "我需要酸一点的。" },
+          { "speaker": "", "text": "（她说得很平，像是陈述一个对自己来说显然的需求。）" }
+        ],
+        "lemon_water_light": [
+          { "speaker": "程晚", "text": "……演完之后需要的不是柠檬水。" }
+        ],
+        "_default": [
+          { "speaker": "程晚", "text": "不是这个。" }
+        ]
+      }
     },
     {
       "id": "after_chengwan",

@@ -87,6 +87,143 @@
       ]
     },
     {
+      "id": "tutorial_roleplay",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "柚子",
+          "text": "好，先演练一遍。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "演练什么？"
+        },
+        {
+          "speaker": "柚子",
+          "text": "点单流程。我扮顾客，你接单。",
+          "expr": "serious"
+        },
+        {
+          "speaker": "你",
+          "text": "……你扮顾客？"
+        },
+        {
+          "speaker": "柚子",
+          "text": "有问题吗？",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "没有没有。"
+        },
+        {
+          "speaker": "",
+          "text": "她在台前站定，扫了一眼备料，然后走到门口，推门出去。"
+        },
+        {
+          "speaker": "",
+          "text": "……两秒钟后，她推门进来。"
+        },
+        {
+          "speaker": "",
+          "text": "她的步子慢了一点，肩膀放松了，像个随便逛进来的人。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "……你好。请问——今天有什么招牌？",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "",
+          "text": "（「请问」两个字说得格外认真。）"
+        },
+        {
+          "speaker": "你",
+          "text": "欢迎，今天的……"
+        },
+        {
+          "speaker": "柚子",
+          "text": "从菜单上选。",
+          "expr": "deadpan"
+        },
+        {
+          "speaker": "你",
+          "text": "你先说话的——"
+        },
+        {
+          "speaker": "柚子",
+          "text": "我是在「暗示」你。顾客不会直接报菜名的。",
+          "expr": "annoyed"
+        },
+        {
+          "speaker": "",
+          "text": "（暗示。……好。）"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_select",
+      "type": "service_select",
+      "customer": "柚子（扮演）",
+      "selectTitle": "今日招牌",
+      "selectHint": "顾客说要「今天的招牌」。",
+      "correctId": "fruit_cup",
+      "menuId": "fruitCup",
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 / 色彩层次 / 颇费耐心" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽柑橘 / 简单快速" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "柚子", "text": "……", "expr": "deadpan" },
+          { "speaker": "", "text": "她用看着一个犯了显而易见的错误的人的眼神看着你。" },
+          { "speaker": "你", "text": "呃——" },
+          { "speaker": "柚子", "text": "我说「招牌」。", "expr": "annoyed" },
+          { "speaker": "你", "text": "……柠檬水不是招牌吗？" },
+          { "speaker": "柚子", "text": "看一下今天的菜单上写的是什么。", "expr": "serious" },
+          { "speaker": "", "text": "（……彩虹鲜果杯。对。就是这个。）" }
+        ],
+        "_default": [
+          { "speaker": "柚子", "text": "……再想想。", "expr": "deadpan" }
+        ]
+      }
+    },
+    {
+      "id": "tutorial_result_vn",
+      "type": "dialogue",
+      "nodes": [
+        {
+          "speaker": "",
+          "text": "她接过饮品，看了一眼，又看了你一眼。"
+        },
+        {
+          "speaker": "柚子",
+          "text": "演练结束。",
+          "expr": "neutral"
+        },
+        {
+          "speaker": "",
+          "text": "（复归本色的速度之快，令人叹为观止。）"
+        },
+        {
+          "speaker": "你",
+          "text": "就……这样结束了？"
+        },
+        {
+          "speaker": "柚子",
+          "text": "接下来，是真的。",
+          "expr": "serious"
+        }
+      ]
+    },
+    {
+      "id": "tutorial_complete",
+      "type": "tutorial_complete"
+    },
+    {
       "id": "service_1",
       "type": "service",
       "songId": "fruit_cup",

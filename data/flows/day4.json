@@ -146,17 +146,38 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 补考过了 · 哪里不对劲</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 补考过了 · 哪里不对劲</span></div>"
         }
       ]
     },
     {
-      "id": "service_lin2",
-      "type": "service",
-      "songId": "lemon_water",
+      "id": "select_lin2",
+      "type": "service_select",
+      "customer": "林小末",
+      "correctId": "lemon_water",
       "menuId": "",
-      "slotId": "day"
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽 · 最便宜" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 · 贵一点" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "浓稠 · 有分量" }
+      ],
+      "onWrong": {
+        "fruit_cup": [
+          { "speaker": "林小末", "text": "那个……多少钱？" },
+          { "speaker": "你", "text": "比柠檬水贵一点。" },
+          { "speaker": "林小末", "text": "还是柠檬水吧。", "expr": "awkward" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "林小末", "text": "……葡萄冰沙。" },
+          { "speaker": "", "text": "她看了眼价目牌。" },
+          { "speaker": "林小末", "text": "……还是最便宜那种。" }
+        ],
+        "_default": [
+          { "speaker": "林小末", "text": "……最便宜那种。" }
+        ]
+      }
     },
     {
       "id": "after_lin2",
@@ -433,17 +454,36 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>同稠度 · 坐下来了 · 「系统误判」</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>同稠度 · 坐下来了 · 「系统误判」</span></div>"
         }
       ]
     },
     {
-      "id": "service_ashen2",
-      "type": "service",
-      "songId": "grape_smoothie_still",
+      "id": "select_ashen2",
+      "type": "service_select",
+      "customer": "阿晟",
+      "correctId": "grape_smoothie_still",
       "menuId": "grapeSmoothie",
-      "slotId": "dusk"
+      "slotId": "dusk",
+      "allowRetry": true,
+      "options": [
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "同稠度 · 打包" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽柑橘" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "色彩层次" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "阿晟", "text": "……柠檬水。" },
+          { "speaker": "", "text": "他停了一下。" },
+          { "speaker": "阿晟", "text": "我点的是冰沙。" }
+        ],
+        "fruit_cup": [
+          { "speaker": "阿晟", "text": "……不对。", "expr": "neutral" }
+        ],
+        "_default": [
+          { "speaker": "阿晟", "text": "……再想想。" }
+        ]
+      }
     },
     {
       "id": "after_ashen2",
@@ -477,8 +517,12 @@
               "text": "差一点。"
             },
             {
+              "speaker": "你",
+              "text": "什么？"
+            },
+            {
               "speaker": "",
-              "text": "他喝了一口，把杯子放在桌上，没有马上拿起来。"
+              "text": "他喝了一口，把杯子放回了桌上。没有回答。"
             }
           ]
         },
@@ -508,15 +552,15 @@
       "after": [
         {
           "speaker": "",
-          "text": "他把硬币排了一遍，收起来。这次没有立刻站起来，又坐了一会儿。"
+          "text": "他把硬币排了一遍，收起来。这次没有立刻站起，又坐了一会儿。"
         },
         {
           "speaker": "阿晟",
-          "text": "你这里下午几点关？"
+          "text": "这里下午几点关？"
         },
         {
           "speaker": "你",
-          "text": "……不一定，要到晚上。"
+          "text": "……不一定，有时会开到晚上。"
         },
         {
           "speaker": "阿晟",
@@ -537,14 +581,6 @@
         {
           "speaker": "阿晟",
           "text": "（停了一步）……嗯。"
-        },
-        {
-          "speaker": "",
-          "text": "他走了。"
-        },
-        {
-          "speaker": "系统",
-          "text": "「系统误判」四个字，你后来想了一下，觉得它和「稠度失准」有一点相像。但你没有说出口，因为他已经走远了。"
         }
       ]
     },
@@ -555,20 +591,64 @@
       "vipName": "阿晟",
       "nodes_before": [
         {
-          "speaker": "",
-          "text": "他端着杯子没动。"
+          "speaker": "阿晟",
+          "text": "你很不错。"
+        },
+        {
+          "speaker": "你",
+          "text": "呃……谢谢？"
         },
         {
           "speaker": "阿晟",
-          "text": "我以前有一首一直单曲循环的曲子。找了很久，找不到了。"
+          "text": "我感觉自己一直在找寻着什么。但它很微妙，说不太清。"
         },
         {
           "speaker": "",
-          "text": "停了一下。"
+          "text": "（……）"
         },
         {
           "speaker": "阿晟",
-          "text": "但我记得它大概是什么样子——你能不能试着打一次，看看接不接近。"
+          "text": "这个世界上的东西都很模糊。熵增是宇宙的主旋律。唯一能确定的，就是一切的不确定性。"
+        },
+        {
+          "speaker": "你",
+          "text": "嗯……很有思辨意义。"
+        },
+        {
+          "speaker": "阿晟",
+          "text": "但我总觉得自己能抓住点什么。在模糊中抓住一点确定的东西，成为自己的锚，好让自己不会被这个模糊的世界吞没，随波逐流。"
+        },
+        {
+          "speaker": "阿晟",
+          "text": "但这种确定的东西，真的存在吗？亦或者这只是我的一厢情愿？"
+        },
+        {
+          "speaker": "阿晟",
+          "text": "你能明白我的意思吗？"
+        },
+        {
+          "speaker": "你",
+          "text": "……大概……明白吧。"
+        },
+        {
+          "speaker": "",
+          "text": "怀疑主义+存在主义哲学吗？有趣的家伙。这个时代的短视频已经快把大家的脑袋都掏空了吧。不得不说，他让我想起了一些故人。"
+        },
+        {
+          "speaker": "阿晟",
+          "text": "你很不错。"
+        },
+        {
+          "speaker": "",
+          "text": "（他又说了一遍）"
+        },
+        {
+          "speaker": "你",
+          "text": "谢谢。"
+        },
+        {
+          "speaker": "阿晟",
+          "text": "可以再给我做一杯特调吗？什么都可以。我想缕清一下思绪。"
         }
       ],
       "branches": [
@@ -578,7 +658,7 @@
           "nodes": [
             {
               "speaker": "阿晟",
-              "text": "有那个感觉。"
+              "text": "不错。"
             },
             {
               "speaker": "",
@@ -618,7 +698,7 @@
             },
             {
               "speaker": "阿晟",
-              "text": "……也许记错了。"
+              "text": "……也许是我理解错了。"
             }
           ]
         }
@@ -630,11 +710,11 @@
         },
         {
           "speaker": "阿晟",
-          "text": "（走到门口）下次再试。"
+          "text": "（走到门口）再见。"
         },
         {
           "speaker": "系统",
-          "text": "黄昏的光压低了一截，铺子里剩下安静和那个还没找到的曲子的轮廓。",
+          "text": "暮光逐渐笼罩了整条街巷。昏暗的铺子里，只有墙上钟表的滴答声和淡淡的水果香气在空气中荡漾。",
           "action": "settlement"
         }
       ]
