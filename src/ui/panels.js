@@ -26,6 +26,7 @@ export function createPanelManager(overlay) {
       'homePanel', 'savePanel', 'flowPanel', 'menuEditPanel',
       'dayOverviewPanel', 'songPanel', 'resultPanel',
       'upgradePanel', 'settingsPanel', 'trackDiffPanel',
+      'serviceSelectPanel',
     ],
     modals: ['resetConfirmModal', 'resultPhotoModal', 'resourceIntroModal'],
     stack: [],
