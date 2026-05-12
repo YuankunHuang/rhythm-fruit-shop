@@ -308,17 +308,37 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>最稠 · 打包 · 等一个不确定会来的电话</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>最稠 · 打包 · 等一个不确定会来的电话</span></div>"
         }
       ]
     },
     {
-      "id": "service_ashen",
-      "type": "service",
-      "songId": "grape_smoothie_still",
+      "id": "select_ashen",
+      "type": "service_select",
+      "customer": "阿晟",
+      "correctId": "grape_smoothie_still",
       "menuId": "grapeSmoothie",
-      "slotId": "day"
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "稠 · 打包 · 吸管有阻力" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽 · 柑橘系" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 · 色彩层次" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "阿晟", "text": "……柠檬水？" },
+          { "speaker": "", "text": "他停了一下，像是在审阅自己刚才说的需求哪里表述有歧义。" },
+          { "speaker": "阿晟", "text": "我说的是冰沙。", "expr": "neutral" }
+        ],
+        "fruit_cup": [
+          { "speaker": "阿晟", "text": "彩虹鲜果杯。", "expr": "neutral" },
+          { "speaker": "阿晟", "text": "……不是。" }
+        ],
+        "_default": [
+          { "speaker": "阿晟", "text": "……再想想。", "expr": "neutral" }
+        ]
+      }
     },
     {
       "id": "after_ashen",
@@ -626,17 +646,38 @@
         },
         {
           "speaker": "订单",
-          "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 知道对在哪但写不出来</span></div>",
-          "action": "startService"
+          "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 知道对在哪但写不出来</span></div>"
         }
       ]
     },
     {
-      "id": "service_lin",
-      "type": "service",
-      "songId": "lemon_water",
+      "id": "select_lin",
+      "type": "service_select",
+      "customer": "林小末",
+      "correctId": "lemon_water",
       "menuId": "",
-      "slotId": "day"
+      "slotId": "day",
+      "allowRetry": true,
+      "options": [
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽 · 简单 · 便宜" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 · 贵一点" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "浓稠 · 有分量" }
+      ],
+      "onWrong": {
+        "fruit_cup": [
+          { "speaker": "林小末", "text": "那个……多少钱？" },
+          { "speaker": "你", "text": "比柠檬水贵一点。" },
+          { "speaker": "林小末", "text": "……那不行，我说最便宜那种。" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "林小末", "text": "冰沙……那应该挺贵的吧。" },
+          { "speaker": "", "text": "她抬头看了一眼价目。" },
+          { "speaker": "林小末", "text": "……我说最便宜那种。" }
+        ],
+        "_default": [
+          { "speaker": "林小末", "text": "……最便宜那种。", "expr": "awkward" }
+        ]
+      }
     },
     {
       "id": "after_lin",
