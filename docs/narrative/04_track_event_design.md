@@ -1,7 +1,7 @@
 # Track Event 机制设计文档（v1）
 
 > 本文档定义 `track_event` 的完整机制规范，供 flow 数据编写与代码实现参考。  
-> 与 service（菜单单品）的机制对比见第一节。
+> 与 service（菜单单品）的机制对比见第一节。VIP 人物卡见 `03_vip_characters.md`。
 
 ---
 

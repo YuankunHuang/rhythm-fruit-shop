@@ -1,8 +1,7 @@
-# 曲目 × VIP 对应表（v3）
+# VIP 人物卡
 
-> 每位 VIP 配一首解锁曲目。纯练习曲目另列于末尾。  
-> 立绘 / 服务段 BGM 均为占位，正式版待替换（见 `03_suno_audio_requests.md`）。  
-> Track Event 机制详见 `05_track_event_design.md`。  
+> 每位 VIP 配一首解锁曲目，人物卡含记忆点、矛盾点、语言质感、招牌饮品、剧情弧、Track Event。  
+> Track Event 机制详见 `04_track_event_design.md`。末尾附 VIP 速查表。  
 > **写作原则**：先立人，再讲事。时代切片是背景，不是标签。角色首先是个人，其次才是他所处的时代困境。
 
 ---
@@ -74,7 +73,7 @@
 **剧情弧**
 1. 初登场：给骑手们带一批果杯，顺口问问今天好不好出单
 2. 第二次：一个骑手出了事故，他来买东西，不提那件事，只说今天很累
-3. 第三次：那个骑手回来上班了，方舟带他一起来，介绍说「他是个好骑手」
+3. 第三次：那个骑手回来上班了，老方带他一起来，介绍说「他是个好骑手」
 
 **时代切片**  
 平台化劳动里「管理者」的夹层困境；集体沉默下的真实连接。
@@ -140,7 +139,7 @@
 说到关键处会停下来，用手指在空中虚比一个形状，然后继续说，不解释那个形状是什么。停顿是她思维的一部分，不是在等你接话。
 
 **招牌饮品 + 理由**  
-葡萄冰沙，「要能看到颗粒，不要打太碎，留点阻力」。和阿寻点一样的东西，但理由不同——她说「太顺滑了反而不安心」。
+葡萄冰沙，「要能看到颗粒，不要打太碎，留点阻力」。和阿晟点一样的东西，但理由不同——她说「太顺滑了反而不安心」。
 
 **剧情弧**
 1. 初登场：买东西，顺手拿出手绘本随手画了几笔，问你「这个配色感觉怎样」
@@ -660,9 +659,28 @@
 
 ---
 
-## 修订记录
+---
 
-- **v1**：建档，含 17 首 VIP 曲目完整人物卡 + 6 首纯练习曲目说明。
-- **v2**：全面重写人物卡结构。新结构：记忆点 → 矛盾点 → 口癖/语言质感 → 招牌饮品+理由 → 剧情弧 → 时代切片。执行原则：先立人，再讲事。时代切片是背景不是标签，部分人物去 AI 化，扩展为更广泛的当代人经历。
-- **v3**：改名。阿寻→阿晟，方舟→老方，紫萱→顾薇，旦角→程晚，阿往→老宋。「流浪者」明确标注为主角内心的称呼，属于叙事设计。原则：名字是名字，不是主题标签。
-- **v4**：全面补充 Track Event 字段。林小末 VIP track 为 *Unwelcome School*（原有正确映射保留）；谢音 VIP track 为 *Please*（R300K），加入 10 天弧。制定 10 天 track_event 排期（详见 `05_track_event_design.md`）。非 10 天弧内的 VIP track 标注「后续内容」。
+## 附：VIP 速查表
+
+| VIP | 场景 | 解锁曲目 | 招牌饮品 | menuItem |
+|-----|------|---------|---------|----------|
+| 阿晟 | DAY | Seeker | 葡萄冰沙 | `grapeSmoothie` |
+| 老方 | DAY | Ark Light | 彩虹鲜果杯 | `fruitCup` |
+| 猫小姐 | DAY | Felis | 柠檬水（室温） | `lemon_water` |
+| 顾薇 | DAY | Purple Passion | 葡萄冰沙 | `grapeSmoothie` |
+| 谢音 | DAY | Maiden's Capriccio / *Please* | 手工橙汁 | `freshOrangeJuice` |
+| 林小末 | DAY | Unwelcome School | 柠檬水（低调款） | `lemon_water` |
+| 流浪者 | DAY | Gypsy Tronic | 每次不同（轮换） | 轮换 |
+| 程晚 | DUSK | Drama | 葡萄冰沙（酸） | `grapeSmoothie` |
+| 远哥 | DUSK | Faraway | 热橙汁 | `hotOrangeJuice` |
+| 面具 | DUSK | Masquerade | 鲜果拼盘 | `fruitPlatter` |
+| 老弦 | DUSK | Grafiore | 荔枝汁 | `lycheeJuice` |
+| 老贝 | NIGHT | Beethoven Virus | 热柠檬水 | `warmLemonWater` |
+| 焰子 | NIGHT | Let's Drive | 柑橘碳酸 | `citrusFizz` |
+| 小兵 | NIGHT | Toy War | 混合鲜果杯 | `fruitCup` |
+| 老宋 | NIGHT | Qua Vadis | 慢出品特调 | `criticSpecial` |
+| 月叔 | NIGHT | Lunatic Sky | 菠萝汁 | `pineappleJuice` |
+| 无名 | NIGHT | Ineffabilis | 草莓汁 | `strawberryJuice` |
+
+> Track Event 排期详见 `04_track_event_design.md`。
