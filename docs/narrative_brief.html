@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>节奏鲜果铺 · 创作背景纲要</title>
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 20mm 22mm 20mm;
+    @bottom-center {
+      content: counter(page) "  /  " counter(pages);
+      font-family: "Source Han Serif SC", "Noto Serif CJK SC", "Source Han Serif", serif;
+      font-size: 9pt;
+      color: #8a8270;
+    }
+  }
+  :root {
+    --ink: #1b1a17;
+    --soft: #4a4438;
+    --muted: #8a8270;
+    --paper: #faf7f1;
+    --accent: #b2462f;
+    --hair: #d8d2c4;
+    --quote: #5d564a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Han Serif SC", "Noto Serif CJK SC", "Source Han Serif", "Songti SC", "SimSun", "宋体", serif;
+    font-size: 10.8pt;
+    line-height: 1.85;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+  .sans {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", "微软雅黑", sans-serif;
+  }
+
+  /* 封面 */
+  .cover {
+    page-break-after: always;
+    min-height: 252mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 6mm 4mm 4mm 4mm;
+  }
+  .cover-top { }
+  .cover-eyebrow {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 9.5pt;
+    letter-spacing: 0.45em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .cover-title {
+    margin-top: 14mm;
+    font-size: 38pt;
+    line-height: 1.18;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .cover-title .accent { color: var(--accent); }
+  .cover-subtitle {
+    margin-top: 6mm;
+    font-size: 13pt;
+    color: var(--soft);
+    letter-spacing: 0.06em;
+  }
+  .cover-rule {
+    margin-top: 12mm;
+    width: 48mm;
+    border-top: 1.5px solid var(--accent);
+  }
+  .cover-pitch {
+    margin-top: 8mm;
+    font-size: 11pt;
+    line-height: 2;
+    color: var(--soft);
+    max-width: 130mm;
+  }
+  .cover-pitch em {
+    font-style: normal;
+    color: var(--ink);
+  }
+  .cover-foot {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 9pt;
+    color: var(--muted);
+    line-height: 1.9;
+    border-top: 1px solid var(--hair);
+    padding-top: 4mm;
+  }
+  .cover-foot b { color: var(--soft); font-weight: 500; }
+
+  /* 段落 */
+  h1.section {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-weight: 600;
+    font-size: 18pt;
+    margin: 0 0 2mm 0;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .section-eyebrow {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.5em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2mm;
+  }
+  .section-block {
+    margin: 0 0 12mm 0;
+  }
+  .section-rule {
+    border: 0;
+    border-top: 1px solid var(--hair);
+    margin: 0 0 6mm 0;
+  }
+  h2 {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-weight: 600;
+    font-size: 12.5pt;
+    margin: 7mm 0 1.5mm 0;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  h3 {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-weight: 600;
+    font-size: 10.5pt;
+    margin: 5mm 0 1mm 0;
+    color: var(--soft);
+    letter-spacing: 0.04em;
+  }
+  p { margin: 0 0 3mm 0; text-align: justify; }
+  p.lead {
+    font-size: 11.5pt;
+    line-height: 1.95;
+    color: var(--soft);
+    margin-bottom: 6mm;
+  }
+  .pull {
+    margin: 5mm 6mm 6mm 6mm;
+    padding: 4mm 6mm 4mm 6mm;
+    border-left: 2px solid var(--accent);
+    background: rgba(178, 70, 47, 0.04);
+    font-size: 11.5pt;
+    line-height: 2;
+    color: var(--quote);
+    font-style: italic;
+  }
+  .pull b {
+    font-style: normal;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .small {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 9pt;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* 双栏 */
+  .twocol {
+    columns: 2;
+    column-gap: 8mm;
+    column-rule: 1px solid var(--hair);
+  }
+  .twocol > * { break-inside: avoid; }
+
+  /* 三幕结构图 */
+  .arc {
+    display: grid;
+    grid-template-columns: 22mm 1fr;
+    gap: 0 5mm;
+    margin: 5mm 0 4mm 0;
+    border-top: 1px solid var(--hair);
+  }
+  .arc-row {
+    display: contents;
+  }
+  .arc-row > div {
+    border-bottom: 1px solid var(--hair);
+    padding: 3mm 0;
+  }
+  .arc-day {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 9.5pt;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+  }
+  .arc-day b {
+    display: block;
+    color: var(--ink);
+    font-size: 11pt;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    margin-bottom: 1mm;
+  }
+  .arc-body h4 {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 11pt;
+    margin: 0 0 1mm 0;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+  .arc-body p {
+    margin: 0 0 1mm 0;
+    color: var(--soft);
+    font-size: 10.5pt;
+  }
+  .arc-body .note {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 9pt;
+    color: var(--muted);
+  }
+
+  /* 角色卡 */
+  .cast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4mm 6mm;
+    margin-top: 3mm;
+  }
+  .card {
+    break-inside: avoid;
+    border-top: 1px solid var(--hair);
+    padding-top: 2.5mm;
+    padding-bottom: 1mm;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1mm;
+  }
+  .card-name {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 11.5pt;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .card-tag {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 8.5pt;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+  }
+  .card-role {
+    font-size: 9.5pt;
+    color: var(--muted);
+    margin-bottom: 1mm;
+  }
+  .card-body {
+    font-size: 10pt;
+    line-height: 1.8;
+    color: var(--soft);
+  }
+  .card-body em {
+    font-style: normal;
+    color: var(--quote);
+  }
+
+  /* 四原则 */
+  .principles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm 7mm;
+    margin-top: 3mm;
+  }
+  .principle {
+    break-inside: avoid;
+    padding: 3mm 4mm 2mm 4mm;
+    background: rgba(216, 210, 196, 0.18);
+    border-left: 2px solid var(--accent);
+  }
+  .principle h4 {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 10.5pt;
+    color: var(--ink);
+    margin: 0 0 1mm 0;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+  .principle p {
+    font-size: 9.8pt;
+    color: var(--soft);
+    margin: 0;
+    line-height: 1.8;
+  }
+
+  /* 禁止清单 */
+  .donts {
+    margin: 3mm 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .donts li {
+    padding: 2mm 0;
+    border-bottom: 1px dashed var(--hair);
+    font-size: 10pt;
+    color: var(--soft);
+    position: relative;
+    padding-left: 8mm;
+  }
+  .donts li::before {
+    content: "—";
+    color: var(--accent);
+    position: absolute;
+    left: 0;
+    top: 2mm;
+  }
+  .donts li b {
+    color: var(--ink);
+    font-weight: 600;
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  }
+
+  /* 结语 */
+  .closing {
+    margin-top: 8mm;
+    padding: 6mm 8mm;
+    background: #f3ede0;
+    border-top: 2px solid var(--accent);
+  }
+  .closing h2 { margin-top: 0; }
+  .closing p {
+    color: var(--soft);
+    font-size: 11pt;
+    line-height: 2;
+  }
+
+  /* 让重要章节起新页 */
+  .page-break { page-break-before: always; }
+
+  strong, b { color: var(--ink); font-weight: 600; }
+  em { color: var(--quote); }
+
+  /* 角色一句话画像 - 用作"群像"页 */
+  .cameo {
+    display: grid;
+    grid-template-columns: 18mm 1fr;
+    gap: 0 4mm;
+    padding: 2.2mm 0;
+    border-bottom: 1px solid var(--hair);
+    break-inside: avoid;
+  }
+  .cameo:first-child { border-top: 1px solid var(--hair); }
+  .cameo-name {
+    font-family: "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+    font-size: 10.5pt;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .cameo-name .slot {
+    display: block;
+    font-size: 8pt;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-top: 0.5mm;
+    font-weight: 400;
+  }
+  .cameo-text {
+    font-size: 10pt;
+    color: var(--soft);
+    line-height: 1.75;
+  }
+  .cameo-text em {
+    color: var(--quote);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== 封面 ============== -->
+<section class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">RHYTHM &nbsp;·&nbsp; FRUIT &nbsp;·&nbsp; SHOP &nbsp;·&nbsp; A NARRATIVE BRIEF</div>
+    <h1 class="cover-title">节奏<span class="accent">·</span>鲜果铺</h1>
+    <div class="cover-subtitle">创作背景纲要 &nbsp;|&nbsp; 给共同进入这家店的写手们</div>
+    <div class="cover-rule"></div>
+    <div class="cover-pitch">
+      这是一个发生在 <em>AI 自动化浪潮「第二个早晨」</em>的故事。
+      不是恐慌的第一夜，也不是被遗忘的第十年——而是潮水刚退去的那个时刻：
+      <em>人们还没完全适应，但已经开始谋生</em>。
+      <br><br>
+      故事不喊口号，不写宣言。背景只通过<em>具体的人、具体的事、具体的一杯水果饮品</em>渗出来。
+    </div>
+  </div>
+  <div class="cover-foot">
+    <b>用途</b>　对外阅读 / 创作前置共识 / 写手协作起点<br>
+    <b>篇幅</b>　10 天主线 · 17 首 VIP 曲目 · 1 间小铺<br>
+    <b>体裁</b>　节奏游戏 ＋ 群像短篇集 ＋ 都市散文
+  </div>
+</section>
+
+<!-- ============== 一、世界气质 ============== -->
+<section class="section-block">
+  <div class="section-eyebrow">PART  I</div>
+  <h1 class="section">一、这是一个什么样的世界</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    故事发生在 AI 自动化浪潮的「第二个早晨」——不是恐慌的第一夜，也不是已经被遗忘的第十年，
+    而是那个潮水刚退去的时刻：人们还没完全适应，但已经开始谋生。
+  </p>
+
+  <p>
+    这个小城不大，有学校、工厂区、居民楼、夜市，和一条街灯不那么亮的后街。
+    城里有人还在跑外卖，有人学会了给算法打工，有人悄悄保留着一些「没用的」技能，有人来了又走。
+  </p>
+
+  <div class="pull">
+    我们<b>不写反乌托邦宣言</b>。<br>
+    背景只通过具体的人、具体的事、具体的一杯水果饮品<b>渗出来</b>。
+  </div>
+
+  <h2>不是什么</h2>
+  <div class="twocol">
+    <p><b>不是「AI vs 人类」的对抗叙事。</b>没有反派算法、没有觉醒主角。</p>
+    <p><b>不是英雄拯救小店的爽剧。</b>没有一个人能凭一己之力撑下来；所有人帮一点，店才不至于关。</p>
+    <p><b>不是赛博朋克。</b>霓虹只在 night 场景出现，白天是阳光照常打进玻璃柜的样子。</p>
+    <p><b>不是治愈系。</b>没有人被「治愈」，因为他们从来没说过自己生病。</p>
+  </div>
+</section>
+
+<!-- ============== 二、出发点 ============== -->
+<section class="section-block">
+  <div class="section-eyebrow">PART  II</div>
+  <h1 class="section">二、为什么是这个故事</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    我们想写的，不是被时代改变的人，而是<em>在时代改变之后，还在好好把一杯柠檬水做完的人</em>。
+  </p>
+
+  <h2>出发点</h2>
+  <p>
+    每一个角色都站在自动化浪潮的某条裂缝边上——但他们没有在崩溃，也没有在抗争。
+    他们在做自己今天该做的事：送外卖、教钢琴、看流星、把硬币按大小排好。
+    这些「看似无意义的日常」，是我们整个故事真正的剧情底色。
+  </p>
+
+  <p>
+    鲜果铺是这条街上一个微小的、湿润的、有酸味的角落。
+    它没有打算改变什么，它只是<em>开着</em>。
+    在每一个进来的人坐下、点单、喝完、起身的过程里，
+    时代切片自动显形——但<em>从不被人指出来</em>。
+  </p>
+
+  <h2>核心情感目标</h2>
+  <div class="pull">
+    终点不是「一切都好了」，而是——<br>
+    <b>「这里值得待下去，哪怕外面还是那个样子。」</b>
+  </div>
+</section>
+
+<!-- ============== 三、主角 ============== -->
+<section class="section-block page-break">
+  <div class="section-eyebrow">PART  III</div>
+  <h1 class="section">三、主角（玩家视角）</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    主角是鲜果铺的临时工。她 / 他曾在与 AI 系统工程化相关的高压岗位卖命多年，
+    最后以「优化」为由，被自己参与搭建的那套系统替代——心灰意冷，回到家乡。
+  </p>
+
+  <h2>关键写作约束 · 宣讲禁止</h2>
+  <p>
+    主角的过去是<b>故事的暗物质</b>：它确实在那里，会扭曲所有对话的引力线，
+    但它<b>永远不被直接说出来</b>。整部作品里，主角不会有一段「向 NPC 解释自己曾经做过什么」的对白。
+  </p>
+
+  <h3>允许的渗出方式</h3>
+  <ul class="donts">
+    <li><b>职业条件反射。</b>下意识估算出品效率，看到设备故障先想排查顺序而不是叫人。</li>
+    <li><b>极短的「内心」节点。</b>每章 0–1 刀，用身体细节（手、呼吸、眼前的一个东西），不说结论。</li>
+    <li><b>与镜像客之间的侧面对话。</b>主角从不主动解释自己的过去；和老宋之间的那个停顿，就是这段关系的全部。</li>
+  </ul>
+
+  <div class="pull">
+    好的示范　<b>（内心的节奏吗……）</b>　<b>（……跑得好快。）</b><br>
+    不好的示范　<em>（这让我想起了以前在公司的日子……）</em>
+  </div>
+
+  <h2>「你」这个角色的密度</h2>
+  <p>
+    「你」是参与者，但不是主导者。你陪着，不抢戏。
+    你的语言是：偶尔笨拙的开口，轻微地推回去，
+    一个内心括号里的歪掉的联想——然后那个联想被打断了，什么都没发生。
+  </p>
+</section>
+
+<!-- ============== 四、三幕结构 ============== -->
+<section class="section-block page-break">
+  <div class="section-eyebrow">PART  IV</div>
+  <h1 class="section">四、三幕结构 · 10 天</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    一段「落脚 → 生根 → 开花」的弧线。每一幕都不在写大事件，
+    而在累积「这家店还在」这件事的<em>具体重量</em>。
+  </p>
+
+  <div class="arc">
+
+    <div class="arc-row">
+      <div class="arc-day">序章<b>第 0 天</b></div>
+      <div class="arc-body">
+        <h4>柠檬水 · 二十来秒的事儿</h4>
+        <p>第一单：学生、补考、留几块钱坐车。柚子托付，街灯亮起。</p>
+        <p class="note">这二十秒决定了整部作品的呼吸感——克制、好笑、底色有一点不对劲。</p>
+      </div>
+    </div>
+
+    <div class="arc-row">
+      <div class="arc-day">第一幕<b>Day 1–3</b></div>
+      <div class="arc-body">
+        <h4>落脚</h4>
+        <p>学规矩，认第一批脸。第一位 VIP 出现（日间，轻量级）。节奏从「新人」过渡到「能独当一面」。</p>
+      </div>
+    </div>
+
+    <div class="arc-row">
+      <div class="arc-day">第二幕<b>Day 4–8</b></div>
+      <div class="arc-body">
+        <h4>生根</h4>
+        <p>VIP 线逐步展开，人物开始互相连接。第一次房租压力（具体的数字）。镜像客登场（夜间，慢热）。老板的第一封信抵达——荒谬但有用。</p>
+        <p><b>危机锚点 · Day 6–7。</b>房东涨租 ＋ 设备集体罢工，二者同时到来。每个常客用自己的方式帮忙兜住——不是英雄式拯救。柚子第一次正面承认：「我以为这次真的完了。」</p>
+      </div>
+    </div>
+
+    <div class="arc-row">
+      <div class="arc-day">第三幕<b>Day 9–10</b></div>
+      <div class="arc-body">
+        <h4>开花</h4>
+        <p>各条 VIP 线收口——<em>不必全部大圆满，允许悬而未决</em>。最后一夜，所有人在店里。
+          举杯——老板的位置：一把空椅 / 一纸贺词 / 那个你不确定是不是他的人。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>店铺危机的写法</h2>
+  <p>
+    危机不是一个人造成的，也不是一个人解决的。
+    冷柜彻底罢工（序章里被「敲了两下」那台终于撑不住）、榨汁机二次阵亡、房东涨租通知——
+    解决方式是各客人以各自的能力帮忙：<em>有人出钱，有人出人脉，有人只是来喝了一杯，
+    什么都没说，但第二天危机消了</em>。
+  </p>
+</section>
+
+<!-- ============== 五、人物群像 ============== -->
+<section class="section-block page-break">
+  <div class="section-eyebrow">PART  V</div>
+  <h1 class="section">五、人物群像速写</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    每位常客都站在一条裂缝边上，但他们首先是<em>一个人</em>，其次才是他所处的时代困境。
+    人物卡的完整版见 <span class="sans">02_track_vip_map.md</span>。
+  </p>
+
+  <h2>店内</h2>
+
+  <div class="cameo">
+    <div class="cameo-name">柚子<span class="slot">前辈 · 兜底人</span></div>
+    <div class="cameo-text">嘴损是工具，不是人设——每次刻薄后面都跟着真正有用的事。<em>「别太信机器，它们比你还爱演。」</em></div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">老板<span class="slot">远端 · 不在场</span></div>
+    <div class="cameo-text">永远不在场，或者在场但从不被指认。书信体，一本正经胡说八道，最后一句永远落到具体可操作的事。</div>
+  </div>
+
+  <h2 style="margin-top:6mm;">DAY · 白天的来客</h2>
+
+  <div class="cameo">
+    <div class="cameo-name">阿晟<span class="slot">DAY · SEEKER</span></div>
+    <div class="cameo-text">前数据分析师，被裁后接私活帮人查算法封号原因。把硬币按大小排好，数一遍再收进口袋——<em>「这样有实感。」</em></div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">老方<span class="slot">DAY · ARK LIGHT</span></div>
+    <div class="cameo-text">快递站点负责人，手底下是被「优化」下沉来的前白领。每次进铺子顺手把门口歪掉的广告牌扶正——他自己没意识到。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">猫小姐<span class="slot">DAY · FELIS</span></div>
+    <div class="cameo-text">宠物医院前台，自称「猫小姐」却对猫过敏。爱猫不能碰猫，所以做前台。讲这件事的时候像在讲别人。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">顾薇<span class="slot">DAY · PURPLE PASSION</span></div>
+    <div class="cameo-text">插画师，做「AI 润图」外包——让 AI 图看起来像手画的。她恨这件事，但这件事让她活下去。手绘本里空白比用过的页多。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">谢音<span class="slot">DAY · PLEASE</span></div>
+    <div class="cameo-text">钢琴老师，坚持用真钢琴教课。<em>自己家里没有钢琴——只有一个 App。</em>她不觉得这里有什么值得解释的。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">林小末<span class="slot">DAY · UNWELCOME SCHOOL</span></div>
+    <div class="cameo-text">序章里那个学生，十五岁。书包挂件叮当响，<em>「这个也是捡的」</em>——你不太信。说话句尾常带「吧」。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">流浪者<span class="slot">DAY · GYPSY TRONIC</span></div>
+    <div class="cameo-text">来路不明，对这座城市的老街比本地人更熟。「流浪者」是主角内心给他的称呼——他从未说过自己叫什么，主角也没问。</div>
+  </div>
+
+  <h2 style="margin-top:6mm;">DUSK · 黄昏来客</h2>
+
+  <div class="cameo">
+    <div class="cameo-name">程晚<span class="slot">DUSK · DRAMA</span></div>
+    <div class="cameo-text">话剧演员，台上活成别人，台下不确定自己是谁。会用「在某个版本里」描述现实——自己也不确定是真话还是还在演。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">远哥<span class="slot">DUSK · FARAWAY</span></div>
+    <div class="cameo-text">长途货运司机，孩子从视频里认识他的脸。手机屏保是他第一辆卡车的驾驶室——<em>「那时候是我自己的。」</em></div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">面具<span class="slot">DUSK · MASQUERADE</span></div>
+    <div class="cameo-text">内容创作者，百万粉丝，铺子里没人认出她。这让她又高兴又难受，但她不确定自己更希望哪种。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">老弦<span class="slot">DUSK · GRAFIORE</span></div>
+    <div class="cameo-text">前民乐演奏者，现在给 AI 录情感样本。<em>他的技艺正在被用于训练取代他的系统。他知道。还是做了。</em></div>
+  </div>
+
+  <h2 style="margin-top:6mm;">NIGHT · 夜里来客</h2>
+
+  <div class="cameo">
+    <div class="cameo-name">老贝<span class="slot">NIGHT · BEETHOVEN VIRUS</span></div>
+    <div class="cameo-text">退休中学音乐教师，睡不着出来走走。把布袋放在哪里，就是他打算待多久——放到最远的椅子上，今晚不急。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">焰子<span class="slot">NIGHT · LET'S DRIVE</span></div>
+    <div class="cameo-text">夜班外卖骑手，速度是她选的，不是被逼的。摩托后座绑着一只褪色的塑料恐龙，是弟弟给的，<em>「带出去就不怕路了」</em>。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">小兵<span class="slot">NIGHT · TOY WAR</span></div>
+    <div class="cameo-text">儿童游戏程序员，做给六岁孩子玩的游戏，自己最近没有玩的欲望了。「我不确定」是口头禅——他在如实标注自己的置信度。</div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">老宋<span class="slot">NIGHT · QUA VADIS · 镜像客</span></div>
+    <div class="cameo-text">前 HR，专职下发裁员通知六年。后来他自己收到了同样格式的邮件——看了三秒，关掉，一个字都没回。<b>最接近主角过去的那个人。</b></div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">月叔<span class="slot">NIGHT · LUNATIC SKY</span></div>
+    <div class="cameo-text">夜班保安，业余天文爱好者。学了四年材料工程做了保安——<em>「那四年没白费，看星星的时候还能想到晶格结构。」</em></div>
+  </div>
+
+  <div class="cameo">
+    <div class="cameo-name">无名<span class="slot">NIGHT · INEFFABILIS</span></div>
+    <div class="cameo-text">失去孩子的父亲。每次只要草莓汁，永远这一种。他不需要被治愈，他只需要一个可以来的地方。<em>这条线的分量来自克制。</em></div>
+  </div>
+
+  <h2 style="margin-top:6mm;">LATE · 终幕</h2>
+
+  <div class="cameo">
+    <div class="cameo-name">柚子收口<span class="slot">LATE · WINGS OF SILENCE</span></div>
+    <div class="cameo-text">「沉默之翼」。可能是主角第一次独自当夜班的那个夜晚；也可能是危机过后，柚子第一次真正在主角面前说了句实话。<b>大段独白禁止。</b></div>
+  </div>
+
+</section>
+
+<!-- ============== 六、写作语法 ============== -->
+<section class="section-block page-break">
+  <div class="section-eyebrow">PART  VI</div>
+  <h1 class="section">六、写作语法 · 四原则</h1>
+  <hr class="section-rule">
+
+  <p class="lead">
+    这四条原则不是技巧建议，是<em>世界观的语法</em>。
+    所有对白、所有内心、所有旁白，都要先过这四条。
+  </p>
+
+  <div class="principles">
+    <div class="principle">
+      <h4>① 喜剧的内核是悲剧</h4>
+      <p>不怕写喜剧，越喜剧越好——反差越强烈，关键情绪落点越重。喜剧和悲剧不是两种色调，是同一个杠杆的两端。先把喜剧写真，再把悲剧藏进日常里，不解释，不提示。</p>
+    </div>
+    <div class="principle">
+      <h4>② 幽默是恰到好处的尴尬</h4>
+      <p>幽默不是插入一个笑话。幽默是一个时刻——双方都感觉到了，但没人说出来；或者一个人说了，另一个人接不住；或者接住了，但接歪了。这种「歪」是真实的，不是设计出来的。</p>
+    </div>
+    <div class="principle">
+      <h4>③ 没有人扮演小丑</h4>
+      <p>所有人都是自己，基于自己的动机做事。柚子的演讲有效，不是因为她在「扮演喜剧角色」，而是因为她<b>真的这么相信</b>。喜剧性来自真实自我碰到外部世界产生的摩擦。</p>
+    </div>
+    <div class="principle">
+      <h4>④ 日常是底色</h4>
+      <p>关于葡萄冰沙应该多厚的对话，关于挂件是不是捡的的含糊——这些不是剧情填充，这些<b>就是故事本身</b>。有了日常的积累，关键剧情才有独特的重量。<b>不要跳过日常。</b></p>
+    </div>
+  </div>
+
+  <h2>主题「漏出来」的原则</h2>
+  <p>
+    不要让角色直接陈述自己的处境。让主题通过他们说的「别的事」透出来。
+  </p>
+
+  <div class="pull">
+    <b>错误示范：</b><br>
+    阿晟说<em>「我对算法系统感到愤怒和无力」</em>。<br><br>
+    <b>正确示范：</b><br>
+    阿晟说<em>「『系统误判』四个字比它代表的那件事轻多了」</em>，<br>
+    然后换话题。
+  </div>
+
+  <h2>禁止清单</h2>
+  <ul class="donts">
+    <li><b>禁止主题标签化。</b>不要写「你感觉到了他的孤独」。让读者感觉，不要告诉。</li>
+    <li><b>禁止过度注释行为。</b>行为描写后面不要跟解释（「他这样做是因为……」）。</li>
+    <li><b>禁止均匀节奏。</b>不要一行 A 一行 B 一行 A——有时候 A 说三行，B 一句都没插上。</li>
+    <li><b>禁止提前揭示。</b>第一次见面的客人不能泄露他们后面的戏。Day 2 的阿晟不知道那个电话会有什么结果。</li>
+    <li><b>禁止「意义感」泄漏。</b>不要让日常对话里某句话带着「这句话很重要」的提示感。就算它真的很重要，也不要提示。</li>
+    <li><b>禁止解释情绪。</b>「她有点难过」、「他感到释然」——这些词不存在。情绪在行为里，在停顿里，在那个没说出来的句子里。</li>
+  </ul>
+
+  <h2>物件 ＞ 形容词</h2>
+  <p>
+    物件是台词的替代品。一个人怎么放杯子、怎么收硬币、怎么把手机屏朝下扣在台面上——
+    这些比他们说「我现在的状态是这样」更真实，也更有画面感。
+    <em>每段对话里，找一到两个属于这个角色的物件或动作。不要解释它，让它在那里。</em>
+  </p>
+</section>
+
+<!-- ============== 七、邀请 ============== -->
+<section class="section-block">
+  <div class="closing">
+    <div class="section-eyebrow">A NOTE TO THE WRITERS</div>
+    <h2>七、给你的一个邀请</h2>
+
+    <p>
+      如果你读到这里，你大概已经感觉到——这家铺子不大，但里面的人各有各的重量。
+      我们不需要每个故事都解开；我们需要每个故事都<em>站得住</em>。
+    </p>
+
+    <p>
+      请你写一段时间，再回看自己的稿子，问自己一个问题——
+    </p>
+
+    <div class="pull" style="margin-top:4mm;">
+      <b>这段对话如果删掉「解释的那一句」，</b><br>
+      <b>那个没说出来的东西，还在不在？</b>
+    </div>
+
+    <p style="margin-top:5mm;">
+      如果还在，请把它留下来。<br>
+      如果不在，请重写到它在为止。
+    </p>
+
+    <p class="small" style="margin-top:6mm; color: var(--muted);">
+      ——节奏鲜果铺主创<br>
+      <span style="font-family: 'Source Han Sans SC', sans-serif; letter-spacing: 0.16em;">RHYTHM FRUIT SHOP · NARRATIVE TEAM</span>
+    </p>
+  </div>
+</section>
+
+</body>
+</html>

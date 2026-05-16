@@ -25,34 +25,13 @@ public:
 	}
 
 	std::span<const Entry> QueryRange(float t0, float t1) const {
-		auto b = std::lower_bound(
-			entries_.begin(),
-			entries_.end(),
-			t0,
-			[](const Entry& e, float t) {
-				return e.time - t;
-			}
-		);
-		auto e = std::upper_bound(
-			entries_.begin(),
-			entries_.end(),
-			t1,
-			[](float t, const Entry& e) {
-				return t - e.time;
-			}
-		);
-		return std::span<const Entry>(b, e);
+		auto b = std::ranges::lower_bound(entries_, t0, {}, &Entry::time);
+		auto e = std::ranges::upper_bound(entries_, t1, {}, &Entry::time);
+		return std::span(b, e);
 	}
 
 	const Entry* LastBefore(float t) const {
-		auto it = std::upper_bound(
-			entries_.begin(),
-			entries_.end(),
-			t,
-			[](t, const Entry& e) {
-				return t < e.time;
-			}
-		);
+		auto it = std::ranges::lower_bound(entries_, t, {}, &Entry::time);
 		if (it == entries_.begin()) {
 			return nullptr;
 		}

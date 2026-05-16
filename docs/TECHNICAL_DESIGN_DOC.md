@@ -144,11 +144,13 @@ EventQueue<T>          物理事件队列            DES 事件池（核心）
 
 ```cpp
 // engine/core/math.h
+#pragma once
+#include <cstdint>  // uint8_t
 
 struct Vec2 { float x = 0, y = 0; };
 struct Vec3 { float x = 0, y = 0, z = 0; };
 struct AABB { Vec2 min, max; };
-struct Color { uint8_t r, g, b, a = 255; };
+struct Color { uint8_t r = 0, g = 0, b = 0, a = 255; };
 
 struct Transform2D {
     Vec2  position;
@@ -156,15 +158,17 @@ struct Transform2D {
     Vec2  scale    = {1.f, 1.f};
 };
 
-inline float lerp(float a, float b, float t) { return a + (b - a) * t; }
-inline float clamp(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
-inline float smoothstep(float edge0, float edge1, float x) {
+// [[nodiscard]]：纯函数的返回值不应被忽略；忽略说明调用本身没有意义
+[[nodiscard]] inline float lerp(float a, float b, float t) { return a + (b - a) * t; }
+[[nodiscard]] inline float clamp(float v, float lo, float hi) { return v < lo ? lo : v > hi ? hi : v; }
+[[nodiscard]] inline float smoothstep(float edge0, float edge1, float x) {
     float t = clamp((x - edge0) / (edge1 - edge0), 0.f, 1.f);
     return t * t * (3.f - 2.f * t);
 }
-inline Vec2  operator+(Vec2 a, Vec2 b) { return {a.x+b.x, a.y+b.y}; }
-inline Vec2  operator*(Vec2 a, float s){ return {a.x*s,   a.y*s  }; }
-inline bool  aabbContains(AABB box, Vec2 p) {
+[[nodiscard]] inline Vec2 operator+(Vec2 a, Vec2 b) { return {a.x+b.x, a.y+b.y}; }
+[[nodiscard]] inline Vec2 operator-(Vec2 a, Vec2 b) { return {a.x-b.x, a.y-b.y}; }
+[[nodiscard]] inline Vec2 operator*(Vec2 a, float s) { return {a.x*s, a.y*s}; }
+[[nodiscard]] inline bool aabbContains(AABB box, Vec2 p) {
     return p.x >= box.min.x && p.x <= box.max.x
         && p.y >= box.min.y && p.y <= box.max.y;
 }
@@ -176,38 +180,46 @@ inline bool  aabbContains(AABB box, Vec2 p) {
 
 ```cpp
 // engine/core/timeline.h
+#pragma once
+#include <vector>
+#include <algorithm>  // std::ranges::lower_bound, upper_bound
+#include <span>       // std::span (C++20)
+#include <ranges>     // std::ranges::subrange (C++20)
+
 template<typename T>
 class Timeline {
 public:
     struct Entry { float time; T value; };
 
     void Insert(float timestamp, T value) {
-        auto it = std::lower_bound(entries_.begin(), entries_.end(),
-                                   timestamp, [](const Entry& e, float t){ return e.time < t; });
+        // &Entry::time 是投影（projection）：告诉算法"用 .time 成员做比较"
+        // 比 lambda 版更简洁，也不需要手写比较器
+        auto it = std::ranges::lower_bound(entries_, timestamp, {}, &Entry::time);
         entries_.insert(it, {timestamp, std::move(value)});
     }
 
-    // 返回 [t0, t1) 范围内所有事件的只读 span
-    std::span<const Entry> QueryRange(float t0, float t1) const {
-        auto b = std::lower_bound(entries_.begin(), entries_.end(), t0,
-                                  [](const Entry& e, float t){ return e.time < t; });
-        auto e = std::lower_bound(b, entries_.end(), t1,
-                                  [](const Entry& e, float t){ return e.time < t; });
+    // 返回 [t0, t1) 范围内所有事件的只读 span（零拷贝）
+    [[nodiscard]] std::span<const Entry> QueryRange(float t0, float t1) const {
+        auto b = std::ranges::lower_bound(entries_, t0, {}, &Entry::time);
+        // 对 [b, end) 做第二次搜索，避免从头重复扫描
+        auto e = std::ranges::lower_bound(
+            std::ranges::subrange(b, entries_.cend()), t1, {}, &Entry::time);
         return std::span<const Entry>(b, e);
     }
 
-    // 第一个 time <= t 的事件（判定扫描用）
-    const Entry* LastBefore(float t) const {
-        auto it = std::upper_bound(entries_.begin(), entries_.end(), t,
-                                   [](float t, const Entry& e){ return t < e.time; });
+    // 最后一个 time <= t 的事件（判定扫描用）
+    // 注意：std::upper_bound 的 lambda 比较器参数顺序是反的（易错），
+    // ranges::upper_bound + projection 消除了这个陷阱
+    [[nodiscard]] const Entry* LastBefore(float t) const {
+        auto it = std::ranges::upper_bound(entries_, t, {}, &Entry::time);
         if (it == entries_.begin()) return nullptr;
         return &*std::prev(it);
     }
 
-    std::span<const Entry> All() const { return entries_; }
-    size_t size() const { return entries_.size(); }
-    bool   empty() const { return entries_.empty(); }
-    void   Clear() { entries_.clear(); }
+    [[nodiscard]] std::span<const Entry> All() const noexcept { return entries_; }
+    [[nodiscard]] size_t size()  const noexcept { return entries_.size(); }
+    [[nodiscard]] bool   empty() const noexcept { return entries_.empty(); }
+    void Clear() { entries_.clear(); }
 
 private:
     std::vector<Entry> entries_; // 始终保持按 time 排序
@@ -220,7 +232,27 @@ private:
 
 ```cpp
 // engine/core/state_machine.h
-template<typename State>
+#pragma once
+#include <unordered_map>
+#include <unordered_set>
+#include <concepts>     // std::equality_comparable (C++20)
+#include <type_traits>  // std::is_enum_v
+#include "engine/core/signal.h"
+
+// C++20 Concept：约束 State 必须是可哈希的枚举类型
+// 这样 StateMachine<int> 等非枚举用法在编译期就会报错，而不是产生难懂的模板错误
+template<typename S>
+concept StateType = std::is_enum_v<S> && std::equality_comparable<S>;
+
+// enum class 不自带哈希函数，需要提供。将枚举值 cast 到 int 再哈希。
+struct StateHash {
+    template<typename S>
+    [[nodiscard]] size_t operator()(S s) const noexcept {
+        return std::hash<int>{}(static_cast<int>(s));
+    }
+};
+
+template<StateType State>  // 使用 Concept 约束模板参数
 class StateMachine {
 public:
     using TransitionTable = std::unordered_map<State,
@@ -229,13 +261,13 @@ public:
     explicit StateMachine(State initial, TransitionTable transitions)
         : current_(initial), transitions_(std::move(transitions)) {}
 
-    State Current() const { return current_; }
+    [[nodiscard]] State Current() const noexcept { return current_; }
 
-    // 合法转移返回 true 并更新状态；非法转移返回 false 并记录警告
-    bool TryTransition(State next) {
+    // [[nodiscard]]：忽略返回值意味着你以为转移成功了但实际没有，是典型的隐蔽 bug
+    [[nodiscard]] bool TryTransition(State next) {
         auto it = transitions_.find(current_);
-        if (it == transitions_.end() || it->second.count(next) == 0) {
-            // 记录警告；调试版可 assert
+        if (it == transitions_.end() || !it->second.contains(next)) {
+            // 调试版可在此 assert(false) 使非法转移立即崩溃
             return false;
         }
         State prev = current_;
@@ -244,7 +276,7 @@ public:
         return true;
     }
 
-    // 仅用于单元测试
+    // 仅用于单元测试：跳过转移校验直接设置状态
     void ForceTransition(State next) { current_ = next; }
 
     Signal<State, State> OnTransition; // (from, to)
@@ -261,34 +293,48 @@ private:
 
 ```cpp
 // engine/core/event_queue.h
+#pragma once
+#include <vector>
+#include <algorithm>  // std::make_heap, std::push_heap, std::pop_heap
+
+// 使用 vector + heap 手动管理，而非 std::priority_queue。
+// 原因：std::priority_queue::top() 返回 const T&，从中 move 需要 const_cast，是代码异味。
+// 手动 pop_heap 后访问 back() 可以直接 move，干净且符合标准。
 template<typename T>
 class EventQueue {
 public:
-    void Push(float timestamp, T event) {
-        heap_.push({timestamp, std::move(event)});
+    void Push(float timestamp, T value) {
+        heap_.push_back({timestamp, std::move(value)});
+        std::push_heap(heap_.begin(), heap_.end(), Greater{});
     }
 
-    bool HasReady(float currentTime) const {
-        return !heap_.empty() && heap_.top().time <= currentTime;
+    [[nodiscard]] bool HasReady(float currentTime) const noexcept {
+        return !heap_.empty() && heap_.front().time <= currentTime;
     }
 
-    // 弹出最早到期的事件（调用前应先 HasReady）
-    T PopNext() {
-        T val = std::move(const_cast<Entry&>(heap_.top()).value);
-        heap_.pop();
+    // 弹出时间戳最小（最早到期）的事件；调用前应先 HasReady
+    [[nodiscard]] T PopNext() {
+        std::pop_heap(heap_.begin(), heap_.end(), Greater{});
+        T val = std::move(heap_.back().value);
+        heap_.pop_back();
         return val;
     }
 
-    bool Empty() const { return heap_.empty(); }
-    void Clear() { while (!heap_.empty()) heap_.pop(); }
+    [[nodiscard]] bool Empty() const noexcept { return heap_.empty(); }
+    void Clear() noexcept { heap_.clear(); }
 
 private:
     struct Entry {
         float time;
         T     value;
-        bool operator>(const Entry& o) const { return time > o.time; }
     };
-    std::priority_queue<Entry, std::vector<Entry>, std::greater<Entry>> heap_;
+    // min-heap 比较器：时间戳小的优先
+    struct Greater {
+        bool operator()(const Entry& a, const Entry& b) const noexcept {
+            return a.time > b.time;
+        }
+    };
+    std::vector<Entry> heap_;
 };
 ```
 
@@ -298,13 +344,19 @@ private:
 
 ```cpp
 // engine/core/signal.h
+#pragma once
+#include <cstdint>        // uint64_t
+#include <functional>     // std::function
+#include <unordered_map>
+
 template<typename... Args>
 class Signal {
 public:
     using Handle = uint64_t;
     using Fn     = std::function<void(Args...)>;
 
-    Handle Connect(Fn fn) {
+    // [[nodiscard]]：Handle 必须保存，否则无法 Disconnect，导致订阅永久存在（资源泄漏）
+    [[nodiscard]] Handle Connect(Fn fn) {
         Handle h = next_++;
         slots_[h] = std::move(fn);
         return h;
@@ -312,7 +364,9 @@ public:
 
     void Disconnect(Handle h) { slots_.erase(h); }
 
-    void Emit(Args... args) const {
+    // const Args&...：避免对非平凡类型（如 std::string）做不必要的拷贝
+    // 注意：Emit 执行期间不能在 slot 回调里调用 Connect/Disconnect（会使迭代器失效）
+    void Emit(const Args&... args) const {
         for (auto& [h, fn] : slots_) fn(args...);
     }
 
@@ -330,6 +384,10 @@ private:
 
 ```cpp
 // engine/core/resource_cache.h
+#pragma once
+#include <functional>     // std::function
+#include <unordered_map>
+
 template<typename Key, typename Value>
 class ResourceCache {
 public:
@@ -337,22 +395,37 @@ public:
 
     explicit ResourceCache(Loader loader) : loader_(std::move(loader)) {}
 
-    const Value& Get(const Key& key) {
+    [[nodiscard]] const Value& Get(const Key& key) {
         auto it = cache_.find(key);
         if (it != cache_.end()) return it->second;
-        auto [inserted, ok] = cache_.emplace(key, loader_(key));
-        return inserted->second;
+        // emplace 返回 pair<iterator, bool>：it 是指向插入元素的迭代器，ok 表示是否新插入
+        // 注意：原 TDD 此处变量名写为 [inserted, ok]，iterator 命名为 inserted 是误导性命名
+        auto [it2, ok] = cache_.emplace(key, loader_(key));
+        return it2->second;
     }
 
-    bool Contains(const Key& key) const { return cache_.count(key) > 0; }
-    void Evict(const Key& key)          { cache_.erase(key); }
-    void Clear()                        { cache_.clear(); }
+    // C++20：contains() 比 count() > 0 语义更清晰
+    [[nodiscard]] bool Contains(const Key& key) const { return cache_.contains(key); }
+    void Evict(const Key& key) { cache_.erase(key); }
+    void Clear()               { cache_.clear(); }
 
 private:
     Loader                          loader_;
     std::unordered_map<Key, Value>  cache_;
 };
 ```
+
+> **注意（§6.2 Renderer2D 使用者）**：`ResourceCache<std::pair<std::string,int>, TTF_Font*>` 中 `std::pair` 不自带 `std::hash` 特化，直接使用会编译报错。需要在 `renderer2d.h` 里提供自定义哈希：
+> ```cpp
+> struct PairHash {
+>     size_t operator()(const std::pair<std::string,int>& p) const noexcept {
+>         size_t h1 = std::hash<std::string>{}(p.first);
+>         size_t h2 = std::hash<int>{}(p.second);
+>         return h1 ^ (h2 << 32 | h2 >> 32);  // 简单混合
+>     }
+> };
+> // 然后：ResourceCache<std::pair<std::string,int>, TTF_Font*, PairHash> font_cache_;
+> ```
 
 ---
 
