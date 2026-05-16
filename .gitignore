@@ -11,3 +11,10 @@ stems/**/*
 # Local diagnostics and temporary outputs.
 diagnostics/
 dist/
+
+# C++ build output and VS local workspace (Visual Studio CMake mode)
+libengine/out/
+libengine/.vs/
+games/**/out/
+games/**/.vs/
+games/**/build/
