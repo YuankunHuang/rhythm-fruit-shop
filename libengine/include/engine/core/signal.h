@@ -1,3 +1,5 @@
+#pragma once
+
 #include <unordered_map>
 
 template<typename... Args>
@@ -18,7 +20,7 @@ public:
 
 	void Emit(Args... args) const {
 		for (auto& [h, fn] : slots_) {
-			fn(args);
+			fn(args...);
 		}
 	}
 

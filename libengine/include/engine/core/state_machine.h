@@ -1,6 +1,16 @@
+#pragma once
+
 #include <unordered_map>
 #include <unordered_set>
+#include <type_traits>
 #include "signal.h"
+
+struct StateHash {
+	template<typename State>
+	size_t operator()(const State& s) const requires std::is_enum_v<State> {
+		return std::hash<std::underlying_type_t<State>>{}(static_cast<std::underlying_type_t<State>>(s));
+	}
+};
 
 template<typename State>
 class StateMachine {
