@@ -8,19 +8,12 @@ template<typename T>
 class Timeline {
 public:
 	struct Entry {
-		T value;
 		float time;
+		T value;
 	};
 
 	void Insert(float timestamp, T value) {
-		auto it = std::lower_bound(
-			entries_.begin(),
-			entries_.end(),
-			timestamp,
-			[](const Entry& e, float t) {
-				return e.time < t;
-			})
-		);
+		auto it = std::ranges::lower_bound(entries_, timestamp, {}, &Entry::time);
 		entries_.insert(it, { timestamp, std::move(value) });
 	}
 

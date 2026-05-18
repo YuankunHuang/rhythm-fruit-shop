@@ -2,7 +2,7 @@ add_executable(engine_tests
   # ↑ 创建一个可执行文件叫 engine_tests，后面列出它包含的源文件
   test_math.cpp
   # 后续每新增一个测试文件，在这里加一行
-  test_timeline.cpp)
+  test_timeline.cpp "test_signal.cpp" "test_state_machine.cpp" "test_event_queue.cpp")
 
 target_link_libraries(engine_tests
   PRIVATE
