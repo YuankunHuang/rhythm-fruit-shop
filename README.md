@@ -1,109 +1,123 @@
-# Rhythm Fruit Aim / 节奏鲜果铺 Demo
+# Rhythm Fruit Shop
 
-这是一个可直接分享体验的 HTML 音游经营原型。当前实现仍以完整曲谱面为主，用来验证音游判定、谱面管线、练习/营业边界和店铺成长反馈；新的设计基线是“顾客故事 + 鲜果服务 + 节奏加工”。
+A rhythm game × fruit-shop personal project. Music is the feel of making drinks, not a stage performance. You start as a summer intern and grow into the shop owner — daily shifts mix customer stories with falling-note tension.
 
-当前版本把谱面制作工作流固定为：
+This repo holds **two builds** of the same world. They ask different questions:
+
+| | **Web** (repo root) | **C++** ([`cpp_core/`](cpp_core/)) |
+|---|---------------------|-------------------------------------|
+| What I'm exploring | Look, feel, story, shop loop — does the idea work as a game? | Native rhythm core — clocks, input, charts, architecture |
+| Presentation | Playable browser prototype | Minimal geometry on purpose — systems first |
+| Stack | HTML + JS | C++20 · SFML · miniaudio · CMake |
+
+They are **not** a port of each other: separate code, chart formats, and assets. The web build is for fast iteration; the C++ build is a fresh native line I started once I wanted to get the rhythm foundation right.
 
 ```text
-原始音频
--> Demucs v4 本地分轨，输出 stems/
--> MuG Diffusion 生成 3K osu!mania .osu 草稿
--> scripts/import_osu_mania.py 转换为 charts/<song>.json
--> tools/chart_editor.html 主观润色
--> scripts/sync_charts_to_game.py 同步到 HTML demo
+Web  —  visuals, narrative, service loop, chart pipeline
+  ↓
+C++  —  layered clock, platform boundaries, testable rhythm core
+  ↓
+Later —  richer presentation maybe; both are milestones, not final shipping builds
 ```
 
-当前游戏仍是单指玩法。3K 只代表画面上的三条视觉 lane：`-1 / 0 / 1`，不会改变输入方式。
+**Quick links**
 
-## 如何体验
+- Play the web prototype → [Web prototype](#web-prototype) · run `05_start_local_server.bat` · open `http://localhost:8080/`
+- Run the native demo → [`cpp_core/README.md`](cpp_core/README.md)
 
-1. 保持本目录内文件结构不变。
-2. 用任意静态服务器打开本目录。
-3. 点击“开门营业”，选择歌曲和难度后开始测试当前原型。
+**Note:** In-game narrative and many design docs are **Chinese (zh-CN)** — that's the language this story is written in. This README is in English so the repo is easy to navigate; the C++ folder is fully English-friendly.
 
-当前试玩版运行时会加载 `charts/*.json`，请双击 `05_start_local_server.bat`，然后访问 `http://localhost:8080/`。
+---
 
-## 目录约定
+## Web prototype
 
-- `audio/`：试玩版实际播放的音乐文件。
-- `stems/`：Demucs 输出缓存，不是运行时资源。
-- `imports/`：MuG Diffusion、osu!mania 编辑器等外部工具输出的草稿文件。
-- `charts/`：唯一正式谱面源。每首歌一个 JSON 文件，`manifest.json` 负责索引。
-- `index.html`：可分享试玩版入口，运行时从 `charts/` 加载正式谱面。
-- `tools/chart_editor.html`：本地人工润色工具。
-- `tools/schedule_editor.html`：日程叙事与序章对白编辑器；选择 `data/` 目录后可直接保存。
-- `scripts/import_osu_mania.py`：把 3K `.osu` 草稿导入正式 JSON，并执行单指谱面筛查。
-- `scripts/sync_charts_to_game.py`：刷新 `charts/manifest.json` 和 `index.html` 的歌曲元数据，不再清洗或回写正式谱面。
+A shareable HTML rhythm + shop prototype. Full charts are the main focus today: judgment, chart pipeline, practice vs. service boundaries, and shop feedback. Design baseline: *customer stories + fresh-fruit service + rhythm crafting*.
 
-## 叙事编辑
+Chart authoring workflow:
 
-- **对白风格锚点（序章关系戏与节度）**：[`docs/dialogue_style_benchmark_zh-CN.md`](docs/dialogue_style_benchmark_zh-CN.md)
-- **总编辑层设定**：[`docs/story_bible_zh-CN.md`](docs/story_bible_zh-CN.md)。运行时序章对白以 `data/dialogue/prologue.json` 为准。打开 `tools/schedule_editor.html`，选择 `data/` 目录后，在「序章对白」Tab 中编辑 `opening`、服务成绩分支和共享后续；保存会写回 `data/dialogue/prologue.json`。
-- `data/flows/*.json` 是日程 flow 的编辑格式，用于整理 Day 结构、对话、service、成绩分支和结算阶段。当前 HTML 运行时尚未完整解释这些 flow；如果要让 `day1.json` 等直接驱动游戏流程，需要后续接入 flow 解释器。
-- 序章 `opening` 最后一条订单节点通常保留 `action: "startService"`；`afterService.shared` 最后一条系统节点通常保留 `action: "settlement"`，否则会影响服务曲与结算衔接。
+```text
+Source audio
+-> Demucs v4 stems -> stems/
+-> MuG Diffusion -> 3K osu!mania .osu drafts
+-> scripts/import_osu_mania.py -> charts/<song>.json
+-> tools/chart_editor.html manual polish
+-> scripts/sync_charts_to_game.py -> refresh HTML demo metadata
+```
 
-## 推荐制谱流程
+Single-finger input. The 3 visual lanes (`-1 / 0 / 1`) are display-only; input stays one-finger.
 
-0. 把运行时音频统一为 m4a：
+### Try it
 
-也可以双击 `00_convert_audio_to_m4a.bat`。它扫所有运行时音频（含 `.m4a`），按 `audio/loudness-manifest.json` 的记录跳过已归一化的文件，只处理新加或被外部覆盖过 hash 不一致的；处理完会重写 `charts/` 与 `index.html` 的音频引用。要全量重跑加 `--force`。
+1. Keep the folder layout as-is.
+2. Double-click `05_start_local_server.bat`.
+3. Open `http://localhost:8080/`, choose a song and difficulty.
 
-1. 把音乐放入 `audio/service/` 或 `audio/tracks/`，例如 `audio/tracks/drama.m4a`。只有这两个目录需要谱面。
-2. 准备 MuG Diffusion 更稳的 WAV 输入：
+The runtime loads charts from `charts/*.json`.
 
-也可以双击 `01_prepare_mug_inputs.bat`。
+### Directory layout
 
-这会生成 `imports/<song-id>/mug/source.wav`，并打印每个难度应输出到哪里。
+- **`cpp_core/`** — Native C++ rhythm demo (separate from web). See [`cpp_core/README.md`](cpp_core/README.md).
+- `audio/` — Music files the playable build uses.
+- `stems/` — Demucs cache; not loaded at runtime.
+- `imports/` — Draft outputs from MuG Diffusion, osu! editors, etc.
+- `charts/` — Canonical chart source. One JSON per song; `manifest.json` indexes them.
+- `index.html` — Playable entry; loads charts at runtime.
+- `tools/chart_editor.html` — Local chart polish tool.
+- `tools/schedule_editor.html` — Schedule / prologue dialogue editor (pick `data/` folder to save).
+- `scripts/import_osu_mania.py` — Import 3K `.osu` drafts to JSON + single-finger rule checks.
+- `scripts/sync_charts_to_game.py` — Refresh `manifest.json` and song metadata in `index.html` (does not rewrite note data).
 
-3. 在 MuG Diffusion Windows WebUI 中选择 4K VSRG / osu!mania 输出，使用对应 `source.wav` 生成 `.osu` 或 `.osz` 草稿，service 放入 `imports/lemon-water/mug/service.osz`，track 放入类似 `imports/drama/mug/expert.osz` 的路径。
-4. 导入草稿，并自动执行单指规则筛查：
+### Narrative editing
+
+- Dialogue tone benchmark: [`docs/dialogue_style_benchmark_zh-CN.md`](docs/dialogue_style_benchmark_zh-CN.md) *(zh-CN)*
+- Story bible: [`docs/story_bible_zh-CN.md`](docs/story_bible_zh-CN.md) *(zh-CN)*. Runtime prologue: `data/dialogue/prologue.json`. Edit in `tools/schedule_editor.html` → Prologue tab → saves back to `prologue.json`.
+- `data/flows/*.json` — Day structure, dialogue, service, grades, settlement (editor format). The HTML runtime does not fully interpret flows yet.
+- Keep `action: "startService"` on the last order node in prologue `opening`, and `action: "settlement"` on the last shared after-service node, or service/settlement breaks.
+
+### Chart pipeline (recommended)
+
+0. Normalize runtime audio to m4a — `00_convert_audio_to_m4a.bat` (uses `audio/loudness-manifest.json`; `--force` for full re-run).
+
+1. Put music in `audio/service/` or `audio/tracks/` (e.g. `audio/tracks/drama.m4a`).
+
+2. Prepare WAV for MuG — `01_prepare_mug_inputs.bat` → `imports/<song-id>/mug/source.wav`.
+
+3. Generate `.osu` / `.osz` in MuG Diffusion (4K VSRG / osu!mania), e.g. `imports/lemon-water/mug/service.osz`.
+
+4. Import drafts:
 
 ```powershell
 python scripts\import_osu_mania.py imports\drama\mug\expert.osz --difficulty expert --audio-key audio/tracks/drama.m4a
 ```
 
-批量导入 `audio/service` 与 `audio/tracks` 中所有需要谱面的音频：
+Batch:
 
 ```powershell
 python scripts\import_all_osu_mania.py
+python scripts\import_all_osu_mania.py --overwrite   # only when re-importing existing charts
 ```
 
-批量导入默认会跳过已经存在的 `charts/service/*.json` 和 `charts/tracks/*.json`，避免覆盖人工润色过的谱面。只有明确要重导旧曲时才使用：
+Or `02_import_all_osu_mania.bat`. Expects `imports/<id>/mug/{easy,normal,hard,expert,service}.osu` or `.osz`.
 
-```powershell
-python scripts\import_all_osu_mania.py --overwrite
-```
+5. `03_open_chart_editor.bat` — final human pass on JSON.
 
-批量脚本会寻找：
+6. `04_sync_charts_to_game.bat` — sync playable metadata only.
+
+### Batch scripts
 
 ```text
-imports/<song-id>/mug/easy.osu 或 easy.osz
-imports/<song-id>/mug/normal.osu 或 normal.osz
-imports/<song-id>/mug/hard.osu 或 hard.osz
-imports/<song-id>/mug/expert.osu 或 expert.osz
-imports/<service-id>/mug/service.osu 或 service.osz
+00_convert_audio_to_m4a.bat    Normalize audio to m4a
+01_prepare_mug_inputs.bat        WAV for MuG
+02_import_all_osu_mania.bat      Batch import + screening
+03_open_chart_editor.bat         Chart editor
+04_sync_charts_to_game.bat       Sync demo metadata
+05_start_local_server.bat        Local test server
+06_package_github_share.bat      Shareable package
 ```
 
-也可以双击 `02_import_all_osu_mania.bat`。
+### Chart JSON format
 
-5. 双击 `03_open_chart_editor.bat`，导入音频和 `charts/service/<id>.json` 或 `charts/tracks/<id>.json` 做最终人工检查与润色。
-6. 润色后保存 JSON，再双击 `04_sync_charts_to_game.bat` 同步试玩版。此步只刷新游戏构建产物，不再改写 note 数据。
-
-## 常用 bat 顺序
-
-```text
-00_convert_audio_to_m4a.bat    统一运行时音频为 m4a
-01_prepare_mug_inputs.bat      准备 MuG 用的 source.wav
-02_import_all_osu_mania.bat    批量导入 MuG 输出并自动筛查
-03_open_chart_editor.bat       打开本地谱面编辑器做最终人工检查
-04_sync_charts_to_game.bat     把 charts/ 同步到试玩版，不清洗谱面
-05_start_local_server.bat      启动本地测试服务器
-06_package_github_share.bat    生成可分享版本
-```
-
-## 谱面格式
-
-项目内部只认 `charts/service/*.json` 与 `charts/tracks/*.json`：
+Canonical paths: `charts/service/*.json`, `charts/tracks/*.json`.
 
 ```json
 {
@@ -124,30 +138,30 @@ imports/<service-id>/mug/service.osu 或 service.osz
 }
 ```
 
-外部 `.osu` 只是草稿输入格式，不作为正式运行时资源提交给游戏读取。
+`.osu` files are draft input only, not runtime assets.
 
-## 操作
+### Controls
 
-- 手机：单指点按或长按屏幕底部操作区。
-- 电脑：鼠标左键、`Z`、`X` 或 `Space`。
-- `R`：重试当前班次。
-- `Esc`：暂停或返回上一层。
-- `F1`：显示调试信息。
+- **Mobile:** Tap / hold the bottom play area.
+- **Desktop:** Mouse, `Z`, `X`, or `Space`.
+- **`R`** — Retry shift.
+- **`Esc`** — Pause or back.
+- **`F1`** — Debug overlay.
 
-## 当前定位
+### About this prototype
 
-这不是最终商业版本，而是用于快速分享、收集反馈的 playable prototype。当前战略是先用 HTML 验证核心循环、数据结构和玩家反馈；当“顾客故事 + service segment + 音游服务 + 店铺成长”闭环成立后，再考虑 Unreal Engine 5 正式实现。
+Not a product pitch — a sandbox to see if *Rhythm Fruit Shop* feels right. The web build carries the visual and narrative experiments; [`cpp_core/`](cpp_core/) is the parallel native rhythm line. Both are active; neither replaces the other.
 
-最新设计共识：
+Design pillars:
 
-- 玩家不是自顾自演奏的艺人，而是从暑期实习生逐步成长为店长。
-- 音乐是制作饮品时的节奏感，不是顾客点播的演出。
-- 日常营业未来使用 30-45 秒 `service segment` 服务具体顾客。
-- 完整曲保留给练习、挑战、关键剧情、自愿加班和 ZONE 高表现奖励。
-- 常客负责故事，半固定客群负责日常变化，路人订单负责经营压力。
-- 练习模式不写经营进度；营业模式才影响金币、口碑、订单和关系。
+- You are an intern becoming the manager, not a performer on a stage.
+- Music is rhythm while crafting drinks, not a customer-requested concert.
+- Daily service uses ~30–45s **service segments** for specific customers.
+- Full songs: practice, challenge, story beats, voluntary overtime, high-performance ZONE rewards.
+- Regulars drive story; semi-fixed crowds add variety; walk-ins add shop pressure.
+- Practice does not write shop progress; service mode does (coins, reputation, orders, relationships).
 
-详细设计见：
+More design docs *(mostly zh-CN)*:
 
 - `docs/shop_management_design.md`
 - `rhythm_fruit_shop_game_design_doc_zh-CN.md`
