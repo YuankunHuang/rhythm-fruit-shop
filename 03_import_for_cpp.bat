@@ -15,6 +15,12 @@ echo   cpp_core\assets\charts\song-id.rfs.json
 echo   cpp_core\assets\charts\catalog.json
 echo.
 echo Note: Place audio files at cpp_core\assets\audio\song-id.mp3 beforehand.
+echo Note: Place cover images at cpp_core\assets\covers\song_id\cover.png beforehand.
+echo.
+echo Options:
+echo   --song SONG_ID       Import only one song
+echo   --overwrite          Re-parse and overwrite existing chart data
+echo   --refresh-catalog    Rebuild catalog.json from existing .rfs.json (fast, no .osz needed)
 echo.
 
 python --version >nul 2>&1

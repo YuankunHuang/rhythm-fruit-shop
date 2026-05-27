@@ -35,6 +35,8 @@ AUDIO_DIR = CPP_CORE / "assets" / "audio"
 IMPORTS_DIR = ROOT / "imports"
 CATALOG_PATH = CHARTS_DIR / "catalog.json"
 
+COVERS_DIR = CPP_CORE / "assets" / "covers"
+
 VALID_DIFFICULTIES = {"easy", "normal", "hard", "expert", "service"}
 AUDIO_EXTENSIONS = (".mp3", ".m4a", ".ogg", ".wav")
 
@@ -152,29 +154,35 @@ def humanize_song_id(song_id: str) -> str:
 
 
 def find_audio(song_id: str) -> str | None:
-    """Return a relative audio path (assets/audio/...) if a file exists, else None."""
-    names = [song_id, song_id.replace("-", "_")]
+    """Return a relative audio path (assets/audio/...) if a file exists, else None.
+    Searches root, tracks/, and service/ subdirectories."""
     subdirs = ["", "tracks", "service"]
     for sub in subdirs:
-        for name in names:
-            for ext in AUDIO_EXTENSIONS:
-                if sub:
-                    candidate = AUDIO_DIR / sub / (name + ext)
-                else:
-                    candidate = AUDIO_DIR / (name + ext)
-                if candidate.exists():
-                    return candidate.relative_to(CPP_CORE).as_posix()
+        for ext in AUDIO_EXTENSIONS:
+            candidate = AUDIO_DIR / sub / (song_id + ext) if sub else AUDIO_DIR / (song_id + ext)
+            if candidate.exists():
+                return candidate.relative_to(CPP_CORE).as_posix()
+    return None
+
+
+def find_cover(song_id: str) -> str | None:
+    """Return a relative cover path (assets/covers/<song_id>/cover.png) if the file exists."""
+    candidate = COVERS_DIR / song_id / "cover.png"
+    if candidate.exists():
+        return candidate.relative_to(CPP_CORE).as_posix()
     return None
 
 
 def catalog_entry_for(song_id: str, difficulties: list[str]) -> dict:
     audio = find_audio(song_id)
+    cover = find_cover(song_id)
     return {
         "id": song_id,
         "title": humanize_song_id(song_id),
         "audio": audio or "",
         "chart": f"assets/charts/{song_id}.rfs.json",
-        "difficulties": difficulties,
+        "cover": cover or "",
+        "difficulties": difficulties
     }
 
 
@@ -285,6 +293,47 @@ def import_song(song_dir: Path, overwrite: bool) -> bool:
 # Entry point
 # ---------------------------------------------------------------------------
 
+def refresh_catalog() -> None:
+    """Rebuild catalog.json from existing .rfs.json files without re-parsing any .osz."""
+    rfs_files = sorted(CHARTS_DIR.glob("*.rfs.json"))
+    if not rfs_files:
+        print("No .rfs.json files found in charts dir.")
+        return
+
+    # Start fresh
+    catalog: dict = {"songs": []}
+
+    for rfs_path in rfs_files:
+        try:
+            data = json.loads(rfs_path.read_text(encoding="utf-8-sig"))
+        except Exception as e:
+            print(f"  Skip {rfs_path.name}: {e}")
+            continue
+
+        song_id = data.get("id", rfs_path.stem.replace(".rfs", ""))
+        order = ["easy", "normal", "hard", "expert", "service"]
+        diffs = sorted(data.get("difficulties", {}).keys(),
+                       key=lambda d: order.index(d) if d in order else 99)
+        if not diffs:
+            print(f"  Skip {rfs_path.name}: no difficulties")
+            continue
+
+        entry = catalog_entry_for(song_id, diffs)
+        # Preserve title from the chart file if it looks real
+        chart_title = data.get("title", "")
+        if chart_title and chart_title != song_id:
+            entry["title"] = chart_title
+        catalog["songs"].append(entry)
+        cover_status = "ok" if entry["cover"] else "no cover"
+        audio_status = "ok" if entry["audio"] else "no audio"
+        print(f"  {song_id}: {len(diffs)} diff(s), audio={audio_status}, cover={cover_status}")
+
+    save_catalog(catalog)
+    print()
+    print(f"Catalog refreshed: {len(catalog['songs'])} song(s).")
+    print(f"Catalog: {CATALOG_PATH.relative_to(ROOT)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Import osu!mania .osz files from imports/ into the C++ chart format."
@@ -297,9 +346,17 @@ def main() -> None:
         "--overwrite", action="store_true",
         help="Overwrite existing difficulties in the chart file. Default: merge (keep existing)."
     )
+    parser.add_argument(
+        "--refresh-catalog", action="store_true",
+        help="Rebuild catalog.json from existing .rfs.json files without re-parsing any .osz."
+    )
     args = parser.parse_args()
 
     CHARTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.refresh_catalog:
+        refresh_catalog()
+        return
 
     if args.song:
         dirs = [IMPORTS_DIR / args.song]
