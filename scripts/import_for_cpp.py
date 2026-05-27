@@ -147,32 +147,43 @@ def save_catalog(catalog: dict) -> None:
     CATALOG_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
+def humanize_song_id(song_id: str) -> str:
+    return song_id.replace("-", " ").replace("_", " ").title()
+
+
 def find_audio(song_id: str) -> str | None:
     """Return a relative audio path (assets/audio/...) if a file exists, else None."""
-    for ext in AUDIO_EXTENSIONS:
-        candidate = AUDIO_DIR / (song_id + ext)
-        if candidate.exists():
-            return "assets/audio/" + song_id + ext
+    names = [song_id, song_id.replace("-", "_")]
+    subdirs = ["", "tracks", "service"]
+    for sub in subdirs:
+        for name in names:
+            for ext in AUDIO_EXTENSIONS:
+                if sub:
+                    candidate = AUDIO_DIR / sub / (name + ext)
+                else:
+                    candidate = AUDIO_DIR / (name + ext)
+                if candidate.exists():
+                    return candidate.relative_to(CPP_CORE).as_posix()
     return None
 
 
-def catalog_entry_for(song_id: str, title: str, difficulties: list[str]) -> dict:
+def catalog_entry_for(song_id: str, difficulties: list[str]) -> dict:
     audio = find_audio(song_id)
     return {
         "id": song_id,
-        "title": title,
+        "title": humanize_song_id(song_id),
         "audio": audio or "",
         "chart": f"assets/charts/{song_id}.rfs.json",
         "difficulties": difficulties,
     }
 
 
-def update_catalog(song_id: str, title: str, difficulties: list[str]) -> None:
+def update_catalog(song_id: str, difficulties: list[str]) -> None:
     catalog = load_catalog()
     songs: list[dict] = catalog.setdefault("songs", [])
 
     existing = next((s for s in songs if s.get("id") == song_id), None)
-    entry = catalog_entry_for(song_id, title, difficulties)
+    entry = catalog_entry_for(song_id, difficulties)
 
     if existing is None:
         songs.append(entry)
@@ -211,7 +222,7 @@ def import_song(song_dir: Path, overwrite: bool) -> bool:
             "difficulties": {},
         }
 
-    title = existing.get("title", song_id)
+    title = humanize_song_id(song_id)
     imported_diffs: list[str] = []
 
     for osz_path in osz_files:
@@ -241,9 +252,6 @@ def import_song(song_dir: Path, overwrite: bool) -> bool:
 
         notes = parse_hit_objects(sections.get("HitObjects", []), key_count)
 
-        song_title = metadata.get("TitleUnicode") or metadata.get("Title") or song_id
-        title = song_title  # update from metadata
-
         existing["difficulties"][diff_name] = notes
         imported_diffs.append(diff_name)
 
@@ -268,7 +276,7 @@ def import_song(song_dir: Path, overwrite: bool) -> bool:
     if not audio:
         print(f"    Warning: no audio found at {AUDIO_DIR / song_id}.<ext>")
 
-    update_catalog(song_id, title, all_diffs)
+    update_catalog(song_id, all_diffs)
     print(f"  Wrote {chart_path.relative_to(ROOT)}")
     return True
 
