@@ -728,9 +728,9 @@
       "kbps": 128,
       "updated_at": "2026-05-05T19:48:37.992741+00:00"
     },
-    "audio/tracks/night of fire.m4a": {
-      "source": "audio/tracks/night of fire.m4a",
-      "output": "audio/tracks/night of fire.m4a",
+    "audio/tracks/night-of-fire.m4a": {
+      "source": "audio/tracks/night-of-fire.m4a",
+      "output": "audio/tracks/night-of-fire.m4a",
       "source_sha256": "a511cd715435a871d346b88581d36bb5830548b99fb86446d38c8559827f5fba",
       "output_sha256": "29a179053b2a5c8b14e8cd59943229e82dbfd6244b7098acb29a6183cb4b2c23",
       "target": {
