@@ -1,0 +1,770 @@
+// 节奏鲜果铺主入口。
+
+import {
+  versionedUrl,
+  SAVE_SCHEMA_VERSION,
+  loadSaveSlots as readSaveSlotsFromStorage,
+  persistSaveSlots as writeSaveSlotsToStorage,
+  defaultPlayerSave,
+  cloneSave,
+  readVisualTheme,
+  saveVisualTheme,
+  readFallSpeed,
+  saveFallSpeed,
+  readNoteGameplaySfx,
+  saveNoteGameplaySfx,
+  readPrologueSeen,
+  savePrologueSeen,
+  readResourceIntroSeen,
+  saveResourceIntroSeen,
+  clearAllGameData,
+} from './storage.js?v=2026-05-09b';
+import {
+  loadGameData,
+  loadDayFlow,
+  GameData,
+  menuById,
+  dayPlanConfig,
+  slotUnlockDay,
+} from './data/index.js?v=2026-05-09b';
+import { S } from './state.js?v=2026-05-09b';
+import { audioGain, sfxContext, sfxPreviewBus, unlockSfx, sfxPlay, setGameplayNoteSfxEnabled } from './audio.js?v=2026-05-09b';
+import { initRenderer, drawFrame, getPauseButtons, invalidateBackdropCache, warmBackdropCache } from './render.js?v=2026-05-10u';
+import { createPanelManager, showToast } from './ui/panels.js?v=2026-05-10q';
+
+if (new URLSearchParams(location.search).has('reset')) {
+  clearAllGameData();
+  history.replaceState(null, '', location.pathname);
+}
+
+setGameplayNoteSfxEnabled(readNoteGameplaySfx());
+
+await loadGameData();
+
+const SONGS              = GameData.songs;
+const DIFFS              = GameData.difficulties;
+const SERVICE_DIFF       = GameData.serviceDiff;
+const WINDOWS            = GameData.windows;
+const FRUITS             = GameData.fruits;
+const SPEEDS             = GameData.speeds;
+const CHART_LEVEL_BANDS  = GameData.chartLevelBands;
+const RESOURCE_LABELS    = GameData.resourceLabels;
+const MENU_ITEMS         = GameData.menuItems;
+const SHOP_UPGRADES      = GameData.upgrades;
+const SHOP_STAGES        = GameData.shopStages;
+const TIME_SLOTS         = GameData.timeSlots;
+const STAGE_LABELS       = GameData.stageLabels;
+const HOME_LOOP_FILE     = GameData.ambientMusic.homeLoop;
+const SUB_LOOP_FILE      = GameData.ambientMusic.subLoop;
+const FIRST_DAY_SONGS    = GameData.firstDaySongs;
+const INITIAL_LEARNED_SONGS = [...FIRST_DAY_SONGS];
+const DAY_UNLOCKS        = GameData.dayUnlocks;
+const DAY_PLANS          = GameData.dayPlans;
+const PROLOGUE_OPENING   = GameData.prologue.opening;
+const PROLOGUE_AFTER_SERVICE = GameData.prologue.afterService;
+
+let CHART_DATA = {};
+function lazyImage(src){const img=new Image();img.onload=invalidateBackdropCache;img._rfaSrc=versionedUrl(src);return img}
+function ensureImageLoaded(img){if(img&&img._rfaSrc&&!img.src)img.src=img._rfaSrc;return img}
+function ensureAssetGroup(group){Object.keys(group).forEach(k=>ensureImageLoaded(group[k]))}
+function decodeImage(img){ensureImageLoaded(img);if(!img||!img.src)return Promise.resolve();if(img.decode)return img.decode().catch(()=>{});if(img.complete)return Promise.resolve();return new Promise(resolve=>{img.addEventListener('load',resolve,{once:true});img.addEventListener('error',resolve,{once:true})})}
+const NOTE_FRUIT_ICON_SETS={day:{Apple:lazyImage('assets/fruit_notes/day/apple.c0982d89e5.png'),Orange:lazyImage('assets/fruit_notes/day/orange.1af7b8d8f7.png'),Lime:lazyImage('assets/fruit_notes/day/lime.6f9942f7b3.png'),Banana:lazyImage('assets/fruit_notes/day/banana.49e681a293.png'),Grape:lazyImage('assets/fruit_notes/day/grape.bf55bd49c3.png'),Lemon:lazyImage('assets/fruit_notes/day/lemon.d90dea35cc.png')},night:{Apple:lazyImage('assets/fruit_notes/night/apple.6e8ed6762f.png'),Orange:lazyImage('assets/fruit_notes/night/orange.6b90e44059.png'),Lime:lazyImage('assets/fruit_notes/night/lime.791954f270.png'),Banana:lazyImage('assets/fruit_notes/night/banana.0b08aa106d.png'),Grape:lazyImage('assets/fruit_notes/night/grape.12da41c505.png'),Lemon:lazyImage('assets/fruit_notes/night/lemon.0d76fddbea.png')},sunny:{Apple:lazyImage('assets/fruit_notes/sunny/apple.195166927b.png'),Orange:lazyImage('assets/fruit_notes/sunny/orange.a023fc3d62.png'),Lime:lazyImage('assets/fruit_notes/sunny/lime.93c0934851.png'),Banana:lazyImage('assets/fruit_notes/sunny/banana.b622026ce0.png'),Grape:lazyImage('assets/fruit_notes/sunny/grape.d59915998b.png'),Lemon:lazyImage('assets/fruit_notes/sunny/lemon.54d5b32979.png')}};
+function noteFruitIconSet(){const t=effectiveDiscreteTag();return t==='night'?NOTE_FRUIT_ICON_SETS.night:t==='sunny'?NOTE_FRUIT_ICON_SETS.sunny:NOTE_FRUIT_ICON_SETS.day}
+function noteFruitImages(){const icons=noteFruitIconSet();return FRUITS.map(f=>icons[f.name]).filter(Boolean)}
+function slotThemeKey(id){return id==='night'||id==='late'?'night':id==='dusk'?'day':'sunny'}
+function currentMainVisual(){const k=uiThemeKey();const group=k==='night'?MAIN_VISUALS.night:k==='sunny'?MAIN_VISUALS.sunny:MAIN_VISUALS.day;return isPortrait()?group.portrait:group.landscape}
+function currentThemeImages(){const assets=isNightTheme()?NIGHT_ART:isSunnyTheme()?SUNNY_ART:ART,chars=Object.values(VN_CHARACTERS).flatMap(c=>Object.values(c.assets));return Object.values(assets).concat(currentMainVisual(),currentHomeVisual(),currentShopInterior(),chars)}
+const ART_BASE='assets/game_art/clean_mobile/';
+const ART={};
+['background_clean','brand_logo','shop_card','customer_happy','fruit_apple','fruit_orange','fruit_lime','fruit_banana','fruit_grape','fruit_berry','icon_music','icon_order','icon_star','icon_shop','icon_heart','icon_pause'].forEach(name=>{ART[name]=lazyImage(ART_BASE+name+'.png')});
+const NIGHT_BASE='assets/game_art/neon_night/';
+const NIGHT_ART={};
+['background_neon','brand_logo','shop_card','customer_happy','fruit_apple','fruit_orange','fruit_lime','fruit_banana','fruit_grape','fruit_berry','theme_thumb_night'].forEach(name=>{NIGHT_ART[name]=lazyImage(NIGHT_BASE+name+'.png')});
+const SUNNY_BASE='assets/game_art/sunny_shop/';
+const SUNNY_ART={};
+['background_sunny','brand_logo','shop_card','customer_happy','fruit_apple','fruit_orange','fruit_lime','fruit_banana','fruit_grape','fruit_berry','icon_music','icon_order','icon_star','icon_shop','icon_heart','icon_pause','theme_thumb_sunny'].forEach(name=>{SUNNY_ART[name]=lazyImage(SUNNY_BASE+name+'.png')});
+const MAIN_VISUALS={
+  day:{landscape:lazyImage('assets/game_art/clean_mobile/main_visual_landscape.adef561e09.webp'),portrait:lazyImage('assets/game_art/clean_mobile/main_visual_portrait.ec9c51437a.webp')},
+  night:{landscape:lazyImage('assets/game_art/neon_night/main_visual_landscape.73ba29aaba.webp'),portrait:lazyImage('assets/game_art/neon_night/main_visual_portrait.68e2c23c6a.webp')},
+  sunny:{landscape:lazyImage('assets/game_art/sunny_shop/main_visual_landscape.594b9ae861.webp'),portrait:lazyImage('assets/game_art/sunny_shop/main_visual_portrait.6f3a333f6e.webp')}
+};
+const HOME_SPACES={
+  apartment:{title:'廉租小屋',subtitle:'窗外天亮了。房租不会等人，今天也得去店里。',landscape:lazyImage('assets/game_art/home/apartment_landscape.b740ab82b1.webp'),portrait:lazyImage('assets/game_art/home/apartment_portrait.e080988a54.webp')},
+  shopDorm:{title:'店铺阁楼',subtitle:'楼下就是柜台。这里终于像一个能落脚的地方。',landscape:lazyImage('assets/game_art/home/shop_dorm_landscape.webp'),portrait:lazyImage('assets/game_art/home/shop_dorm_portrait.webp')}
+};
+const SHOP_INTERIORS={
+  sunny:{landscape:lazyImage('assets/game_art/sunny_shop/shop_interior_landscape.c31dd533bd.webp'),portrait:lazyImage('assets/game_art/sunny_shop/shop_interior_portrait.4af28a9f24.webp')}
+};
+function currentHomeSpace(){const key=shopState.homeStage||(shopLevel()>=3?'shopDorm':'apartment');return HOME_SPACES[key]||HOME_SPACES.apartment}
+function currentHomeVisual(){const space=currentHomeSpace(),img=isPortrait()?space.portrait:space.landscape;return img||currentMainVisual()}
+function currentShopInterior(){
+  const group = SHOP_INTERIORS[selectedTheme] || SHOP_INTERIORS.sunny;
+  return isPortrait() ? group.portrait : group.landscape;
+}
+const VN_CHARACTERS={
+  yuzu:{side:'right',assets:{neutral:lazyImage('assets/game_art/yuzu/neutral.e07beb5b04.webp'),smile:lazyImage('assets/game_art/yuzu/smile.bb75df76b6.webp'),teasing:lazyImage('assets/game_art/yuzu/teasing.f72d3c148d.webp'),deadpan:lazyImage('assets/game_art/yuzu/deadpan.cae85d8df1.webp'),annoyed:lazyImage('assets/game_art/yuzu/annoyed.56d8dd8e35.webp'),panic:lazyImage('assets/game_art/yuzu/panic.0fdb3a1410.webp'),relieved:lazyImage('assets/game_art/yuzu/relieved.537dbc6e97.webp'),serious:lazyImage('assets/game_art/yuzu/serious.9c023186e1.webp'),sigh:lazyImage('assets/game_art/yuzu/sigh.4f1d456d19.webp')}},
+  student_girl:{side:'left',assets:{neutral:lazyImage('assets/game_art/student_girl/neutral.fc7fbc193c.webp'),tired:lazyImage('assets/game_art/student_girl/tired.d42836adc8.webp'),smile:lazyImage('assets/game_art/student_girl/smile.9fdd98ca13.webp'),awkward:lazyImage('assets/game_art/student_girl/awkward.ba97c46b0d.webp')}},
+  ashen:{side:'left',assets:{neutral:lazyImage('assets/game_art/a_sheng/neutral.2986acd316.webp'),tired:lazyImage('assets/game_art/a_sheng/tired.e216a05b30.webp'),focused:lazyImage('assets/game_art/a_sheng/focused.2c361446da.webp')}},
+  chengwan:{side:'left',assets:{neutral:lazyImage('assets/game_art/cheng_wan/neutral.83e57643bc.webp'),tired:lazyImage('assets/game_art/cheng_wan/tired.aea4cd0250.webp'),professional_smile:lazyImage('assets/game_art/cheng_wan/professional_smile.767a1c7201.webp')}},
+  guiwei:{side:'left',assets:{neutral:lazyImage('assets/game_art/gu_wei/neutral.e0e78a10a1.webp'),lost_in_thought:lazyImage('assets/game_art/gu_wei/lost_in_thought.83300883a8.webp'),rare_smile:lazyImage('assets/game_art/gu_wei/rare_smile.bd23e87b02.webp')}},
+  laobei:{side:'left',assets:{neutral:lazyImage('assets/game_art/lao_bei/neutral.29b1dc7fa4.webp'),nostalgic_smile:lazyImage('assets/game_art/lao_bei/nostalgic_smile.ad6660315a.webp'),attentive:lazyImage('assets/game_art/lao_bei/attentive.2b723b2b02.webp')}},
+  laofang:{side:'left',assets:{neutral:lazyImage('assets/game_art/lao_fang/neutral.213fd58efb.webp'),weary:lazyImage('assets/game_art/lao_fang/weary.b000997c56.webp'),warm_smile:lazyImage('assets/game_art/lao_fang/warm_smile.ccba07b01c.webp')}},
+  laoxian:{side:'left',assets:{neutral:lazyImage('assets/game_art/lao_xian/neutral.19f93361f2.webp'),pensive:lazyImage('assets/game_art/lao_xian/pensive.c1b6a040b8.webp'),quiet_warmth:lazyImage('assets/game_art/lao_xian/quiet_warmth.e8e80172bf.webp')}},
+  miss_cat:{side:'left',assets:{neutral:lazyImage('assets/game_art/mao_xiao_jie/neutral.5c8f2cb07c.webp'),curious:lazyImage('assets/game_art/mao_xiao_jie/curious.4a639bd854.webp'),smile:lazyImage('assets/game_art/mao_xiao_jie/smile.c1f423b36d.webp')}},
+  mianju:{side:'left',assets:{neutral:lazyImage('assets/game_art/mian_ju/neutral.438a984370.webp'),detached:lazyImage('assets/game_art/mian_ju/detached.161ca4b9cf.webp'),micro_smile:lazyImage('assets/game_art/mian_ju/micro_smile.caa5a235bd.webp')}},
+  xieyin:{side:'left',assets:{neutral:lazyImage('assets/game_art/xie_yin/neutral.b088093577.webp'),composed_listening:lazyImage('assets/game_art/xie_yin/composed_listening.0659239095.webp'),slight_smile:lazyImage('assets/game_art/xie_yin/slight_smile.b808094aad.webp')}},
+  yanzi:{side:'left',assets:{neutral:lazyImage('assets/game_art/yan_zi/neutral.a38e06b727.webp'),sharp_alert:lazyImage('assets/game_art/yan_zi/sharp_alert.ea7d6f76c7.webp'),grin:lazyImage('assets/game_art/yan_zi/grin.7b3d052d47.webp')}},
+  yuange:{side:'left',assets:{neutral:lazyImage('assets/game_art/yuan_ge/neutral.48524241f3.webp'),quiet_content:lazyImage('assets/game_art/yuan_ge/quiet_content.e34177527c.webp'),thoughtful:lazyImage('assets/game_art/yuan_ge/thoughtful.2e0b2d2e37.webp')}},
+  yueshu:{side:'left',assets:{neutral:lazyImage('assets/game_art/yue_shu/neutral.c45c54db3b.webp'),dreamy:lazyImage('assets/game_art/yue_shu/dreamy.eb74773df6.webp'),quiet_smile:lazyImage('assets/game_art/yue_shu/quiet_smile.6881f368f5.webp')}},
+  xiaobing:{side:'left',assets:{neutral:lazyImage('assets/game_art/xiao_bing/neutral.df03cdb590.webp'),focused:lazyImage('assets/game_art/xiao_bing/focused.c056646d5c.webp'),uncertain:lazyImage('assets/game_art/xiao_bing/uncertain.5ecc16464e.webp')}},
+  laosong:{side:'left',assets:{neutral:lazyImage('assets/game_art/lao_song/neutral.66229f8139.webp'),hollow:lazyImage('assets/game_art/lao_song/hollow.1ee02e169c.webp'),composed:lazyImage('assets/game_art/lao_song/composed.809231a05d.webp')}},
+  wuming:{side:'left',assets:{neutral:lazyImage('assets/game_art/wu_ming/neutral.9f69a20ee9.webp')}}
+};
+let songCoverImg=null,songCoverImgId='';
+function loadSongCover(s){if(songCoverImgId===s.id&&songCoverImg)return;songCoverImgId=s.id;const snap=songSnapshot(s);if(!snap){songCoverImg=null;return}const img=new Image();img.src=snap;img.onload=()=>invalidateBackdropCache();img.onerror=()=>{if(songCoverImgId===s.id)songCoverImg=null};songCoverImg=img}
+function ensureThemeAssets(){ensureAssetGroup(isNightTheme()?NIGHT_ART:isSunnyTheme()?SUNNY_ART:ART);ensureImageLoaded(currentMainVisual());ensureImageLoaded(currentHomeVisual())}
+async function decodeImagesBatched(imgs,batchSize=5){const seen=new Set(),list=[];for(const img of imgs){if(!img||seen.has(img))continue;seen.add(img);list.push(img)}for(let i=0;i<list.length;i+=batchSize){await Promise.all(list.slice(i,i+batchSize).map(decodeImage));await new Promise(r=>requestAnimationFrame(r))}}
+function fruitsUsedInChart(){const need=new Set();for(const n of notes){if(n.fruit&&n.fruit.name)need.add(n.fruit.name)}return need}
+async function warmGameplayBootstrap(){ensureThemeAssets();loadSongCover(song);const imgs=[];for(const img of Object.values(themeAssets())){if(img)imgs.push(img)}imgs.push(currentMainVisual());const icons=noteFruitIconSet();for(const name of fruitsUsedInChart()){const im=icons[name];if(im)imgs.push(im)}if(songCoverImg)imgs.push(songCoverImg);await decodeImagesBatched(imgs,5);invalidateBackdropCache()}
+function scheduleDeferredGameplayWarm(){const ric=typeof requestIdleCallback==='function'?requestIdleCallback:fn=>setTimeout(fn,48);requestAnimationFrame(()=>ric(()=>{const imgs=currentThemeImages().concat(noteFruitImages());if(songCoverImg&&!imgs.includes(songCoverImg))imgs.push(songCoverImg);decodeImagesBatched(imgs,6).then(()=>{try{warmBackdropCache(makeRC())}catch(e){console.warn('deferred warm backdrop',e)}const warm=document.createElement('canvas'),wctx=warm.getContext('2d');if(!wctx)return;warm.width=96;warm.height=96;for(const img of imgs){if(img&&img.complete&&img.naturalWidth)try{wctx.drawImage(img,0,0,1,1)}catch(_){}}}).catch(()=>{})},{timeout:1800}))}
+const $=id=>document.getElementById(id);
+const canvas=$('game'),ctx=canvas.getContext('2d'),overlay=$('overlay'),sceneBackdrop=$('sceneBackdrop'),vnCharacters=$('vnCharacters'),vnCharLeft=$('vnCharLeft'),vnCharRight=$('vnCharRight'),openingScreen=$('openingScreen'),openingVisual=$('openingVisual'),homePanel=$('homePanel'),songPanel=$('songPanel'),resultPanel=$('resultPanel'),resultPhotoModal=$('resultPhotoModal'),resultPhotoCard=$('resultPhotoCard');
+const songGrid=$('songGrid'),diffRow=$('diffRow'),songSpeedRow=$('songSpeedRow'),songCover=$('songCover'),songCoverLevel=$('songCoverLevel'),songCoverTitle=$('songCoverTitle'),songCoverMeta=$('songCoverMeta'),songPreviewBadges=$('songPreviewBadges'),resultRank=$('resultRank'),resultText=$('resultText');
+const UI=createPanelManager(overlay);
+const STORY_THEME='sunny';
+const READY_TIME=2.2,READY_HANDOFF_ALPHA=.22,READY_EXIT_FADE=.45,PREVIEW_CLIP_MS=15000,PREVIEW_FADE_MS=650,PREVIEW_STOP_FADE_MS=320,PREVIEW_LOOP_CROSSFADE_S=0.3,MENU_LOOP_AFTER_PREVIEW_DELAY_MS=120,MENU_LOOP_FADE_IN_MS=780,RESUME_COUNTDOWN_TIME=3,TUTORIAL_SETTLE_MS=380,PLAY_START_SYNC_WINDOW=.32;
+let dpr=1,view={},audio=new Audio(),previewAudio=null,previewGain=null,previewLoopTimer=null,previewFile='',previewFadeFrame=0,previewGeneration=0,previewLoopStart=0,previewWanted=false,openingDismissed=false,tutorialActive=false,currentTutorial=null,currentTutorialTarget=null,tutorialRevealTimer=0,lastSettledTutorialSurface='',state=S.HOME,pausedFromState=S.PLAYING,lastMenuState=S.HOME,selectedTheme=STORY_THEME,songIndex=0,diffIndex=0,speedIndex=clamp(readFallSpeed(1),0,3),song=SONGS[0],diff=DIFFS[0],notes=[],particles=[],texts=[],products=[],orders=[],orderFlash=[],slashFx=[],debug=false,lastFrame=performance.now(),pauseButtons=[],suppressPointerUp=false,readyTimer=0,leadInTimer=0,leadInTotal=0,resumeCountdown=0,playbackVisualTime=0,playbackClockStartedAt=0,playbackClockBase=0,playbackSyncTimer=0,missCursor=0,chartEndTime=0,maxNoteSpan=0,resultView=null,centerJudge=null,cachedPalette=null,cachedAssets=null,backdropCache={key:'',canvas:null},chartManifest={},chartLoadError='';
+let heat=0,combo=0,maxCombo=0,acc=0,total=0,timingTotal=0,comboTarget=0,holding=false,activeHold=null,lastJudge='准备',lastErr=0,pulse=0,shake=0,lastComboBurst=0,customerAnger=0,gameOverReason='',counts={},missReasons={},productCounts={},resultData=null,resultReveal=0,resultMode='shift';
+let paletteTweenFrom='dayClean',paletteTweenTo='dayClean',paletteMix=1;
+const PALETTE_TWEEN_SEC=.85;
+let savePanelMode='load',dayMenu=[],dayStartState=null,activeSlotId='day',storySlotId='day',dayRun={active:false,queue:[],index:0,aborted:false},serviceRun={active:false,id:'',fromStory:false,fromTrackEvent:false},lastServiceResult=null,vnState={nodes:[],index:0,onDone:null,locked:false},flowRun={active:false,phases:[],index:0},trackEventPhase=null;
+const MAX_PARTICLES=180,MAX_TEXTS=10,MAX_ORDER_FLASH=5;
+const previewBufferCache=new Map();
+const perfStats={frameMs:0,updateMs:0,drawMs:0,fpsEMA:0,visibleNotes:0,particleCount:0,textsCount:0,resultRenderCount:0,lastFrameMs:0,audioPrimeMs:0,audioPlayCallMs:0,audioPlayResolveMs:0,audioDriftMs:0,visualSongTime:0,audioSongTime:0};
+let gameplayWarmupDepth=0,startInFlightPromise=null;
+function makeResourceBag(){return{chunks:0,juice:0,combo:0,apple:0,orange:0,lime:0,grape:0,premium:0,sparkle:0}}
+function makeMenuProgress(){return{}}
+function makeDayStats(){return{shifts:0,money:0,rep:0,best:0,products:0,orders:0,misses:0,resources:makeResourceBag(),menuProgress:makeMenuProgress(),goalBonus:0,ledger:[],summaryCelebrated:false}}
+let dayStats=makeDayStats(),dailyPlan=null;
+
+const cloneShopState = (v) => cloneSave(v, INITIAL_LEARNED_SONGS);
+const defaultShopState = () => defaultPlayerSave(INITIAL_LEARNED_SONGS);
+let saveSlots = readSaveSlotsFromStorage(INITIAL_LEARNED_SONGS);
+let activeSaveSlot = -1;
+let shopState = defaultShopState();
+function saveSlotSummary(slot) {
+  if (!slot) return '空存档';
+  const s = slot.shopState || {};
+  return `第 ${s.day || 1} 天 / Lv.${shopLevel(s)} / ${s.coins || 0}金 / ${s.reputation || 0}口碑`;
+}
+function persistSaveSlots() { writeSaveSlotsToStorage(saveSlots); }
+function saveShopState() {
+  if (activeSaveSlot < 0) return;
+  saveSlots[activeSaveSlot] = {
+    schemaVersion: SAVE_SCHEMA_VERSION,
+    updatedAt: Date.now(),
+    shopState: cloneShopState(shopState),
+  };
+  persistSaveSlots();
+}
+function resetShopState() { shopState = defaultShopState(); saveShopState(); }
+function selectSaveSlot(i) {
+  const slot = saveSlots[i];
+  if (!slot) return false;
+  activeSaveSlot = i;
+  shopState = cloneShopState(slot.shopState);
+  resetDay();
+  return true;
+}
+function createSaveSlot(i) {
+  activeSaveSlot = i;
+  shopState = defaultShopState();
+  setIntroDifficulty();
+  saveShopState();
+  resetDay();
+  return true;
+}
+const prologueSeen = readPrologueSeen;
+const markPrologueSeen = savePrologueSeen;
+function shopLevel(s=shopState){const upgraded=['cutter','blender','sign'].filter(id=>((s.upgrades||{})[id]||1)>=2).length;return Math.min(3,1+upgraded)}
+function dayPlanSlotIds(day=shopState.day){return dayPlanConfig(day).slots||['day','dusk','night']}
+function unlockedTimeSlots(){const ids=new Set(dayPlanSlotIds());return TIME_SLOTS.filter(t=>ids.has(t.id))}
+function isTimeSlotUnlocked(slot){return dayPlanSlotIds().includes(slot.id)}
+
+function shopStage(){let s=SHOP_STAGES[0];for(const st of SHOP_STAGES)if(shopState.reputation>=st.minRep)s=st;return s}
+function upgradeBonus(id){const u=SHOP_UPGRADES.find(x=>x.id===id);if(!u)return 0;return(shopState.upgrades[id]||1)*u.baseBonus}
+function upgradeCost(id){const u=SHOP_UPGRADES.find(x=>x.id===id);if(!u)return Infinity;const lv=shopState.upgrades[id]||1;return lv>=u.maxLv?Infinity:u.costs[lv]}
+function canUpgrade(id){return shopState.coins>=upgradeCost(id)}
+function doUpgrade(id){const cost=upgradeCost(id);if(shopState.coins<cost)return false;shopState.coins-=cost;shopState.upgrades[id]=(shopState.upgrades[id]||1)+1;saveShopState();return true}
+function diffIncomeMul(d=diff){return d&&d.incomeMul?d.incomeMul:1}
+function diffResourceMul(d=diff){return d&&d.resourceMul?d.resourceMul:1}
+function scaleResourceBag(bag,mul=1){if(mul===1)return bag;for(const k in bag)if(bag[k]>0)bag[k]=Math.max(1,Math.round(bag[k]*mul));return bag}
+function addHeat(v){heat+=Math.max(0,Math.round(v))}
+function comboHeat(scale=1){return Math.min(70,Math.floor(Math.sqrt(Math.max(0,combo))*5*scale))}
+function heatBonusValue(value=heat,customer=85,failed=false){if(failed)return 0;const cap=280,scale=2200,quality=clamp(customer/100,.55,1.08);return Math.round(cap*(1-Math.exp(-Math.max(0,value)/scale))*quality)}
+function expectedShiftIncome(day=shopState.day,slots=unlockedSlotCount()){return Math.round(slots*(360+day*65))}
+function estimateIncome(s,d){const st=chartStats(s,d),profile=songProfile(s,d),basePay=70,productPay=Math.round((profile.chunks||0)*70*(1+upgradeBonus('cutter'))+(profile.juice||0)*95*(1+upgradeBonus('blender'))),estimatedHeat=st.notes*9+st.holds*36+songFitScore(s,dailyPlan)*45,heatPay=heatBonusValue(estimatedHeat,86,false),tip=50;return Math.round((basePay+productPay+heatPay+tip)*diffIncomeMul(d))}
+function addBag(a,b,mul=1){for(const k in b)a[k]=(a[k]||0)+b[k]*mul;return a}
+function resourceText(b,limit=3){return Object.entries(b||{}).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k,v])=>`${RESOURCE_LABELS[k]||k}+${v}`).join(' / ')||'\u7a33\u5b9a\u6536\u5165'}
+function songProfile(s,d=diff){const bag=makeResourceBag(),stage=s.stage||'day',id=s.id||s.title;if(stage==='day')addBag(bag,{chunks:2,juice:1,apple:1,orange:1});else if(stage==='dusk')addBag(bag,{chunks:2,juice:2,combo:1,lime:1,orange:1});else if(stage==='night')addBag(bag,{juice:2,combo:1,grape:1,premium:1,sparkle:1});else addBag(bag,{juice:2,combo:2,premium:2,sparkle:1});const fruits=['apple','orange','lime','grape'];const extra=fruits[Math.abs([...id].reduce((n,ch)=>n+ch.charCodeAt(0),0))%fruits.length];bag[extra]=(bag[extra]||0)+1;if((s.bpm||0)>145)bag.combo++;if((s.duration||0)>180)bag.premium++;return scaleResourceBag(bag,diffResourceMul(d))}
+function availableMenus(){const rep=shopState.reputation||0,count=rep>=220?MENU_ITEMS.length:rep>=70?4:3;return MENU_ITEMS.slice(0,count)}
+function songFitScore(s,plan=dailyPlan){if(!plan)return 0;const bag=songProfile(s);let score=0;for(const id of plan.menuIds){const m=menuById(id);for(const k in m.needs)score+=(bag[k]||0)*m.needs[k]}if(plan.focus&&bag[plan.focus])score+=2;if(plan.stageHint===s.stage)score+=1;return score}
+function dayUnlockEntries(day=shopState.day){return DAY_UNLOCKS.filter(x=>x.day===day)}
+function unlockedPlanSongs(day=shopState.day){const learned=new Set(shopState.learnedSongs||INITIAL_LEARNED_SONGS),slots=new Set(unlockedTimeSlots().map(t=>t.id)),tutorialDone=day1ShiftTutorialDone();return SONGS.filter(s=>learned.has(s.id)&&slots.has(s.stage)&&!(s.tutorialOnly&&(day!==1||tutorialDone))&&!(day===1&&!tutorialDone&&!FIRST_DAY_SONGS.includes(s.id)))}
+function songSetBag(list,d=diff){const bag=makeResourceBag();list.forEach(s=>addBag(bag,songProfile(s,d)));return bag}
+function menuNeedsSatisfied(menuIds,bag){return menuIds.every(id=>Object.entries(menuById(id).needs||{}).every(([k,v])=>(bag[k]||0)>=v))}
+function canSupplyMenus(menuIds,songs=unlockedPlanSongs(),limit=unlockedSlotCount()){if(!menuIds.length)return true;if(!songs.length||limit<=0)return false;let ok=false;function pick(start,left,chosen){if(ok)return;if(menuNeedsSatisfied(menuIds,songSetBag(chosen))){ok=true;return}if(left<=0)return;for(let i=start;i<songs.length;i++)pick(i+1,left-1,chosen.concat(songs[i]))}pick(0,Math.min(limit,songs.length),[]);return ok}
+function chooseDailyMenuIds(day,menus,songs,slotCount){const ordered=menus.map((m,i)=>menus[(i+day-1)%menus.length]),target=Math.max(1,Math.min(slotCount,day>=3?2:1,menus.length));const ids=[];for(const m of ordered){const next=ids.concat(m.id);if(canSupplyMenus(next,songs,slotCount)){ids.push(m.id);if(ids.length>=target)break}}if(!ids.length){const fallback=menus.find(m=>canSupplyMenus([m.id],songs,slotCount))||menus[0];ids.push(fallback.id)}return ids}
+function plannedMenuIds(day,menus,songs,slotCount){const cfg=dayPlanConfig(day),ids=(cfg.menuIds||[]).filter(id=>MENU_ITEMS.some(m=>m.id===id));return ids.length&&canSupplyMenus(ids,songs,slotCount)?ids:chooseDailyMenuIds(day,menus,songs,slotCount)}
+function generateDailyPlan(){const day=shopState.day||1,menus=availableMenus(),slotCount=Math.max(1,unlockedTimeSlots().length),songs=unlockedPlanSongs(day),menuIds=plannedMenuIds(day,menus,songs,slotCount),stageHint=day>=5?'night':day>=3?'dusk':'day',needKeys=[...new Set(menuIds.flatMap(id=>Object.keys(menuById(id).needs||{})))],focus=needKeys[day%Math.max(1,needKeys.length)]||'apple',moneyGoal=expectedShiftIncome(day,slotCount),menuGoal=Math.max(1,Math.min(menuIds.length,slotCount)),shiftsTarget=slotCount;const ranked=songs.map(s=>({i:SONGS.indexOf(s),score:songFitScore(s,{menuIds,focus,stageHint})})).filter(x=>x.i>=0).sort((a,b)=>b.score-a.score).slice(0,5).map(x=>x.i);return{day,menuIds,focus,stageHint,moneyGoal,menuGoal,shiftsTarget,recommended:ranked,unlocks:dayUnlockEntries(day)}}
+function ensureDailyPlan(){if(!dailyPlan||dailyPlan.day!==shopState.day)dailyPlan=generateDailyPlan();return dailyPlan}
+function resetDay(){dailyPlan=generateDailyPlan();dayStats=makeDayStats();dayMenu=TIME_SLOTS.map(()=>null);dayStartState=null;dayRun={active:false,queue:[],index:0,aborted:false};lastServiceResult=null}
+function goalStatus(){const p=ensureDailyPlan(),menuDone=Object.values(dayStats.menuProgress||{}).reduce((a,b)=>a+b,0),avg=dayStats.shifts?Math.round(dayStats.ledger.reduce((s,r)=>s+r.customer,0)/dayStats.shifts):0;return{money:dayStats.money>=p.moneyGoal,menus:menuDone>=p.menuGoal,shifts:dayStats.shifts>=p.shiftsTarget,menuDone,avg,complete:dayStats.money>=p.moneyGoal&&menuDone>=p.menuGoal&&dayStats.shifts>=p.shiftsTarget}}
+function dailySupplyNames(){const p=ensureDailyPlan();return p.menuIds.map(id=>menuById(id).name).join(' / ')}
+function supplyNeedPills(m,resources=taskContext().resources){return Object.entries(m.needs||{}).map(([k,v])=>{const have=resources[k]||0,ok=have>=v;return `<span class="icon-pill ${ok?'done':'problem'}">${RESOURCE_LABELS[k]||k} ${have}/${v}</span>`}).join('')}
+function supplyReached(m,resources=taskContext().resources){return Object.entries(m.needs||{}).every(([k,v])=>(resources[k]||0)>=v)}
+function dailySupplyHtml(){const p=ensureDailyPlan(),ctx=taskContext();return `<div class="supply-list">${p.menuIds.map(id=>{const m=menuById(id),ok=supplyReached(m,ctx.resources);return `<div class="supply-item ${ok?'done':'problem'}"><span>${m.name}</span><div class="pill-row">${supplyNeedPills(m,ctx.resources)}</div></div>`}).join('')}</div>`}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+function normalizeTheme(theme){return theme==='night'||theme==='sunny'?theme:'day'}
+function applyAudioVolume(a,kind){if(a)a.volume=audioGain(kind)}
+function firstUnlockedSlotId(){const t=TIME_SLOTS.find(s=>isTimeSlotUnlocked(s));return t?t.id:'day'}
+function slotDiscreteTag(slotId){const sk=slotThemeKey(slotId||'day');return sk==='night'?'night':sk==='sunny'?'sunny':'dayClean'}
+function inStoryShellForTheme(){if([S.HOME,S.SAVE,S.SELECT].includes(state))return false;if(state===S.ENDED&&['day','practice','tutorial','prologueLedger'].includes(resultMode))return false;if((dayRun&&dayRun.active)||(serviceRun&&serviceRun.active))return true;if(state===S.ENDED&&resultMode==='shift')return true;if([S.FLOW,S.MENU_EDIT,S.OVERVIEW].includes(state)||(flowRun&&flowRun.active))return true;return false}
+function preferenceDiscreteTag(){const t=normalizeTheme(selectedTheme);return t==='night'?'night':t==='sunny'?'sunny':'dayClean'}
+function effectiveDiscreteTag(){if(!inStoryShellForTheme())return preferenceDiscreteTag();if((dayRun&&dayRun.active)||(serviceRun&&serviceRun.active)||(state===S.ENDED&&resultMode==='shift'))return slotDiscreteTag(activeSlotId||'day');return slotDiscreteTag(storySlotId||firstUnlockedSlotId())}
+function uiThemeKey(){const t=effectiveDiscreteTag();return t==='night'?'night':t==='sunny'?'sunny':'day'}
+function mixHex(h0,h1,u){const hex=s=>parseInt(s.slice(1),16);const A=hex(h0),B=hex(h1);const l=(x,y)=>Math.round(x+(y-x)*u);return'#'+[l(A>>16&255,B>>16&255),l(A>>8&255,B>>8&255),l(A&255,B&255)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function blendPalettes(a,b,t){const s=t*t*(3-2*t),out={};const keys=new Set([...Object.keys(a),...Object.keys(b)]);keys.forEach(k=>{const va=a[k],vb=b[k];if(typeof va==='string'&&typeof vb==='string'&&va[0]==='#'&&vb[0]==='#'&&va.length===7&&vb.length===7)out[k]=mixHex(va,vb,s);else out[k]=s<0.5?va:vb});return out}
+function discretePalette(tag){if(tag==='night')return{bg:'#060817',panel:'rgba(8,13,34,.88)',panelStrong:'rgba(8,13,34,.94)',panelStroke:'rgba(121,255,245,.26)',text:'#f6f8ff',muted:'#b9c7dc',accent:'#79fff5',accent2:'#ff4bb5',gold:'#ffdf5c',lane:'rgba(8,13,34,.74)',laneStroke:'rgba(121,255,245,.28)',laneLine:'rgba(121,255,245,.22)',hitFill:'rgba(255,75,181,.18)',hitLine:'#ffdf5c',progressBg:'rgba(255,255,255,.16)',pad:'rgba(8,13,34,.94)',padActive:'#ff4bb5',padText:'#ffffff',judgeStroke:'rgba(5,8,23,.82)'};if(tag==='sunny')return{bg:'#fff0bd',panel:'rgba(255,255,248,.94)',panelStrong:'rgba(255,255,248,.98)',panelStroke:'rgba(91,126,68,.22)',text:'#2f3f32',muted:'#586852',accent:'#2f9e4c',accent2:'#ff9f38',gold:'#f6ad28',lane:'rgba(255,255,248,.78)',laneStroke:'rgba(91,126,68,.18)',laneLine:'rgba(47,158,76,.28)',hitFill:'rgba(78,183,72,.18)',hitLine:'#42b85a',progressBg:'rgba(85,116,76,.14)',pad:'#263044',padActive:'#4eb748',padText:'#ffffff',judgeStroke:'rgba(255,255,248,.92)'};return{bg:'#f7fbf6',panel:'rgba(255,255,255,.90)',panelStrong:'rgba(255,255,255,.96)',panelStroke:'rgba(38,48,68,.10)',text:'#263044',muted:'#607086',accent:'#3f9f65',accent2:'#ff7890',gold:'#ffb14c',lane:'rgba(255,255,255,.80)',laneStroke:'rgba(38,48,68,.10)',laneLine:'rgba(113,203,135,.24)',hitFill:'rgba(113,203,135,.14)',hitLine:'#71cb87',progressBg:'#e6ede8',pad:'#263044',padActive:'#71cb87',padText:'#ffffff',judgeStroke:'rgba(255,255,255,.90)'}}
+function stepPaletteTween(dt){const want=effectiveDiscreteTag();if(want!==paletteTweenTo){paletteTweenFrom=paletteTweenTo;paletteTweenTo=want;paletteMix=0;invalidateBackdropCache()}const prev=paletteMix;paletteMix=Math.min(1,paletteMix+dt/PALETTE_TWEEN_SEC);if(paletteMix!==prev&&paletteMix<1)invalidateBackdropCache()}
+function resetPaletteTweenBaseline(){paletteTweenFrom=paletteTweenTo=effectiveDiscreteTag();paletteMix=1}
+function syncDomShellTheme(){const t=effectiveDiscreteTag();document.documentElement.classList.toggle('theme-night',t==='night');document.documentElement.classList.toggle('theme-sunny',t==='sunny');document.body.classList.toggle('theme-night',t==='night');document.body.classList.toggle('theme-sunny',t==='sunny')}
+function isNightTheme(){return effectiveDiscreteTag()==='night'}
+function isSunnyTheme(){return effectiveDiscreteTag()==='sunny'}
+function themeAssets(){return isNightTheme()?NIGHT_ART:isSunnyTheme()?SUNNY_ART:ART}
+function themeLogo(){return isNightTheme()?'assets/game_art/neon_night/brand_logo.98b5552ad1.webp':isSunnyTheme()?'assets/game_art/sunny_shop/brand_logo.99eee49a57.webp':'assets/game_art/clean_mobile/brand_logo.578440f07d.webp'}
+function themePalette(){return paletteMix>=1?discretePalette(paletteTweenTo):blendPalettes(discretePalette(paletteTweenFrom),discretePalette(paletteTweenTo),paletteMix)}
+const rawThemeAssets=themeAssets,rawThemePalette=themePalette;
+/** 开屏界面（main_visual + 小手）：不是 MainMenu。 */
+function updateSplashBackground(){if(!openingVisual)return;const img=ensureImageLoaded(currentMainVisual()),url=img&&img._rfaSrc?`url("${img._rfaSrc}")`:'';openingVisual.style.backgroundImage=url}
+/** MainMenu 全屏底图：住处 Home（仅在完成 Prologue 后才会进入该界面）。 */
+function updateHomeRoomBackdrop(){const room=$('homeRoomBackdrop');if(!room)return;const space=currentHomeSpace(),img=ensureImageLoaded(isPortrait()?space.portrait:space.landscape),url=img&&img._rfaSrc?`url("${img._rfaSrc}")`:'';room.style.backgroundImage=url}
+/** 冷启动：仅开屏，不挂载 MainMenu（完成后才有 MainMenu）。 */
+function bootstrapOpeningOnly(){UI.clear();overlay.classList.add('overlay-shell-active');overlay.style.pointerEvents='auto';openingDismissed=false;if(openingScreen){openingScreen.classList.remove('hidden','entering','leaving')}updateSplashBackground()}
+function refreshThemeCache(){cachedAssets=rawThemeAssets();cachedPalette=rawThemePalette();ensureThemeAssets();noteFruitImages().forEach(ensureImageLoaded);invalidateBackdropCache();updateSplashBackground();updateHomeRoomBackdrop()}
+themeAssets=function(){return cachedAssets||(cachedAssets=rawThemeAssets())};
+themePalette=function(){return cachedPalette||(cachedPalette=rawThemePalette())};
+function applyTheme(theme,persist=false){
+  selectedTheme=normalizeTheme(theme);
+  if(persist)saveVisualTheme(selectedTheme);
+  resetPaletteTweenBaseline();
+  syncDomShellTheme();
+  refreshThemeCache();
+  const logo=document.querySelector('.brand-logo');
+  if(logo)logo.src=themeLogo();
+  if(state===S.SELECT)updateSongPreview();
+}
+function isPortrait(){return innerWidth<1180||innerHeight>innerWidth*.92}
+function resize(){invalidateBackdropCache();const portrait=isPortrait(),uiBase=portrait?Math.min(innerWidth/390,innerHeight/760):Math.min(innerWidth/1180,innerHeight/760),uiScale=clamp(uiBase,portrait?.72:.82,portrait?1.28:1.32);document.documentElement.style.setProperty('--ui-scale',uiScale.toFixed(3));dpr=Math.max(1,Math.min(2,devicePixelRatio||1));canvas.width=Math.floor(innerWidth*dpr);canvas.height=Math.floor(innerHeight*dpr);canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(dpr,0,0,dpr,0,0);const safeTop=portrait?Math.max(18*uiScale,innerHeight*.035):18*uiScale,safeBottom=portrait?Math.max(18*uiScale,innerHeight*.038):18*uiScale,topHudH=(portrait?56:50)*uiScale,thumbH=portrait?20*uiScale:0,orderH=0,bottomStack=portrait?safeBottom+thumbH+50*uiScale:0,laneTop=portrait?Math.max(safeTop+topHudH+8*uiScale,innerHeight*.14):innerHeight*.08,hitY=portrait?Math.max(laneTop+260*uiScale,innerHeight-bottomStack):innerHeight*.72;view={cx:innerWidth/2,hitY,laneTop,laneW:portrait?Math.min(innerWidth*.78,520*uiScale):Math.min(420*uiScale,innerWidth/3),scale:uiScale,uiScale,portrait,safeTop,safeBottom,topHudH,thumbH,orderH};updateSplashBackground();updateHomeRoomBackdrop();if(tutorialActive)requestAnimationFrame(refreshTutorialLayout);if(notes.length)applyFallSpeed()}
+function ambientBlocked(){return [S.READY,S.LEAD_IN,S.PLAYING,S.PAUSED,S.RESUME_COUNTDOWN,S.SELECT].includes(state)||gameplayWarmupDepth>0}
+function usesHomeLoop(){return state===S.HOME||state===S.SAVE||activeSaveSlot<0}
+function ambientLoopFile(){return usesHomeLoop()?HOME_LOOP_FILE:SUB_LOOP_FILE}
+function ambientLoopVolume(){return audioGain(usesHomeLoop()?'menuHome':'menuSub')}
+const menuMusic={audio:null,file:'',unlocked:false,volumeRampFrame:0,cancelVolumeRamp(){if(this.volumeRampFrame){cancelAnimationFrame(this.volumeRampFrame);this.volumeRampFrame=0}},fadeVolumeTo(target,ms,done){this.cancelVolumeRamp();const a=this.audio;if(!a){if(done)done();return}const tgt=clamp(target,0,1);if(!ms||ms<=0){a.volume=tgt;if(done)done();return}const start=a.volume,b=performance.now(),step=now=>{const p=clamp((now-b)/ms,0,1);a.volume=start+(tgt-start)*p;if(p<1)this.volumeRampFrame=requestAnimationFrame(step);else{this.volumeRampFrame=0;if(done)done()}};this.volumeRampFrame=requestAnimationFrame(step)},seekStart(a){const seek=()=>{try{a.currentTime=0}catch(_){}};if(a.readyState>=1)seek();else a.addEventListener('loadedmetadata',seek,{once:true})},ensure(resetHomeLoop,forcedVolume){const file=ambientLoopFile(),targetVol=forcedVolume===undefined||forcedVolume===null?ambientLoopVolume():clamp(forcedVolume,0,1),sameFile=this.audio&&this.file===file;if(sameFile&&!this.audio.paused){this.audio.volume=targetVol;return this.audio}if(sameFile){this.audio.volume=targetVol;this.seekStart(this.audio);return this.audio}if(this.audio)this.audio.pause();this.file=file;this.audio=new Audio(versionedUrl(file));this.audio.loop=true;this.audio.preload='auto';this.audio.volume=targetVol;return this.audio},pause(){if(this.audio)this.audio.pause()},play(opts){opts=opts||{};if(!this.unlocked||ambientBlocked()){this.pause();return}const reset=!!opts.resetHomeLoop,fadeInMs=+opts.fadeInMs||0,delayMs=+opts.delayMs||0,target=ambientLoopVolume(),run=()=>{this.cancelVolumeRamp();const samePlaying=this.audio&&this.file===ambientLoopFile()&&!this.audio.paused,a=this.ensure(reset,samePlaying?target:(fadeInMs>0?0:undefined));if(samePlaying){a.volume=target;return}if(fadeInMs>0){a.volume=0;if(a.paused)a.play().catch(()=>{});this.fadeVolumeTo(target,fadeInMs)}else{a.volume=target;if(a.paused)a.play().catch(()=>{})}};if(delayMs>0)setTimeout(run,delayMs);else run()},unlock(){this.unlocked=true;if(!ambientBlocked())this.play();else this.pause()}};
+function ensureMenuLoop(){return menuMusic.ensure()}
+function pauseMenuLoop(){menuMusic.pause()}
+function updateMenuLoop(menuOpts){if(menuOpts)menuMusic.play(menuOpts);else menuMusic.play()}
+function unlockMenuLoop(){if(ambientBlocked())return;menuMusic.unlock()}
+function tutorialSeen(id){return !!(shopState.tutorialSeen&&shopState.tutorialSeen[id])}
+function markTutorialSeen(id){shopState.tutorialSeen={...(shopState.tutorialSeen||{}),[id]:1};saveShopState()}
+/** 与 spotlight 引导一致：首日 Day1 第一班上岗练习完成后写入 tutorialSeen，并不再进入教学结算分支。 */
+const DAY1_SHIFT_TUTORIAL_ID='day1ShiftTutorial';
+function day1ShiftTutorialDone(){return tutorialSeen(DAY1_SHIFT_TUTORIAL_ID)||!!shopState.firstShiftDone}
+function fitTutorialRect(r){const u=view.uiScale||1,m=Math.max(8,8*u),w=clamp(r.w,42*u,Math.max(42*u,innerWidth-m*2)),h=clamp(r.h,36*u,Math.max(36*u,innerHeight-m*2));return{x:clamp(r.x,m,innerWidth-m-w),y:clamp(r.y,m,innerHeight-m-h),w,h}}
+function tutorialTargetSpec(target){const u=view.uiScale||1;if(target==='lane')return{target,pad:0};if(target==='#menuGoalBox')return{target:'#menuGoalBox .schedule-hero',pad:4*u};if(target==='#flowPrimaryButton'||target==='#confirmMenuButton')return{target,pad:3*u};if(target==='.menu-tune-row')return{target,pad:4*u};if(target==='#menuSlotRow')return{target,pad:5*u};return{target,pad:8*u}}
+function tutorialRect(target){const spec=tutorialTargetSpec(target);if(spec.target==='lane')return fitTutorialRect({x:view.cx-view.laneW*.45,y:view.laneTop,w:view.laneW*.9,h:Math.max(180,view.hitY-view.laneTop+36)});const el=typeof spec.target==='string'?document.querySelector(spec.target):spec.target;if(!el)return fitTutorialRect({x:innerWidth*.12,y:innerHeight*.18,w:innerWidth*.76,h:innerHeight*.28});const r=el.getBoundingClientRect(),pad=spec.pad||0;return fitTutorialRect({x:r.left-pad,y:r.top-pad,w:r.width+pad*2,h:r.height+pad*2})}
+function applyTutorialRect(rect){const spot=$('tutorialSpot');spot.style.left=rect.x+'px';spot.style.top=rect.y+'px';spot.style.width=rect.w+'px';spot.style.height=rect.h+'px'}
+function placeTutorialCard(rect){const card=$('tutorialCard'),u=view.uiScale||1,margin=Math.max(14,14*u),gap=14*u;card.style.maxHeight=`calc(100dvh - ${Math.round(margin*2)}px)`;card.style.overflow='auto';const cardW=card.offsetWidth,cardH=card.offsetHeight,belowY=rect.y+rect.h+gap,spaceBelow=innerHeight-margin-belowY,spaceAbove=rect.y-margin-gap,preferBelow=spaceBelow>=cardH||spaceBelow>=spaceAbove,top=preferBelow?clamp(belowY,margin,innerHeight-margin-cardH):clamp(rect.y-cardH-gap,margin,innerHeight-margin-cardH),left=clamp(rect.x+rect.w/2,margin+cardW/2,innerWidth-margin-cardW/2);card.style.top=top+'px';card.style.left=left+'px';card.style.transform='translateX(-50%)'}
+function refreshTutorialLayout(){if(!tutorialActive||!currentTutorialTarget)return;const rect=tutorialRect(currentTutorialTarget);applyTutorialRect(rect);requestAnimationFrame(()=>placeTutorialCard(rect))}
+function tutorialSurfaceKey(){return `${UI.stack[UI.stack.length-1]||''}|${state}|${UI.serial}`}
+function revealTutorial(id){if(!tutorialActive||currentTutorial!==id)return;document.body.classList.remove('interaction-locked');const rect=tutorialRect(currentTutorialTarget);applyTutorialRect(rect);$('tutorialLayer').classList.remove('hidden');requestAnimationFrame(()=>placeTutorialCard(rect))}
+function showTutorial(id,target,title,body){if(tutorialSeen(id))return false;tutorialActive=true;currentTutorial=id;currentTutorialTarget=target;$('tutorialTitle').textContent=title;$('tutorialBody').textContent=body;$('tutorialLayer').classList.add('hidden');clearTimeout(tutorialRevealTimer);const surface=tutorialSurfaceKey(),needsSettle=lastSettledTutorialSurface!==surface;lastSettledTutorialSurface=surface;if(needsSettle){document.body.classList.add('interaction-locked');tutorialRevealTimer=setTimeout(()=>revealTutorial(id),TUTORIAL_SETTLE_MS)}else revealTutorial(id);return true}
+function closeTutorial(){if(currentTutorial){markTutorialSeen(currentTutorial);currentTutorial=null}currentTutorialTarget=null;clearTimeout(tutorialRevealTimer);tutorialRevealTimer=0;tutorialActive=false;$('tutorialLayer').classList.add('hidden');document.body.classList.remove('interaction-locked');updateMenuLoop();requestAnimationFrame(runContextTutorial)}
+function cancelTutorialOverlay(){currentTutorial=null;currentTutorialTarget=null;clearTimeout(tutorialRevealTimer);tutorialRevealTimer=0;tutorialActive=false;$('tutorialLayer').classList.add('hidden');document.body.classList.remove('interaction-locked')}
+function runContextTutorial(){if(tutorialActive||activeSaveSlot<0)return;if(state===S.FLOW&&!$('flowPrimaryButton').classList.contains('hidden'))showTutorial('dayIntro','#flowPrimaryButton','先开门，不急着开工','每天开始时先看一眼店铺状态。真正的选择在下一步：今天要怎么排班，才够做出客人想要的东西。');else if(state===S.MENU_EDIT){if(showTutorial('scheduleGoal','#menuGoalBox','今天先满足这张小单','这里不是考试题，是今天的备货方向。排班时它会跟着变色：还缺什么、已经够了，一眼就能看出来。'))return;if(showTutorial('scheduleTune','.menu-tune-row','难度赚更多，速度看手感','难度会影响产出和收益，先用「简单」稳稳开张。速度只改变水果下落的视觉节奏，不会改变歌曲本身的时间；觉得眼花就调慢一点。'))return;if(showTutorial('scheduleSlot','#menuSlotRow','把曲子塞进今天的班次','每个时段放一首歌。第一天先别想太多，挑能补上目标材料的那首就好。'))return;showTutorial('scheduleConfirm','#confirmMenuButton','材料够了，就开店','按钮能点之前先看目标有没有满足。确认后就进入营业，今天的收入和热度就靠你的手感了。')}else if(dayRun.active&&[S.READY,S.LEAD_IN].includes(state))showTutorial('gameplayLane','lane','看水果，别看按钮','水果靠近下方判定线时点击；长条就按住，到尾巴附近再松。先追求舒服和稳定，帅气的全连可以晚点再说。')}
+async function loadOfficialCharts(){chartManifest={};CHART_DATA={};chartLoadError='';if(location.protocol==='file:'){chartLoadError='\u8bf7\u7528 05_start_local_server.bat \u6253\u5f00 http://localhost:8080/\uff0c\u76f4\u63a5\u53cc\u51fb\u65e0\u6cd5\u52a0\u8f7d charts/*.json';console.warn(chartLoadError);return false}try{const manifest=await fetch(versionedUrl('charts/manifest.json'),{cache:'reload'});if(!manifest.ok)throw new Error('manifest '+manifest.status);const data=await manifest.json(),entries=(data.charts||[]).filter(e=>e&&e.song&&e.file);await Promise.all(entries.map(async entry=>{try{const res=await fetch(versionedUrl('charts/'+entry.file),{cache:'reload'});if(!res.ok)throw new Error(entry.file+' '+res.status);const chart=await res.json();if(chart&&chart.song&&chart.charts){chartManifest[chart.song]=entry.file;CHART_DATA[chart.song]=chart.charts;let existing=SONGS.find(s=>s.file===chart.song);if(!existing){existing={id:entry.id||chart.id||chart.song.split('/').pop().replace(/\.[^.]+$/,'').replace(/[- ]/g,'_'),title:entry.title||chart.title||'Untitled',artist:'Demo Audio',file:chart.song,duration:0,bpm:120,activeStart:0,audioOffset:-0.02,stage:'day'};SONGS.push(existing)}existing.type=entry.type||chart.type||existing.type||'track';existing.difficulties=Object.keys(chart.charts||{});if(entry.title&&!existing.title)existing.title=entry.title}}catch(e){console.warn('chart load skipped',entry.file,e)}}));const loaded=Object.keys(CHART_DATA).length;if(!loaded)chartLoadError='\u6ca1\u6709\u6210\u529f\u52a0\u8f7d\u4efb\u4f55\u8c31\u9762 JSON\uff0c\u8bf7\u68c0\u67e5 charts/manifest.json \u548c\u9759\u6001\u670d\u52a1\u5668\u8def\u5f84';return loaded>0}catch(e){chartLoadError='\u8c31\u9762\u52a0\u8f7d\u5931\u8d25\uff0c\u8bf7\u7528 05_start_local_server.bat \u542f\u52a8\u672c\u5730\u670d\u52a1\u5668';console.warn('charts load failed',e);return false}}
+async function ensureSongChart(s){return}
+function chartsLoaded(){return Object.keys(CHART_DATA||{}).length>0}
+async function ensureChartsReady(){if(chartsLoaded())return true;const ok=await loadOfficialCharts();if(ok)return true;showToast(chartLoadError||'\u8c31\u9762\u52a0\u8f7d\u5931\u8d25');return false}
+function isServiceSong(s){return !!(s&&(s.type==='service'||(s.difficulties||[]).includes('service')))}
+function songDiff(s){return isServiceSong(s)?SERVICE_DIFF:(DIFFS[diffIndex]||DIFFS[0])}
+function songTypeLabel(s){return isServiceSong(s)?'服务练习':'完整曲目'}
+function fallSpeed(){return SPEEDS[speedIndex]?.value||1}
+function laneTravel(){return diff.travel/fallSpeed()}
+function songCharts(s){return s?(CHART_DATA[s.file]||{}):{}}
+function hasChartForDiff(s,d){const charts=songCharts(s);return Array.isArray(charts[d.id])&&charts[d.id].length>0}
+function diffScope(){return state===S.MENU_EDIT?unlockedPlanSongs():[SONGS[songIndex]||song].filter(Boolean)}
+function availableDiffIndices(scope=diffScope()){const songs=(scope&&scope.length?scope:[SONGS[songIndex]||song]).filter(Boolean);if(songs.some(isServiceSong))return[];return DIFFS.map((d,i)=>songs.every(s=>hasChartForDiff(s,d))?i:-1).filter(i=>i>=0)}
+function selectableDiffIndices(scope=diffScope()){const available=availableDiffIndices(scope);return available.filter(i=>state===S.SELECT||serviceRun.fromTrackEvent||isDifficultyUnlocked(i))}
+function ensurePlayableDifficulty(scope=diffScope()){const songs=(scope&&scope.length?scope:[SONGS[songIndex]||song]).filter(Boolean);if(songs.some(isServiceSong)){diff=SERVICE_DIFF;return}const options=selectableDiffIndices(scope);if(options.length&&!options.includes(diffIndex))diffIndex=options[0];diff=DIFFS[diffIndex]}
+function buildNotes(){song=SONGS[songIndex];ensurePlayableDifficulty([song]);diff=songDiff(song);const chart=(songCharts(song)[diff.id])||[],delta=(song.audioOffset||0)+.02,travel=laneTravel();return chart.map(n=>{const duration=Math.max(0,(n.end||n.time)-n.time),tickInterval=.25;return{id:n.id,kind:n.kind,time:n.time+delta,end:n.end+delta,lane:n.lane||0,fruit:FRUITS[n.fruit%FRUITS.length],accent:n.accent,state:'pending',travel,tickInterval,holdTicks:n.kind==='press'?Math.max(1,Math.floor(duration/tickInterval)):0,ticksDone:0}}).sort((a,b)=>a.time-b.time||a.end-b.end||a.id-b.id)}
+function applyFallSpeed(){const travel=laneTravel();notes.forEach(n=>n.travel=travel)}
+function setFallSpeed(i){sfxPlay('ui.select');speedIndex=clamp(i,0,SPEEDS.length-1);saveFallSpeed(speedIndex);applyFallSpeed();renderSpeedRows();if(state===S.SELECT)buildCards();if(state===S.MENU_EDIT)renderMenuEditor()}
+function renderSpeedRows(){[songSpeedRow,$('settingsSpeedRow'),$('menuSpeedRow')].forEach(row=>{if(!row)return;row.innerHTML='';SPEEDS.forEach((s,i)=>{const el=document.createElement('div');el.className='speed-card'+(i===speedIndex?' selected':'');el.textContent=s.name;el.onclick=()=>setFallSpeed(i);row.appendChild(el)})})}
+function difficultyMinLevel(i){return i<=1?1:i===2?2:3}
+function isDifficultyUnlocked(i){return shopLevel()>=difficultyMinLevel(i)}
+function ensureUnlockedDifficulty(){ensurePlayableDifficulty()}
+function setDifficulty(i){const scope=diffScope();if(scope.some(isServiceSong))return;if(!availableDiffIndices(scope).includes(i)||(state!==S.SELECT&&!isDifficultyUnlocked(i)))return;sfxPlay('ui.select');diffIndex=clamp(i,0,DIFFS.length-1);diff=DIFFS[diffIndex];if(state===S.SELECT)buildCards();if(state===S.MENU_EDIT)renderMenuEditor()}
+function renderDiffRows(){ensureUnlockedDifficulty();[$('menuDiffRow'),diffRow].forEach(row=>{if(!row)return;row.innerHTML='';const practice=row===diffRow,scope=practice?[SONGS[songIndex]||song].filter(Boolean):diffScope(),isService=scope.some(isServiceSong);row.style.display=isService?'none':'';if(isService)return;const available=availableDiffIndices(scope);DIFFS.forEach((d,i)=>{if(!available.includes(i))return;const locked=!practice&&!isDifficultyUnlocked(i),el=document.createElement('div');el.className='diff-card'+(i===diffIndex?' selected':'')+(locked?' locked':'');el.innerHTML=practice?d.name:(locked?`${d.name}<small>Lv.${difficultyMinLevel(i)}</small>`:`${d.name}<small>x${diffIncomeMul(d).toFixed(2)}</small>`);el.onclick=()=>setDifficulty(i);row.appendChild(el)})})}
+function setIntroDifficulty(){if((shopState.day||1)===1&&diffIndex>0){diffIndex=0;diff=DIFFS[0]}}
+function noteX(n){return view.cx+(n.lane||0)*view.laneW*.22}
+function noteY(n,t,when=n.time){return view.hitY-((when-t)/(n.travel||diff.travel))*(view.hitY-view.laneTop)}
+function lowerBoundNotes(time){let lo=0,hi=notes.length;while(lo<hi){const mid=(lo+hi)>>1;if(notes[mid].time<time)lo=mid+1;else hi=mid}return lo}
+function noteLookahead(){return Math.max(diff.travel||1,notes[0]?.travel||0)}
+function pixelsPerSecond(n){return (view.hitY-view.laneTop)/(n.travel||diff.travel)}
+function centerDistance(n,t){return Math.abs(noteY(n,t,n.time)-view.hitY)}
+function judge(err,n){const d=Math.abs(err)*pixelsPerSecond(n);if(d<=pixelsPerSecond(n)*WINDOWS.perfect)return{name:'Perfect',score:300,acc:1,color:'#8cffc1'};if(d<=pixelsPerSecond(n)*WINDOWS.great)return{name:'Great',score:220,acc:.72,color:'#80b7ff'};if(d<=pixelsPerSecond(n)*WINDOWS.good)return{name:'Good',score:120,acc:.4,color:'#ffe66d'};if(err>0&&err<=WINDOWS.miss)return{name:'Good',score:80,acc:.22,color:'#ffe66d'};return null}
+function hitTarget(t){let due=null,early=null;const start=Math.max(0,lowerBoundNotes(t-WINDOWS.miss)-2);for(let i=start;i<notes.length;i++){const n=notes[i];if(n.time>t+WINDOWS.miss)break;if(n.state!=='pending'||(n.kind!=='tap'&&n.kind!=='press'))continue;const err=t-n.time;if(err>WINDOWS.miss||err<-WINDOWS.good)continue;const item={n,err,dist:centerDistance(n,t)},slot=err>=-WINDOWS.perfect?'due':'early',cur=slot==='due'?due:early;if(!cur||n.time<cur.n.time||(n.time===cur.n.time&&item.dist<cur.dist)){if(slot==='due')due=item;else early=item}}return due||early}
+function makeOrders(){const p=ensureDailyPlan(),press=notes.filter(n=>n.kind==='press').length,base={chunks:Math.max(6,Math.round(total*.15)),juice:Math.max(2,Math.ceil(press*.52)),combo:Math.max(12,Math.round(total*.16)),quality:Math.max(70,Math.round(70+diffIndex*6)),orders:Math.max(2,2+diffIndex)};const orders=p.menuIds.map((id,idx)=>{const m=menuById(id),need=Math.max(1,Math.round((base[m.kind]||base.chunks)*(1+idx*.12)));return{id:m.id,name:m.name,kind:m.kind,need,have:0,done:false,color:m.color,menu:id}});if(!orders.some(o=>o.kind==='combo'))orders.push({id:'combo',name:'\u62db\u724c\u8fde\u51fb',kind:'combo',need:base.combo,have:0,done:false,color:'#80b7ff',menu:'combo'});return orders}
+function reset(){notes=buildNotes();particles=[];texts=[];slashFx=[];products=[];heat=combo=maxCombo=acc=0;total=notes.length;const holdCount=notes.filter(n=>n.kind==='press').length;chartEndTime=notes.length?notes.reduce((m,n)=>Math.max(m,n.time,n.end),0):0;maxNoteSpan=notes.length?notes.reduce((m,n)=>Math.max(m,Math.max(0,n.end-n.time)),0):0;missCursor=0;timingTotal=total;comboTarget=total+holdCount;orders=makeOrders();orderFlash=[];counts={Perfect:0,Great:0,Good:0,Miss:0};missReasons={Miss:0,EarlyRelease:0};productCounts={chunks:0,juice:0,waste:0};holding=false;activeHold=null;lastJudge='准备';lastErr=0;pulse=shake=lastComboBurst=0;resultData=null;resultView=null;centerJudge=null;customerAnger=0;gameOverReason='';resultReveal=0;resultMode='shift'}
+function chartStats(s,d=songDiff(s)){const chart=(songCharts(s)[d.id])||[];return{notes:chart.length,holds:chart.filter(n=>n.kind==='press').length}}
+function chartComplexity(s,d){const st=chartStats(s,d),minutes=Math.max(.75,(s.duration||120)/60),notesPerMin=st.notes/minutes,holdRate=st.holds/Math.max(1,st.notes),bpm=s.bpm||120,density=clamp((notesPerMin-55)/210,0,1),holds=clamp(holdRate/.22,0,1),tempo=clamp((bpm-95)/95,0,1),endurance=clamp(((s.duration||120)-110)/170,0,1);return density*.62+holds*.22+tempo*.10+endurance*.06}
+function chartLevel(s,d=songDiff(s)){if(d.id==='service')return 1;const band=CHART_LEVEL_BANDS[d.id]||[1,10],c=chartComplexity(s,d),level=Math.round(band[0]+c*(band[1]-band[0]));return clamp(level,1,10)}
+function chartLevelBadge(s,d=songDiff(s)){return d.id==='service'?`<div class="chart-level-badge"><span>服务</span><b>1</b></div>`:`<div class="chart-level-badge"><span>Lv.</span><b>${chartLevel(s,d)}</b></div>`}
+function songStageOrder(s){return{day:0,dusk:1,night:2,late:3}[s.stage]??9}
+function songDisplayOrder(){return SONGS.map((s,i)=>({s,i})).sort((a,b)=>songStageOrder(a.s)-songStageOrder(b.s)||(a.s.bpm||0)-(b.s.bpm||0)||a.s.title.localeCompare(b.s.title)).map(x=>x.i)}
+function practiceSongOrder(){return songDisplayOrder().filter(i=>!SONGS[i].tutorialOnly)}
+function ensurePracticeSongIndex(){const order=practiceSongOrder();if(order.length&&!order.includes(songIndex))songIndex=order[0];return order}
+function stageLabel(id){return{day:'\u65e5\u95f4\u9c9c\u679c\u94fa',dusk:'\u9ec4\u660f\u9ad8\u5cf0',night:'\u591c\u95f4\u8bd5\u8425\u4e1a',late:'\u6df1\u591c\u8282\u594f\u5427'}[id]||'\u8425\u4e1a\u73ed\u6b21'}
+const SONG_COVERS={"ark_light":"assets/songs/ark_light/cover.29079fb39c.webp","asura":"assets/songs/asura/cover.0798cc68c1.webp","beethoven":"assets/songs/beethoven/cover.d6252af4df.webp","drama":"assets/songs/drama/cover.5341cb4502.webp","faraway":"assets/songs/faraway/cover.8348a11c12.webp","felis":"assets/songs/felis/cover.74ef159c92.webp","first_choice":"assets/songs/first_choice/cover.a67ab24bd1.webp","grafiore":"assets/songs/grafiore/cover.0e3962a880.webp","gypsy_tronic":"assets/songs/gypsy_tronic/cover.ea26d8563a.webp","ineffabilis":"assets/songs/ineffabilis/cover.6910611907.webp","lets_drive":"assets/songs/lets_drive/cover.4c41452305.webp","lunatic_sky":"assets/songs/lunatic_sky/cover.15b49f5f57.webp","maidens_capriccio":"assets/songs/maidens_capriccio/cover.76042dec38.webp","masquerade":"assets/songs/masquerade/cover.75f8bd88b2.webp","megaburn":"assets/songs/megaburn/cover.7c7cc36939.webp","nb_blast":"assets/songs/nb_blast/cover.12ec97eaa6.webp","necro_fantasy":"assets/songs/necro_fantasy/cover.685dafdaf6.webp","night_of_fire":"assets/songs/night_of_fire/cover.b9ef971c26.webp","open_the_fruit_stand!":"assets/songs/open_the_fruit_stand!/cover.1c0b5f70f6.webp","please":"assets/songs/please/cover.393c02d830.webp","purple_passion":"assets/songs/purple_passion/cover.00e5e39f21.webp","qua_vadis":"assets/songs/qua_vadis/cover.d0ba945cd2.webp","seeker":"assets/songs/seeker/cover.70d4a4bb0e.webp","toy_war":"assets/songs/toy_war/cover.0592b126f3.webp","tutorial":"assets/songs/tutorial/cover.1c0b5f70f6.webp","unwelcome_school":"assets/songs/unwelcome_school/cover.563dd1bddc.webp","wings_of_silence":"assets/songs/wings_of_silence/cover.a395c43107.webp"};
+function songByline(s,sep=' / '){const type=songTypeLabel(s);return s.artist&&s.artist!=='Demo Audio'?`${type}${sep}${s.artist}`:`${type}${sep}${stageLabel(s.stage)}`}
+function songSnapshot(s){return s&&s.cover?versionedUrl(s.cover):(s&&s.id?versionedUrl(`assets/songs/${s.id}/cover.webp`):'')}
+function cancelPreviewFade(){if(previewFadeFrame)cancelAnimationFrame(previewFadeFrame);previewFadeFrame=0}
+function releasePreviewAudio(resumeMenuLoop=true,opts){opts=opts||{};const fadeOut=+opts.previewFadeOutMs||0,after=()=>{cancelPreviewFade();previewGeneration++;if(previewAudio){try{previewAudio.stop()}catch(_){}try{previewAudio.disconnect()}catch(_){}}if(previewGain){try{previewGain.disconnect()}catch(_){}}previewAudio=null;previewGain=null;previewFile='';if(resumeMenuLoop)updateMenuLoop(opts.menuLoopOpts)};if(fadeOut>0&&previewGain){fadePreviewVolume(previewGain,0,fadeOut,after)}else after()}
+function stopPreview(resumeMenuLoop=true,opts){previewWanted=false;releasePreviewAudio(resumeMenuLoop,opts)}
+function fadePreviewVolume(gain,target,ms,done){cancelPreviewFade();const c=sfxContext();if(c){gain.gain.cancelScheduledValues(0);gain.gain.setValueAtTime(gain.gain.value,c.currentTime)}const start=gain.gain.value,began=performance.now(),gen=previewGeneration;function step(now){if(gen!==previewGeneration||gain!==previewGain)return;const p=clamp((now-began)/ms,0,1);gain.gain.value=start+(target-start)*p;if(p<1)previewFadeFrame=requestAnimationFrame(step);else{previewFadeFrame=0;if(done&&gen===previewGeneration&&gain===previewGain)done()}}previewFadeFrame=requestAnimationFrame(step)}
+function stopPreviewNode(){if(previewLoopTimer){clearTimeout(previewLoopTimer);previewLoopTimer=null}if(previewAudio){try{previewAudio.stop()}catch(_){}try{previewAudio.disconnect()}catch(_){}}if(previewGain){try{previewGain.disconnect()}catch(_){}}previewAudio=null;previewGain=null}
+function previewLoopBounds(buffer,start){const duration=Math.max(.001,buffer.duration||0),endCap=Math.max(.001,duration-.05),maxStart=Math.max(0,endCap-.25),loopStart=Math.min(Math.max(0,start),maxStart),loopEnd=Math.min(loopStart+PREVIEW_CLIP_MS/1000,endCap);return loopEnd>loopStart?{start:loopStart,end:loopEnd}:{start:0,end:duration}}
+function startPreviewBuffer(buffer,start,gen,fadeIn=true){const c=sfxContext();if(!c)return false;if(c.state==='suspended')c.resume().catch(()=>{});stopPreviewNode();const loop=previewLoopBounds(buffer,start),targetVol=audioGain('preview'),FADE=PREVIEW_LOOP_CROSSFADE_S,dur=loop.end-loop.start;function sched(segStart,fadeInSecs){if(gen!==previewGeneration)return;const src=c.createBufferSource(),g=c.createGain();src.buffer=buffer;src.connect(g);g.connect(sfxPreviewBus||c.destination);const now=c.currentTime;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(targetVol,now+fadeInSecs);g.gain.setValueAtTime(targetVol,now+dur-FADE);g.gain.linearRampToValueAtTime(0,now+dur);src.start(now,segStart);src.stop(now+dur);previewAudio=src;previewGain=g;previewLoopTimer=setTimeout(()=>{previewLoopTimer=null;sched(loop.start,PREVIEW_FADE_MS/1000)},Math.max(0,dur*1000))}sched(start,fadeIn?PREVIEW_FADE_MS/1000:0.001);return true}
+function previewSegmentStart(s){const duration=Math.max(0,s.duration||0),latest=Math.max(0,duration-PREVIEW_CLIP_MS/1000),afterIntro=(s.activeStart||0)+8;return Math.max(0,Math.min(afterIntro,latest))}
+async function loadPreviewBuffer(file,gen){const cached=previewBufferCache.get(file);if(cached)return cached;const c=sfxContext();if(!c)throw new Error('AudioContext unavailable');const res=await fetch(versionedUrl(file),{cache:'force-cache'});if(!res.ok)throw new Error('preview fetch '+res.status);const data=await res.arrayBuffer();if(gen!==previewGeneration)throw new Error('stale preview');const buffer=await c.decodeAudioData(data);previewBufferCache.set(file,buffer);return buffer}
+async function playPreview(s){if(state!==S.SELECT)return;pauseMenuLoop();previewWanted=true;previewLoopStart=previewSegmentStart(s);const sameSong=previewFile===s.file;if(!sameSong)releasePreviewAudio(false);previewFile=s.file;try{cancelPreviewFade();previewGeneration++;const loopGen=previewGeneration,buffer=await loadPreviewBuffer(s.file,loopGen);if(loopGen!==previewGeneration||!previewWanted||state!==S.SELECT)return;startPreviewBuffer(buffer,previewLoopStart,loopGen,true)}catch(e){}}
+function updateSongPreview(){ensurePracticeSongIndex();const s=safeSongAt(songIndex);ensurePlayableDifficulty([s]);const activeDiff=songDiff(s),st=chartStats(s,activeDiff);diff=activeDiff;loadSongCover(s);const _snap=songSnapshot(s);songCover.style.backgroundImage=_snap?`url("${_snap}")`:'';songCoverLevel.innerHTML=activeDiff.id==='service'?`<span>服务</span><b>1</b>`:`<span>Lv.</span><b>${chartLevel(s,activeDiff)}</b>`;songCoverTitle.textContent=s.title;songCoverMeta.textContent=`${songByline(s)} / ${Math.round(s.duration)}s / BPM ${s.bpm.toFixed(1)}`;songPreviewBadges.innerHTML='';[activeDiff.name,`${st.notes} 音符`,`${st.holds} 长按`].forEach(t=>{const badge=document.createElement('span');badge.className='preview-badge';badge.textContent=t;songPreviewBadges.appendChild(badge)})}
+function scrollSelectedSongIntoView(){const card=songGrid.querySelector('.song-card.selected');if(!card)return;const gridRect=songGrid.getBoundingClientRect(),cardRect=card.getBoundingClientRect(),delta=(cardRect.top-gridRect.top)-(songGrid.clientHeight-card.offsetHeight)/2;songGrid.scrollTo({top:Math.max(0,songGrid.scrollTop+delta),behavior:'auto'})}
+function safeSongAt(i){return SONGS[i]||SONGS[0]}
+function buildCards(preserveScroll=true){if(state!==S.SELECT)ensureUnlockedDifficulty();const order=state===S.SELECT?ensurePracticeSongIndex():songDisplayOrder();song=safeSongAt(songIndex);if(state===S.SELECT)ensurePlayableDifficulty([song]);diff=songDiff(song);const scrollY=songGrid.scrollTop;songGrid.innerHTML='';const fallback=currentMainVisual()._rfaSrc||'';order.forEach(i=>{const s=SONGS[i],card=document.createElement('div'),thumb=document.createElement('div'),info=document.createElement('div'),d=songDiff(s);card.className='song-card'+(i===songIndex?' selected':'');thumb.className='song-thumb';thumb.style.backgroundImage=(()=>{const sn=songSnapshot(s),parts=[];if(sn)parts.push(`url("${sn}")`);if(fallback)parts.push(`url("${fallback}")`);return parts.join(',')})();info.className='song-info';info.innerHTML=`<div class="song-title">${s.title}</div><div class="song-meta">${songByline(s)}</div><div class="song-meta song-meta-compact">${Math.round(s.duration)}s / BPM ${s.bpm.toFixed(1)}</div>`;card.innerHTML=chartLevelBadge(s,d);card.appendChild(thumb);card.appendChild(info);card.onclick=()=>{sfxPlay('ui.select');songIndex=i;buildCards();playPreview(s)};songGrid.appendChild(card)});if(preserveScroll)songGrid.scrollTop=scrollY;renderDiffRows();renderSpeedRows();updateSongPreview()}
+
+function enterOpening(){
+  if(openingDismissed||!openingScreen)return;
+  openingDismissed=true;
+  unlockSfx();
+  sfxPlay('ui.select');
+  if(prologueSeen()){
+    showTitle();
+    homePanel.classList.add('opening-enter');
+    setTimeout(()=>homePanel.classList.remove('opening-enter'),760);
+  } else {
+    startPrologue();
+  }
+  unlockMenuLoop();
+  updateMenuLoop();
+  openingScreen.classList.add('entering');
+  setTimeout(()=>openingScreen.classList.add('leaving'),80);
+  setTimeout(()=>openingScreen.classList.add('hidden'),1040);
+}
+function escHtml(v){return String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+function matchBossMilestone(m){if(!m||!m.type)return false;if(m.type==='rent_days_left_eq')return rentDaysLeft()===+m.value;if(m.type==='shop_level_gte')return shopLevel()>=+m.value;if(m.type==='reputation_gte')return(shopState.reputation||0)>=+m.value;if(m.type==='no_boss_letters_seen')return(shopState.bossLettersSeen||[]).length===0;if(m.type==='day_gte')return(shopState.day||1)>=+m.value;return false}
+function bossLetterPlacementType(L){const p=L&&L.placement;return(p&&p.type)||'day_start'}
+function pickBossLetterForPlacement(want){const letters=GameData.bossLetters||[],seen=new Set(shopState.bossLettersSeen||[]);let best=null;for(const L of letters){if(seen.has(L.id)||!matchBossMilestone(L.milestone)||bossLetterPlacementType(L)!==want)continue;if(!best||L.priority<best.priority)best=L}return best}
+let _pendingBossLetterId=null;
+function recordBossLetterSeen(){const id=_pendingBossLetterId;_pendingBossLetterId=null;if(!id)return;shopState.bossLettersSeen=shopState.bossLettersSeen||[];if(!shopState.bossLettersSeen.includes(id)){shopState.bossLettersSeen.push(id);saveShopState()}}
+function clearBossLetterPending(){_pendingBossLetterId=null}
+function bossLetterBodyHtml(L){const paras=(L.paragraphs||[]).map(p=>`<p>${escHtml(p)}</p>`).join('');return`<div class="boss-letter-card modal-card vn-boss-letter-inner"><p class="boss-letter-kicker">${escHtml(L.kicker||'')}</p><h2 class="boss-letter-title">${escHtml(L.title||'')}</h2><div class="boss-letter-body">${paras}</div>${L.sign?`<p class="boss-letter-sign">${escHtml(L.sign)}</p>`:''}</div><div class="vn-hint">点击继续</div>`}
+function isFirstBossLetterEver(){return!(shopState.bossLettersSeen&&shopState.bossLettersSeen.length)}
+function buildBossLetterNodes(L,pos){
+  const d=L.delivery||'plain_read',mailboxshell=d==='mailbox_intro'||isFirstBossLetterEver(),nodes=[]
+  if(pos==='after_home'){
+    if(d==='postman_knock')nodes.push({text:'门被敲了两下。你拉开门缝，外面的脚步声已经走远——指缝里却多了一只薄信封，像被人故意卡在门板上。'})
+    else if(d==='yuzu_hands_you')nodes.push({text:'正要锁门，柚子把信封推过来：「我读过了。你该读你的。」'})
+    else if(mailboxshell)nodes.push({text:'临走前，你看到门口的桌上安安静静躺着一只信封。没有邮戳。'})
+    else nodes.push({text:'收工前，台面角落那封信等了你整整一天。'})
+  }else if(pos==='flow_after_phase'){
+    if(d==='postman_knock')nodes.push({text:'店门轻轻一响，像有人屈指敲了两记。推门只见门槛上立着一封白信封，风还没把它刮跑。'})
+    else if(d==='yuzu_hands_you')nodes.push({text:'柚子从侧门进来，二话不说把一封信压在你面前：「对方不想打电话。他们想让你读纸。」'})
+    else if(mailboxshell)nodes.push({text:'你的眼睛先一步看见了台面——不知何时多了一只信封，角上折得过分整齐。'})
+    else nodes.push({text:'周围安静下来。那封信却像一直在等你抬头。'})
+  }else{
+    if(d==='postman_knock')nodes.push({text:'你刚把店门开了条缝，邮差把信往信箱口一塞，像逃班一样转身就跑。'})
+    else if(d==='yuzu_hands_you')nodes.push({text:'柚子进店的第一件事，是把一只信封拍在吧台上：「别问，先读。」'})
+    else if(mailboxshell)nodes.push({text:'开店前你从信箱口抽出一张纸：寄件栏缺了半截，却印着你们店的编号——像有人专门练过怎么让你不安。'})
+    else nodes.push({text:'开业前你把台面擦过一遍，却在秤盘阴影里摸到一封信，压得平平整整。'})
+  }
+  nodes.push({html:bossLetterBodyHtml(L)})
+  return nodes
+}
+function buildBossLetterPhase(L,pos){return{type:'dialogue',id:'__boss_'+L.id,bossLetterId:L.id,nodes:buildBossLetterNodes(L,pos)}}
+function prepareDayFlowWithBossLetters(flow,day){
+  if(!flow||!Array.isArray(flow.phases))return flow
+  const phases=flow.phases.slice(),ids=new Set(phases.map(p=>p.id).filter(Boolean)),seen=new Set(shopState.bossLettersSeen||[]),head=[],d=day??shopState.day??1
+  const L0=pickBossLetterForPlacement('day_start')
+  if(L0)head.push(buildBossLetterPhase(L0,'flow_start'))
+  const afterPool=(GameData.bossLetters||[]).filter(L=>bossLetterPlacementType(L)==='after_flow_phase'&&!seen.has(L.id)&&matchBossMilestone(L.milestone)).sort((a,b)=>(a.priority||99)-(b.priority||99))
+  for(const L of afterPool){
+    const aid=L.placement&&L.placement.afterPhaseId
+    if(!aid){console.warn('[bossLetter] after_flow_phase missing afterPhaseId',L.id);continue}
+    if(!ids.has(aid)){console.warn('[bossLetter] after_flow_phase: phase id not in day flow',{letterId:L.id,afterPhaseId:aid,day:d});continue}
+    const idx=phases.findIndex(p=>p.id===aid)
+    if(idx<0)continue
+    phases.splice(idx+1,0,buildBossLetterPhase(L,'flow_after_phase'));break
+  }
+  return{...flow,phases:head.concat(phases)}
+}
+function rentDaysLeft(){return Math.max(0,(shopState.rentDueDay||7)-(shopState.day||1)+1)}
+function rentMissing(){return Math.max(0,(shopState.rentAmount||480)-(shopState.coins||0))}
+function renderHomePanel(){
+  const space=currentHomeSpace(),hasSave=activeSaveSlot>=0,learned=(shopState.learnedSongs||[]).length,slots=unlockedTimeSlots(),up=shopState.upgrades||{};
+  const board=$('homeBoardSection'),lead=$('homeBoardLead');
+  $('homeTitle').textContent='\u8282\u594f\u9c9c\u679c\u94fa';
+  if(hasSave){
+    board.classList.remove('hidden');
+    lead.classList.remove('hidden');
+    lead.innerHTML=`<p class="eyebrow">${escHtml(`第 ${shopState.day||1} 天 · ${rentDaysLeft()} 天后交租`)}</p><p class="home-board-space">${escHtml(space.title)}</p><p class="subtitle home-board-sub">${escHtml(space.subtitle)}</p>`;
+  }else{
+    board.classList.add('hidden');
+    lead.classList.add('hidden');
+    lead.innerHTML='';
+  }
+  $('titleNewButton').textContent=hasSave?(shopState.readyForNextDay?'开始新一天':'去店里'):'开始新生活';
+  $('titleLoadButton').textContent=hasSave?'读取存档':'加载存档';
+  $('titlePracticeButton').textContent='练习一下';
+  $('homeLedger').innerHTML=hasSave?[
+    ['现金',`${shopState.coins||0} 金`,`房租还差 ${rentMissing()} 金`],
+    ['房租',`${shopState.rentAmount||480} 金`,`剩余 ${rentDaysLeft()} 天`],
+    ['口碑',shopState.reputation||0,`店铺 Lv.${shopLevel()}`],
+    ['今天',`第 ${shopState.day||1} 天`,shopState.readyForNextDay?'可以睡到明天':'准备开店']
+  ].map(([k,v,s])=>`<div class="home-ledger-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`).join(''):'';
+  $('homeAssets').innerHTML=hasSave?[
+    ['曲目',`${learned} 首`,'已学会'],
+    ['时段',slots.map(s=>s.label).join(' / '),'已解锁'],
+    ['设备',`切${up.cutter||1} 榨${up.blender||1} 招${up.sign||1}`,'当前等级']
+  ].map(([k,v,s])=>`<div class="home-asset-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`).join(''):'';
+  $('homeSmall').textContent=hasSave?'桌上的账本会记住今天赚了多少，也会提醒你还差多少房租。':'HTML demo 用于验证完整体验。存档会以当前版本重新开始。';
+}
+function startHomeDay(){if(activeSaveSlot<0){showSavePanel('new');unlockMenuLoop();return}shopState.readyForNextDay?advanceDay():showDayIntro()}
+function showTitle(fromPracticeSelect=false, fromShopSettlement=false){
+  if(fromShopSettlement&&!fromPracticeSelect&&activeSaveSlot>=0){
+    const L=pickBossLetterForPlacement('after_day_home')
+    if(L){audio.pause();stopPreview();clearResultCelebration();clearResultPhoto();songCoverImg=null;songCoverImgId='';invalidateBackdropCache();state=S.FLOW;updateMenuLoop();showVN(buildBossLetterNodes(L,'after_home'),()=>{_pendingBossLetterId=L.id;recordBossLetterSeen();showTitle(false,false)});return}
+  }
+  state=S.HOME;audio.pause();if(fromPracticeSelect)stopPreview(true,{previewFadeOutMs:PREVIEW_STOP_FADE_MS,menuLoopOpts:{resetHomeLoop:true,fadeInMs:MENU_LOOP_FADE_IN_MS,delayMs:MENU_LOOP_AFTER_PREVIEW_DELAY_MS}});else stopPreview();hideSceneBackdrop();clearResultCelebration();clearResultPhoto();songCoverImg=null;songCoverImgId='';invalidateBackdropCache();UI.root('homePanel');renderHomePanel();updateSplashBackground();updateHomeRoomBackdrop();if(!fromPracticeSelect)updateMenuLoop()}
+function showSavePanel(mode='load'){savePanelMode=mode;state=S.SAVE;updateMenuLoop();$('savePanelTitle').textContent=mode==='new'?'\u9009\u62e9\u65b0\u6e38\u620f\u5b58\u6863':'\u52a0\u8f7d\u5b58\u6863';$('savePanelHint').textContent=mode==='new'?'\u70b9\u51fb\u4efb\u610f\u69fd\u4f4d\u5f00\u59cb\u65b0\u6e38\u620f\uff1b\u5df2\u6709\u5b58\u6863\u4f1a\u88ab\u8986\u76d6\u3002':'\u9009\u62e9\u4e00\u4e2a\u4e0e\u5f53\u524d\u7248\u672c\u5339\u914d\u7684\u672c\u5730\u5b58\u6863\u3002';renderSaveSlots();UI.push('savePanel')}
+function renderSaveSlots(){const grid=$('saveSlotGrid');grid.innerHTML='';saveSlots.forEach((slot,i)=>{const card=document.createElement('div');card.className='save-card'+(slot?'':' empty');const title=slot?`存档 ${i+1}`:`存档 ${i+1} - 空`,meta=slot?saveSlotSummary(slot):(savePanelMode==='new'?'\u65b0\u6e38\u620f':'\u6ca1\u6709\u5b58\u6863');card.innerHTML=`<div class="save-title">${title}</div><div class="save-meta">${meta}</div>`;card.onclick=()=>{sfxPlay('ui.select');if(savePanelMode==='new'){createSaveSlot(i);showDayIntro()}else if(selectSaveSlot(i)){showDayIntro()}else showToast('\u8fd9\u4e2a\u69fd\u4f4d\u8fd8\u6ca1\u6709\u5b58\u6863')};grid.appendChild(card)})}
+function songUnlockInfo(s){const learned=new Set(shopState.learnedSongs||INITIAL_LEARNED_SONGS),slotIds=dayPlanSlotIds(),stageOk=slotIds.includes(s.stage),stageReq=slotUnlockDay(s.stage),learnedOk=learned.has(s.id),done=day1ShiftTutorialDone(),tutorialExpired=s.tutorialOnly&&((shopState.day||1)>1||done),firstDayLocked=(shopState.day||1)===1&&!done&&!FIRST_DAY_SONGS.includes(s.id),ok=learnedOk&&stageOk&&!firstDayLocked&&!tutorialExpired;return{unlocked:ok,learned:learnedOk,reason:tutorialExpired?'\u6559\u5b66\u5173\u4e13\u7528':firstDayLocked?'\u9996\u65e5\u672a\u5f00\u653e':!learnedOk?'\u672a\u5b66\u4f1a':`\u7b2c${stageReq}\u5929`,stageReq}}
+function songAttrLine(s,d=diff){const st=chartStats(s,d);return `${songByline(s)} / ${Math.round(s.duration)}s / ${st.notes}\u97f3\u7b26${st.holds?` / ${st.holds}\u957f\u6309`:''}`}
+function songIconPills(s,d=diff,limit=3){const bag=songProfile(s,d),entries=Object.entries(bag).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]);const picked=limit?entries.slice(0,limit):entries;return picked.map(([k,v])=>({key:k,text:`${RESOURCE_LABELS[k]||k}+${v}`}))}
+function menuEntrySong(entry){return entry&&SONGS.find(s=>s.id===entry.songId)}
+function unlockedSlotCount(){return unlockedTimeSlots().length}
+
+function planProjection(){const entries=(dayMenu||[]).filter((e,i)=>e&&isTimeSlotUnlocked(TIME_SLOTS[i])),songs=entries.map(menuEntrySong).filter(Boolean),bag=makeResourceBag();songs.forEach(s=>addBag(bag,songProfile(s,diff)));const money=songs.reduce((sum,s)=>sum+estimateIncome(s,diff),0),shifts=entries.length,best=songs.length?Math.min(98,78+diffIndex*5+songs.length*2):0,missMax=songs.length?Math.max(0,Math.round(16+(diff.risk||1)*2-diffIndex*2-songs.length)):99;return{money,orders:0,menus:0,shifts,best,misses:missMax,resources:bag}}
+function taskContext(){return state===S.MENU_EDIT||state===S.OVERVIEW?planProjection():{money:dayStats.money,orders:goalStatus().menuDone,menus:goalStatus().menuDone,shifts:dayStats.shifts,best:dayStats.best,misses:dayStats.misses,resources:dayStats.resources}}
+function learnSong(id){if(!id)return false;shopState.learnedSongs=shopState.learnedSongs||[...INITIAL_LEARNED_SONGS];if(shopState.learnedSongs.includes(id))return false;shopState.learnedSongs.push(id);shopState.unlockHistory=(shopState.unlockHistory||[]).concat({day:shopState.day,songId:id});return true}
+function unlockReached(entry){if(!entry)return false;const c=entry.conditions||{},gs=goalStatus();if(c.complete&&!gs.complete)return false;if(c.money&&dayStats.money<c.money)return false;if(c.best&&dayStats.best<c.best)return false;if(c.missMax!==undefined&&dayStats.misses>c.missMax)return false;if(c.shifts&&dayStats.shifts<c.shifts)return false;return dayStats.shifts>0}
+function resolveDayUnlocks(){const unlocked=[];for(const entry of dayUnlockEntries(shopState.day)){if(entry.conditions?.via==='track_event')continue;if(unlockReached(entry)&&learnSong(entry.songId)){const s=SONGS.find(x=>x.id===entry.songId);unlocked.push(s?s.title:entry.songId)}}if(unlocked.length)saveShopState();return unlocked}
+function hotResourceKeys(){const p=ensureDailyPlan(),keys=new Set();for(const id of p.menuIds){const m=menuById(id);Object.keys(m.needs||{}).forEach(k=>keys.add(k))}return keys}
+function songPillsHtml(s,{goalOnly=false,withLabel=false}={}){const hot=hotResourceKeys(),all=songIconPills(s,diff,0),hotItems=all.filter(x=>hot.has(x.key)),normalItems=all.filter(x=>!hot.has(x.key)),items=goalOnly?hotItems:[...hotItems,...normalItems].slice(0,Math.max(3,hotItems.length));if(!items.length)return'';return `${withLabel?'<span class="output-label">\u4ea7\u51fa</span>':''}`+items.map(x=>`<span class="icon-pill ${hot.has(x.key)?'hot':''}">${x.text}</span>`).join('')}
+function menuGoalHtml(){const p=ensureDailyPlan(),ctx=taskContext(),missing=p.menuIds.map(id=>menuById(id)).filter(m=>!supplyReached(m,ctx.resources)),heroCls=missing.length?'problem':'done',supplyRows=p.menuIds.map(id=>{const m=menuById(id),ok=supplyReached(m,ctx.resources);return `<div class="schedule-supply-row ${ok?'done':'problem'}"><b>${m.name}</b><div class="pill-row">${supplyNeedPills(m,ctx.resources)}</div></div>`}).join('');return `<div class="schedule-hero ${heroCls}"><span class="schedule-kicker">\u4eca\u65e5\u76ee\u6807</span><b>\u6ee1\u8db3\u4f9b\u5e94</b><div class="schedule-supply-main">${supplyRows}</div></div>`}
+function showFlowMessage({eyebrow='今日流程',title='',body='',big='',primary='确认',secondary='',onPrimary=null,onSecondary=null,autoMs=0,cinematic=false}){state=S.FLOW;const panel=$('flowPanel');panel.classList.remove('vn-panel','service-transition');panel.onclick=null;panel.classList.toggle('cinematic',!!cinematic);$('flowTitle').textContent=title;$('flowBody').innerHTML=body;$('flowBig').textContent=big;$('flowBig').classList.toggle('hidden',!big);$('flowVisual').classList.toggle('hidden',!!big);const p=$('flowPrimaryButton'),sbtn=$('flowSecondaryButton');p.textContent=primary;p.classList.toggle('hidden',!!cinematic);p.onclick=()=>{sfxPlay('ui.select');if(onPrimary)onPrimary()};sbtn.textContent=secondary;sbtn.classList.toggle('hidden',!secondary||!!cinematic);sbtn.onclick=()=>{sfxPlay('ui.back');if(onSecondary)onSecondary()};UI.replace('flowPanel');if(autoMs&&onPrimary)setTimeout(()=>{if(state===S.FLOW)onPrimary()},autoMs)}
+function serviceResultBranch(){const r=lastServiceResult;if(!r)return'good';if(r.customer>=88)return'good';if(r.customer>=62)return'ok';return'bad'}
+function prologueAfterServiceNodes(){const data=PROLOGUE_AFTER_SERVICE||{},branch=serviceResultBranch(),branches=data.branches||{},lines=branches[branch]||branches.ok||branches.good||[],shared=data.shared||[];return [...lines,...shared]}
+
+let _hideBackdropTimer=0;
+function showSceneBackdrop(){
+  clearTimeout(_hideBackdropTimer);
+  const img=currentShopInterior();ensureImageLoaded(img);
+  sceneBackdrop.style.backgroundImage=`url("${img._rfaSrc||img.src}")`;
+  sceneBackdrop.classList.remove('hidden');
+  requestAnimationFrame(()=>sceneBackdrop.classList.add('active'))
+}
+function hideSceneBackdrop(){if(sceneBackdrop.classList.contains('hidden'))return;sceneBackdrop.classList.remove('active');hideVNCharacters();clearTimeout(_hideBackdropTimer);_hideBackdropTimer=setTimeout(()=>sceneBackdrop.classList.add('hidden'),420)}
+function setFlowInteriorVisual(){const img=SHOP_INTERIORS.sunny.landscape;ensureImageLoaded(img);$('flowVisual').style.backgroundImage=`linear-gradient(140deg,rgba(255,255,255,.10),rgba(255,174,42,.10)),url("${img._rfaSrc||img.src}")`}
+function vnCharacterKey(node){const s=node.character||node.speaker||'';const sl=s.toLowerCase();if(!s||['你','旁白','内心','系统','订单','后厨'].includes(s))return'';if(sl.includes('yuzu')||sl.includes('柚子'))return'yuzu';if(sl.includes('student')||sl.includes('学生')||s==='林小末')return'student_girl';const VIP_MAP={'阿晟':'ashen','老方':'laofang','猫小姐':'miss_cat','顾薇':'guiwei','谢音':'xieyin','程晚':'chengwan','远哥':'yuange','面具':'mianju','老弦':'laoxian','老贝':'laobei','焰子':'yanzi','小兵':'xiaobing','老宋':'laosong','月叔':'yueshu','无名':'wuming','流浪者':'wanderer'};return VIP_MAP[s]||''}
+function vnDefaultExpression(key,node){if(node.expr)return node.expr;const t=node.text||'';if(key==='yuzu'){if(/来了！/.test(t))return'panic';if(/（叹气）/.test(t))return'sigh';if(/还不错嘛|平安度过|首单没砸|搞定收工|老规矩|新人不排|不容易|真不容易/.test(t))return'relieved';if(/别太信|算不上夸张|到时你就知道了|别创新|熟能生巧|节奏是练出来|真刀真枪|今天是真的|不用开口问|最容易出问题|做一件扎实|拎着事来|他们能来/.test(t))return'serious';if(/别贫嘴|叫你半天|我要的柠檬汁|「大概」不行|笨！是节奏/.test(t))return'annoyed';if(/拍了拍|一步步来|照着指南|都记牢了|有节奏感|颜色层次对了|早日领悟/.test(t))return'smile';if(/不叫了|没有|瞪过|冷柜|榨汁机呢|先别|明天再上课|今天还算老实|别高兴太早|哪里都差不多|习惯了好|知道了|还行|20分/.test(t))return'deadpan';if(/口水|脸红|炽热的目光|深情|少年|巨响|天下第一|幸灾乐祸|机器人女郎|跑路吧|催作业/.test(t))return'teasing';return'neutral'}
+if(key==='student_girl'){if(/好快|柠檬味诶|两分钟|可别告诉老师|羡慕的/.test(t))return'smile';if(/忧伤|马失前蹄|担待喽|建交|补课/.test(t))return'awkward';return'tired'}
+if(key==='ashen'){if(/算法|封号|系统误判|申诉|数据|不对劲|检索|找出来/.test(t))return'focused';if(/没意思|搞不定|找不到|也没用|烦|算了/.test(t))return'tired';return'neutral'}
+if(key==='chengwan'){if(/演出|今晚|下一场|谢谢|观众|状态很好/.test(t))return'professional_smile';if(/AI|剧本|念台词|不像真的|我也不知道|很累|没睡/.test(t))return'tired';return'neutral'}
+if(key==='guiwei'){if(/配色|画|画不出来|层次|不对劲|总觉得|脑子里/.test(t))return'lost_in_thought';if(/就是这样|谢谢|对了|终于|舒服了/.test(t))return'rare_smile';return'neutral'}
+if(key==='laobei'){if(/以前|学生|贝多芬|邓丽君|那时候|年轻的时候|想起来/.test(t))return'nostalgic_smile';if(/对不对|就是这样|今晚|听一听|注意/.test(t))return'attentive';return'neutral'}
+if(key==='laofang'){if(/谢谢|加油|一起|好骑手|帮了我|放心|兄弟/.test(t))return'warm_smile';if(/很累|出了事|骑手|腿|赔偿|没办法|不好做/.test(t))return'weary';return'neutral'}
+if(key==='laoxian'){if(/录了|习惯|那段|以前|准不准|当时|那首/.test(t))return'pensive';if(/谢谢|就这样|今晚|好喝|挺好的/.test(t))return'quiet_warmth';return'neutral'}
+if(key==='miss_cat'){if(/能吃吗|好看吗|能不能|是不是|对不对|这是什么/.test(t))return'curious';if(/猫|室温|不喝凉的|喵|舔|蹭/.test(t))return'smile';return'neutral'}
+if(key==='mianju'){if(/算了|不重要|没关系|无所谓|拍到了|记录/.test(t))return'detached';if(/也行|差不多|还行|挺好|谢/.test(t))return'micro_smile';return'neutral'}
+if(key==='xieyin'){if(/那个孩子|感觉|考虑|想想|这件事|有时候/.test(t))return'composed_listening';if(/谢谢|有感觉|就是这样|很好|挺好的/.test(t))return'slight_smile';return'neutral'}
+if(key==='yanzi'){if(/飞|摩托|速度感|买|冲|跑|快/.test(t))return'grin';if(/单|地址|差评|接单|迟到|超时/.test(t))return'sharp_alert';return'neutral'}
+if(key==='yuange'){if(/就这样|回去了|打包|今天|还行|差不多|累了/.test(t))return'quiet_content';if(/一直|孩子|屏保|记得|当时|那会儿/.test(t))return'thoughtful';return'neutral'}
+if(key==='yueshu'){if(/流星|星星|看到|夜班|抬头|天空/.test(t))return'dreamy';if(/谢谢|好的|甜的|挺好|喜欢/.test(t))return'quiet_smile';return'neutral'}
+if(key==='xiaobing'){if(/算法|关卡|游戏|记下来|对，就是这个|检索|设计|平板/.test(t))return'focused';if(/不确定|我不确定|也许|好的吗|随机|不一定/.test(t))return'uncertain';return'neutral'}
+if(key==='laosong'){if(/以前|公司|她|那封邮件|措辞|正确的位置|没有结论/.test(t))return'hollow';if(/谢谢|晚安|没事|能喝就行|好了/.test(t))return'composed';return'neutral'}
+return'neutral'}
+function setVNCharacterImage(img,config,expr){const asset=config.assets[expr]||config.assets.neutral;ensureImageLoaded(asset);img.src=asset._rfaSrc||asset.src;img.classList.add('show');img.classList.remove('hidden')}
+function hideVNCharacters(){vnCharacters.classList.add('hidden');[vnCharLeft,vnCharRight].forEach(img=>{img.classList.remove('show','dim');img.removeAttribute('src')})}
+function renderVNCharacters(node){const key=vnCharacterKey(node);if(!key||!VN_CHARACTERS[key]){hideVNCharacters();return}vnCharacters.classList.remove('hidden');const config=VN_CHARACTERS[key],activeImg=config.side==='left'?vnCharLeft:vnCharRight,inactiveImg=config.side==='left'?vnCharRight:vnCharLeft;setVNCharacterImage(activeImg,config,vnDefaultExpression(key,node));activeImg.classList.remove('dim');inactiveImg.classList.remove('show','dim');inactiveImg.removeAttribute('src')}
+function showVN(nodes,onDone=null){state=S.FLOW;showSceneBackdrop();setFlowInteriorVisual();vnState={nodes,index:0,onDone,locked:false};const panel=$('flowPanel');panel.classList.add('vn-panel');panel.classList.remove('cinematic','service-transition');$('flowBig').classList.add('hidden');$('flowPrimaryButton').classList.add('hidden');$('flowSecondaryButton').classList.add('hidden');$('flowVisual').classList.add('hidden');panel.onclick=e=>{if(e.target.closest('button'))return;advanceVN()};UI.replace('flowPanel');renderVNNode()}
+function speakerLabel(name){return{Yuzu:'柚子',Student:'学生',Order:'订单',System:'系统',You:'你',后厨:'后厨'}[name]||name}
+function renderVNNode(){const node=vnState.nodes[vnState.index];if(!node){const done=vnState.onDone;vnState.locked=false;hideVNCharacters();if(done)done();return}const narration=!node.speaker;renderVNCharacters(node);const panel=$('flowPanel');panel.classList.toggle('service-transition',!!node.transition);panel.classList.toggle('vn-narration-mode',narration);$('flowTitle').innerHTML=narration?'':`<span class="vn-speaker">${escHtml(speakerLabel(node.speaker))}</span>`;$('flowBody').innerHTML=node.html||`<p class="${narration?'vn-narration':'vn-line'}">${escHtml(node.text||'')}</p>`;if(node.action==='startService'){$('flowBody').innerHTML=(node.html||'')+'<div class="vn-hint">点击开始制作</div>'}}
+function advanceVN(){if(vnState.locked)return;const node=vnState.nodes[vnState.index];if(!node)return;if(node.action==='startService'){vnState.locked=true;if(flowRun.active){const sphase=flowRun.phases[flowRun.index++];startFlowServiceTransition(sphase)}else{startServiceTransition()}return}if(node.action==='settlement'){vnState.locked=true;if(flowRun.active){runNextFlowPhase()}else{showOneDaySettlement()}return}sfxPlay('ui.select');vnState.index++;renderVNNode()}
+async function startPrologue(){
+  cancelTutorialOverlay();clearResultCelebration();clearResultPhoto();
+  const img=currentShopInterior();
+  await decodeImage(img);
+  clearTimeout(_hideBackdropTimer);
+  sceneBackdrop.style.backgroundImage=`url("${img._rfaSrc||img.src}")`;
+  sceneBackdrop.style.transition='none';
+  sceneBackdrop.classList.remove('hidden');
+  sceneBackdrop.classList.add('active');
+  requestAnimationFrame(()=>{sceneBackdrop.style.transition='';});
+  showVN(PROLOGUE_OPENING);
+}
+function startServiceTransition(){const panel=$('flowPanel');panel.classList.add('service-transition');sfxPlay('ui.select');setTimeout(()=>startStoryService('lemon_water'),520)}
+function startDayFlow(flow){storySlotId='day';flowRun={active:true,phases:flow.phases,index:0};runNextFlowPhase()}
+function runNextFlowPhase(){if(!flowRun.active||flowRun.index>=flowRun.phases.length){flowRun.active=false;showDaySummary();return}const phase=flowRun.phases[flowRun.index++];if(phase.slotId){storySlotId=phase.slotId;invalidateBackdropCache()}const vnAfterDialogue=()=>{if(phase.type==='dialogue'&&phase.bossLetterId){_pendingBossLetterId=phase.bossLetterId;recordBossLetterSeen()}runNextFlowPhase()};if(phase.type==='dialogue'){showVN(phase.nodes,vnAfterDialogue)}else if(phase.type==='service'){startFlowServiceTransition(phase)}else if(phase.type==='track_event'){showTrackEventDiffSelect(phase)}else if(phase.type==='score_branch'){const score=lastServiceResult?lastServiceResult.customer:0;const branch=[...(phase.branches||[])].sort((a,b)=>b.min-a.min).find(b=>score>=b.min);const nodes=[...(branch?branch.nodes:[]),...(phase.after||[])];showVN(nodes,vnAfterDialogue)}else if(phase.type==='service_select'){showServiceSelectPanel(phase)}else if(phase.type==='tutorial_complete'){flowRun.active=false;completeTutorialAndStartDay()}else if(phase.type==='settlement'){flowRun.active=false;showDaySummary()}else{vnAfterDialogue()}}
+function startFlowServiceTransition(phase){const panel=$('flowPanel');panel.classList.add('service-transition');sfxPlay('ui.select');setTimeout(()=>startFlowService(phase),520)}
+function showServiceSelectPanel(phase){
+  const eyebrow=$('serviceSelectEyebrow');
+  const title=$('serviceSelectTitle');
+  const hint=$('serviceSelectHint');
+  const row=$('serviceSelectRow');
+  const confirmBtn=$('serviceSelectConfirm');
+  eyebrow.textContent=(phase.customer||'顾客')+' · 点单';
+  title.textContent=phase.selectTitle||'选择服务';
+  hint.textContent=phase.selectHint||'根据顾客的需求，选择合适的饮品。';
+  row.innerHTML='';
+  const options=(phase.options||[]).slice().sort((a,b)=>{const ia=SONGS.findIndex(s=>s.id===a.songId);const ib=SONGS.findIndex(s=>s.id===b.songId);return(ia<0?999:ia)-(ib<0?999:ib)});
+  let chosenId=null;
+  options.forEach(opt=>{
+    const s=SONGS.find(x=>x.id===opt.songId);
+    const el=document.createElement('div');
+    el.className='diff-card service-select-card'+(opt.songId===chosenId?' selected':'');
+    el.innerHTML=`<b>${escHtml(opt.label||s?.title||opt.songId)}</b><small>${escHtml(opt.hint||'')}</small>`;
+    el.onclick=()=>{
+      chosenId=opt.songId;
+      row.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('selected'));
+      el.classList.add('selected');
+      sfxPlay('ui.select');
+    };
+    row.appendChild(el);
+  });
+  confirmBtn.onclick=()=>{
+    sfxPlay('ui.select');
+    if(!chosenId){showToast('请先选择一个饮品');return}
+    if(chosenId===phase.correctId){
+      startFlowServiceTransition({...phase,songId:phase.correctId});
+    } else {
+      const wrongNodes=(phase.onWrong&&(phase.onWrong[chosenId]||phase.onWrong['_default']))||[];
+      const retry=phase.allowRetry!==false?()=>showServiceSelectPanel(phase):()=>startFlowServiceTransition({...phase,songId:chosenId,wrongPick:true});
+      if(wrongNodes.length){showVN(wrongNodes,retry)}else{retry()}
+    }
+  };
+  hideSceneBackdrop();
+  state=S.FLOW;
+  UI.replace('serviceSelectPanel');
+}
+function showTrackEventDiffSelect(phase){trackEventPhase=phase;const s=SONGS.find(x=>x.id===phase.songId);if(!s){showToast('找不到曲目：'+phase.songId);runNextFlowPhase();return}if(phase.nodes_before&&phase.nodes_before.length){showVN(phase.nodes_before,()=>_renderTrackDiffPanel(phase,s))}else{_renderTrackDiffPanel(phase,s)}}
+function _renderTrackDiffPanel(phase,s){$('trackDiffEyebrow').textContent=(phase.vipName||'VIP')+' · 特殊事件';$('trackDiffSongTitle').textContent=s.title;$('trackDiffArtist').textContent=s.artist||'';const row=$('trackDiffRow');row.innerHTML='';const availIdx=DIFFS.map((d,i)=>hasChartForDiff(s,d)?i:-1).filter(i=>i>=0);let chosenIdx=availIdx.includes(diffIndex)?diffIndex:(availIdx[0]??0);availIdx.forEach(i=>{const d=DIFFS[i];const locked=false;const el=document.createElement('div');el.className='diff-card'+(i===chosenIdx?' selected':'')+(locked?' locked':'');el.innerHTML=`${d.name}<small>x${diffIncomeMul(d).toFixed(2)}</small>`;if(!locked){el.onclick=()=>{chosenIdx=i;row.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');sfxPlay('ui.select')}}row.appendChild(el)});$('trackDiffStartButton').onclick=()=>{sfxPlay('ui.select');const idx=chosenIdx;const si=SONGS.findIndex(x=>x.id===phase.songId);if(si<0){showToast('找不到曲目：'+phase.songId);runNextFlowPhase();return}serviceRun={active:true,id:phase.songId,fromStory:true,fromTrackEvent:true};songIndex=si;diffIndex=idx;diff=DIFFS[idx]||DIFFS[0];activeSlotId=phase.slotId||'day';invalidateBackdropCache();start()};$('trackDiffCancelButton').onclick=()=>{sfxPlay('ui.back');trackEventPhase=null;runNextFlowPhase()};hideSceneBackdrop();state=S.FLOW;UI.replace('trackDiffPanel')}
+function startFlowService(phase){const id=phase.songId;if(!id){runNextFlowPhase();return}const idx=SONGS.findIndex(s=>s.id===id);if(idx<0){showToast('\u7f3a\u5c11\u670d\u52a1\u66f2\u76ee\uff1a'+id);runNextFlowPhase();return}activeSlotId=phase.slotId||'day';invalidateBackdropCache();serviceRun={active:true,id,menuId:phase.menuId||'',fromStory:true,wrongPick:!!phase.wrongPick};songIndex=idx;diff=SERVICE_DIFF;start()}
+async function showDayIntro(){setIntroDifficulty();ensureDailyPlan();saveShopState();state=S.FLOW;updateMenuLoop();const day=shopState.day;if(day===1&&!day1ShiftTutorialDone()){loadDayFlow(1).then(_d1=>{if(_d1&&Array.isArray(_d1.phases)&&_d1.phases.length){const flow=prepareDayFlowWithBossLetters(_d1,1);showSceneBackdrop();showFlowMessage({eyebrow:'\u5f00\u5e97\u955c\u5934',big:`\u7b2c 1 \u5929`,title:'',body:'',primary:'',onPrimary:()=>startDayFlow(flow),autoMs:900,cinematic:true})}else{showMenuEdit();requestAnimationFrame(runContextTutorial)}});return}showSceneBackdrop();showFlowMessage({eyebrow:'\u5f00\u5e97\u955c\u5934',big:`\u7b2c ${day} \u5929`,title:'',body:'',primary:'',onPrimary:null,cinematic:true});const rawFlow=await loadDayFlow(day),flow=prepareDayFlowWithBossLetters(rawFlow||null,day);if(state!==S.FLOW)return;if(flow&&Array.isArray(flow.phases)&&flow.phases.length){showFlowMessage({eyebrow:'\u5f00\u5e97\u955c\u5934',big:`\u7b2c ${day} \u5929`,title:'',body:'',primary:'',onPrimary:()=>startDayFlow(flow),autoMs:900,cinematic:true})}else{showFlowMessage({eyebrow:'\u5f00\u5e97\u955c\u5934',title:`\u7b2c ${day} \u5929`,body:`<div class="receipt intro-status"><div class="receipt-card hero"><div class="receipt-title">\u5e97\u94fa\u72b6\u6001</div><div class="receipt-line"><span>\u5e97\u94fa\u7b49\u7ea7</span><b>${shopLevel()}</b></div><div class="receipt-line"><span>\u5df2\u89e3\u9501\u65f6\u6bb5</span><b>${unlockedTimeSlots().map(t=>t.label).join(' / ')}</b></div></div></div>`,primary:'\u6392\u73ed',onPrimary:showMenuEdit});requestAnimationFrame(runContextTutorial)}}
+function showMenuEdit(){state=S.MENU_EDIT;if(!dayMenu.length)dayMenu=TIME_SLOTS.map(()=>null);renderMenuEditor();UI.replace('menuEditPanel');updateMenuLoop();showResourceIntroOnce();requestAnimationFrame(runContextTutorial)}
+function showResourceIntroOnce(){if(readResourceIntroSeen())return;saveResourceIntroSeen();UI.openModal('resourceIntroModal')}
+function closeResourceIntro(){UI.closeModal('resourceIntroModal')}
+function menuSongScore(s){const hot=hotResourceKeys(),bag=songProfile(s);let score=songFitScore(s,ensureDailyPlan());for(const k in bag)if(hot.has(k))score+=bag[k]*3;const st=chartStats(s,diff);score+=Math.min(6,Math.floor(st.notes/80));return score}
+function canAutoArrange(){return shopLevel()>=2}
+function autoArrangeMenu(){if(!canAutoArrange()){showToast('\u5e97\u94fa\u7b49\u7ea7 2 \u89e3\u9501\u81ea\u52a8\u6392\u73ed');return}const candidates=songDisplayOrder().map(i=>SONGS[i]).filter(s=>songUnlockInfo(s).unlocked).sort((a,b)=>menuSongScore(b)-menuSongScore(a));for(const slot of TIME_SLOTS){const idx=TIME_SLOTS.indexOf(slot);if(!isTimeSlotUnlocked(slot)||dayMenu[idx])continue;const pick=candidates.find(s=>s.stage===slot.id&&!dayMenu.some(e=>e&&e.songId===s.id));if(pick)dayMenu[idx]={slotId:slot.id,songId:pick.id}}sfxPlay('ui.select');renderMenuEditor()}
+function renderMenuEditor(){ensureThemeAssets();ensureUnlockedDifficulty();const slots=$('menuSlotRow'),grid=$('menuSongGrid'),unlocked=unlockedTimeSlots();$('menuGoalBox').innerHTML=menuGoalHtml();renderDiffRows();renderSpeedRows();$('menuEditHint').textContent='';const autoBtn=$('autoMenuButton');if(autoBtn){autoBtn.classList.toggle('hidden',!canAutoArrange());autoBtn.textContent='\u81ea\u52a8\u6392\u73ed'}slots.innerHTML='';TIME_SLOTS.forEach((slot,idx)=>{const entry=dayMenu[idx],song=menuEntrySong(entry),locked=!isTimeSlotUnlocked(slot),goalTags=song?songPillsHtml(song,{goalOnly:true}):'',el=document.createElement('div');el.className='menu-slot '+(locked?'locked':song?'filled clickable':'clickable');el.innerHTML=song?`${chartLevelBadge(song)}<div class="slot-main"><div class="slot-title">${slot.label}</div><div class="slot-song-title">${song.title}</div><div class="slot-meta">${songAttrLine(song)}</div></div>${goalTags?`<div class="slot-output pill-row"><span class="output-label">\u4ea7\u51fa</span>${goalTags}</div>`:''}`:`<div class="slot-title">${slot.label}${locked?' (\u7b2c'+slotUnlockDay(slot.id)+'\u5929)':''}</div><div class="slot-meta">${locked?'\u672a\u89e3\u9501':'\u672a\u5b89\u6392'}</div>`;if(!locked&&song)el.onclick=()=>{dayMenu[idx]=null;sfxPlay('ui.back');renderMenuEditor()};slots.appendChild(el)});grid.innerHTML='';songDisplayOrder().map(i=>SONGS[i]).filter(s=>songUnlockInfo(s).unlocked&&!dayMenu.some(e=>e&&e.songId===s.id)).forEach(s=>{const usedSlot=-1,used=false,card=document.createElement('div');card.className='menu-song-card';const fallback=currentMainVisual()._rfaSrc||'';card.innerHTML=`${chartLevelBadge(s)}<div class="menu-song-cover" style="background-image:url('${songSnapshot(s)}'),url('${fallback}')"></div><div><div class="song-title">${s.title}</div><div class="song-icons">${songAttrLine(s)}</div><div class="pill-row">${songPillsHtml(s,{withLabel:true})}</div></div>`;card.onclick=()=>{if(used){dayMenu[usedSlot]=null;sfxPlay('ui.back');renderMenuEditor();return}const target=TIME_SLOTS.findIndex((slot,j)=>isTimeSlotUnlocked(slot)&&slot.id===s.stage&&!dayMenu[j]);if(target<0){showToast('\u5bf9\u5e94\u65f6\u6bb5\u5df2\u6709\u5b89\u6392');return}dayMenu[target]={slotId:TIME_SLOTS[target].id,songId:s.id};sfxPlay('ui.select');renderMenuEditor()};grid.appendChild(card)});if(!grid.children.length)grid.innerHTML='<div class="overview-card">\u5df2\u89e3\u9501\u66f2\u76ee\u90fd\u5df2\u6392\u73ed</div>'}
+function plannedSupplyFailures(){const ctx=planProjection();return ensureDailyPlan().menuIds.map(id=>menuById(id)).filter(m=>!supplyReached(m,ctx.resources))}
+function confirmDayMenu(){const need=unlockedSlotCount(),filled=dayMenu.filter((e,i)=>e&&isTimeSlotUnlocked(TIME_SLOTS[i])).length;if(filled<need){showToast('\u8bf7\u586b\u6ee1\u5df2\u89e3\u9501\u7684\u65f6\u6bb5\u69fd');return}const missing=plannedSupplyFailures();if(missing.length){showToast('\u4f9b\u5e94\u9700\u6c42\u672a\u6ee1\u8db3\uff1a'+missing.map(m=>m.name).join(' / '));renderMenuEditor();return}shopState.currentMenu=dayMenu.filter((e,i)=>e&&isTimeSlotUnlocked(TIME_SLOTS[i]));saveShopState();showDayOverview()}
+function showDayOverview(){state=S.OVERVIEW;updateMenuLoop();const list=$('overviewList');$('overviewTitle').textContent=`\u7b2c ${shopState.day} \u5929\u9884\u89c8`;$('overviewText').innerHTML=`\u4eca\u65e5\u76ee\u6807\uff1a\u6ee1\u8db3\u4f9b\u5e94 / ${dailySupplyNames()}`;list.innerHTML=shopState.currentMenu.map((e,i)=>{const s=menuEntrySong(e),slot=TIME_SLOTS.find(t=>t.id===e.slotId)||TIME_SLOTS[i];return `<div class="overview-card"><div class="slot-title">${slot.label} - ${s?s.title:'-'}</div><div class="slot-meta">${s?songIconPills(s).map(x=>x.text).join(' / '):''}</div></div>`}).join('');UI.replace('dayOverviewPanel')}
+function startDayOpening(){const queue=(shopState.currentMenu||[]).map(e=>({slotId:e.slotId,songIndex:SONGS.findIndex(s=>s.id===e.songId)})).filter(e=>e.songIndex>=0);if(!queue.length){showToast('\u8bf7\u5148\u6392\u73ed');showMenuEdit();return}dayStartState=cloneShopState(shopState);dayRun={active:true,queue,index:0,aborted:false};showSceneBackdrop();showFlowMessage({eyebrow:'\u5f00\u5e97',big:`\u7b2c ${shopState.day} \u5929`,title:'',body:'',primary:'',onPrimary:startNextShift,autoMs:900,cinematic:true})}
+function startNextShift(){if(!dayRun.active||dayRun.index>=dayRun.queue.length){dayRun.active=false;showDaySummary();return}const entry=dayRun.queue[dayRun.index++],slot=TIME_SLOTS.find(t=>t.id===entry.slotId);songIndex=entry.songIndex;activeSlotId=entry.slotId||'day';invalidateBackdropCache();showToast(slot?slot.label:'Shift');start()}
+function continueDayRun(){if(!dayRun.active){start();return}if(dayRun.aborted||dayRun.index>=dayRun.queue.length){dayRun.active=false;saveShopState();showDaySummary();return}const next=dayRun.queue[dayRun.index],slot=TIME_SLOTS.find(t=>t.id===next.slotId),s=SONGS[next.songIndex];showFlowMessage({eyebrow:'\u4e0b\u4e00\u73ed',big:slot?slot.label:'\u4e0b\u4e00\u73ed',title:s?s.title:'',body:'',primary:'',onPrimary:startNextShift,autoMs:650,cinematic:true})}
+function currentShiftIsTutorial(){return dayRun.active&&(shopState.day||1)===1&&!day1ShiftTutorialDone()}
+function restartCurrentDay(){audio.pause();if(dayStartState)shopState=cloneShopState(dayStartState);saveShopState();dayStats=makeDayStats();dayRun={active:false,queue:[],index:0,aborted:false};state=S.ENDED;startDayOpening()}
+function closeDayEarly(){audio.pause();dayRun.active=false;saveShopState();showDaySummary()}
+
+function clearResultCelebration(){resultPanel.classList.remove('celebration');resultPanel.querySelectorAll('.confetti').forEach(e=>e.remove())}
+function resetResultPanelActionsLayout(){
+  const wrap=resultPanel.querySelector('.panel-actions');if(!wrap)return;
+  const retry=$('retryButton'),menu=$('menuButton'),end=$('endDayButton'),home=$('resultHomeButton');
+  [retry,menu,end,home].forEach(el=>{if(el)wrap.appendChild(el)})
+  retry&&retry.classList.remove('quiet','replay-prologue-cta')
+  menu&&menu.classList.add('secondary');end&&end.classList.add('quiet');home&&home.classList.add('secondary')}
+function showResultPanel(){UI.replace('resultPanel');resultPanel.scrollTop=0}
+function clearResultPhoto(){UI.closeModal('resultPhotoModal');if(resultPhotoCard)resultPhotoCard.innerHTML=''}
+function showHome(){showTitle(state===S.SELECT)}
+function newDay(){shopState.readyForNextDay=false;saveShopState();resetDay();showDayIntro()}
+function advanceDay(){shopState.day++;shopState.readyForNextDay=false;saveShopState();resetDay();showDayIntro()}
+function showUpgradePanel(){UI.push('upgradePanel');renderUpgrades()}
+function renderUpgrades(){$('upgradeCoins').textContent=shopState.coins;const list=$('upgradeList');list.innerHTML='';SHOP_UPGRADES.forEach(u=>{const lv=shopState.upgrades[u.id]||1,max=lv>=u.maxLv,cost=upgradeCost(u.id),can=canUpgrade(u.id),bonus=Math.round(lv*u.baseBonus*100),nextBonus=Math.round((lv+1)*u.baseBonus*100),card=document.createElement('div');card.className='upgrade-card';card.innerHTML=`<div class="upgrade-icon">${u.icon}</div><div class="upgrade-info"><div class="upgrade-name">${max?`${u.name} Lv.${lv} MAX`:`${u.name} Lv.${lv} -> Lv.${lv+1}`}</div><div class="upgrade-desc">${max?`${u.desc} +${bonus}%`:`${u.desc} +${bonus}% -> +${nextBonus}%`}</div></div>`;const btn=document.createElement('button');btn.className='upgrade-btn '+(max?'maxed':can?'can-buy':'cant-buy');btn.textContent=max?'MAX':`${cost}\u91d1`;if(!max)btn.onclick=()=>{if(can){sfxPlay('ui.select');doUpgrade(u.id);renderUpgrades()}else showToast('\u91d1\u5e01\u4e0d\u8db3')};card.appendChild(btn);list.appendChild(card)})}
+function showSettings(){hideVNCharacters();UI.push('settingsPanel');renderSettingsTheme();renderSpeedRows();renderSettingsNoteSfx();const sec=$('settingsAbandonSection');const _inDay=flowRun.active||dayRun.active||[S.FLOW,S.MENU_EDIT,S.OVERVIEW].includes(state);if(sec)sec.classList.toggle('hidden',!_inDay);const skipSec=$('settingsSkipSection');if(skipSec)skipSec.classList.toggle('hidden',![S.READY,S.LEAD_IN,S.PLAYING,S.PAUSED,S.RESUME_COUNTDOWN].includes(state))}
+function closeCurrentPanel(){
+  const closing=UI.stack[UI.stack.length-1],id=UI.back();
+  if(closing==='settingsPanel'&&id==='flowPanel'&&state===S.FLOW&&$('flowPanel').classList.contains('vn-panel'))renderVNCharacters(vnState.nodes[vnState.index]);
+  if(id==='homePanel'){
+    if(closing==='songPanel'||state===S.SELECT)showTitle(true);
+  } else if(id==='songPanel') updateSongPreview();
+  else if(id==='resultPanel'&&resultData&&resultMode==='shift') renderResult();
+}
+function closeSettings(){closeCurrentPanel()}
+function abandonFlowDay(){if(!flowRun.active&&!dayRun.active&&![S.FLOW,S.MENU_EDIT,S.OVERVIEW].includes(state))return;clearBossLetterPending();const hadProgress=flowRun.active||dayRun.active;flowRun={active:false,phases:[],index:0};dayRun={active:false,queue:[],index:0,aborted:false};trackEventPhase=null;serviceRun={active:false,id:'',fromStory:false,fromTrackEvent:false};audio.pause();stopPreview(false);hideVNCharacters();if(hadProgress)showToast('今天的进度已丢失');state=S.HOME;UI.replace('homePanel');renderHomePanel();updateMenuLoop()}
+function renderSettingsTheme(){const row=$('settingsThemeRow');row.innerHTML='';['day','sunny','night'].forEach(t=>{const el=document.createElement('div');el.className='diff-card'+(selectedTheme===t?' selected':'');el.textContent=t==='day'?'\u767d\u5929':t==='sunny'?'\u6674\u65e5':'\u591c\u665a';el.onclick=()=>{sfxPlay('ui.select');applyTheme(t,true);renderSettingsTheme()};row.appendChild(el)})}
+function renderSettingsNoteSfx(){const row=$('settingsNoteSfxRow');if(!row)return;const cur=readNoteGameplaySfx();row.innerHTML='';[{v:false,t:'\u5173\u95ed'},{v:true,t:'\u5f00\u542f'}].forEach(({v,t})=>{const el=document.createElement('div');el.className='diff-card'+(cur===v?' selected':'');el.textContent=t;el.onclick=()=>{sfxPlay('ui.select');saveNoteGameplaySfx(v);setGameplayNoteSfxEnabled(v);renderSettingsNoteSfx()};row.appendChild(el)})}
+function showResetConfirm(){UI.openModal('resetConfirmModal')}
+function hideResetConfirm(){UI.closeModal('resetConfirmModal')}
+function confirmReset(){clearAllGameData();location.replace(location.pathname)}
+async function clearAppCache(){
+  stopPreview();
+  audio.pause();
+  showToast('正在清理缓存并刷新');
+  try { if('caches' in window){ const keys=await caches.keys(); await Promise.all(keys.map(k=>caches.delete(k))); } } catch(e){ console.warn('cache clear skipped',e); }
+  try { if(navigator.serviceWorker){ const regs=await navigator.serviceWorker.getRegistrations(); await Promise.all(regs.map(r=>r.unregister())); } } catch(e){ console.warn('service worker unregister skipped',e); }
+  const url=new URL(location.href);
+  url.searchParams.set('rfa_refresh',Date.now());
+  location.replace(url.toString());
+}
+function quickStartDay(){resetDay();start()}
+async function showSongSelect(mode='replace',randomPick=false){if(!(await ensureChartsReady()))return;state=S.SELECT;audio.pause();hideSceneBackdrop();clearResultCelebration();clearResultPhoto();const practiceOrder=ensurePracticeSongIndex();if(randomPick&&practiceOrder.length)songIndex=practiceOrder[Math.floor(Math.random()*practiceOrder.length)];mode==='push'?UI.push('songPanel'):UI.replace('songPanel');buildCards(!randomPick);if(randomPick)requestAnimationFrame(()=>requestAnimationFrame(scrollSelectedSongIntoView));playPreview(song)}
+function startStoryService(id){const idx=SONGS.findIndex(s=>s.id===id);if(idx<0){showToast('缺少服务曲目：'+id);showVN(prologueAfterServiceNodes());return}serviceRun={active:true,id,fromStory:true};songIndex=idx;diff=SERVICE_DIFF;start()}
+function loadAudio(file){audio.pause();audio=new Audio(versionedUrl(file));audio.preload='auto';applyAudioVolume(audio,'gameplayMusic');return new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;resolve(audio)};audio.addEventListener('canplay',finish,{once:true});audio.addEventListener('error',finish,{once:true});audio.load()})}
+async function primeAudio(){const began=performance.now(),prevMuted=audio.muted,prevVolume=audio.volume;try{audio.muted=true;audio.volume=0;audio.currentTime=0;await audio.play();await new Promise(resolve=>setTimeout(resolve,55));audio.pause();audio.currentTime=0;perfStats.audioPrimeMs=performance.now()-began}catch(e){console.warn('audio prime failed',e)}finally{audio.muted=prevMuted;audio.volume=prevVolume}}
+async function start(){if(!(await ensureChartsReady()))return;if(startInFlightPromise)return startInFlightPromise;const run=(async()=>{gameplayWarmupDepth++;try{cancelTutorialOverlay();unlockSfx();stopPreview(false);pauseMenuLoop();document.body.classList.add('interaction-locked');song=SONGS[songIndex];loadSongCover(song);await ensureSongChart(song);await loadAudio(song.file);const reportedDuration=Number.isFinite(audio.duration)&&audio.duration>1?audio.duration:0;if(reportedDuration&&reportedDuration>=song.duration*.98)song.duration=reportedDuration;reset();if(!notes.length){showToast('\u5f53\u524d\u6b4c\u66f2 / \u96be\u5ea6\u6ca1\u6709\u8c31\u9762');console.warn('empty chart',song&&song.file,diff&&diff.id,CHART_DATA&&CHART_DATA[song&&song.file]);if(serviceRun.active){serviceRun.active=false;if(flowRun.active){runNextFlowPhase()}else{showVN(prologueAfterServiceNodes())}return}if(dayRun.active)showMenuEdit();else showSongSelect('replace');return}await warmGameplayBootstrap();await primeAudio();hideSceneBackdrop();clearResultCelebration();clearResultPhoto();state=S.READY;readyTimer=READY_TIME;audio.currentTime=0;lastJudge='\u51c6\u5907';pulse=1;shake=0;await new Promise(resolve=>{requestAnimationFrame(()=>{requestAnimationFrame(()=>{UI.clear();sfxPlay('game.start');scheduleDeferredGameplayWarm();requestAnimationFrame(()=>{if(dayRun.active)runContextTutorial()});resolve()})})})}finally{gameplayWarmupDepth--;document.body.classList.remove('interaction-locked');startInFlightPromise=null}})();startInFlightPromise=run;return run}
+function leadInDuration(){const first=notes.find(n=>n.state==='pending');return first?Math.max(.15,(first.travel||diff.travel)-first.time):.15}
+function leadInSongTime(){return -leadInTimer}
+function resetPlaybackClock(t=0){playbackVisualTime=t;playbackClockBase=t;playbackClockStartedAt=performance.now();playbackSyncTimer=PLAY_START_SYNC_WINDOW;perfStats.visualSongTime=t;perfStats.audioSongTime=audio.currentTime||0;perfStats.audioDriftMs=(perfStats.audioSongTime-t)*1000}
+function advancePlaybackClock(dt){if(state!==S.PLAYING)return;const audioTime=Number.isFinite(audio.currentTime)?audio.currentTime:playbackVisualTime,wallTime=playbackClockBase+(performance.now()-playbackClockStartedAt)/1000;let target=audioTime;if(playbackSyncTimer>0){playbackSyncTimer=Math.max(0,playbackSyncTimer-dt);target=Math.max(audioTime,Math.min(wallTime,audioTime+.12))}playbackVisualTime=Math.max(playbackVisualTime,Math.min(target,playbackVisualTime+Math.max(dt*1.35,.018)));perfStats.visualSongTime=playbackVisualTime;perfStats.audioSongTime=audioTime;perfStats.audioDriftMs=(audioTime-playbackVisualTime)*1000}
+function beginLeadIn(){if(state!==S.READY)return;state=S.LEAD_IN;leadInTimer=leadInTotal=leadInDuration();resetPlaybackClock(leadInSongTime());lastJudge='';pulse=.35}
+function handlePlaybackError(e){console.error(e);audio.pause();if(serviceRun.active){showToast('服务音频没有成功播放');serviceRun.active=false;if(flowRun.active){runNextFlowPhase()}else{showVN(prologueAfterServiceNodes())}return}if(dayRun.active){pausedFromState=S.PLAYING;state=S.PAUSED;showToast('\u97f3\u9891\u6ca1\u6709\u6210\u529f\u64ad\u653e\uff0c\u70b9\u7ee7\u7eed\u91cd\u8bd5');return}showSongSelect()}
+function beginPlayback(){if(state!==S.LEAD_IN)return;state=S.PLAYING;readyTimer=leadInTimer=0;resetPlaybackClock(0);lastJudge='\u5f00\u59cb\uff01';pulse=1;sfxPlay('game.resume');const began=performance.now();try{const playPromise=audio.play();perfStats.audioPlayCallMs=performance.now()-began;if(playPromise&&playPromise.then)playPromise.then(()=>{perfStats.audioPlayResolveMs=performance.now()-began}).catch(handlePlaybackError)}catch(e){handlePlaybackError(e)}}
+function pauseGame(){if(![S.READY,S.LEAD_IN,S.PLAYING,S.RESUME_COUNTDOWN].includes(state))return;if(state===S.PLAYING||state===S.LEAD_IN)playbackVisualTime=songTime();else if(state===S.READY)playbackVisualTime=-leadInDuration();if(state!==S.RESUME_COUNTDOWN)pausedFromState=state;state=S.PAUSED;resumeCountdown=0;holding=false;audio.pause();sfxPlay('game.pause')}
+function resumeGame(){if(state!==S.PAUSED)return;state=S.RESUME_COUNTDOWN;resumeCountdown=RESUME_COUNTDOWN_TIME;pauseButtons=[];holding=false;sfxPlay('game.resume')}
+async function completeResumeCountdown(){const target=pausedFromState||S.PLAYING;resumeCountdown=0;if(target===S.PLAYING)resetPlaybackClock(Number.isFinite(audio.currentTime)?audio.currentTime:playbackVisualTime);state=target;if(target===S.PLAYING){try{await audio.play()}catch(e){handlePlaybackError(e)}}}
+function debugSkipToResult(){if(![S.READY,S.LEAD_IN,S.PLAYING,S.PAUSED,S.RESUME_COUNTDOWN].includes(state))return;if(timingTotal<=0)timingTotal=Math.max(1,total);acc=timingTotal;counts={Perfect:total,Great:0,Good:0,Miss:0};maxCombo=Math.max(comboTarget||1,total);combo=0;customerAnger=0;heat=3000;orders.forEach(o=>{o.have=o.need;o.done=true});productCounts={chunks:20,juice:8,waste:0};closeSettings();audio.pause();state=S.PLAYING;finish('complete')}
+function finish(reason='complete'){if(state!==S.PLAYING)return;state=S.ENDED;gameOverReason=reason;audio.pause();resultView=null;const failed=reason==='angry',timing=timingTotal?acc/timingTotal:0,ordersDone=orders.filter(o=>o.done).length,baseCustomer=timing*72+(maxCombo/Math.max(1,comboTarget))*18+(ordersDone/orders.length)*12-counts.Miss*1.4-customerAnger*.32,customer=failed?0:Math.round(clamp(baseCustomer,0,100));const basePay=failed?30:80,cutterMul=1+upgradeBonus('cutter'),blenderMul=1+upgradeBonus('blender'),signMul=1+upgradeBonus('sign'),productPay=Math.round(productCounts.chunks*5*cutterMul+productCounts.juice*18*blenderMul),heatPay=heatBonusValue(heat,customer,failed),tip=!failed&&customer>=96?140:!failed&&customer>=90?90:!failed&&customer>=80?45:0,money=Math.round((basePay+productPay+heatPay+tip)*diffIncomeMul(diff));const rawRep=failed?0:Math.round(customer/8+counts.Perfect*.05+ordersDone*1.5),rep=Math.round(rawRep*signMul),rank=failed?'F':customer>=96?'S':customer>=88?'A':customer>=76?'B':customer>=62?'C':'D';const tutorialShift=currentShiftIsTutorial();resultData={songTitle:song.title,artist:song.artist,diff:diff.name,timing,customer,money,basePay,productPay,heatPay,tip,rep,rank,heat,maxCombo,timingTotal,comboTarget,ordersDone,failed,failReason:reason,anger:customerAnger,counts:{...counts},missReasons:{...missReasons},products:{...productCounts},orders:orders.map(o=>({...o}))};if(serviceRun.active){showServiceStoryResult(resultData);return}if(tutorialShift){showTutorialResult(resultData);return}if(!dayRun.active){showPracticeResult(resultData);return}shopState.coins+=money;shopState.reputation+=rep;shopState.totalShifts++;shopState.totalMoney+=money;saveShopState();const shiftBiz=applyShiftToDay(resultData);resultData.resources=shiftBiz.bag;resultData.menuDone=shiftBiz.menuDone;resultData.extraPay=shiftBiz.extra;if(resultData.failed||resultData.rank==='F')dayRun.aborted=true;dayStats.shifts++;dayStats.money+=money;dayStats.rep+=rep;dayStats.best=Math.max(dayStats.best,customer);dayStats.products+=productCounts.chunks+productCounts.juice;dayStats.orders+=ordersDone;dayStats.misses+=counts.Miss;dayStats.ledger.push({title:song.title,diff:diff.name,rank,customer,money,ordersDone,totalOrders:orders.length});resultReveal=0;resultMode='shift';resetResultPanelActionsLayout();showResultPanel();renderResult()}
+function showServiceStoryResult(r){lastServiceResult=r;const wasTrackEvent=serviceRun.fromTrackEvent;const wasWrongPick=serviceRun.wrongPick;const tePhase=trackEventPhase;const flowMenuId=serviceRun.menuId||'';serviceRun={active:false,id:'',fromStory:false,fromTrackEvent:false,wrongPick:false};if(wasWrongPick)lastServiceResult={...r,customer:Math.min(r.customer,62)};clearResultCelebration();clearResultPhoto();updateMenuLoop();if(flowRun.active){shopState.coins+=r.money;shopState.reputation+=r.rep;shopState.totalShifts++;shopState.totalMoney+=r.money;saveShopState();dayStats.shifts++;dayStats.money+=r.money;dayStats.rep+=r.rep;dayStats.best=Math.max(dayStats.best,r.customer);dayStats.ledger.push({title:r.songTitle,diff:r.diff,rank:r.rank,customer:r.customer,money:r.money,ordersDone:r.ordersDone,totalOrders:r.orders?r.orders.length:0});if(!wasTrackEvent&&flowMenuId){dayStats.menuProgress[flowMenuId]=(dayStats.menuProgress[flowMenuId]||0)+1}dayStats.orders+=(r.ordersDone||0);dayStats.products+=((r.products&&r.products.chunks)||0)+((r.products&&r.products.juice)||0);dayStats.misses+=((r.counts&&r.counts.Miss)||0);const _shiftBiz=applyShiftToDay(r);void _shiftBiz;if(wasTrackEvent&&tePhase){trackEventPhase=null;if(learnSong(tePhase.songId)){saveShopState();showToast('解锁曲目：'+(SONGS.find(x=>x.id===tePhase.songId)?.title||tePhase.songId))}const score=r.customer;const branch=[...(tePhase.branches||[])].sort((a,b)=>b.min-a.min).find(b=>score>=b.min);const nodes=[...(branch?branch.nodes:[]),...(tePhase.after||[])];if(nodes.length){showVN(nodes,runNextFlowPhase)}else{runNextFlowPhase()}}else{runNextFlowPhase()}}else{showVN(prologueAfterServiceNodes())}}
+function showOneDaySettlement(){state=S.ENDED;clearResultCelebration();clearResultPhoto();const r=lastServiceResult||{},tip=r.customer>=88?2:r.customer>=62?1:0,trialPay=18,drinkIncome=6,meal=-4,rent=480,income=trialPay+drinkIncome+tip,expense=Math.abs(meal),total=income-expense,missing=Math.max(0,rent-total),rentPct=Math.round(total/rent*100);resultMode='prologueLedger';resultRank.textContent='\u5e8f\u7ae0 · \u8d26\u672c';resultText.innerHTML=`<div class="receipt day-ledger-view"><div class="receipt-ledger-card hero"><div><div class="receipt-title">\u4eca\u65e5\u7ed3\u4f59</div><div class="receipt-note">\u5e8f\u7ae0\u8bd5\u8425\u4e1a\u9636\u6bb5\u5148\u7ed3\u7b97\u73b0\u91d1\u6536\u652f\u3002\u58f0\u671b\u3001\u5e93\u5b58\u548c\u6b63\u5f0f\u7ecf\u8425\u8d26\u672c\u4f1a\u5728\u540e\u7eed\u5f00\u5e97\u540e\u9010\u6e10\u653e\u5f00\u3002</div></div><div class="ledger-total"><span class="money-coin">$</span>${total}</div></div><div class="receipt-ledger-card"><div class="receipt-title">\u6536\u5165\u660e\u7ec6</div><div class="ledger-row"><span>\u8bd5\u7528\u5de5\u8d44</span><b>+${trialPay}</b></div><div class="ledger-row"><span>\u67e0\u6aac\u6c34\u6536\u5165</span><b>+${drinkIncome}</b></div><div class="ledger-row"><span>\u5c0f\u8d39</span><b>+${tip}</b></div><div class="ledger-row subtotal"><span>\u6536\u5165\u5c0f\u8ba1</span><b>+${income}</b></div></div><div class="receipt-ledger-card"><div class="receipt-title">\u652f\u51fa\u660e\u7ec6</div><div class="ledger-row expense"><span>\u5458\u5de5\u9910</span><b>${meal}</b></div><div class="ledger-row subtotal expense"><span>\u652f\u51fa\u5c0f\u8ba1</span><b>-${expense}</b></div></div><div class="receipt-ledger-card"><div class="receipt-title">\u623f\u79df\u76ee\u6807</div><div class="ledger-row"><span>\u672c\u5468\u623f\u79df</span><b>${rent}</b></div><div class="ledger-row"><span>\u4eca\u65e5\u5df2\u6512</span><b>${total}</b></div><div class="rent-progress"><span style="width:${clamp(rentPct,0,100)}%"></span></div><div class="ledger-row needed"><span>\u8fd8\u5dee</span><b>${missing}</b></div><div class="receipt-note">\u5907\u6ce8\uff1a\u67dc\u53f0\u4e0a\u5269\u4e0b\u4e86\u534a\u4e2a\u4e09\u660e\u6cbb\u3002\u67da\u5b50\u8bf4\u5148\u522b\u95ee\u3002</div></div></div>`;resetResultPanelActionsLayout();const wrap=resultPanel.querySelector('.panel-actions'),retry=$('retryButton'),menu=$('menuButton'),end=$('endDayButton'),home=$('resultHomeButton');retry.textContent='\u91cd\u6e29\u5e8f\u7ae0';retry.onclick=()=>{lastServiceResult=null;startPrologue()};retry.classList.remove('hidden');retry.classList.add('quiet','replay-prologue-cta');menu.classList.add('hidden');end.classList.add('hidden');home.textContent='\u56de\u5230\u4e3b\u754c\u9762';home.classList.remove('secondary');home.onclick=()=>{markPrologueSeen();showTitle()};wrap.appendChild(home);wrap.appendChild(retry);wrap.appendChild(menu);wrap.appendChild(end);showResultPanel()}
+async function completeTutorialAndStartDay(){
+  shopState.firstShiftDone = true;
+  learnSong('open_the_fruit_stand!');
+  markTutorialSeen(DAY1_SHIFT_TUTORIAL_ID);
+  const _savedResult=lastServiceResult;
+  resetDay();
+  lastServiceResult=_savedResult;
+  setIntroDifficulty();ensureDailyPlan();saveShopState();state=S.FLOW;updateMenuLoop();
+  const _flowRaw=await loadDayFlow(1),_merged=_flowRaw&&_flowRaw.phases?prepareDayFlowWithBossLetters(_flowRaw,1):null
+  if(_merged&&Array.isArray(_merged.phases)){
+    const _post=_merged.phases.filter(p=>p.id!=='morning'&&p.type!=='tutorial_complete'&&!String(p.id||'').startsWith('tutorial_'));
+    if(_post.length){startDayFlow({..._merged,phases:_post});return}
+  }
+  showDaySummary();
+}
+function showTutorialResult(r){lastServiceResult=r;dayRun.active=false;resultReveal=0;resultMode='tutorial';clearResultCelebration();clearResultPhoto();resetResultPanelActionsLayout();resultRank.textContent='\u57f9\u8bad\u901a\u8fc7';resultText.innerHTML=`<div class="receipt"><div class="receipt-card hero"><div class="receipt-title">\u65b0\u624b\u8bad\u7ec3</div><div class="receipt-big">${r.rank}</div><div class="receipt-line"><span>\u6ee1\u610f\u5ea6</span><b class="receipt-good">${r.customer} / 100</b></div><div class="receipt-line"><span>\u6700\u5927\u8fde\u51fb</span><b>${r.maxCombo}</b></div></div><div class="receipt-card"><div class="receipt-title">\u4e0a\u5c97\u8bb8\u53ef</div><div class="receipt-line"><span>\u5207\u6c34\u679c</span><b class="receipt-good">\u5408\u683c</b></div><div class="receipt-line"><span>\u6b63\u5f0f\u66f2\u76ee</span><b class="receipt-good">\u5df2\u89e3\u9501</b></div><div class="receipt-note">\u672c\u8c31\u4e3a\u4e0a\u5c97\u7ec3\u4e60\uff0c\u6210\u7ee9\u4e0d\u8ba1\u5165\u7ecf\u8425\u8d26\u672c\u3002\u901a\u8fc7\u540e\u8bf7\u70b9\u300c\u6b63\u5f0f\u4e0a\u5c97\u300d\u7ee7\u7eed\u5f53\u65e5\u6d41\u7a0b\u3002</div></div></div>`;const retry=$('retryButton'),menu=$('menuButton'),end=$('endDayButton'),home=$('resultHomeButton');retry.textContent='\u6b63\u5f0f\u4e0a\u5c97';retry.onclick=completeTutorialAndStartDay;retry.classList.remove('hidden','quiet','replay-prologue-cta');menu.classList.add('hidden');end.classList.add('hidden');home.textContent='\u56de\u5230\u4e3b\u754c\u9762';home.onclick=()=>showTitle(false,false);showResultPanel()}
+function showPracticeResult(r){dayRun.active=false;resultReveal=0;resultMode='practice';clearResultCelebration();clearResultPhoto();resetResultPanelActionsLayout();resultRank.textContent=`${r.rank} \u7ea7\u7ec3\u4e60\u7ed3\u7b97`;const totalHits=(r.counts.Perfect||0)+(r.counts.Great||0)+(r.counts.Good||0)+(r.counts.Miss||0),early=(r.missReasons&&r.missReasons.EarlyRelease)||0;resultText.innerHTML=`<div class="receipt"><div class="receipt-card hero"><div class="receipt-title">\u8c31\u9762\u7ec3\u4e60</div><div class="receipt-big">${r.rank}</div><div class="receipt-line"><span>\u66f2\u76ee</span><b>${escHtml(r.songTitle)}</b></div><div class="receipt-line"><span>\u96be\u5ea6</span><b>${escHtml(r.diff)}</b></div><div class="receipt-note">\u7ec3\u4e60\u6a21\u5f0f\u4e0d\u8ba1\u5165\u8425\u6536\u3001\u8ba2\u5355\u6216\u5f53\u65e5\u8fdb\u5ea6\u3002</div></div><div class="receipt-card"><div class="receipt-title">\u5224\u5b9a</div><div class="receipt-line"><span>Timing</span><b>${(r.timing*100).toFixed(2)}%</b></div><div class="receipt-line"><span>\u6700\u5927\u8fde\u51fb</span><b>${r.maxCombo} / ${r.comboTarget}</b></div><div class="receipt-line"><span>\u603b\u5224\u5b9a</span><b>${totalHits} / ${r.timingTotal}</b></div></div><div class="receipt-card"><div class="receipt-title">\u8be6\u7ec6\u7edf\u8ba1</div><div class="receipt-line"><span>Perfect</span><b class="receipt-good">${r.counts.Perfect||0}</b></div><div class="receipt-line"><span>Great</span><b>${r.counts.Great||0}</b></div><div class="receipt-line"><span>Good</span><b>${r.counts.Good||0}</b></div><div class="receipt-line"><span>Miss</span><b class="receipt-bad">${r.counts.Miss||0}</b></div><div class="receipt-line"><span>\u63d0\u524d\u677e\u5f00</span><b class="receipt-warn">${early}</b></div></div></div>`;const retry=$('retryButton'),menu=$('menuButton'),end=$('endDayButton'),home=$('resultHomeButton');retry.textContent='\u518d\u7ec3\u4e00\u6b21';retry.onclick=start;retry.classList.remove('hidden','quiet','replay-prologue-cta');menu.textContent='\u6362\u4e00\u9996';menu.onclick=()=>showSongSelect();menu.classList.remove('hidden');end.classList.add('hidden');home.textContent='\u8fd4\u56de';home.onclick=()=>showSongSelect();showResultPanel()}
+function shiftResourceYield(r){const bag=makeResourceBag(),profile=songProfile(song,diff),quality=r.failed?0.45:clamp(r.customer/100,.35,1.15);for(const k in profile)bag[k]=Math.max(0,Math.round(profile[k]*quality));bag.chunks+=Math.floor((r.products.chunks||0)/18);bag.juice+=Math.floor((r.products.juice||0)/3);bag.combo+=Math.floor(r.maxCombo/35);if(r.rank==='S'||r.rank==='A')bag.premium+=1;if(counts.Miss<=3)bag.sparkle+=1;return bag}
+function applyShiftToDay(r){const bag=shiftResourceYield(r);addBag(dayStats.resources,bag);let menuDone=0;for(const o of r.orders){if(o.menu&&o.done&&o.menu!=='combo'){dayStats.menuProgress[o.menu]=(dayStats.menuProgress[o.menu]||0)+1;menuDone++}}const extra=menuDone*18+Object.values(bag).reduce((a,b)=>a+b,0)*3;if(extra>0){shopState.coins+=extra;dayStats.goalBonus+=extra;saveShopState()}return{bag,menuDone,extra}}
+function celebrationInfo(r){if(r.counts.Miss===0&&r.customer>=90)return{title:'0 Miss',body:'\u987e\u5ba2\u51e0\u4e4e\u6311\u4e0d\u51fa\u6bdb\u75c5'};if(r.rank==='S')return{title:'S \u7ea7\u8425\u4e1a',body:'\u8fd9\u73ed\u8868\u73b0\u8db3\u4ee5\u6210\u4e3a\u62db\u724c'};if(r.rank==='A')return{title:'\u597d\u8bc4\u73ed\u6b21',body:'\u8282\u594f\u548c\u51fa\u54c1\u90fd\u5f88\u7a33\u5b9a'};return null}
+function drawConfetti(info){resultPanel.querySelectorAll('.confetti').forEach(e=>e.remove());if(!info)return;const colors=['#8cffc1','#ffd98c','#ff8aa6','#80b7ff','#a77cff'];for(let i=0;i<34;i++){const c=document.createElement('span');c.className='confetti';c.style.left=(6+Math.random()*88)+'%';c.style.background=colors[i%colors.length];c.style.animationDelay=(Math.random()*.45)+'s';c.style.animationDuration=(1.25+Math.random()*.9)+'s';resultPanel.appendChild(c)}}
+function setResultActions(mode){const retry=$('retryButton'),menu=$('menuButton'),end=$('endDayButton'),home=$('resultHomeButton');home.textContent='\u56de\u4f4f\u5904';home.onclick=()=>showTitle(false,mode==='day'||mode==='shift');if(mode==='day'){retry.classList.add('hidden');retry.classList.remove('replay-prologue-cta');menu.textContent='\u5347\u7ea7\u5e97\u94fa';menu.onclick=showUpgradePanel;end.classList.add('hidden');menu.classList.remove('hidden');home.textContent='\u7ed3\u675f\u4e00\u5929';home.onclick=()=>{const L=pickBossLetterForPlacement('after_day_home');if(L){audio.pause();stopPreview();clearResultCelebration();clearResultPhoto();songCoverImg=null;songCoverImgId='';invalidateBackdropCache();state=S.FLOW;updateMenuLoop();showVN(buildBossLetterNodes(L,'after_home'),()=>{_pendingBossLetterId=L.id;recordBossLetterSeen();showTitle(false,false)})}else showTitle(false,false)}}else{retry.classList.remove('hidden');if(dayRun.active){const done=dayRun.aborted||dayRun.index>=dayRun.queue.length;retry.textContent=done?'\u8fdb\u5165\u65e5\u7ed3':'\u4e0b\u4e00\u73ed';retry.onclick=continueDayRun;menu.classList.add('hidden');end.textContent='\u63d0\u524d\u6536\u5de5';end.onclick=showDaySummary;end.classList.toggle('hidden',done||currentShiftIsTutorial());retry.classList.remove('quiet','replay-prologue-cta')}else{retry.textContent='\u518d\u6765\u4e00\u73ed';retry.onclick=start;menu.textContent='\u6362\u4e00\u9996';menu.onclick=showMenuEdit;end.textContent='\u7ed3\u675f\u4eca\u5929';end.onclick=showDaySummary;menu.classList.remove('hidden');end.classList.remove('hidden');retry.classList.remove('quiet','replay-prologue-cta')}}}
+function moodText(v){return v>=96?'\u5b8c\u7f8e\u6ee1\u610f':v>=88?'\u975e\u5e38\u6ee1\u610f':v>=76?'\u6ee1\u610f':v>=62?'\u666e\u901a':'\u4e0d\u6ee1\u610f'}
+function dayGrade(){const avg=dayStats.shifts?Math.round(dayStats.ledger.reduce((s,r)=>s+r.customer,0)/dayStats.shifts):0;if(dayStats.shifts===0)return{rank:'\u672a\u8425\u4e1a',avg,body:'\u4eca\u5929\u8fd8\u6ca1\u6709\u5b8c\u6210\u4efb\u4f55\u73ed\u6b21'};if(avg>=90&&dayStats.orders>=dayStats.shifts*2)return{rank:'\u5927\u83b7\u597d\u8bc4',avg,body:'\u987e\u5ba2\u53cd\u9988\u5f88\u597d\uff0c\u5e97\u94fa\u53e3\u7891\u660e\u663e\u63d0\u5347'};if(avg>=78)return{rank:'\u7a33\u5b9a\u8425\u4e1a',avg,body:'\u4eca\u5929\u8fd0\u8f6c\u987a\u5229\uff0c\u53ef\u4ee5\u7ee7\u7eed\u5347\u7ea7\u5e97\u94fa'};return{rank:'\u9700\u8981\u8c03\u6574',avg,body:'\u4eca\u5929\u8868\u73b0\u4e00\u822c\uff0c\u660e\u5929\u53ef\u4ee5\u964d\u4f4e\u96be\u5ea6\u6216\u4f18\u5316\u6392\u73ed'}}
+function resultPhotoInfo(r){if(r.failed||r.customer<62)return{tone:'bad',title:'\u4eca\u65e5\u7ffb\u8f66\u5c0f\u7968',item:'\u5931\u8d25\u51fa\u54c1',stamp:'\u9700\u8981\n\u8c03\u6574',caption:`${r.songTitle} \u987e\u5ba2\u6ee1\u610f\u5ea6 ${r.customer}/100\uff0c\u660e\u5929\u9700\u8981\u91cd\u65b0\u5b89\u6392\u3002`,complaint:'\u7b49\u592a\u4e45\u4e86'};if(r.customer>=96)return{tone:'great',title:'\u62db\u724c\u7206\u5355\u51fa\u54c1',item:'\u6ee1\u5206\u7279\u8c03',stamp:'\u4eca\u65e5\n\u62db\u724c',caption:`${r.songTitle} \u505a\u51fa\u4e86 ${r.rank} \u7ea7\u51fa\u54c1\u8868\u73b0\uff0c\u987e\u5ba2\u613f\u610f\u518d\u6765\u4e00\u676f\u3002`};if(r.customer>=88)return{tone:'good',title:'\u9ad8\u5206\u8425\u4e1a\u51fa\u54c1',item:'\u597d\u8bc4\u679c\u996e',stamp:'\u987e\u5ba2\n\u597d\u8bc4',caption:`${r.songTitle} \u5b8c\u6210\u8ba2\u5355 ${r.ordersDone}/${r.orders.length}\uff0c\u8fd9\u73ed\u8868\u73b0\u5f88\u7a33\u3002`};return{tone:'ok',title:'\u666e\u901a\u8425\u4e1a\u51fa\u54c1',item:'\u679c\u996e',stamp:'\u6b63\u5e38\n\u51fa\u9910',caption:`${r.songTitle} \u987a\u5229\u5b8c\u6210\u8425\u4e1a\uff0c\u4f46\u8fd8\u6709\u51cf\u5c11 Miss \u7684\u7a7a\u95f4\u3002`}}
+function showResultPhoto(r){if(!resultPhotoModal||!resultPhotoCard)return;const info=resultPhotoInfo(r),night=isNightTheme(),bad=info.tone==='bad',basket=info.tone==='great',cls=[bad?'bad':'good',night?'night':'',info.tone].filter(Boolean).join(' '),scene=bad?`<div class="complaint-slip">&#x6295;&#x8bc9;<span>${escHtml(info.complaint)}</span></div><div class="photo-table"></div><div class="photo-drink"></div>`:basket?`<div class="photo-stamp">${escHtml(info.stamp).replace(/\\n/g,'<br>')}</div><div class="photo-table"></div><div class="photo-basket"><i class="photo-fruit photo-f1"></i><i class="photo-fruit photo-f2"></i><i class="photo-fruit photo-f3"></i></div>`:`<div class="photo-stamp">${escHtml(info.stamp).replace(/\\n/g,'<br>')}</div><div class="photo-table"></div><div class="photo-drink"></div>`;resultPhotoCard.className='result-photo-card '+cls;resultPhotoCard.innerHTML=`<div class="result-photo-frame"><div class="result-photo-scene">${scene}</div></div><div class="result-photo-title">${escHtml(info.title)}</div><div class="result-photo-caption">${escHtml(info.caption)}</div><div class="result-photo-close">&#x70b9;&#x51fb;&#x5173;&#x95ed;</div>`;UI.openModal('resultPhotoModal');sfxPlay(bad?'miss':'result.done')}
+function resultRefMap(root){const refs={};root.querySelectorAll('[data-r]').forEach(el=>refs[el.dataset.r]=el);root.querySelectorAll('[data-order-have]').forEach(el=>refs['order_'+el.dataset.orderHave]=el);return refs}
+function ensureResultView(){if(resultView&&resultView.data===resultData)return resultView;if(!resultData)return null;const r=resultData;setResultActions('shift');clearResultCelebration();resultText.innerHTML=`<div class="receipt"><div class="receipt-card hero"><div class="receipt-title">\u8425\u6536</div><div class="receipt-big receipt-money"><span class="money-coin">&#xa2;</span><span data-r="money">+0</span></div><div class="receipt-line"><span>\u6ee1\u610f\u5ea6</span><b class="receipt-good" data-r="customer">0 / 100</b></div><div class="receipt-line"><span>\u53e3\u7891</span><b class="receipt-good" data-r="rep">+0</b></div><div class="receipt-note" data-r="note"></div></div><div class="receipt-card"><div class="receipt-title">\u8ba2\u5355</div><div class="receipt-line"><span>\u5b8c\u6210</span><b class="${r.ordersDone===r.orders.length?'receipt-good':'receipt-warn'}" data-r="ordersDone">0 / ${r.orders.length}</b></div>${r.orders.map((o,i)=>`<div class="receipt-line"><span>${o.name}</span><b class="${o.done?'receipt-good':'receipt-warn'}">${o.done?'\u5b8c\u6210':'\u8fdb\u884c\u4e2d'} <span data-order-have="${i}">0</span>/${o.need}</b></div>`).join('')}<div class="receipt-products"><span class="receipt-chip" data-r="chunks">\u676f\u6599 0</span><span class="receipt-chip" data-r="juice">\u679c\u6c41 0</span><span class="receipt-chip" data-r="waste">\u635f\u8017 0</span></div></div><div class="receipt-card"><div class="receipt-title">\u6536\u76ca\u62c6\u5206</div><div class="receipt-line"><span>\u57fa\u7840\u6536\u5165</span><b data-r="basePay">0</b></div><div class="receipt-line"><span>\u51fa\u54c1\u6536\u5165</span><b data-r="productPay">0</b></div><div class="receipt-line"><span>\u70ed\u5ea6\u5956\u91d1</span><b data-r="heatPay">0</b></div><div class="receipt-line"><span>\u6ee1\u610f\u5c0f\u8d39</span><b class="receipt-warn" data-r="tip">0</b></div></div><div class="receipt-card"><div class="receipt-title">\u8c31\u9762\u8868\u73b0</div><div style="display:flex;align-items:center;justify-content:space-between;gap:16px"><div><div class="receipt-line"><span>\u70ed\u5ea6</span><b data-r="heat">0</b></div><div class="receipt-line"><span>Timing</span><b data-r="timing">0.00%</b></div><div class="receipt-line"><span>&#x6700;&#x5927;&#x8fde;&#x51fb;</span><b data-r="maxCombo">0</b></div><div class="receipt-line"><span>Miss</span><b class="receipt-bad" data-r="miss">0</b></div><div class="receipt-line"><span>&#x63d0;&#x524d;&#x677e;&#x5f00;</span><b class="receipt-warn" data-r="earlyRelease">0</b></div></div><div class="receipt-stamp" data-r="stamp">...</div></div></div></div>`;resultView={data:r,refs:resultRefMap(resultText),celebrated:false,doneSfx:false,photoShown:false,banner:null,lastBucket:-1};perfStats.resultRenderCount++;return resultView}
+function setResultText(refs,key,value){if(refs[key])refs[key].textContent=value}
+function renderResult(){if(!resultData)return;const view=ensureResultView();if(!view)return;const r=resultData,p=clamp(resultReveal/1.8,0,1),bucket=Math.round(p*120);if(bucket===view.lastBucket&&p<.98)return;if(bucket>view.lastBucket&&p<.98&&bucket%4===0)sfxPlay('result.tick');view.lastBucket=bucket;if(p>=.98&&!view.doneSfx){sfxPlay('result.done');view.doneSfx=true}const rankText=p>=1?r.rank:'...',celebration=p>=.98?celebrationInfo(r):null,refs=view.refs;resultPanel.classList.toggle('celebration',!!celebration);if(celebration&&!view.celebrated){view.banner=document.createElement('div');view.banner.className='celebration-banner';view.banner.innerHTML=`<b>${celebration.title}</b> ${celebration.body}`;resultText.insertBefore(view.banner,resultText.firstChild);drawConfetti(celebration);view.celebrated=true}else if(!celebration&&view.celebrated){clearResultCelebration();if(view.banner)view.banner.remove();view.banner=null;view.celebrated=false}if(p>=.98&&!view.photoShown){showResultPhoto(r);view.photoShown=true}resultRank.textContent=`${rankText} \u7ea7\u7ed3\u7b97`;setResultText(refs,'money','+'+Math.round(r.money*p));setResultText(refs,'customer',`${Math.round(r.customer*p)} / 100`);setResultText(refs,'rep','+'+Math.round(r.rep*p));setResultText(refs,'note',`${moodText(r.customer)}\uff1a${r.songTitle} / ${r.diff} \u5df2\u5b8c\u6210\u8425\u4e1a`);setResultText(refs,'ordersDone',`${Math.round(r.ordersDone*p)} / ${r.orders.length}`);r.orders.forEach((o,i)=>setResultText(refs,'order_'+i,Math.round(o.have*p)));setResultText(refs,'chunks',`\u676f\u6599 ${Math.round(r.products.chunks*p)}`);setResultText(refs,'juice',`\u679c\u6c41 ${Math.round(r.products.juice*p)}`);setResultText(refs,'waste',`\u635f\u8017 ${Math.round(r.products.waste*p)}`);setResultText(refs,'basePay',Math.round(r.basePay*p));setResultText(refs,'productPay',Math.round(r.productPay*p));setResultText(refs,'heatPay',Math.round(r.heatPay*p));setResultText(refs,'tip',Math.round(r.tip*p));setResultText(refs,'heat',Math.round(r.heat*p));setResultText(refs,'timing',(r.timing*100*p).toFixed(2)+'%');setResultText(refs,'maxCombo',Math.round(r.maxCombo*p));setResultText(refs,'miss',Math.round(r.counts.Miss*p));setResultText(refs,'earlyRelease',Math.round(((r.missReasons&&r.missReasons.EarlyRelease)||0)*p));setResultText(refs,'stamp',rankText)}
+function showDaySummary(){dayRun.active=false;const newlyUnlocked=resolveDayUnlocks();shopState.readyForNextDay=true;saveShopState();resultMode='day';resetResultPanelActionsLayout();setResultActions('day');clearResultCelebration();clearResultPhoto();state=S.ENDED;showResultPanel();const g=dayGrade(),gs=goalStatus(),p=ensureDailyPlan(),menuLines=p.menuIds.map(id=>{const m=menuById(id),n=dayStats.menuProgress[id]||0;return `<div class="receipt-line"><span>${m.name}</span><b class="${n?'receipt-good':'receipt-warn'}">${n}\u5355</b></div>`}).join(''),goalLines=`<div class="receipt-line"><span>\u91d1\u5e01\u76ee\u6807</span><b class="${gs.money?'receipt-good':'receipt-warn'}">${dayStats.money} / ${p.moneyGoal}</b></div><div class="receipt-line"><span>\u83dc\u5355\u76ee\u6807</span><b class="${gs.menus?'receipt-good':'receipt-warn'}">${gs.menuDone} / ${p.menuGoal}</b></div><div class="receipt-line"><span>\u73ed\u6b21\u76ee\u6807</span><b class="${gs.shifts?'receipt-good':'receipt-warn'}">${dayStats.shifts} / ${p.shiftsTarget}</b></div>`,ledger=dayStats.ledger.length?dayStats.ledger.map((r,i)=>`<div class="receipt-line"><span>${i+1}. ${r.title} / ${r.diff}</span><b class="${r.customer>=88?'receipt-good':r.customer>=70?'receipt-warn':'receipt-bad'}">${r.rank} ${r.customer}\u5206 +${r.money}</b></div>`).join(''):'<div class="receipt-line"><span>\u6682\u65e0\u73ed\u6b21</span><b>0</b></div>';resultRank.textContent='\u4eca\u65e5\u6536\u5de5\u65e5\u62a5';resultText.innerHTML=`<div class="receipt"><div class="receipt-card hero"><div class="receipt-title">\u7ecf\u8425\u8bc4\u4ef7</div><div class="receipt-big">${gs.complete?'\u8fbe\u6210\u76ee\u6807':g.rank}</div><div class="receipt-line"><span>\u5e73\u5747\u6ee1\u610f\u5ea6</span><b class="receipt-good">${g.avg} / 100</b></div><div class="receipt-note">${gs.complete?'\u4eca\u5929\u7684\u83dc\u5355\u548c\u8425\u6536\u90fd\u8fbe\u6807\uff0c\u53ef\u4ee5\u5b89\u5fc3\u63a8\u8fdb\u5230\u4e0b\u4e00\u5929\u3002':g.body}</div></div><div class="receipt-card"><div class="receipt-title">\u4eca\u65e5\u76ee\u6807</div>${goalLines}<div class="receipt-note">\u4eca\u65e5\u83dc\u5355\uff1a${dailySupplyNames()}</div></div><div class="receipt-card"><div class="receipt-title">\u83dc\u5355\u5b8c\u6210</div>${menuLines}<div class="receipt-line"><span>\u76c8\u4f59\u5956\u91d1</span><b class="receipt-warn">+${dayStats.goalBonus||0}</b></div></div><div class="receipt-card"><div class="receipt-title">\u5f53\u65e5\u4ea7\u51fa</div><div class="receipt-note">${resourceText(dayStats.resources,8)}</div><div class="receipt-note">${newlyUnlocked.length?'\u65b0\u5b66\u4f1a\uff1a'+newlyUnlocked.join(' / '):'\u672a\u89e3\u9501\u65b0\u66f2'}</div><div class="day-ledger">${ledger}</div></div></div>`;if(newlyUnlocked.length&&!dayStats.summaryCelebrated){dayStats.summaryCelebrated=true;resultPanel.classList.add('celebration');const banner=document.createElement('div');banner.className='celebration-banner';banner.innerHTML=`<b>\u65b0\u66f2\u89e3\u9501</b> ${newlyUnlocked.join(' / ')} \u5df2\u52a0\u5165\u53ef\u6392\u73ed\u66f2\u5e93`;resultText.insertBefore(banner,resultText.firstChild);drawConfetti({title:'unlock'});sfxPlay('result.done')}}
+function songTime(){if(state===S.LEAD_IN)return leadInSongTime();if(state===S.PLAYING)return playbackVisualTime;if((state===S.PAUSED||state===S.RESUME_COUNTDOWN)&&(pausedFromState===S.PLAYING||pausedFromState===S.LEAD_IN||pausedFromState===S.READY))return playbackVisualTime;if(state===S.PAUSED||state===S.RESUME_COUNTDOWN)return Number.isFinite(audio.currentTime)?audio.currentTime:playbackVisualTime;return 0}
+function startPress(){unlockSfx();if(state!==S.PLAYING&&state!==S.LEAD_IN)return;holding=true;if(activeHold&&activeHold.state==='holding'){lastJudge='Hold';pulse=Math.max(pulse,.35);return}triggerSlash();const t=songTime(),target=hitTarget(t);if(target){const j=judge(target.err,target.n);if(j){target.n.kind==='press'?beginHold(target.n,j,target.err):hit(target.n,j,target.err);return}}lastJudge='Empty'}
+function endPress(){holding=false;if(activeHold&&(state===S.PLAYING||state===S.LEAD_IN))releaseHold(activeHold,songTime())}
+function cancelPress(){holding=false;if(state===S.PLAYING)pauseGame()}
+function beginHold(n,j,e){n.state='holding';n.nextTick=n.time+n.tickInterval;n.ticksDone=0;activeHold=n;counts[j.name]++;acc+=j.acc;combo++;maxCombo=Math.max(maxCombo,combo);addHeat(j.name==='Perfect'?12:j.name==='Great'?9:6);addHeat(comboHeat(.22));lastJudge='按住 '+j.name;lastErr=e*1000;pulse=1;shake=.12;sfxPlay('judge',j.name);showCenterJudge(j.name,j.color);juice(noteX(n),view.hitY,n.fruit.color,20);updateComboOrders();checkComboBurst()}
+function completeHold(n,label='榨汁完成',bonus=0){if(n.state!=='holding')return;n.state='done';activeHold=null;addHeat(16+n.holdTicks*5+comboHeat(.25)+bonus);combo++;maxCombo=Math.max(maxCombo,combo);productCounts.juice++;addProduct('juice',n.fruit.color);updateComboOrders();checkComboBurst();lastJudge=label;pulse=1;shake=.22;sfxPlay('hold.complete');showCenterJudge(n.holdTicks>1?`${label} +${n.holdTicks}`:label,'#8cffc1');juice(noteX(n),view.hitY,n.fruit.color,52+n.holdTicks*4)}
+function dropHold(n,t){if(n.state!=='holding')return;n.state='done';activeHold=null;missReasons.EarlyRelease=(missReasons.EarlyRelease||0)+1;lastJudge='Early Release';lastErr=(t-n.end)*1000;pulse=Math.max(pulse,.45);showCenterJudge('\u677e\u5f00\u8fc7\u65e9','#ffd98c')}
+function releaseHold(n,t){const remaining=n.end-t,len=Math.max(.001,n.end-n.time),softWindow=Math.max(WINDOWS.good,Math.min(.55,len*.38));if(remaining<=softWindow)completeHold(n);else miss(n,t,'Early Release')}
+function hit(n,j,e){n.state='done';counts[j.name]++;acc+=j.acc;combo++;maxCombo=Math.max(maxCombo,combo);addHeat(j.name==='Perfect'?14:j.name==='Great'?10:6);addHeat(comboHeat(.25));productCounts.chunks++;lastJudge=j.name;lastErr=e*1000;pulse=1;shake=.24;sfxPlay('judge',j.name);showCenterJudge(j.name,j.color);splash(noteX(n),view.hitY,n.fruit.color,32);addProduct('chunks',n.fruit.color);updateComboOrders();checkComboBurst()}
+function miss(n,t,label='Miss'){if(n.state==='done')return;n.state='done';if(activeHold===n)activeHold=null;counts.Miss++;missReasons[label==='Early Release'?'EarlyRelease':'Miss']=(missReasons[label==='Early Release'?'EarlyRelease':'Miss']||0)+1;combo=0;productCounts.waste++;customerAnger=clamp(customerAnger+(label==='Early Release'?14:10),0,100);lastJudge=label;lastErr=(t-(n.time||t))*1000;sfxPlay('miss');showCenterJudge(label,'#ff6f8d');splash(noteX(n),view.hitY,'#77809f',12);addProduct('waste','#77809f');if(customerAnger>=100)finish('angry')}
+function floatText(x,y,txt,color){if(texts.some(f=>f.txt===txt&&Math.abs(f.x-x)<10&&Math.abs(f.y-y)<22&&f.age<.18))return;texts.push({x,y,vy:-44,age:0,life:.62,txt,color});if(texts.length>MAX_TEXTS)texts.shift()}
+function showCenterJudge(txt,color){if(state!==S.PLAYING&&state!==S.LEAD_IN&&state!==S.RESUME_COUNTDOWN)return;centerJudge={txt,color,combo,age:0,life:.46}}
+function particleRoom(amt){return Math.max(0,Math.min(amt,MAX_PARTICLES-particles.length))}
+function splash(x,y,color,amt=30){amt=particleRoom(amt);for(let i=0;i<amt;i++){const a=Math.random()*Math.PI*2,sp=80+Math.random()*360;particles.push({kind:i%4===0?'slice':'pulp',x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:3+Math.random()*8,rot:Math.random()*Math.PI,vr:(Math.random()-.5)*9,age:0,life:.35+Math.random()*.55,color})}}
+function juice(x,y,color,amt=32){amt=particleRoom(amt);for(let i=0;i<amt;i++)particles.push({kind:'drop',x:x+(Math.random()-.5)*24,y:y+8,vx:(Math.random()-.5)*80,vy:120+Math.random()*240,r:3+Math.random()*7,rot:Math.random()*Math.PI,vr:(Math.random()-.5)*5,age:0,life:.45+Math.random()*.45,color})}
+function compactByLife(list){let w=0;for(let i=0;i<list.length;i++){if(list[i].age<list[i].life)list[w++]=list[i]}list.length=w;return list}
+function completeOrder(o){if(o.done)return;o.done=true;orderFlash.push({txt:o.name+' \u5b8c\u6210',color:o.color,age:0,life:1.2});addHeat(35);sfxPlay('order.complete');floatText(view.cx,Math.max(view.laneTop+88,view.hitY-170),'\u8ba2\u5355\u5b8c\u6210',o.color);pulse=1;shake=Math.max(shake,.28)}
+function updateProductOrders(kind){for(const o of orders){if(o.done)continue;if(o.kind===kind||o.kind==='orders'){o.have=Math.min(o.need,o.have+1);if(o.have>=o.need)completeOrder(o)}}}
+function updateComboOrders(){for(const o of orders){if(o.done)continue;if(o.kind==='combo'){o.have=Math.min(o.need,Math.max(o.have,combo));if(o.have>=o.need)completeOrder(o)}else if(o.kind==='quality'){const q=Math.round((timingTotal?acc/timingTotal:0)*100);o.have=Math.min(o.need,Math.max(o.have,q));if(o.have>=o.need)completeOrder(o)}}}
+function checkComboBurst(){if(combo>=25&&combo%25===0&&combo!==lastComboBurst){lastComboBurst=combo;orderFlash.push({txt:`${combo} COMBO!`,color:'#ffd98c',age:0,life:1});sfxPlay('combo');showCenterJudge('COMBO!', '#ffd98c');pulse=1;shake=Math.max(shake,.18)}}
+function holdTick(n,t){while(n.nextTick&&t>=n.nextTick&&n.nextTick<n.end){n.nextTick+=n.tickInterval;n.ticksDone++;addHeat(2+Math.min(8,Math.floor(combo*.025)));pulse=Math.max(pulse,.35);sfxPlay('hold.tick');juice(noteX(n),view.hitY,n.fruit.color,4)}}
+function addProduct(kind,color){products.push({kind,color,age:0});if(products.length>42)products.shift();updateProductOrders(kind)}
+function update(dt){stepPaletteTween(dt);if(tutorialActive)return;if(state===S.READY){readyTimer=Math.max(0,readyTimer-dt);pulse=Math.max(pulse,.35+Math.sin((READY_TIME-readyTimer)*Math.PI*4)*.18);if(readyTimer<=0)beginLeadIn()}if(state===S.LEAD_IN){leadInTimer=Math.max(0,leadInTimer-dt);perfStats.visualSongTime=leadInSongTime();perfStats.audioSongTime=Number.isFinite(audio.currentTime)?audio.currentTime:0;perfStats.audioDriftMs=(perfStats.audioSongTime-perfStats.visualSongTime)*1000;if(leadInTimer<=0)beginPlayback()}if(state===S.RESUME_COUNTDOWN){resumeCountdown=Math.max(0,resumeCountdown-dt);pulse=Math.max(pulse,.24+.14*Math.sin((RESUME_COUNTDOWN_TIME-resumeCountdown)*Math.PI*2));if(resumeCountdown<=0)completeResumeCountdown()}advancePlaybackClock(dt);const t=songTime();if(state===S.PLAYING){customerAnger=Math.max(0,customerAnger-dt*5.5);while(missCursor<notes.length&&t>notes[missCursor].time+WINDOWS.miss){const n=notes[missCursor++];if(n.state==='pending')miss(n,t,'Miss')}if(activeHold&&activeHold.state==='holding'){if(holding){holdTick(activeHold,t);if(Math.random()<dt*9)juice(noteX(activeHold),view.hitY,activeHold.fruit.color,1)}if(holding&&t>=activeHold.end-WINDOWS.perfect)completeHold(activeHold)}if(shouldFinishPlayback(t))finish()}if(state===S.ENDED&&resultMode==='shift'&&resultData){const prev=resultReveal;resultReveal=Math.min(2.1,resultReveal+dt);if(prev!==resultReveal||!resultView||resultView.data!==resultData)renderResult()}pulse=Math.max(0,pulse-dt*3);shake=Math.max(0,shake-dt*2.8);particles.forEach(p=>{p.age+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=260*dt;p.rot=(p.rot||0)+(p.vr||0)*dt});compactByLife(particles);texts.forEach(f=>{f.age+=dt;f.y+=f.vy*dt});compactByLife(texts);slashFx.forEach(s=>s.age+=dt);compactByLife(slashFx);if(centerJudge){centerJudge.age+=dt;if(centerJudge.age>=centerJudge.life)centerJudge=null}products.forEach(p=>p.age+=dt);orderFlash.forEach(f=>f.age+=dt);compactByLife(orderFlash);if(orderFlash.length>MAX_ORDER_FLASH)orderFlash.splice(0,orderFlash.length-MAX_ORDER_FLASH);perfStats.particleCount=particles.length;perfStats.textsCount=texts.length}
+function triggerSlash(){slashFx.push({age:0,life:.25});const night=isNightTheme(),accent=night?'#79fff5':'#71cb87',lx=view.cx-view.laneW/2-12,rx=view.cx+view.laneW/2+12,amt=particleRoom(8);for(let i=0;i<amt;i++){const sx=lx+Math.random()*(rx-lx),dir=(Math.random()-.5)*2;particles.push({kind:'spark',x:sx,y:view.hitY,vx:dir*120+Math.random()*60*Math.sign(dir),vy:-60-Math.random()*140,r:2+Math.random()*3,rot:0,vr:0,age:0,life:.2+Math.random()*.2,color:Math.random()>.5?accent:'#fff'})}}
+function chartEnd(){return chartEndTime}
+function playDuration(){const audioDur=Number.isFinite(audio.duration)&&audio.duration>1?audio.duration:0,declared=song.duration||0,end=audioDur||declared;return Math.max(end,chartEndTime||0,1)}
+function shouldFinishPlayback(t){return audio.ended||t>=playDuration()}
+function playHp(){return clamp(100-customerAnger,0,100)}
+function hitPauseButton(x,y){for(const b of getPauseButtons()){if(x>=b.x&&x<=b.x+b.w&&y>=b.y&&y<=b.y+b.h){suppressPointerUp=true;if(b.id==='pause'){state===S.PAUSED?resumeGame():pauseGame()}else if(b.id==='resume')resumeGame();else if(b.id==='retry')start();else if(b.id==='skip')debugSkipToResult();else if(b.id==='songSelect'){if(serviceRun.fromStory||currentShiftIsTutorial())showToast('\u8bf7\u5148\u5b8c\u6210\u8fd9\u4e00\u5355');else showSongSelect()}else if(b.id==='restartDay')restartCurrentDay();else if(b.id==='endDay')closeDayEarly();else if(b.id.startsWith('speed'))setFallSpeed(parseInt(b.id.slice(5),10));return true}}return false}
+
+function makeRC(){return{state,view,selectedTheme,songCoverImg,songCoverImgId,homeVisual:currentHomeVisual(),notes,particles,texts,slashFx,centerJudge,products,orders,orderFlash,heat,combo,maxCombo,counts,customerAnger,holding,activeHold,readyTimer,leadInTimer,leadInTotal,resumeCountdown,diff,song,debug,perfStats,dayRun,serviceRun,speedIndex,dpr,READY_TIME,READY_HANDOFF_ALPHA,READY_EXIT_FADE,SPEEDS,WINDOWS,FRUITS,total,lastErr,maxNoteSpan,noteX,noteY,lowerBoundNotes,noteLookahead,pixelsPerSecond,palette:themePalette(),assets:themeAssets(),mainVisual:currentMainVisual(),shopInterior:currentShopInterior(),noteFruitIcons:noteFruitIconSet(),songTimeValue:songTime(),playDurationValue:playDuration(),chartEndValue:chartEndTime,isTutorialShift:currentShiftIsTutorial()}}
+function updatePerf(dt,updateMs,drawMs,frameMs){perfStats.updateMs=updateMs;perfStats.drawMs=drawMs;perfStats.frameMs=frameMs;perfStats.lastFrameMs=dt*1000;const fps=dt>0?1/dt:0;perfStats.fpsEMA=perfStats.fpsEMA?perfStats.fpsEMA*.92+fps*.08:fps}
+function loop(now){const frameStart=performance.now(),dt=Math.min(.033,(now-lastFrame)/1000||0);lastFrame=now;const updateStart=performance.now();update(dt);syncDomShellTheme();const drawStart=performance.now();drawFrame(makeRC());const frameEnd=performance.now();updatePerf(dt,drawStart-updateStart,frameEnd-drawStart,frameEnd-frameStart);requestAnimationFrame(loop)}
+initRenderer(ctx);
+addEventListener('resize',resize);
+canvas.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;e.preventDefault();const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;if(hitPauseButton(x,y))return;try{canvas.setPointerCapture(e.pointerId)}catch(_){}startPress()},{passive:false});
+canvas.addEventListener('pointerup',e=>{e.preventDefault();if(suppressPointerUp){suppressPointerUp=false;return}endPress()},{passive:false});
+canvas.addEventListener('pointercancel',cancelPress);
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('blur',cancelPress);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopPreview();cancelPress()}else if(state===S.SELECT)playPreview(SONGS[songIndex])});
+addEventListener('keydown',e=>{if(tutorialActive){e.preventDefault();if(!$('tutorialLayer').classList.contains('hidden')&&['Enter','Space','Escape'].includes(e.code))closeTutorial();return}if(['KeyZ','KeyX','Space'].includes(e.code)){e.preventDefault();if(!holding)startPress()}if(e.code==='KeyR'){e.preventDefault();if(state===S.READY||state===S.LEAD_IN||state===S.PLAYING||state===S.PAUSED||state===S.ENDED)start()}if(e.code==='Escape'){e.preventDefault();if(UI.modalStack.length){const closed=UI.closeTopModal();if(closed==='resultPhotoModal'&&resultPhotoCard)resultPhotoCard.innerHTML=''}else if(UI.stack.length>1)closeCurrentPanel();else if([S.READY,S.LEAD_IN,S.PLAYING,S.RESUME_COUNTDOWN].includes(state))pauseGame();else if(state===S.PAUSED){dayRun.active?resumeGame():showSongSelect()}else if(state===S.ENDED)showSongSelect();else if(state===S.SELECT)showHome()}if(e.code==='F1'){e.preventDefault();debug=!debug}if(e.code==='BracketLeft'){e.preventDefault();song.audioOffset=(song.audioOffset||0)-.02;reset();lastJudge='Offset '+song.audioOffset.toFixed(3)}if(e.code==='BracketRight'){e.preventDefault();song.audioOffset=(song.audioOffset||0)+.02;reset();lastJudge='Offset '+song.audioOffset.toFixed(3)}});
+addEventListener('keyup',e=>{if(tutorialActive){e.preventDefault();return}if(['KeyZ','KeyX','Space'].includes(e.code)){e.preventDefault();endPress()}});
+$('openingScreen').onclick=enterOpening;
+$('tutorialNextButton').onclick=closeTutorial;
+$('titleNewButton').onclick=startHomeDay;
+$('titleLoadButton').onclick=()=>{showSavePanel('load');unlockMenuLoop()};
+$('titlePracticeButton').onclick=()=>{showSongSelect('replace',true);unlockMenuLoop()};
+$('overlaySettingsButton').onclick=()=>{showSettings();unlockMenuLoop()};
+$('saveBackButton').onclick=()=>showTitle(false,false)
+$('autoMenuButton').onclick=autoArrangeMenu;
+$('confirmMenuButton').onclick=confirmDayMenu;
+$('menuEditBackButton').onclick=showDayIntro;
+$('openShopButton').onclick=startDayOpening;
+$('overviewBackButton').onclick=showMenuEdit;
+$('startButton').onclick=start;
+$('backHomeButton').onclick=()=>showTitle(true);
+$('retryButton').onclick=start;
+$('menuButton').onclick=showMenuEdit;
+$('endDayButton').onclick=showDaySummary;
+$('resultHomeButton').onclick=()=>showTitle(false,false)
+$('upgradeBackButton').onclick=closeCurrentPanel;
+$('settingsBackButton').onclick=closeSettings;
+$('settingsAbandonButton').onclick=()=>{closeSettings();abandonFlowDay()};
+$('settingsSkipButton').onclick=debugSkipToResult;
+$('clearCacheButton').onclick=clearAppCache;
+$('resetProgressButton').onclick=showResetConfirm;
+$('resetCancelButton').onclick=hideResetConfirm;
+$('resetConfirmButton').onclick=confirmReset;
+$('resourceIntroOkButton').onclick=closeResourceIntro;
+resultPhotoModal.onclick=clearResultPhoto;
+document.addEventListener('pointerdown',e=>{if(e.target.closest('button'))sfxPlay('ui.click');unlockMenuLoop()},{capture:true,passive:true});
+
+function persistedThemeOnStartup(){
+  if(!prologueSeen()) return STORY_THEME;
+  const v = readVisualTheme();
+  return v ? normalizeTheme(v) : STORY_THEME;
+}
+applyTheme(persistedThemeOnStartup(),false);
+resize();
+loadOfficialCharts().then(ok=>{
+  buildCards();
+  reset();
+  state=S.HOME;
+  bootstrapOpeningOnly();
+  if(!ok)showToast(chartLoadError||'\u8c31\u9762\u52a0\u8f7d\u5931\u8d25');
+  requestAnimationFrame(loop);
+});
