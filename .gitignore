@@ -18,3 +18,5 @@ libengine/.vs/
 games/**/out/
 games/**/.vs/
 games/**/build/
+
+cpp_core/
