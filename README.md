@@ -29,6 +29,8 @@ Later —  richer presentation maybe; both are milestones, not final shipping bu
 
 **Note:** In-game narrative and many design docs are **Chinese (zh-CN)** — that's the language this story is written in. This README is in English so the repo is easy to navigate.
 
+**Assets:** All bundled music is **AI-generated with Suno for this project** (service segments + the theme song "Open the Fruit Stand!"). No third-party commercial music or album artwork is included.
+
 **Local layout (recommended):** clone both repos as siblings, e.g. `Projects/rhythm-fruit-shop/` and `Projects/rhythm-fruit-shop-cpp/`. Chart import scripts (`03_import_for_cpp.bat`, `07_convert_audio_for_cpp_core.bat`) write assets into the C++ repo by default.
 
 ---
