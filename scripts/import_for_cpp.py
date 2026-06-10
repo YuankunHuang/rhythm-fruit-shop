@@ -5,17 +5,17 @@ Import osu!mania .osz drafts from imports/ into the C++ project chart format.
 Expected import layout:
     imports/<song-id>/mug/<difficulty>.osz   (e.g. easy / normal / hard / expert)
 
-Output:
-    cpp_core/assets/charts/<song-id>.rfs.json   -- rfs-cpp-v1 chart
-    cpp_core/assets/charts/catalog.json         -- updated song catalog
+Output (default: sibling rhythm-fruit-shop-cpp repo):
+    assets/charts/<song-id>.rfs.json   -- rfs-cpp-v1 chart
+    assets/charts/catalog.json         -- updated song catalog
 
 Notes:
   - The rfs-cpp-v1 format uses time_ms (integer milliseconds) and lanes 0-3.
   - 4K osu!mania maps to lanes 0-3 directly (column N -> lane N).
   - Other key counts are scaled to 4 lanes.
   - Audio is NOT handled by this script. Place the audio file at:
-        cpp_core/assets/audio/<song-id>.mp3  (or .m4a / .ogg)
-    before running.
+        assets/audio/<song-id>.mp3  (or .m4a / .ogg)
+    in the C++ repo before running.
 """
 
 from __future__ import annotations
@@ -23,19 +23,32 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import sys
 import zipfile
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPT_DIR.parent
-CPP_CORE = ROOT / "cpp_core"
-CHARTS_DIR = CPP_CORE / "assets" / "charts"
-AUDIO_DIR = CPP_CORE / "assets" / "audio"
+DEFAULT_CPP_REPO = ROOT.parent / "rhythm-fruit-shop-cpp"
+
+
+def resolve_cpp_repo(path: Path | None = None) -> Path:
+    if path is not None:
+        return path if path.is_absolute() else ROOT / path
+    env = os.environ.get("RFS_CPP_REPO")
+    if env:
+        return Path(env)
+    return DEFAULT_CPP_REPO
+
+
+CPP_REPO = resolve_cpp_repo()
+CHARTS_DIR = CPP_REPO / "assets" / "charts"
+AUDIO_DIR = CPP_REPO / "assets" / "audio"
 IMPORTS_DIR = ROOT / "imports"
 CATALOG_PATH = CHARTS_DIR / "catalog.json"
 
-COVERS_DIR = CPP_CORE / "assets" / "covers"
+COVERS_DIR = CPP_REPO / "assets" / "covers"
 
 VALID_DIFFICULTIES = {"easy", "normal", "hard", "expert", "service"}
 AUDIO_EXTENSIONS = (".mp3", ".m4a", ".ogg", ".wav")
@@ -161,7 +174,7 @@ def find_audio(song_id: str) -> str | None:
         for ext in AUDIO_EXTENSIONS:
             candidate = AUDIO_DIR / sub / (song_id + ext) if sub else AUDIO_DIR / (song_id + ext)
             if candidate.exists():
-                return candidate.relative_to(CPP_CORE).as_posix()
+                return candidate.relative_to(CPP_REPO).as_posix()
     return None
 
 
@@ -169,7 +182,7 @@ def find_cover(song_id: str) -> str | None:
     """Return a relative cover path (assets/covers/<song_id>/cover.png) if the file exists."""
     candidate = COVERS_DIR / song_id / "cover.png"
     if candidate.exists():
-        return candidate.relative_to(CPP_CORE).as_posix()
+        return candidate.relative_to(CPP_REPO).as_posix()
     return None
 
 
@@ -331,12 +344,27 @@ def refresh_catalog() -> None:
     save_catalog(catalog)
     print()
     print(f"Catalog refreshed: {len(catalog['songs'])} song(s).")
-    print(f"Catalog: {CATALOG_PATH.relative_to(ROOT)}")
+    print(f"Catalog: {CATALOG_PATH}")
+
+
+def configure_paths(cpp_repo: Path) -> None:
+    global CPP_REPO, CHARTS_DIR, AUDIO_DIR, CATALOG_PATH, COVERS_DIR
+    CPP_REPO = cpp_repo.resolve()
+    CHARTS_DIR = CPP_REPO / "assets" / "charts"
+    AUDIO_DIR = CPP_REPO / "assets" / "audio"
+    CATALOG_PATH = CHARTS_DIR / "catalog.json"
+    COVERS_DIR = CPP_REPO / "assets" / "covers"
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Import osu!mania .osz files from imports/ into the C++ chart format."
+    )
+    parser.add_argument(
+        "--cpp-repo",
+        type=Path,
+        default=None,
+        help=f"C++ repo root (default: sibling {DEFAULT_CPP_REPO.name}/ or RFS_CPP_REPO env)",
     )
     parser.add_argument(
         "--song", metavar="SONG_ID",
@@ -352,6 +380,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    configure_paths(resolve_cpp_repo(args.cpp_repo))
+    print(f"C++ repo: {CPP_REPO}")
     CHARTS_DIR.mkdir(parents=True, exist_ok=True)
 
     if args.refresh_catalog:
@@ -378,7 +408,7 @@ def main() -> None:
 
     print()
     print(f"Imported {success} / {len(dirs)} song(s).")
-    print(f"Catalog: {CATALOG_PATH.relative_to(ROOT)}")
+    print(f"Catalog: {CATALOG_PATH}")
 
 
 if __name__ == "__main__":

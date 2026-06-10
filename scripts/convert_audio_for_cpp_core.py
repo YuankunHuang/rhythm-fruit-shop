@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
-"""Export miniaudio-friendly MP3 into cpp_core from monorepo audio/.
-
-Authoring sources live under rhythm-fruit-shop/audio/ and are already
-loudness-normalized by 00_convert_audio_to_m4a.bat. This script only
-transcodes format (M4A -> MP3 192kbps). Use --normalize-audio only when
-the source files have not been processed by 00.
-"""
+"""Export miniaudio-friendly MP3 into the C++ repo from web prototype audio/."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -32,9 +27,10 @@ from convert_audio_to_m4a import (  # noqa: E402
 )
 from sync_charts_to_game import ROOT  # noqa: E402
 
-CPP_CORE_DIR = ROOT / "cpp_core"
+DEFAULT_CPP_REPO = ROOT.parent / "rhythm-fruit-shop-cpp"
 DEFAULT_AUDIO_DIR = ROOT / "audio"
-DEFAULT_OUT_DIR = CPP_CORE_DIR / "assets" / "audio"
+DEFAULT_OUT_DIR = DEFAULT_CPP_REPO / "assets" / "audio"
+CPP_REPO = DEFAULT_CPP_REPO
 MANIFEST_NAME = "cpp-audio-manifest.json"
 BITRATE_KBPS = 192
 SAMPLE_RATE = 48000
@@ -60,7 +56,7 @@ def rel(path: Path) -> str:
 
 
 def chart_audio_path(out_file: Path) -> str:
-    return out_file.relative_to(CPP_CORE_DIR).as_posix()
+    return out_file.relative_to(CPP_REPO).as_posix()
 
 
 def audio_sources(audio_dir: Path) -> list[Path]:
@@ -190,7 +186,7 @@ def build_chart_replacements(src: Path, dst: Path) -> dict[str, str]:
     replacements[f"assets/audio/{src.stem}.mp3"] = chart_path
     replacements[f"assets/audio/{src.name}"] = chart_path
 
-    out_root = CPP_CORE_DIR / "assets" / "audio"
+    out_root = CPP_REPO / "assets" / "audio"
     try:
         rel_under_out = dst.relative_to(out_root)
     except ValueError:
@@ -206,7 +202,7 @@ def build_chart_replacements(src: Path, dst: Path) -> dict[str, str]:
 def rewrite_cpp_charts(replacements: dict[str, str]) -> None:
     if not replacements:
         return
-    charts_dir = CPP_CORE_DIR / "assets" / "charts"
+    charts_dir = CPP_REPO / "assets" / "charts"
     if not charts_dir.exists():
         return
     for path in sorted(charts_dir.rglob("*.json")):
@@ -222,24 +218,49 @@ def rewrite_cpp_charts(replacements: dict[str, str]) -> None:
         print(f"  rewrote chart audio {rel(path)}: {audio} -> {new_audio}")
 
 
+def resolve_cpp_repo(path: Path | None = None) -> Path:
+    if path is not None:
+        return path if path.is_absolute() else ROOT / path
+    env = os.environ.get("RFS_CPP_REPO")
+    if env:
+        return Path(env)
+    return DEFAULT_CPP_REPO
+
+
+def configure_cpp_repo(cpp_repo: Path) -> None:
+    global CPP_REPO, DEFAULT_OUT_DIR
+    CPP_REPO = cpp_repo.resolve()
+    DEFAULT_OUT_DIR = CPP_REPO / "assets" / "audio"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Transcode audio/ to MP3 192kbps for cpp_core. Sources are assumed "
+        description="Transcode audio/ to MP3 192kbps for the C++ repo. Sources are assumed "
                     "already loudness-normalized by 00_convert_audio_to_m4a.bat."
     )
+    parser.add_argument(
+        "--cpp-repo",
+        type=Path,
+        default=None,
+        help=f"C++ repo root (default: sibling {DEFAULT_CPP_REPO.name}/ or RFS_CPP_REPO env)",
+    )
     parser.add_argument("--audio-dir", type=Path, default=DEFAULT_AUDIO_DIR)
-    parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
+    parser.add_argument("--out-dir", type=Path, default=None)
     parser.add_argument("--ffmpeg", default="ffmpeg")
     parser.add_argument("--force", action="store_true", help="Re-encode even when manifest hash matches")
     parser.add_argument("--normalize-audio", action="store_true",
                         help="Run EBU R128 loudnorm (only needed if source was not processed by 00)")
     parser.add_argument("--no-rewrite-charts", action="store_true",
-                        help="Do not update cpp_core/assets/charts/*.json")
+                        help="Do not update assets/charts/*.json in the C++ repo")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
+    configure_cpp_repo(resolve_cpp_repo(args.cpp_repo))
+    print(f"C++ repo: {CPP_REPO}")
+
     audio_dir = args.audio_dir if args.audio_dir.is_absolute() else ROOT / args.audio_dir
-    out_dir = args.out_dir if args.out_dir.is_absolute() else ROOT / args.out_dir
+    out_dir = args.out_dir if args.out_dir else DEFAULT_OUT_DIR
+    out_dir = out_dir if out_dir.is_absolute() else ROOT / out_dir
     normalize = args.normalize_audio
     manifest_path = out_dir / MANIFEST_NAME
     manifest = load_manifest(manifest_path)

@@ -2,20 +2,22 @@
 
 A rhythm game × fruit-shop personal project. Music is the feel of making drinks, not a stage performance. You start as a summer intern and grow into the shop owner — daily shifts mix customer stories with falling-note tension.
 
-This repo holds **two builds** of the same world. They ask different questions:
+This repo is the **web prototype** and **chart authoring pipeline**. The native C++ rhythm core lives in a separate repository:
 
-| | **Web** (repo root) | **C++** ([`cpp_core/`](cpp_core/)) |
-|---|---------------------|-------------------------------------|
+**→ [YuankunHuang/rhythm-fruit-shop-cpp](https://github.com/YuankunHuang/rhythm-fruit-shop-cpp)**
+
+| | **Web** (this repo) | **C++** ([rhythm-fruit-shop-cpp](https://github.com/YuankunHuang/rhythm-fruit-shop-cpp)) |
+|---|---------------------|------------------------------------------------------------------------------------------|
 | What I'm exploring | Look, feel, story, shop loop — does the idea work as a game? | Native rhythm core — clocks, input, charts, architecture |
 | Presentation | Playable browser prototype | Minimal geometry on purpose — systems first |
 | Stack | HTML + JS | C++20 · SFML · miniaudio · CMake |
 
-They are **not** a port of each other: separate code, chart formats, and assets. The web build is for fast iteration; the C++ build is a fresh native line I started once I wanted to get the rhythm foundation right.
+They are **not** a port of each other: separate code, chart formats, and assets. The web build is for fast iteration; the C++ build is a fresh native line focused on rhythm foundations.
 
 ```text
-Web  —  visuals, narrative, service loop, chart pipeline
+Web  —  visuals, narrative, service loop, chart pipeline (this repo)
   ↓
-C++  —  layered clock, platform boundaries, testable rhythm core
+C++  —  layered clock, platform boundaries, testable rhythm core (sibling repo)
   ↓
 Later —  richer presentation maybe; both are milestones, not final shipping builds
 ```
@@ -23,9 +25,11 @@ Later —  richer presentation maybe; both are milestones, not final shipping bu
 **Quick links**
 
 - Play the web prototype → [Web prototype](#web-prototype) · run `05_start_local_server.bat` · open `http://localhost:8080/`
-- Run the native demo → [`cpp_core/README.md`](cpp_core/README.md)
+- Run the native demo → [rhythm-fruit-shop-cpp](https://github.com/YuankunHuang/rhythm-fruit-shop-cpp)
 
-**Note:** In-game narrative and many design docs are **Chinese (zh-CN)** — that's the language this story is written in. This README is in English so the repo is easy to navigate; the C++ folder is fully English-friendly.
+**Note:** In-game narrative and many design docs are **Chinese (zh-CN)** — that's the language this story is written in. This README is in English so the repo is easy to navigate.
+
+**Local layout (recommended):** clone both repos as siblings, e.g. `Projects/rhythm-fruit-shop/` and `Projects/rhythm-fruit-shop-cpp/`. Chart import scripts (`03_import_for_cpp.bat`, `07_convert_audio_for_cpp_core.bat`) write assets into the C++ repo by default.
 
 ---
 
@@ -56,7 +60,6 @@ The runtime loads charts from `charts/*.json`.
 
 ### Directory layout
 
-- **`cpp_core/`** — Native C++ rhythm demo (separate from web). See [`cpp_core/README.md`](cpp_core/README.md).
 - `audio/` — Music files the playable build uses.
 - `stems/` — Demucs cache; not loaded at runtime.
 - `imports/` — Draft outputs from MuG Diffusion, osu! editors, etc.
@@ -66,6 +69,17 @@ The runtime loads charts from `charts/*.json`.
 - `tools/schedule_editor.html` — Schedule / prologue dialogue editor (pick `data/` folder to save).
 - `scripts/import_osu_mania.py` — Import 3K `.osu` drafts to JSON + single-finger rule checks.
 - `scripts/sync_charts_to_game.py` — Refresh `manifest.json` and song metadata in `index.html` (does not rewrite note data).
+
+### C++ chart pipeline (sibling repo)
+
+When `rhythm-fruit-shop-cpp` is cloned next to this repo:
+
+```text
+07_convert_audio_for_cpp_core.bat   audio/ -> rhythm-fruit-shop-cpp/assets/audio/ (MP3)
+03_import_for_cpp.bat               imports/ -> rhythm-fruit-shop-cpp/assets/charts/
+```
+
+Override the target with `--cpp-repo PATH` or env `RFS_CPP_REPO`.
 
 ### Narrative editing
 
@@ -113,6 +127,8 @@ Or `02_import_all_osu_mania.bat`. Expects `imports/<id>/mug/{easy,normal,hard,ex
 04_sync_charts_to_game.bat       Sync demo metadata
 05_start_local_server.bat        Local test server
 06_package_github_share.bat      Shareable package
+07_convert_audio_for_cpp_core.bat  Export MP3 to C++ repo
+03_import_for_cpp.bat            Import osu! charts to C++ repo
 ```
 
 ### Chart JSON format
@@ -150,7 +166,7 @@ Canonical paths: `charts/service/*.json`, `charts/tracks/*.json`.
 
 ### About this prototype
 
-Not a product pitch — a sandbox to see if *Rhythm Fruit Shop* feels right. The web build carries the visual and narrative experiments; [`cpp_core/`](cpp_core/) is the parallel native rhythm line. Both are active; neither replaces the other.
+Not a product pitch — a sandbox to see if *Rhythm Fruit Shop* feels right. The web build carries the visual and narrative experiments; the [C++ repo](https://github.com/YuankunHuang/rhythm-fruit-shop-cpp) is the parallel native rhythm line. Both are active; neither replaces the other.
 
 Design pillars:
 
