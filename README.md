@@ -68,7 +68,7 @@ The runtime loads charts from `charts/*.json`.
 - `charts/` — Canonical chart source. One JSON per song; `manifest.json` indexes them.
 - `index.html` — Playable entry; loads charts at runtime.
 - `tools/chart_editor.html` — Local chart polish tool.
-- `tools/schedule_editor.html` — Schedule / prologue dialogue editor (pick `data/` folder to save).
+- `tools/story_editor.html` — Story editor for the prologue and the day flows. Start the local server (`05_start_local_server.bat` or `npm run serve`), open `http://localhost:8080/tools/story_editor.html`, edit, Ctrl+S saves straight back to `data/`.
 - `scripts/import_osu_mania.py` — Import 3K `.osu` drafts to JSON + single-finger rule checks.
 - `scripts/sync_charts_to_game.py` — Refresh `manifest.json` and song metadata in `index.html` (does not rewrite note data).
 
@@ -86,7 +86,7 @@ Override the target with `--cpp-repo PATH` or env `RFS_CPP_REPO`.
 ### Narrative editing
 
 - Dialogue tone benchmark: [`docs/dialogue_style_benchmark_zh-CN.md`](docs/dialogue_style_benchmark_zh-CN.md) *(zh-CN)*
-- Story bible: [`docs/story_bible_zh-CN.md`](docs/story_bible_zh-CN.md) *(zh-CN)*. Runtime prologue: `data/dialogue/prologue.json`. Edit in `tools/schedule_editor.html` → Prologue tab → saves back to `prologue.json`.
+- Story bible: [`docs/story_bible_zh-CN.md`](docs/story_bible_zh-CN.md) *(zh-CN)*. Runtime prologue: `data/dialogue/prologue.json`. Edit in `tools/story_editor.html` (序章), which saves back to `prologue.json`.
 - `data/flows/*.json` — Day structure, dialogue, service, grades, settlement (editor format). The HTML runtime does not fully interpret flows yet.
 - Keep `action: "startService"` on the last order node in prologue `opening`, and `action: "settlement"` on the last shared after-service node, or service/settlement breaks.
 
