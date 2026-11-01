@@ -441,6 +441,24 @@ def write_asset_map(target: Path, mapping: dict[str, str]) -> None:
     rewrite_text_file(target / "index.html", mapping)
 
 
+MODULE_SPECIFIER = re.compile(r"""(['"])((?:\.\.?/|src/)[\w./-]+?\.js)\1""")
+
+
+def stamp_module_urls(target: Path) -> str:
+    """Append one content hash of all shipped modules to every relative module URL, so a deploy
+    replaces the whole module graph at once instead of mixing cached and new files."""
+    modules = sorted((target / "src").rglob("*.js"))
+    h = hashlib.sha256()
+    for path in modules:
+        h.update(path.read_bytes())
+    build_id = h.hexdigest()[:FINGERPRINT_HEX_LEN]
+    for path in [target / "index.html", *modules]:
+        text = path.read_text(encoding="utf-8")
+        path.write_text(MODULE_SPECIFIER.sub(rf"\1\2?v={build_id}\1", text), encoding="utf-8")
+    print(f"\nModule build id: {build_id}")
+    return build_id
+
+
 def require_file(path: Path) -> None:
     if not path.exists():
         raise RuntimeError(f"Missing package file: {path}")
@@ -520,6 +538,7 @@ def build_package(target: Path, make_zip: bool) -> None:
 
     mapping = fingerprint_runtime_files(target)
     write_asset_map(target, mapping)
+    stamp_module_urls(target)
     validate_package(target, mapping)
 
     total_mb = sum(f.stat().st_size for f in target.rglob("*") if f.is_file()) / 1024 / 1024

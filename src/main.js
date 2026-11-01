@@ -18,16 +18,9 @@ import {
   readResourceIntroSeen,
   saveResourceIntroSeen,
   clearAllGameData,
-} from './storage.js?v=2026-05-09b';
-import {
-  loadGameData,
-  loadDayFlow,
-  GameData,
-  menuById,
-  dayPlanConfig,
-  slotUnlockDay,
-} from './data/index.js?v=2026-05-09b';
-import { S } from './state.js?v=2026-05-09b';
+} from './storage.js';
+import { loadGameData, loadDayFlow, GameData, menuById, dayPlanConfig, slotUnlockDay } from './data/index.js';
+import { S } from './state.js';
 import {
   audioGain,
   sfxContext,
@@ -35,24 +28,24 @@ import {
   unlockSfx,
   sfxPlay,
   setGameplayNoteSfxEnabled,
-} from './audio.js?v=2026-05-09b';
+} from './audio.js';
 import {
   initRenderer,
   drawFrame,
   getPauseButtons,
   invalidateBackdropCache,
   warmBackdropCache,
-} from './render.js?v=2026-05-10u';
-import { createPanelManager, showToast } from './ui/panels.js?v=2026-05-10q';
-import { judgeTiming, lowerBound, pickHitTarget } from './core/judge.js?v=2026-11-01a';
+} from './render.js';
+import { createPanelManager, showToast } from './ui/panels.js';
+import { judgeTiming, lowerBound, pickHitTarget } from './core/judge.js';
 import {
   buildNotes as buildChartNotes,
   chartStats as countChart,
   chartLevel as rateChart,
-} from './core/chart.js?v=2026-11-01a';
-import * as econ from './core/economy.js?v=2026-11-01a';
-import * as story from './story/flow.js?v=2026-11-01a';
-import * as play from './core/session.js?v=2026-11-01a';
+} from './core/chart.js';
+import * as econ from './core/economy.js';
+import * as story from './story/flow.js';
+import * as play from './core/session.js';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
