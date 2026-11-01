@@ -46,6 +46,7 @@ import {
 import * as econ from './core/economy.js';
 import * as story from './story/flow.js';
 import * as play from './core/session.js';
+import * as clock from './core/clock.js';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
@@ -568,6 +569,7 @@ let dpr = 1,
   slashFx = [],
   debug = false,
   lastFrame = performance.now(),
+  frameRealDt = 0,
   pauseButtons = [],
   suppressPointerUp = false,
   readyTimer = 0,
@@ -3567,15 +3569,14 @@ function advancePlaybackClock(dt) {
   if (state !== S.PLAYING) return;
   const audioTime = Number.isFinite(audio.currentTime) ? audio.currentTime : playbackVisualTime,
     wallTime = playbackClockBase + (performance.now() - playbackClockStartedAt) / 1000;
-  let target = audioTime;
-  if (playbackSyncTimer > 0) {
-    playbackSyncTimer = Math.max(0, playbackSyncTimer - dt);
-    target = Math.max(audioTime, Math.min(wallTime, audioTime + 0.12));
-  }
-  playbackVisualTime = Math.max(
-    playbackVisualTime,
-    Math.min(target, playbackVisualTime + Math.max(dt * 1.35, 0.018)),
-  );
+  const syncing = playbackSyncTimer > 0;
+  if (syncing) playbackSyncTimer = Math.max(0, playbackSyncTimer - dt);
+  playbackVisualTime = clock.stepVisualClock(playbackVisualTime, {
+    audioTime,
+    wallTime,
+    syncing,
+    realDt: frameRealDt,
+  });
   perfStats.visualSongTime = playbackVisualTime;
   perfStats.audioSongTime = audioTime;
   perfStats.audioDriftMs = (audioTime - playbackVisualTime) * 1000;
@@ -4618,8 +4619,9 @@ function updatePerf(dt, updateMs, drawMs, frameMs) {
   perfStats.fpsEMA = perfStats.fpsEMA ? perfStats.fpsEMA * 0.92 + fps * 0.08 : fps;
 }
 function loop(now) {
-  const frameStart = performance.now(),
-    dt = Math.min(0.033, (now - lastFrame) / 1000 || 0);
+  const frameStart = performance.now();
+  frameRealDt = (now - lastFrame) / 1000 || 0;
+  const dt = Math.min(0.033, frameRealDt);
   lastFrame = now;
   const updateStart = performance.now();
   update(dt);
