@@ -44,8 +44,7 @@ function allowed(from, to) {
 test('practice flow: HOME → SELECT → READY → LEAD_IN → PLAYING → ENDED → HOME', () => {
   const seq = [S.HOME, S.SELECT, S.READY, S.LEAD_IN, S.PLAYING, S.ENDED, S.HOME];
   for (let i = 0; i < seq.length - 1; i++) {
-    assert.ok(allowed(seq[i], seq[i + 1]),
-      `expected ${seq[i]} → ${seq[i + 1]} to be valid`);
+    assert.ok(allowed(seq[i], seq[i + 1]), `expected ${seq[i]} → ${seq[i + 1]} to be valid`);
   }
 });
 
@@ -58,8 +57,7 @@ test('pause / resume cycle: PLAYING → PAUSED → RESUME_COUNTDOWN → PLAYING'
 test('day mode flow: HOME → FLOW → MENU_EDIT → OVERVIEW → READY → LEAD_IN → PLAYING → ENDED → FLOW', () => {
   const seq = [S.HOME, S.FLOW, S.MENU_EDIT, S.OVERVIEW, S.READY, S.LEAD_IN, S.PLAYING, S.ENDED, S.FLOW];
   for (let i = 0; i < seq.length - 1; i++) {
-    assert.ok(allowed(seq[i], seq[i + 1]),
-      `expected ${seq[i]} → ${seq[i + 1]} to be valid`);
+    assert.ok(allowed(seq[i], seq[i + 1]), `expected ${seq[i]} → ${seq[i + 1]} to be valid`);
   }
 });
 

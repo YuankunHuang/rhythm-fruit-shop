@@ -6,7 +6,7 @@ export const GameData = {
   songs: [],
   difficulties: [],
   serviceDiff: null,
-  windows: { perfect: 0.095, great: 0.135, good: 0.190, miss: 0.240 },
+  windows: { perfect: 0.095, great: 0.135, good: 0.19, miss: 0.24 },
   fruits: [],
   speeds: [],
   chartLevelBands: {},
@@ -74,17 +74,15 @@ export async function loadGameData() {
   return GameData;
 }
 
-export const menuById = (id) =>
-  GameData.menuItems.find(m => m.id === id) || GameData.menuItems[0];
+export const menuById = (id) => GameData.menuItems.find((m) => m.id === id) || GameData.menuItems[0];
 
 export const dayPlanConfig = (day) =>
-  GameData.dayPlans.find(p => p.day === day) || GameData.dayPlans[GameData.dayPlans.length - 1];
+  GameData.dayPlans.find((p) => p.day === day) || GameData.dayPlans[GameData.dayPlans.length - 1];
 
-export const dayUnlockEntries = (day) =>
-  GameData.dayUnlocks.filter(x => x.day === day);
+export const dayUnlockEntries = (day) => GameData.dayUnlocks.filter((x) => x.day === day);
 
 export const slotUnlockDay = (slotId) => {
-  const p = GameData.dayPlans.find(x => (x.slots || []).includes(slotId));
+  const p = GameData.dayPlans.find((x) => (x.slots || []).includes(slotId));
   return p ? p.day : 1;
 };
 
@@ -93,5 +91,7 @@ export async function loadDayFlow(day) {
     const res = await fetch(versionedUrl(`data/flows/day${day}.json`), { cache: 'reload' });
     if (!res.ok) return null;
     return await res.json();
-  } catch { return null; }
+  } catch {
+    return null;
+  }
 }

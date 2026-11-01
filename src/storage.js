@@ -5,11 +5,11 @@ export const SAVE_SCHEMA_VERSION = 2;
 export const SAVE_SLOT_COUNT = 3;
 
 export const KEYS = Object.freeze({
-  saveSlots:     'rfaSaveSlots',
-  visualTheme:   'rfaVisualTheme',
-  fallSpeed:     'rfaFallSpeed',
+  saveSlots: 'rfaSaveSlots',
+  visualTheme: 'rfaVisualTheme',
+  fallSpeed: 'rfaFallSpeed',
   noteGameplaySfx: 'rfaNoteGameplaySfx',
-  prologueSeen:  'rfaPrologueSeen',
+  prologueSeen: 'rfaPrologueSeen',
   resourceIntro: 'rfaResourceIntroSeen',
 });
 
@@ -36,17 +36,17 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
   };
 }
 
-const asArray = v => Array.isArray(v) ? v : [];
-const asObject = v => (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+const asArray = (v) => (Array.isArray(v) ? v : []);
+const asObject = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
 
 function normalizeUnlockHistory(raw) {
-  return asArray(raw?.unlockHistory).filter(x => x && x.songId);
+  return asArray(raw?.unlockHistory).filter((x) => x && x.songId);
 }
 
 function normalizeLearnedSongs(raw, initialLearnedSongs) {
   const set = new Set(initialLearnedSongs);
-  asArray(raw?.learnedSongs).forEach(id => set.add(id));
-  normalizeUnlockHistory(raw).forEach(x => set.add(x.songId));
+  asArray(raw?.learnedSongs).forEach((id) => set.add(id));
+  normalizeUnlockHistory(raw).forEach((x) => set.add(x.songId));
   return [...set];
 }
 
@@ -56,8 +56,9 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
   const DAY1_SHIFT_TUTORIAL_KEY = 'day1ShiftTutorial';
   const mergedTutorialSeen = { ...asObject(raw.tutorialSeen) };
   const firstShiftDone = !!(raw.firstShiftDone || mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY]);
-  if (firstShiftDone && !mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY]) mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY] = 1;
-  const bossLettersSeen = asArray(raw?.bossLettersSeen).filter(x => typeof x === 'string');
+  if (firstShiftDone && !mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY])
+    mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY] = 1;
+  const bossLettersSeen = asArray(raw?.bossLettersSeen).filter((x) => typeof x === 'string');
   return {
     ...base,
     ...raw,
@@ -90,29 +91,43 @@ export function loadSaveSlots(initialLearnedSongs = INITIAL_LEARNED_SONGS_FALLBA
   try {
     const data = JSON.parse(localStorage.getItem(KEYS.saveSlots));
     if (Array.isArray(data)) raw = empty.map((_, i) => data[i] || null);
-  } catch (_) { /* 损坏：使用空槽 */ }
-  return raw.map(slot => readSlot(slot, initialLearnedSongs));
+  } catch (_) {
+    /* 损坏：使用空槽 */
+  }
+  return raw.map((slot) => readSlot(slot, initialLearnedSongs));
 }
 
 export function persistSaveSlots(slots) {
-  try { localStorage.setItem(KEYS.saveSlots, JSON.stringify(slots)); } catch (_) {}
+  try {
+    localStorage.setItem(KEYS.saveSlots, JSON.stringify(slots));
+  } catch (_) {}
 }
 
 export function readVisualTheme() {
-  try { return localStorage.getItem(KEYS.visualTheme) || ''; } catch (_) { return ''; }
+  try {
+    return localStorage.getItem(KEYS.visualTheme) || '';
+  } catch (_) {
+    return '';
+  }
 }
 export function saveVisualTheme(theme) {
-  try { localStorage.setItem(KEYS.visualTheme, theme); } catch (_) {}
+  try {
+    localStorage.setItem(KEYS.visualTheme, theme);
+  } catch (_) {}
 }
 
 export function readFallSpeed(defaultIdx = 1) {
   try {
     const v = parseInt(localStorage.getItem(KEYS.fallSpeed) || String(defaultIdx + 1), 10);
     return Number.isFinite(v) ? v - 1 : defaultIdx;
-  } catch (_) { return defaultIdx; }
+  } catch (_) {
+    return defaultIdx;
+  }
 }
 export function saveFallSpeed(idx) {
-  try { localStorage.setItem(KEYS.fallSpeed, String(idx + 1)); } catch (_) {}
+  try {
+    localStorage.setItem(KEYS.fallSpeed, String(idx + 1));
+  } catch (_) {}
 }
 
 /** 打歌时音符判定等音效；默认关闭（未写入则为 false）。 */
@@ -132,24 +147,40 @@ export function saveNoteGameplaySfx(enabled) {
 }
 
 export function readPrologueSeen() {
-  try { return localStorage.getItem(KEYS.prologueSeen) === '1'; } catch (_) { return false; }
+  try {
+    return localStorage.getItem(KEYS.prologueSeen) === '1';
+  } catch (_) {
+    return false;
+  }
 }
 export function savePrologueSeen() {
-  try { localStorage.setItem(KEYS.prologueSeen, '1'); } catch (_) {}
+  try {
+    localStorage.setItem(KEYS.prologueSeen, '1');
+  } catch (_) {}
 }
 export function clearPrologueSeen() {
-  try { localStorage.removeItem(KEYS.prologueSeen); } catch (_) {}
+  try {
+    localStorage.removeItem(KEYS.prologueSeen);
+  } catch (_) {}
 }
 
 export function readResourceIntroSeen() {
-  try { return localStorage.getItem(KEYS.resourceIntro) === '1'; } catch (_) { return false; }
+  try {
+    return localStorage.getItem(KEYS.resourceIntro) === '1';
+  } catch (_) {
+    return false;
+  }
 }
 export function saveResourceIntroSeen() {
-  try { localStorage.setItem(KEYS.resourceIntro, '1'); } catch (_) {}
+  try {
+    localStorage.setItem(KEYS.resourceIntro, '1');
+  } catch (_) {}
 }
 
 export function clearAllGameData() {
-  try { Object.values(KEYS).forEach(k => localStorage.removeItem(k)); } catch (_) {}
+  try {
+    Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
+  } catch (_) {}
 }
 
 export function versionedUrl(src) {

@@ -1,0 +1,13 @@
+{
+  "name": "rhythm-fruit-shop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"src/**/*.test.js\"",
+    "format": "prettier --write \"src/**/*.js\"",
+    "serve": "python -m http.server 8080"
+  },
+  "devDependencies": {
+    "prettier": "3.3.3"
+  }
+}

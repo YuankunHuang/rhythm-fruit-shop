@@ -19,13 +19,20 @@ export function showToast(msg) {
 // C++ equivalent: UIManager::Init(overlayWidget)
 export function createPanelManager(overlay) {
   let _currentScreen = '';
-  let _serial = 0;          // increments on every screen change (used by tutorial positioning)
+  let _serial = 0; // increments on every screen change (used by tutorial positioning)
 
   const mgr = {
     screens: [
-      'homePanel', 'savePanel', 'flowPanel', 'menuEditPanel',
-      'dayOverviewPanel', 'songPanel', 'resultPanel',
-      'upgradePanel', 'settingsPanel', 'trackDiffPanel',
+      'homePanel',
+      'savePanel',
+      'flowPanel',
+      'menuEditPanel',
+      'dayOverviewPanel',
+      'songPanel',
+      'resultPanel',
+      'upgradePanel',
+      'settingsPanel',
+      'trackDiffPanel',
       'serviceSelectPanel',
     ],
     modals: ['resetConfirmModal', 'resultPhotoModal', 'resourceIntroModal'],
@@ -33,11 +40,16 @@ export function createPanelManager(overlay) {
     modalStack: [],
 
     /** Read-only: increments when the displayed screen changes. */
-    get serial() { return _serial; },
+    get serial() {
+      return _serial;
+    },
 
     showOnly(id) {
-      if (_currentScreen !== id) { _currentScreen = id; _serial++; }
-      this.screens.forEach(pid => $(pid)?.classList.toggle('hidden', pid !== id));
+      if (_currentScreen !== id) {
+        _currentScreen = id;
+        _serial++;
+      }
+      this.screens.forEach((pid) => $(pid)?.classList.toggle('hidden', pid !== id));
       const shown = $(id);
       if (shown) shown.scrollTop = 0;
       overlay.classList.add('overlay-shell-active');
@@ -50,8 +62,11 @@ export function createPanelManager(overlay) {
 
     /** 所有注册面板隐藏（开场-only、尚未 root(home) 时关闭设置等）。 */
     showNone() {
-      if (_currentScreen !== '') { _currentScreen = ''; _serial++; }
-      this.screens.forEach(pid => $(pid)?.classList.add('hidden'));
+      if (_currentScreen !== '') {
+        _currentScreen = '';
+        _serial++;
+      }
+      this.screens.forEach((pid) => $(pid)?.classList.add('hidden'));
       overlay.classList.add('overlay-shell-active');
       overlay.style.pointerEvents = 'auto';
       overlay.classList.remove('overlay-home');
@@ -59,7 +74,10 @@ export function createPanelManager(overlay) {
       if (room) room.classList.add('hidden');
     },
 
-    root(id)    { this.stack = [id]; this.showOnly(id); },
+    root(id) {
+      this.stack = [id];
+      this.showOnly(id);
+    },
 
     replace(id) {
       if (this.stack.length) this.stack[this.stack.length - 1] = id;
@@ -88,8 +106,8 @@ export function createPanelManager(overlay) {
     },
 
     clear() {
-      this.screens.forEach(id => $(id)?.classList.add('hidden'));
-      this.modalStack.slice().forEach(id => this.closeModal(id));
+      this.screens.forEach((id) => $(id)?.classList.add('hidden'));
+      this.modalStack.slice().forEach((id) => this.closeModal(id));
       this.stack = [];
       overlay.classList.remove('overlay-shell-active');
       overlay.classList.remove('overlay-home');
@@ -111,11 +129,13 @@ export function createPanelManager(overlay) {
       const el = target && $(target);
       if (!target || !el) return null;
       el.classList.add('hidden');
-      this.modalStack = this.modalStack.filter(x => x !== target);
+      this.modalStack = this.modalStack.filter((x) => x !== target);
       return target;
     },
 
-    closeTopModal() { return this.closeModal(); },
+    closeTopModal() {
+      return this.closeModal();
+    },
   };
 
   return mgr;
