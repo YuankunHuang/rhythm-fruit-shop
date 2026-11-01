@@ -20,3 +20,21 @@ games/**/.vs/
 games/**/build/
 
 cpp_core/
+
+# Third-party tracks used by story track events. Kept for local play only:
+# no licence to publish them. The package script never ships ignored files.
+audio/tracks/ark-light.m4a
+audio/tracks/Beethoven.m4a
+audio/tracks/faraway.m4a
+audio/tracks/seeker.m4a
+audio/tracks/unwelcome-school.m4a
+assets/songs/ark_light/
+assets/songs/beethoven/
+assets/songs/faraway/
+assets/songs/seeker/
+assets/songs/unwelcome_school/
+charts/tracks/ark-light.json
+charts/tracks/beethoven.json
+charts/tracks/faraway.json
+charts/tracks/seeker.json
+charts/tracks/unwelcome-school.json

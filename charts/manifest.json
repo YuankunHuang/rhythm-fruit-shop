@@ -92,11 +92,46 @@
       "file": "service/warm-lemon-water.json"
     },
     {
+      "id": "ark_light",
+      "type": "track",
+      "title": "Ark Light",
+      "song": "audio/tracks/ark-light.m4a",
+      "file": "tracks/ark-light.json"
+    },
+    {
+      "id": "beethoven",
+      "type": "track",
+      "title": "Beethoven",
+      "song": "audio/tracks/Beethoven.m4a",
+      "file": "tracks/beethoven.json"
+    },
+    {
+      "id": "faraway",
+      "type": "track",
+      "title": "Faraway",
+      "song": "audio/tracks/faraway.m4a",
+      "file": "tracks/faraway.json"
+    },
+    {
       "id": "open_the_fruit_stand!",
       "type": "track",
       "title": "Open The Fruit Stand!",
       "song": "audio/tracks/Open the Fruit Stand!.m4a",
       "file": "tracks/open-the-fruit-stand!.json"
+    },
+    {
+      "id": "seeker",
+      "type": "track",
+      "title": "Seeker",
+      "song": "audio/tracks/seeker.m4a",
+      "file": "tracks/seeker.json"
+    },
+    {
+      "id": "unwelcome_school",
+      "type": "track",
+      "title": "Unwelcome School",
+      "song": "audio/tracks/unwelcome-school.m4a",
+      "file": "tracks/unwelcome-school.json"
     }
   ]
 }

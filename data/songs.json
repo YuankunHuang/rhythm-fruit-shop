@@ -197,6 +197,60 @@
       ]
     },
     {
+      "id": "ark_light",
+      "type": "track",
+      "title": "Ark Light",
+      "artist": "M2U & 7 Sequence",
+      "file": "audio/tracks/ark-light.m4a",
+      "duration": 139.631,
+      "bpm": 155.0,
+      "activeStart": 0.56,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "beethoven",
+      "type": "track",
+      "title": "Beethoven Virus",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/Beethoven.m4a",
+      "duration": 214.185,
+      "bpm": 155.8,
+      "activeStart": 0.323,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "faraway",
+      "type": "track",
+      "title": "Faraway",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/faraway.m4a",
+      "duration": 208.113,
+      "bpm": 215.8,
+      "activeStart": 1.17,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
       "id": "open_the_fruit_stand!",
       "title": "Open The Fruit Stand!",
       "artist": "Demo Audio",
@@ -207,6 +261,42 @@
       "audioOffset": -0.02,
       "stage": "day",
       "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "seeker",
+      "type": "track",
+      "title": "Seeker",
+      "artist": "M2U",
+      "file": "audio/tracks/seeker.m4a",
+      "duration": 132.177,
+      "bpm": 300.0,
+      "activeStart": 1.375,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "unwelcome_school",
+      "type": "track",
+      "title": "Unwelcome School",
+      "artist": "mitsukiyo",
+      "file": "audio/tracks/unwelcome-school.m4a",
+      "duration": 119.303,
+      "bpm": 180.2,
+      "activeStart": 0.136,
+      "audioOffset": -0.02,
+      "stage": "day",
       "difficulties": [
         "easy",
         "normal",

@@ -131,6 +131,20 @@ def rel(path: Path) -> str:
         return str(path)
 
 
+def drop_git_ignored(paths: list[Path]) -> list[Path]:
+    """Ignored files are local-only (e.g. unlicensed tracks) and must never ship."""
+    if not paths:
+        return paths
+    proc = subprocess.run(
+        ["git", "check-ignore", "--stdin", "-z"],
+        cwd=ROOT, input="\0".join(rel(p) for p in paths).encode("utf-8"), capture_output=True,
+    )
+    if proc.returncode not in (0, 1):
+        raise RuntimeError(f"git check-ignore failed: {proc.stderr.decode()[:200]}")
+    ignored = {p for p in proc.stdout.decode("utf-8").split("\0") if p}
+    return [p for p in paths if rel(p) not in ignored]
+
+
 def run_sync() -> None:
     subprocess.run([sys.executable, str(ROOT / "scripts" / "sync_charts_to_game.py")], cwd=ROOT, check=True)
 
@@ -206,11 +220,11 @@ def _process_audio(src: Path, dst: Path) -> str:
 def copy_audio(target: Path) -> int:
     jobs = []
     audio_root = ROOT / "audio"
-    for path in sorted(audio_root.rglob("*")):
-        if path.is_file() and path.suffix.lower() in AUDIO_SUFFIXES:
-            rel_path = path.relative_to(audio_root)
-            dst_rel = rel_path.with_suffix(".m4a") if HAS_FFMPEG else rel_path
-            jobs.append((path, target / "audio" / dst_rel))
+    files = [p for p in sorted(audio_root.rglob("*")) if p.is_file() and p.suffix.lower() in AUDIO_SUFFIXES]
+    for path in drop_git_ignored(files):
+        rel_path = path.relative_to(audio_root)
+        dst_rel = rel_path.with_suffix(".m4a") if HAS_FFMPEG else rel_path
+        jobs.append((path, target / "audio" / dst_rel))
     if not jobs:
         return 0
     (target / "audio").mkdir(parents=True, exist_ok=True)
@@ -239,7 +253,7 @@ def copy_data_files(target: Path) -> int:
 
 def copy_charts(target: Path) -> tuple[int, bool]:
     charts_root = ROOT / "charts"
-    paths = sorted(charts_root.rglob("*.json"))
+    paths = drop_git_ignored(sorted(charts_root.rglob("*.json")))
     if not paths:
         return 0, False
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
@@ -252,6 +266,26 @@ def copy_charts(target: Path) -> tuple[int, bool]:
     has_manifest = any(path.name == "manifest.json" for path in paths)
     song_chart_count = sum(1 for path in paths if path.name != "manifest.json")
     return song_chart_count, has_manifest
+
+
+def prune_unshipped_songs(target: Path) -> None:
+    """Drop song and manifest entries whose audio or chart stayed local-only."""
+    manifest_path = target / "charts" / "manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["charts"] = [
+            e for e in manifest.get("charts", [])
+            if (target / "charts" / e["file"]).exists() and (target / e["song"]).exists()
+        ]
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    songs_path = target / "data" / "songs.json"
+    data = json.loads(songs_path.read_text(encoding="utf-8"))
+    kept = [s for s in data.get("songs", []) if (target / s["file"]).exists()]
+    for s in data.get("songs", []):
+        if s not in kept:
+            print(f"  local-only, not shipped: {s['id']}")
+    data["songs"] = kept
+    songs_path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
 def copy_json_minified(src: Path, dst: Path) -> None:
@@ -302,6 +336,7 @@ def optimize_song_covers(target: Path) -> int:
     if not songs_src.exists():
         return 0
     dirs = [d for d in sorted(songs_src.iterdir()) if d.is_dir()]
+    dirs = [c.parent for c in drop_git_ignored([d / "cover.png" for d in dirs])]
     if not dirs:
         return 0
     total = 0
@@ -542,6 +577,7 @@ def build_package(target: Path, make_zip: bool) -> None:
     asset_count = copy_runtime_assets(target)
     audio_count = copy_audio(target)
     song_chart_count, has_manifest = copy_charts(target)
+    prune_unshipped_songs(target)
     (target / "README.md").write_text(SHARE_README, encoding="utf-8")
     (target / ".nojekyll").write_text("", encoding="utf-8")
     write_share_launchers(target)
