@@ -51,6 +51,7 @@ import {
   chartLevel as rateChart,
 } from './core/chart.js?v=2026-11-01a';
 import * as econ from './core/economy.js?v=2026-11-01a';
+import * as story from './story/flow.js?v=2026-11-01a';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
@@ -626,8 +627,8 @@ let savePanelMode = 'load',
   serviceRun = { active: false, id: '', fromStory: false, fromTrackEvent: false },
   lastServiceResult = null,
   vnState = { nodes: [], index: 0, onDone: null, locked: false },
-  flowRun = { active: false, phases: [], index: 0 },
   trackEventPhase = null;
+const flowCursor = new story.FlowCursor();
 const MAX_PARTICLES = 180,
   MAX_TEXTS = 10,
   MAX_ORDER_FLASH = 5;
@@ -906,7 +907,7 @@ function inStoryShellForTheme() {
     return false;
   if ((dayRun && dayRun.active) || (serviceRun && serviceRun.active)) return true;
   if (state === S.ENDED && resultMode === 'shift') return true;
-  if ([S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state) || (flowRun && flowRun.active)) return true;
+  if ([S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state) || flowCursor.active) return true;
   return false;
 }
 function preferenceDiscreteTag() {
@@ -2095,28 +2096,17 @@ function escHtml(v) {
     (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch],
   );
 }
-function matchBossMilestone(m) {
-  if (!m || !m.type) return false;
-  if (m.type === 'rent_days_left_eq') return rentDaysLeft() === +m.value;
-  if (m.type === 'shop_level_gte') return shopLevel() >= +m.value;
-  if (m.type === 'reputation_gte') return (shopState.reputation || 0) >= +m.value;
-  if (m.type === 'no_boss_letters_seen') return (shopState.bossLettersSeen || []).length === 0;
-  if (m.type === 'day_gte') return (shopState.day || 1) >= +m.value;
-  return false;
-}
-function bossLetterPlacementType(L) {
-  const p = L && L.placement;
-  return (p && p.type) || 'day_start';
+function bossLetterContext() {
+  return {
+    day: shopState.day || 1,
+    reputation: shopState.reputation || 0,
+    shopLevel: shopLevel(),
+    rentDaysLeft: rentDaysLeft(),
+    seen: shopState.bossLettersSeen || [],
+  };
 }
 function pickBossLetterForPlacement(want) {
-  const letters = GameData.bossLetters || [],
-    seen = new Set(shopState.bossLettersSeen || []);
-  let best = null;
-  for (const L of letters) {
-    if (seen.has(L.id) || !matchBossMilestone(L.milestone) || bossLetterPlacementType(L) !== want) continue;
-    if (!best || L.priority < best.priority) best = L;
-  }
-  return best;
+  return story.pickLetter(GameData.bossLetters || [], want, bossLetterContext());
 }
 let _pendingBossLetterId = null;
 function recordBossLetterSeen() {
@@ -2140,84 +2130,10 @@ function isFirstBossLetterEver() {
   return !(shopState.bossLettersSeen && shopState.bossLettersSeen.length);
 }
 function buildBossLetterNodes(L, pos) {
-  const d = L.delivery || 'plain_read',
-    mailboxshell = d === 'mailbox_intro' || isFirstBossLetterEver(),
-    nodes = [];
-  if (pos === 'after_home') {
-    if (d === 'postman_knock')
-      nodes.push({
-        text: '门被敲了两下。你拉开门缝，外面的脚步声已经走远——指缝里却多了一只薄信封，像被人故意卡在门板上。',
-      });
-    else if (d === 'yuzu_hands_you')
-      nodes.push({ text: '正要锁门，柚子把信封推过来：「我读过了。你该读你的。」' });
-    else if (mailboxshell) nodes.push({ text: '临走前，你看到门口的桌上安安静静躺着一只信封。没有邮戳。' });
-    else nodes.push({ text: '收工前，台面角落那封信等了你整整一天。' });
-  } else if (pos === 'flow_after_phase') {
-    if (d === 'postman_knock')
-      nodes.push({
-        text: '店门轻轻一响，像有人屈指敲了两记。推门只见门槛上立着一封白信封，风还没把它刮跑。',
-      });
-    else if (d === 'yuzu_hands_you')
-      nodes.push({
-        text: '柚子从侧门进来，二话不说把一封信压在你面前：「对方不想打电话。他们想让你读纸。」',
-      });
-    else if (mailboxshell)
-      nodes.push({ text: '你的眼睛先一步看见了台面——不知何时多了一只信封，角上折得过分整齐。' });
-    else nodes.push({ text: '周围安静下来。那封信却像一直在等你抬头。' });
-  } else {
-    if (d === 'postman_knock')
-      nodes.push({ text: '你刚把店门开了条缝，邮差把信往信箱口一塞，像逃班一样转身就跑。' });
-    else if (d === 'yuzu_hands_you')
-      nodes.push({ text: '柚子进店的第一件事，是把一只信封拍在吧台上：「别问，先读。」' });
-    else if (mailboxshell)
-      nodes.push({
-        text: '开店前你从信箱口抽出一张纸：寄件栏缺了半截，却印着你们店的编号——像有人专门练过怎么让你不安。',
-      });
-    else nodes.push({ text: '开业前你把台面擦过一遍，却在秤盘阴影里摸到一封信，压得平平整整。' });
-  }
-  nodes.push({ html: bossLetterBodyHtml(L) });
-  return nodes;
+  return story.letterNodes(L, pos, isFirstBossLetterEver(), bossLetterBodyHtml);
 }
-function buildBossLetterPhase(L, pos) {
-  return { type: 'dialogue', id: '__boss_' + L.id, bossLetterId: L.id, nodes: buildBossLetterNodes(L, pos) };
-}
-function prepareDayFlowWithBossLetters(flow, day) {
-  if (!flow || !Array.isArray(flow.phases)) return flow;
-  const phases = flow.phases.slice(),
-    ids = new Set(phases.map((p) => p.id).filter(Boolean)),
-    seen = new Set(shopState.bossLettersSeen || []),
-    head = [],
-    d = day ?? shopState.day ?? 1;
-  const L0 = pickBossLetterForPlacement('day_start');
-  if (L0) head.push(buildBossLetterPhase(L0, 'flow_start'));
-  const afterPool = (GameData.bossLetters || [])
-    .filter(
-      (L) =>
-        bossLetterPlacementType(L) === 'after_flow_phase' &&
-        !seen.has(L.id) &&
-        matchBossMilestone(L.milestone),
-    )
-    .sort((a, b) => (a.priority || 99) - (b.priority || 99));
-  for (const L of afterPool) {
-    const aid = L.placement && L.placement.afterPhaseId;
-    if (!aid) {
-      console.warn('[bossLetter] after_flow_phase missing afterPhaseId', L.id);
-      continue;
-    }
-    if (!ids.has(aid)) {
-      console.warn('[bossLetter] after_flow_phase: phase id not in day flow', {
-        letterId: L.id,
-        afterPhaseId: aid,
-        day: d,
-      });
-      continue;
-    }
-    const idx = phases.findIndex((p) => p.id === aid);
-    if (idx < 0) continue;
-    phases.splice(idx + 1, 0, buildBossLetterPhase(L, 'flow_after_phase'));
-    break;
-  }
-  return { ...flow, phases: head.concat(phases) };
+function prepareDayFlowWithBossLetters(flow) {
+  return story.insertBossLetters(flow, GameData.bossLetters || [], bossLetterContext(), bossLetterBodyHtml);
 }
 function rentDaysLeft() {
   return Math.max(0, (shopState.rentDueDay || 7) - (shopState.day || 1) + 1);
@@ -2545,20 +2461,11 @@ function showFlowMessage({
       if (state === S.FLOW) onPrimary();
     }, autoMs);
 }
-function serviceResultBranch() {
-  const r = lastServiceResult;
-  if (!r) return 'good';
-  if (r.customer >= 88) return 'good';
-  if (r.customer >= 62) return 'ok';
-  return 'bad';
-}
 function prologueAfterServiceNodes() {
-  const data = PROLOGUE_AFTER_SERVICE || {},
-    branch = serviceResultBranch(),
-    branches = data.branches || {},
-    lines = branches[branch] || branches.ok || branches.good || [],
-    shared = data.shared || [];
-  return [...lines, ...shared];
+  return story.afterServiceNodes(
+    PROLOGUE_AFTER_SERVICE,
+    story.serviceBranch(lastServiceResult ? lastServiceResult.customer : null),
+  );
 }
 
 let _hideBackdropTimer = 0;
@@ -2793,8 +2700,8 @@ function advanceVN() {
   if (!node) return;
   if (node.action === 'startService') {
     vnState.locked = true;
-    if (flowRun.active) {
-      const sphase = flowRun.phases[flowRun.index++];
+    if (flowCursor.active) {
+      const sphase = flowCursor.take();
       startFlowServiceTransition(sphase);
     } else {
       startServiceTransition();
@@ -2803,7 +2710,7 @@ function advanceVN() {
   }
   if (node.action === 'settlement') {
     vnState.locked = true;
-    if (flowRun.active) {
+    if (flowCursor.active) {
       runNextFlowPhase();
     } else {
       showOneDaySettlement();
@@ -2838,16 +2745,16 @@ function startServiceTransition() {
 }
 function startDayFlow(flow) {
   storySlotId = 'day';
-  flowRun = { active: true, phases: flow.phases, index: 0 };
+  flowCursor.start(flow.phases);
   runNextFlowPhase();
 }
 function runNextFlowPhase() {
-  if (!flowRun.active || flowRun.index >= flowRun.phases.length) {
-    flowRun.active = false;
+  if (flowCursor.finished) {
+    flowCursor.stop();
     showDaySummary();
     return;
   }
-  const phase = flowRun.phases[flowRun.index++];
+  const phase = flowCursor.take();
   if (phase.slotId) {
     storySlotId = phase.slotId;
     invalidateBackdropCache();
@@ -2866,17 +2773,17 @@ function runNextFlowPhase() {
   } else if (phase.type === 'track_event') {
     showTrackEventDiffSelect(phase);
   } else if (phase.type === 'score_branch') {
-    const score = lastServiceResult ? lastServiceResult.customer : 0;
-    const branch = [...(phase.branches || [])].sort((a, b) => b.min - a.min).find((b) => score >= b.min);
-    const nodes = [...(branch ? branch.nodes : []), ...(phase.after || [])];
-    showVN(nodes, vnAfterDialogue);
+    showVN(
+      story.scoreBranchNodes(phase, lastServiceResult ? lastServiceResult.customer : 0),
+      vnAfterDialogue,
+    );
   } else if (phase.type === 'service_select') {
     showServiceSelectPanel(phase);
   } else if (phase.type === 'tutorial_complete') {
-    flowRun.active = false;
+    flowCursor.stop();
     completeTutorialAndStartDay();
   } else if (phase.type === 'settlement') {
-    flowRun.active = false;
+    flowCursor.stop();
     showDaySummary();
   } else {
     vnAfterDialogue();
@@ -3041,7 +2948,7 @@ async function showDayIntro() {
   if (day === 1 && !day1ShiftTutorialDone()) {
     loadDayFlow(1).then((_d1) => {
       if (_d1 && Array.isArray(_d1.phases) && _d1.phases.length) {
-        const flow = prepareDayFlowWithBossLetters(_d1, 1);
+        const flow = prepareDayFlowWithBossLetters(_d1);
         showSceneBackdrop();
         showFlowMessage({
           eyebrow: '\u5f00\u5e97\u955c\u5934',
@@ -3071,7 +2978,7 @@ async function showDayIntro() {
     cinematic: true,
   });
   const rawFlow = await loadDayFlow(day),
-    flow = prepareDayFlowWithBossLetters(rawFlow || null, day);
+    flow = prepareDayFlowWithBossLetters(rawFlow || null);
   if (state !== S.FLOW) return;
   if (flow && Array.isArray(flow.phases) && flow.phases.length) {
     showFlowMessage({
@@ -3422,7 +3329,7 @@ function showSettings() {
   renderSpeedRows();
   renderSettingsNoteSfx();
   const sec = $('settingsAbandonSection');
-  const _inDay = flowRun.active || dayRun.active || [S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state);
+  const _inDay = flowCursor.active || dayRun.active || [S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state);
   if (sec) sec.classList.toggle('hidden', !_inDay);
   const skipSec = $('settingsSkipSection');
   if (skipSec)
@@ -3450,10 +3357,10 @@ function closeSettings() {
   closeCurrentPanel();
 }
 function abandonFlowDay() {
-  if (!flowRun.active && !dayRun.active && ![S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state)) return;
+  if (!flowCursor.active && !dayRun.active && ![S.FLOW, S.MENU_EDIT, S.OVERVIEW].includes(state)) return;
   clearBossLetterPending();
-  const hadProgress = flowRun.active || dayRun.active;
-  flowRun = { active: false, phases: [], index: 0 };
+  const hadProgress = flowCursor.active || dayRun.active;
+  flowCursor.stop();
   dayRun = { active: false, queue: [], index: 0, aborted: false };
   trackEventPhase = null;
   serviceRun = { active: false, id: '', fromStory: false, fromTrackEvent: false };
@@ -3632,7 +3539,7 @@ async function start() {
         );
         if (serviceRun.active) {
           serviceRun.active = false;
-          if (flowRun.active) {
+          if (flowCursor.active) {
             runNextFlowPhase();
           } else {
             showVN(prologueAfterServiceNodes());
@@ -3723,7 +3630,7 @@ function handlePlaybackError(e) {
   if (serviceRun.active) {
     showToast('服务音频没有成功播放');
     serviceRun.active = false;
-    if (flowRun.active) {
+    if (flowCursor.active) {
       runNextFlowPhase();
     } else {
       showVN(prologueAfterServiceNodes());
@@ -3932,7 +3839,7 @@ function showServiceStoryResult(r) {
   clearResultCelebration();
   clearResultPhoto();
   updateMenuLoop();
-  if (flowRun.active) {
+  if (flowCursor.active) {
     shopState.coins += r.money;
     shopState.reputation += r.rep;
     shopState.totalShifts++;
@@ -4038,7 +3945,7 @@ async function completeTutorialAndStartDay() {
   state = S.FLOW;
   updateMenuLoop();
   const _flowRaw = await loadDayFlow(1),
-    _merged = _flowRaw && _flowRaw.phases ? prepareDayFlowWithBossLetters(_flowRaw, 1) : null;
+    _merged = _flowRaw && _flowRaw.phases ? prepareDayFlowWithBossLetters(_flowRaw) : null;
   if (_merged && Array.isArray(_merged.phases)) {
     const _post = _merged.phases.filter(
       (p) =>
