@@ -44,6 +44,12 @@ import {
   warmBackdropCache,
 } from './render.js?v=2026-05-10u';
 import { createPanelManager, showToast } from './ui/panels.js?v=2026-05-10q';
+import { judgeTiming, lowerBound, pickHitTarget } from './core/judge.js?v=2026-11-01a';
+import {
+  buildNotes as buildChartNotes,
+  chartStats as countChart,
+  chartLevel as rateChart,
+} from './core/chart.js?v=2026-11-01a';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
@@ -1725,29 +1731,11 @@ function buildNotes() {
   song = SONGS[songIndex];
   ensurePlayableDifficulty([song]);
   diff = songDiff(song);
-  const chart = songCharts(song)[diff.id] || [],
-    delta = (song.audioOffset || 0) + 0.02,
-    travel = laneTravel();
-  return chart
-    .map((n) => {
-      const duration = Math.max(0, (n.end || n.time) - n.time),
-        tickInterval = 0.25;
-      return {
-        id: n.id,
-        kind: n.kind,
-        time: n.time + delta,
-        end: n.end + delta,
-        lane: n.lane || 0,
-        fruit: FRUITS[n.fruit % FRUITS.length],
-        accent: n.accent,
-        state: 'pending',
-        travel,
-        tickInterval,
-        holdTicks: n.kind === 'press' ? Math.max(1, Math.floor(duration / tickInterval)) : 0,
-        ticksDone: 0,
-      };
-    })
-    .sort((a, b) => a.time - b.time || a.end - b.end || a.id - b.id);
+  return buildChartNotes(songCharts(song)[diff.id] || [], {
+    audioOffset: song.audioOffset || 0,
+    travel: laneTravel(),
+    fruits: FRUITS,
+  });
 }
 function applyFallSpeed() {
   const travel = laneTravel();
@@ -1833,14 +1821,7 @@ function noteY(n, t, when = n.time) {
   return view.hitY - ((when - t) / (n.travel || diff.travel)) * (view.hitY - view.laneTop);
 }
 function lowerBoundNotes(time) {
-  let lo = 0,
-    hi = notes.length;
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1;
-    if (notes[mid].time < time) lo = mid + 1;
-    else hi = mid;
-  }
-  return lo;
+  return lowerBound(notes, time);
 }
 function noteLookahead() {
   return Math.max(diff.travel || 1, notes[0]?.travel || 0);
@@ -1848,38 +1829,8 @@ function noteLookahead() {
 function pixelsPerSecond(n) {
   return (view.hitY - view.laneTop) / (n.travel || diff.travel);
 }
-function centerDistance(n, t) {
-  return Math.abs(noteY(n, t, n.time) - view.hitY);
-}
-function judge(err, n) {
-  const d = Math.abs(err) * pixelsPerSecond(n);
-  if (d <= pixelsPerSecond(n) * WINDOWS.perfect)
-    return { name: 'Perfect', score: 300, acc: 1, color: '#8cffc1' };
-  if (d <= pixelsPerSecond(n) * WINDOWS.great)
-    return { name: 'Great', score: 220, acc: 0.72, color: '#80b7ff' };
-  if (d <= pixelsPerSecond(n) * WINDOWS.good) return { name: 'Good', score: 120, acc: 0.4, color: '#ffe66d' };
-  if (err > 0 && err <= WINDOWS.miss) return { name: 'Good', score: 80, acc: 0.22, color: '#ffe66d' };
-  return null;
-}
 function hitTarget(t) {
-  let due = null,
-    early = null;
-  const start = Math.max(0, lowerBoundNotes(t - WINDOWS.miss) - 2);
-  for (let i = start; i < notes.length; i++) {
-    const n = notes[i];
-    if (n.time > t + WINDOWS.miss) break;
-    if (n.state !== 'pending' || (n.kind !== 'tap' && n.kind !== 'press')) continue;
-    const err = t - n.time;
-    if (err > WINDOWS.miss || err < -WINDOWS.good) continue;
-    const item = { n, err, dist: centerDistance(n, t) },
-      slot = err >= -WINDOWS.perfect ? 'due' : 'early',
-      cur = slot === 'due' ? due : early;
-    if (!cur || n.time < cur.n.time || (n.time === cur.n.time && item.dist < cur.dist)) {
-      if (slot === 'due') due = item;
-      else early = item;
-    }
-  }
-  return due || early;
+  return pickHitTarget(notes, t, WINDOWS, diff.travel);
 }
 function makeOrders() {
   const p = ensureDailyPlan(),
@@ -1942,27 +1893,10 @@ function reset() {
   resultMode = 'shift';
 }
 function chartStats(s, d = songDiff(s)) {
-  const chart = songCharts(s)[d.id] || [];
-  return { notes: chart.length, holds: chart.filter((n) => n.kind === 'press').length };
-}
-function chartComplexity(s, d) {
-  const st = chartStats(s, d),
-    minutes = Math.max(0.75, (s.duration || 120) / 60),
-    notesPerMin = st.notes / minutes,
-    holdRate = st.holds / Math.max(1, st.notes),
-    bpm = s.bpm || 120,
-    density = clamp((notesPerMin - 55) / 210, 0, 1),
-    holds = clamp(holdRate / 0.22, 0, 1),
-    tempo = clamp((bpm - 95) / 95, 0, 1),
-    endurance = clamp(((s.duration || 120) - 110) / 170, 0, 1);
-  return density * 0.62 + holds * 0.22 + tempo * 0.1 + endurance * 0.06;
+  return countChart(songCharts(s)[d.id] || []);
 }
 function chartLevel(s, d = songDiff(s)) {
-  if (d.id === 'service') return 1;
-  const band = CHART_LEVEL_BANDS[d.id] || [1, 10],
-    c = chartComplexity(s, d),
-    level = Math.round(band[0] + c * (band[1] - band[0]));
-  return clamp(level, 1, 10);
+  return d.id === 'service' ? 1 : rateChart(chartStats(s, d), s, CHART_LEVEL_BANDS[d.id]);
 }
 function chartLevelBadge(s, d = songDiff(s)) {
   return d.id === 'service'
@@ -4644,7 +4578,7 @@ function startPress() {
   const t = songTime(),
     target = hitTarget(t);
   if (target) {
-    const j = judge(target.err, target.n);
+    const j = judgeTiming(target.err, WINDOWS);
     if (j) {
       target.n.kind === 'press' ? beginHold(target.n, j, target.err) : hit(target.n, j, target.err);
       return;
