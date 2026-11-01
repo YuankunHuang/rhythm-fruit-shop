@@ -22,7 +22,7 @@ export function warmBackdropCache(RC) {
 // ── Frame-local render context ────────────────────────────────────────────────
 // Set at the start of each drawFrame call; all draw functions read from these.
 let state, view, selectedTheme, songCoverImg, songCoverImgId, homeVisual;
-let notes, particles, texts, slashFx, centerJudge;
+let notes, particles, texts, slashFx, slashLines, flowing, centerJudge;
 let products, orders, orderFlash;
 let heat, combo, maxCombo, counts, customerAnger, holding, activeHold;
 let readyTimer, leadInTimer, leadInTotal, resumeCountdown;
@@ -47,6 +47,8 @@ function _unpackRC(RC) {
     particles,
     texts,
     slashFx,
+    slashLines,
+    flowing,
     centerJudge,
     products,
     orders,
@@ -211,7 +213,43 @@ function drawCachedBackdrop() {
   ctx.drawImage(_backdropCache.canvas, 0, 0);
   ctx.restore();
 }
+/** While the finger stays down with flow unlocked: a stream of juice rising from the hit line. */
+function drawFlowRibbon(t) {
+  const u = view.uiScale || 1,
+    next = notes.find((n) => n.state !== 'done' && n.time >= t - 0.2),
+    color = next ? next.fruit.color : '#ffb14c',
+    top = view.laneTop + 10 * u,
+    bottom = view.hitY,
+    half = 16 * u;
+  ctx.save();
+  const g = ctx.createLinearGradient(0, top, 0, bottom);
+  g.addColorStop(0, 'rgba(255,255,255,0)');
+  g.addColorStop(0.55, color + '55');
+  g.addColorStop(1, color + 'cc');
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  for (let y = bottom; y >= top; y -= 8 * u) {
+    const w = half * (0.75 + 0.25 * Math.sin(y * 0.045 + t * 9));
+    ctx.lineTo(view.cx - w, y);
+  }
+  for (let y = top; y <= bottom; y += 8 * u) {
+    const w = half * (0.75 + 0.25 * Math.sin(y * 0.045 + t * 9 + 1.7));
+    ctx.lineTo(view.cx + w, y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.globalAlpha = 0.55;
+  ctx.fillStyle = '#ffffff';
+  for (let i = 0; i < 6; i++) {
+    const y = bottom - ((t * 240 * u + i * 70 * u) % (bottom - top));
+    ctx.beginPath();
+    ctx.arc(view.cx + Math.sin(i * 2.3 + t * 4) * half * 0.4, y, 2.4 * u, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
 function drawVisibleNotes(t) {
+  if (flowing) drawFlowRibbon(t);
   let count = 0,
     lookahead = noteLookahead(),
     start = Math.max(0, lowerBoundNotes(t - lookahead - WINDOWS.miss - maxNoteSpan) - 4),
@@ -581,7 +619,17 @@ function drawNote(n, t) {
     ctx.arc(x, y2, 5 * u, 0, Math.PI * 2);
     ctx.fill();
     if (n.state === 'holding') drawHoldNozzle(x, n, t, r);
-    else {
+    else if (n.state === 'chopping') {
+      ctx.strokeStyle = 'rgba(255,177,76,.95)';
+      ctx.lineWidth = 3 * u;
+      for (let i = 0; i < n.chops; i++) {
+        const cy = bottom - (i + 1) * Math.min(18 * u, body / (n.chops + 1));
+        ctx.beginPath();
+        ctx.moveTo(x - r * 0.8, cy + (i % 2 ? 4 : -4) * u);
+        ctx.lineTo(x + r * 0.8, cy - (i % 2 ? 4 : -4) * u);
+        ctx.stroke();
+      }
+    } else {
       ctx.fillStyle = night ? '#79fff5' : '#3f9f65';
       ctx.font = `900 ${Math.round(12 * u)}px system-ui`;
       ctx.textAlign = 'center';
@@ -627,6 +675,32 @@ function drawCenterJudge() {
   ctx.restore();
   ctx.globalAlpha = 1;
 }
+/** Blade strokes left by swipes and chops. */
+function drawSlashLines() {
+  const u = view.uiScale || 1;
+  for (const sl of slashLines || []) {
+    const a = 1 - sl.age / sl.life,
+      len = 120 * u * (0.6 + 0.4 * (1 - a)),
+      dx = Math.cos(sl.angle) * len,
+      dy = Math.sin(sl.angle) * len;
+    ctx.save();
+    ctx.globalAlpha = a;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = sl.color;
+    ctx.shadowBlur = 16 * u;
+    ctx.strokeStyle = sl.color;
+    ctx.lineWidth = 9 * u * a;
+    ctx.beginPath();
+    ctx.moveTo(sl.x - dx, sl.y - dy);
+    ctx.lineTo(sl.x + dx, sl.y + dy);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3 * u * a;
+    ctx.stroke();
+    ctx.restore();
+  }
+}
 function drawFx() {
   const p = themePalette();
   for (const part of particles) {
@@ -653,6 +727,23 @@ function drawFx() {
       ctx.strokeStyle = 'rgba(255,255,255,.48)';
       ctx.lineWidth = 1.4;
       ctx.stroke();
+    } else if (part.kind === 'half') {
+      // Half a fruit: skin on the round side, pale flesh on the cut.
+      ctx.scale(1, part.side);
+      ctx.beginPath();
+      ctx.arc(0, 0, part.r, 0, Math.PI);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,248,226,.92)';
+      ctx.beginPath();
+      ctx.ellipse(0, 1.5, part.r * 0.86, part.r * 0.16, 0, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (part.kind === 'cube') {
+      rr(-part.r, -part.r, part.r * 2, part.r * 2, part.r * 0.35);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.4)';
+      rr(-part.r * 0.7, -part.r * 0.7, part.r * 0.8, part.r * 0.5, part.r * 0.2);
+      ctx.fill();
     } else if (part.kind === 'spark') {
       ctx.globalAlpha = a * a;
       ctx.beginPath();
@@ -669,6 +760,7 @@ function drawFx() {
     }
     ctx.restore();
   }
+  drawSlashLines();
   drawCenterJudge();
   ctx.globalAlpha = 1;
   ctx.textAlign = 'center';

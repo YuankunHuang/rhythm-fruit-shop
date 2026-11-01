@@ -742,6 +742,7 @@
     {
       "id": "select_yanzi",
       "type": "service_select",
+      "unlockInput": "swipe",
       "customer": "焰子",
       "correctId": "citrus_fizz",
       "menuId": "citrusFizz",

@@ -35,8 +35,21 @@ export class FlowCursor {
 }
 
 /** Nodes for a score_branch phase: the highest branch whose min the score reaches, then `after`. */
-export function scoreBranchNodes(phase, score) {
-  const branch = [...(phase.branches || [])].sort((a, b) => b.min - a.min).find((b) => score >= b.min);
+/**
+ * The reaction branch for a result. A branch with `style` wins when that way of playing finished at
+ * least `minShare` (default 0.5) of the notes; otherwise the highest score band reached.
+ */
+export function pickBranch(branches = [], score, styleShares = {}) {
+  const styled = branches.find((b) => b.style && (styleShares[b.style] || 0) >= (b.minShare ?? 0.5));
+  if (styled) return styled;
+  return branches
+    .filter((b) => !b.style)
+    .sort((a, b) => b.min - a.min)
+    .find((b) => score >= b.min);
+}
+
+export function scoreBranchNodes(phase, score, styleShares) {
+  const branch = pickBranch(phase.branches, score, styleShares);
   return [...(branch ? branch.nodes : []), ...(phase.after || [])];
 }
 

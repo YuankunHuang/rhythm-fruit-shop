@@ -28,6 +28,18 @@ export function buildNotes(chart, { audioOffset = 0, travel, fruits }) {
     .sort((a, b) => a.time - b.time || a.end - b.end || a.id - b.id);
 }
 
+/** The efficiency plan's chart: every hold becomes taps at its head and tail, so nothing is held. */
+export function mechanize(chart) {
+  return chart
+    .flatMap((n) => {
+      if (n.kind !== 'press') return [{ ...n }];
+      const head = { ...n, kind: 'tap', end: n.time };
+      return n.end - n.time >= 0.3 ? [head, { ...n, kind: 'tap', time: n.end, end: n.end }] : [head];
+    })
+    .sort((a, b) => a.time - b.time)
+    .map((n, i) => ({ ...n, id: i }));
+}
+
 export function chartStats(chart) {
   return { notes: chart.length, holds: chart.filter((n) => n.kind === 'press').length };
 }

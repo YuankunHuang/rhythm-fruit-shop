@@ -8,6 +8,7 @@ import {
   insertBossLetters,
   letterNodes,
   matchMilestone,
+  pickBranch,
   pickLetter,
   scoreBranchNodes,
   serviceBranch,
@@ -162,4 +163,16 @@ test('every after_flow_phase boss letter anchors to a phase that exists in some 
         allIds.has(L.placement.afterPhaseId),
         `${L.id} anchors to missing ${L.placement.afterPhaseId}`,
       );
+});
+
+test('a style branch wins when that way of playing finished enough of the notes', () => {
+  const branches = [
+    { min: 88, nodes: ['good'] },
+    { min: 0, nodes: ['low'] },
+    { style: 'chop', minShare: 0.5, nodes: ['cut'] },
+  ];
+  assert.deepEqual(pickBranch(branches, 95, { chop: 0.6 }).nodes, ['cut']);
+  assert.deepEqual(pickBranch(branches, 95, { chop: 0.4 }).nodes, ['good']);
+  assert.deepEqual(pickBranch(branches, 10).nodes, ['low'], 'no style shares: score bands as before');
+  assert.deepEqual(scoreBranchNodes({ branches, after: ['x'] }, 95, { chop: 1 }), ['cut', 'x']);
 });

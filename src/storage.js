@@ -35,9 +35,12 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
     unlockHistory: [],
     tutorialSeen: {},
     bossLettersSeen: [],
+    inputs: [],
   };
 }
 
+/** Ways of playing the story can unlock (see docs/input_modes.md). */
+const INPUT_MODES = ['swipe', 'chop', 'flow'];
 const asArray = (v) => (Array.isArray(v) ? v : []);
 const asObject = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
 
@@ -61,6 +64,7 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
   if (firstShiftDone && !mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY])
     mergedTutorialSeen[DAY1_SHIFT_TUTORIAL_KEY] = 1;
   const bossLettersSeen = asArray(raw?.bossLettersSeen).filter((x) => typeof x === 'string');
+  const inputs = asArray(raw?.inputs).filter((x) => INPUT_MODES.includes(x));
   return {
     ...base,
     ...raw,
@@ -71,6 +75,7 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
     unlockHistory: normalizeUnlockHistory(raw),
     tutorialSeen: mergedTutorialSeen,
     bossLettersSeen,
+    inputs,
   };
 }
 

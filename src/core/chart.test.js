@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildNotes, chartStats, chartComplexity, chartLevel } from './chart.js';
+import { buildNotes, chartStats, chartComplexity, chartLevel, mechanize } from './chart.js';
 
 const fruits = ['apple', 'orange', 'lime'];
 
@@ -53,4 +53,27 @@ test('chartLevel maps complexity into the band and clamps to 1..10', () => {
     fast = { duration: 300, bpm: 200 };
   assert.equal(chartComplexity(dense, fast), 1);
   assert.equal(chartLevel(dense, fast, [7, 10]), 10);
+});
+
+test('mechanize turns every hold into taps at its head and tail', () => {
+  const chart = [
+    { id: 0, kind: 'tap', time: 1, end: 1, fruit: 0 },
+    { id: 1, kind: 'press', time: 2, end: 3, fruit: 1 },
+    { id: 2, kind: 'press', time: 4, end: 4.1, fruit: 2 },
+  ];
+  const m = mechanize(chart);
+  assert.deepEqual(
+    m.map((n) => [n.kind, n.time]),
+    [
+      ['tap', 1],
+      ['tap', 2],
+      ['tap', 3],
+      ['tap', 4],
+    ],
+  );
+  assert.deepEqual(
+    m.map((n) => n.id),
+    [0, 1, 2, 3],
+  );
+  assert.equal(chart[1].kind, 'press', 'the original chart is left alone');
 });

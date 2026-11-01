@@ -113,6 +113,7 @@
     {
       "id": "service_guiwei",
       "type": "service",
+      "unlockInput": "chop",
       "songId": "grape_smoothie_smolder",
       "menuId": "grapeSmoothie",
       "slotId": "day"
@@ -122,6 +123,25 @@
       "type": "score_branch",
       "variable": "customer",
       "branches": [
+        {
+          "style": "chop",
+          "minShare": 0.3,
+          "label": "切出来的",
+          "nodes": [
+            {
+              "speaker": "顾薇",
+              "text": "（吸管戳下去，停了一下）……有阻力。"
+            },
+            {
+              "speaker": "",
+              "text": "她把杯子举到窗边，看了很久里面的颗粒，才喝第一口。"
+            },
+            {
+              "speaker": "顾薇",
+              "text": "你是切的，不是打的。"
+            }
+          ]
+        },
         {
           "min": 88,
           "label": "好评 (>=88)",
@@ -378,6 +398,7 @@
     {
       "id": "service_laoxian",
       "type": "service",
+      "unlockInput": "flow",
       "songId": "lychee_juice",
       "menuId": "",
       "slotId": "dusk"
@@ -387,6 +408,25 @@
       "type": "score_branch",
       "variable": "customer",
       "branches": [
+        {
+          "style": "flow",
+          "minShare": 0.5,
+          "label": "一口气做完的",
+          "nodes": [
+            {
+              "speaker": "",
+              "text": "他接过杯子。这一次，大拇指也搭了上来。"
+            },
+            {
+              "speaker": "老弦",
+              "text": "一弓到底。"
+            },
+            {
+              "speaker": "",
+              "text": "他没再说话，慢慢喝完了。"
+            }
+          ]
+        },
         {
           "min": 88,
           "label": "好评 (>=88)",

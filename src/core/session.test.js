@@ -3,7 +3,19 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { buildNotes } from './chart.js';
-import { advance, createSession, drainEvents, isAngry, press, release, scoreShift } from './session.js';
+import {
+  advance,
+  chop,
+  CHOP_GRACE,
+  createSession,
+  drainEvents,
+  isAngry,
+  press,
+  release,
+  scoreShift,
+  styleShare,
+  swipe,
+} from './session.js';
 
 const root = new URL('../../', import.meta.url);
 const { windows } = JSON.parse(readFileSync(new URL('data/difficulties.json', root), 'utf8'));
@@ -157,4 +169,160 @@ test('event order keeps the last effect on top: hold completion comes after its 
   assert.equal(s.lastComboBurst, 25);
   // The caller shows the last centre judgement, so completion must follow the burst.
   assert.ok(types.lastIndexOf('comboBurst') < types.lastIndexOf('holdComplete'));
+});
+
+// ---- Ways of playing beyond tap and hold (docs/input_modes.md) ----
+
+const ALL_INPUTS = ['swipe', 'chop', 'flow'];
+const withInputs = (chart, inputs = ALL_INPUTS) =>
+  createSession(
+    buildNotes(chart, { travel: 2, fruits: [{ color: '#fff' }] }),
+    [{ kind: 'combo', need: 1, have: 0, done: false }],
+    windows,
+    inputs,
+  );
+const taps = (...times) => times.map((t, i) => ({ id: i, kind: 'tap', time: t, end: t, fruit: 0 }));
+const hold = (time, end, id = 0) => ({ id, kind: 'press', time, end, fruit: 0 });
+const types = (s) => drainEvents(s).map((e) => e.type);
+const total = (c) => c.Perfect + c.Great + c.Good + c.Miss;
+
+test('unlocked inputs do not change a standard autoplay run', () => {
+  const plain = session(lychee),
+    open = withInputs(lychee);
+  run(plain, autoplay());
+  run(open, autoplay());
+  assert.deepEqual(open.counts, plain.counts);
+  assert.equal(open.maxCombo, plain.maxCombo);
+  assert.equal(open.styles.flow + open.styles.swipe + open.styles.chop, 0);
+});
+
+test('a swipe right after a tap turns that tap into a swipe, with the same judgement', () => {
+  const s = withInputs(taps(1));
+  press(s, 1, 2);
+  swipe(s, 1.05, Math.PI / 4);
+  assert.deepEqual([s.styles.tap, s.styles.swipe, s.counts.Perfect], [0, 1, 1]);
+  assert.ok(types(s).includes('swipe'));
+});
+
+test('before swipe is unlocked, a swipe is just a tap', () => {
+  const s = withInputs(taps(1), []);
+  press(s, 1, 2);
+  swipe(s, 1.05, 0);
+  assert.deepEqual([s.styles.tap, s.styles.swipe], [1, 0]);
+  assert.ok(!types(s).includes('swipe'));
+});
+
+test('a hold can be chopped: let go, then cut it enough times before the end', () => {
+  const s = withInputs([hold(1, 3)]); // 2 s long: needs 4 cuts
+  press(s, 1, 2);
+  release(s, 1.2);
+  assert.equal(s.activeHold.state, 'chopping', 'letting go is not a miss when chop is unlocked');
+  for (const t of [1.4, 1.8, 2.2, 2.6]) press(s, t, 2);
+  advance(s, 3, DT);
+  assert.equal(s.styles.chop, 1);
+  assert.equal(s.productCounts.chunks, 4, 'each cut is a portion of chunks');
+  assert.equal(s.productCounts.juice, 0);
+  assert.deepEqual(s.counts, { Perfect: 1, Great: 0, Good: 0, Miss: 0 });
+  assert.equal(s.combo, 2, 'the head and the finished cut both count toward combo');
+});
+
+test('a zigzag while still pressed also cuts the hold', () => {
+  const s = withInputs([hold(1, 2)]); // 1 s long: needs 2 cuts
+  press(s, 1, 2);
+  chop(s, 1.3);
+  chop(s, 1.6);
+  release(s, 1.7);
+  advance(s, 2, DT);
+  assert.equal(s.styles.chop, 1);
+  assert.equal(s.counts.Miss, 0);
+});
+
+test('letting go of a hold and never cutting is still an early release after the grace time', () => {
+  const s = withInputs([hold(1, 3)]);
+  press(s, 1, 2);
+  release(s, 1.2);
+  advance(s, 1.2 + CHOP_GRACE - 0.01, DT);
+  assert.equal(s.counts.Miss, 0);
+  advance(s, 1.2 + CHOP_GRACE + 0.01, DT);
+  assert.deepEqual(s.counts, { Perfect: 0, Great: 0, Good: 0, Miss: 1 });
+  assert.equal(s.missReasons.EarlyRelease, 1);
+});
+
+test('too few cuts by the end is a miss, and the head judgement is withdrawn', () => {
+  const s = withInputs([hold(1, 3)]);
+  press(s, 1, 2);
+  release(s, 1.2);
+  press(s, 1.5, 2);
+  advance(s, 3, DT);
+  assert.equal(s.counts.Miss, 0, 'cuts still count just after the end');
+  advance(s, 3.3, DT); // past the end (3.02 once built) plus the Good window
+  assert.equal(s.missReasons.TooFewCuts, 1);
+  assert.deepEqual(s.counts, { Perfect: 0, Great: 0, Good: 0, Miss: 1 });
+  assert.equal(s.acc, 0);
+});
+
+test('keeping the finger down lets notes flow in: taps are taken as Good, holds are held', () => {
+  const chart = [...taps(1, 1.5, 2), hold(2.5, 3.5, 3), ...taps(4, 4.5).map((n, i) => ({ ...n, id: 4 + i }))];
+  const s = withInputs(chart);
+  press(s, 0.2, 2); // no note there: just a finger on the glass
+  run(s);
+  assert.equal(s.counts.Miss, 0);
+  assert.equal(s.counts.Good, 6, 'flowing trades precision for continuity');
+  assert.equal(s.styles.flow, 6);
+  assert.equal(s.productCounts.juice, 1);
+});
+
+test('flow does not start right after a hold finished with the finger still down', () => {
+  const s = withInputs([hold(1, 2), ...taps(2.1).map((n) => ({ ...n, id: 1 }))]);
+  press(s, 1, 2);
+  run(s); // never lets go
+  assert.equal(s.styles.hold, 1);
+  assert.equal(s.styles.flow, 0, 'the tap 0.1 s after the hold is not swallowed by flow');
+  assert.equal(s.counts.Miss, 1);
+});
+
+test('without flow unlocked, a held finger takes nothing', () => {
+  const s = withInputs(taps(1, 1.5), ['swipe', 'chop']);
+  press(s, 0.2, 2);
+  run(s);
+  assert.equal(s.counts.Miss, 2);
+});
+
+test('every note is still judged exactly once with every way of playing unlocked', () => {
+  let seed = 3;
+  const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const s = withInputs(lychee);
+  run(s, (s, t) => {
+    const r = rand();
+    if (r < 0.06) press(s, t, 2);
+    else if (r < 0.08) swipe(s, t, 0);
+    else if (r < 0.1) chop(s, t);
+    else if (s.holding && r < 0.2) release(s, t);
+  });
+  const judged = s.notes.filter((n) => n.state === 'done').length;
+  assert.equal(total(s.counts), judged);
+  const finished = Object.values(s.styles).reduce((a, b) => a + b, 0);
+  assert.equal(
+    finished,
+    judged - s.counts.Miss,
+    'every note that was not missed has exactly one way it was played',
+  );
+  assert.equal(
+    styleShare(s, 'tap') +
+      styleShare(s, 'hold') +
+      styleShare(s, 'swipe') +
+      styleShare(s, 'chop') +
+      styleShare(s, 'flow'),
+    finished ? 1 : 0,
+  );
+});
+
+test('a short hold needs a single cut', () => {
+  const s = withInputs([hold(1, 1.4)]);
+  press(s, 1, 2);
+  release(s, 1.05);
+  press(s, 1.2, 2);
+  advance(s, 1.4, DT);
+  assert.equal(s.styles.chop, 1);
+  assert.equal(s.counts.Miss, 0);
 });

@@ -42,6 +42,7 @@ import {
   buildNotes as buildChartNotes,
   chartStats as countChart,
   chartLevel as rateChart,
+  mechanize,
 } from './core/chart.js';
 import * as econ from './core/economy.js';
 import * as story from './story/flow.js';
@@ -546,6 +547,9 @@ let dpr = 1,
   openingDismissed = false,
   bootReady = false,
   openingQueued = false,
+  pendingInputHint = null,
+  gesture = null,
+  slashLines = [],
   tutorialActive = false,
   currentTutorial = null,
   currentTutorialTarget = null,
@@ -1456,6 +1460,11 @@ function runContextTutorial() {
       '材料够了，就开店',
       '按钮能点之前先看目标有没有满足。确认后就进入营业，今天的收入和热度就靠你的手感了。',
     );
+  } else if (pendingInputHint && [S.READY, S.LEAD_IN].includes(state)) {
+    const { mode, body } = pendingInputHint,
+      hint = INPUT_HINTS[mode];
+    pendingInputHint = null;
+    showTutorial('input_' + mode, 'lane', hint.title, body || hint.body);
   } else if (dayRun.active && [S.READY, S.LEAD_IN].includes(state))
     showTutorial(
       'gameplayLane',
@@ -1592,7 +1601,8 @@ function buildNotes() {
   song = SONGS[songIndex];
   ensurePlayableDifficulty([song]);
   diff = songDiff(song);
-  return buildChartNotes(songCharts(song)[diff.id] || [], {
+  const chart = songCharts(song)[diff.id] || [];
+  return buildChartNotes(serviceRun.active && serviceRun.chart === 'mechanize' ? mechanize(chart) : chart, {
     audioOffset: song.audioOffset || 0,
     travel: laneTravel(),
     fruits: FRUITS,
@@ -1721,6 +1731,46 @@ function makeOrders() {
     });
   return orders;
 }
+/** First-time explanations for ways of playing the story unlocks (docs/input_modes.md). */
+const INPUT_HINTS = {
+  swipe: {
+    title: '同样的果子，也可以一划而过',
+    body: '单点到达时，任意方向快速一划也算数，果子会顺着刀口分成两半。判定和点一下一样，只是换了做法。',
+  },
+  chop: {
+    title: '长条不一定要按住',
+    body: '松开之后，在长条结束前连续快点，或者按住左右来回划，可以把它切成果块。刀数够了才算切完。',
+  },
+  flow: {
+    title: '一直不松手',
+    body: '手指一直按着，音符会自己流进来：单点记 Good，长条自动按住。准度让给连贯。',
+  },
+};
+// Dev: ?inputs=all or ?inputs=swipe,chop opens ways of playing without the story.
+const DEBUG_INPUTS = (() => {
+  const v = new URLSearchParams(location.search).get('inputs');
+  if (v === null) return null;
+  return v === 'all' ? [...play.INPUT_MODES] : v.split(',').filter((m) => play.INPUT_MODES.includes(m));
+})();
+const SWIPE_MS = 180,
+  SWIPE_PX = 28,
+  ZIGZAG_PX = 22;
+/** Ways of playing open to this shift: the phase's own list if it has one, else everything unlocked. */
+function availableInputs() {
+  if (DEBUG_INPUTS) return DEBUG_INPUTS;
+  if (serviceRun.active && Array.isArray(serviceRun.inputs)) return serviceRun.inputs;
+  return shopState.inputs || [];
+}
+/** A phase that unlocks a way of playing keeps it for good and explains it once when the shift starts. */
+function unlockInputFor(phase) {
+  const mode = phase && phase.unlockInput;
+  if (!play.INPUT_MODES.includes(mode)) return;
+  if (!(shopState.inputs || []).includes(mode)) {
+    shopState.inputs = [...(shopState.inputs || []), mode];
+    saveShopState();
+  }
+  pendingInputHint = { mode, body: phase.unlockHint };
+}
 function reset() {
   notes = buildNotes();
   particles = [];
@@ -1730,7 +1780,8 @@ function reset() {
   chartEndTime = notes.length ? notes.reduce((m, n) => Math.max(m, n.time, n.end), 0) : 0;
   maxNoteSpan = notes.length ? notes.reduce((m, n) => Math.max(m, Math.max(0, n.end - n.time)), 0) : 0;
   orders = makeOrders();
-  session = play.createSession(notes, orders, WINDOWS);
+  slashLines = [];
+  session = play.createSession(notes, orders, WINDOWS, availableInputs());
   orderFlash = [];
   pulse = shake = 0;
   autoplayIndex = 0;
@@ -2738,7 +2789,11 @@ function runNextFlowPhase() {
     showTrackEventDiffSelect(phase);
   } else if (phase.type === 'score_branch') {
     showVN(
-      story.scoreBranchNodes(phase, lastServiceResult ? lastServiceResult.customer : 0),
+      story.scoreBranchNodes(
+        phase,
+        lastServiceResult ? lastServiceResult.customer : 0,
+        lastServiceResult && lastServiceResult.styleShares,
+      ),
       vnAfterDialogue,
     );
   } else if (phase.type === 'service_select') {
@@ -2860,7 +2915,15 @@ function _renderTrackDiffPanel(phase, s) {
       runNextFlowPhase();
       return;
     }
-    serviceRun = { active: true, id: phase.songId, fromStory: true, fromTrackEvent: true };
+    serviceRun = {
+      active: true,
+      id: phase.songId,
+      fromStory: true,
+      fromTrackEvent: true,
+      inputs: phase.inputs,
+      chart: phase.chart,
+    };
+    unlockInputFor(phase);
     songIndex = si;
     diffIndex = idx;
     diff = DIFFS[idx] || DIFFS[0];
@@ -2897,7 +2960,10 @@ function startFlowService(phase) {
     menuId: phase.menuId || '',
     fromStory: true,
     wrongPick: !!phase.wrongPick,
+    inputs: phase.inputs,
+    chart: phase.chart,
   };
+  unlockInputFor(phase);
   songIndex = idx;
   diff = SERVICE_DIFF;
   start();
@@ -3540,7 +3606,7 @@ async function start() {
             sfxPlay('game.start');
             scheduleDeferredGameplayWarm();
             requestAnimationFrame(() => {
-              if (dayRun.active) runContextTutorial();
+              if (dayRun.active || pendingInputHint) runContextTutorial();
             });
             resolve();
           });
@@ -3723,6 +3789,8 @@ function finish(reason = 'complete') {
     counts: { ...s.counts },
     missReasons: { ...s.missReasons },
     products: { ...s.productCounts },
+    styles: { ...s.styles },
+    styleShares: Object.fromEntries(Object.keys(s.styles).map((k) => [k, play.styleShare(s, k)])),
     orders: orders.map((o) => ({ ...o })),
   };
   if (serviceRun.active) {
@@ -3815,7 +3883,7 @@ function showServiceStoryResult(r) {
         showToast('解锁曲目：' + (SONGS.find((x) => x.id === tePhase.songId)?.title || tePhase.songId));
       }
       const score = r.customer;
-      const branch = [...(tePhase.branches || [])].sort((a, b) => b.min - a.min).find((b) => score >= b.min);
+      const branch = story.pickBranch(tePhase.branches, score, r.styleShares);
       const nodes = [...(branch ? branch.nodes : []), ...(tePhase.after || [])];
       if (nodes.length) {
         showVN(nodes, runNextFlowPhase);
@@ -4331,9 +4399,14 @@ function applySessionEvents() {
       pulse = 1;
       shake = e.hold ? 0.12 : 0.24;
       sfxPlay('judge', e.judge.name);
-      showCenterJudge(e.judge.name, e.judge.color);
-      if (e.hold) juice(noteX(n), view.hitY, n.fruit.color, 20);
-      else splash(noteX(n), view.hitY, n.fruit.color, 32);
+      if (e.style === 'flow') {
+        showCenterJudge('流', n.fruit.color);
+        juice(noteX(n), view.hitY, n.fruit.color, 10);
+      } else {
+        showCenterJudge(e.judge.name, e.judge.color);
+        if (e.hold) juice(noteX(n), view.hitY, n.fruit.color, 20);
+        else splash(noteX(n), view.hitY, n.fruit.color, 32);
+      }
     } else if (e.type === 'holdComplete') {
       pulse = 1;
       shake = 0.22;
@@ -4344,6 +4417,30 @@ function applySessionEvents() {
       pulse = Math.max(pulse, 0.35);
       sfxPlay('hold.tick');
       juice(noteX(n), view.hitY, n.fruit.color, 4);
+    } else if (e.type === 'swipe') {
+      slashLines.push({ x: noteX(n), y: view.hitY, angle: e.angle, age: 0, life: 0.3, color: n.fruit.color });
+      fruitHalves(noteX(n), view.hitY, e.angle, n.fruit.color);
+      showCenterJudge('划', n.fruit.color);
+    } else if (e.type === 'chop') {
+      pulse = Math.max(pulse, 0.6);
+      shake = Math.max(shake, 0.1);
+      sfxPlay('hold.tick');
+      slashLines.push({
+        x: noteX(n),
+        y: view.hitY - 26,
+        angle: n.chops % 2 ? 0.15 : -0.15,
+        age: 0,
+        life: 0.18,
+        color: n.fruit.color,
+      });
+      chunks(noteX(n), view.hitY, n.fruit.color, 6);
+      showCenterJudge(`切 ×${n.chops}`, '#ffd98c');
+    } else if (e.type === 'chopComplete') {
+      pulse = 1;
+      shake = 0.22;
+      sfxPlay('hold.complete');
+      showCenterJudge(`${e.label} ×${n.chops}`, '#ffd98c');
+      chunks(noteX(n), view.hitY, n.fruit.color, 22);
     } else if (e.type === 'miss') {
       sfxPlay('miss');
       showCenterJudge(e.label, '#ff6f8d');
@@ -4379,6 +4476,49 @@ function showCenterJudge(txt, color) {
 }
 function particleRoom(amt) {
   return Math.max(0, Math.min(amt, MAX_PARTICLES - particles.length));
+}
+/** Two halves of a swiped fruit, thrown apart across the line of the cut. */
+function fruitHalves(x, y, angle, color) {
+  const u = view.uiScale || 1;
+  for (const side of [-1, 1]) {
+    const a = angle + (side * Math.PI) / 2,
+      sp = 170 * u;
+    particles.push({
+      kind: 'half',
+      side,
+      x,
+      y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp - 90 * u,
+      r: 26 * u,
+      rot: angle,
+      vr: side * 5,
+      age: 0,
+      life: 0.6,
+      color,
+    });
+  }
+}
+/** Small cubes of cut fruit. */
+function chunks(x, y, color, amt) {
+  amt = particleRoom(amt);
+  for (let i = 0; i < amt; i++) {
+    const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.2,
+      sp = 120 + Math.random() * 260;
+    particles.push({
+      kind: 'cube',
+      x,
+      y,
+      vx: Math.cos(a) * sp,
+      vy: Math.sin(a) * sp,
+      r: 4 + Math.random() * 5,
+      rot: Math.random() * Math.PI,
+      vr: (Math.random() - 0.5) * 12,
+      age: 0,
+      life: 0.45 + Math.random() * 0.4,
+      color,
+    });
+  }
 }
 function splash(x, y, color, amt = 30) {
   amt = particleRoom(amt);
@@ -4478,6 +4618,8 @@ function update(dt) {
   compactByLife(texts);
   slashFx.forEach((s) => (s.age += dt));
   compactByLife(slashFx);
+  slashLines.forEach((s) => (s.age += dt));
+  compactByLife(slashLines);
   if (centerJudge) {
     centerJudge.age += dt;
     if (centerJudge.age >= centerJudge.life) centerJudge = null;
@@ -4490,14 +4632,38 @@ function update(dt) {
   perfStats.textsCount = texts.length;
 }
 // Dev aid (?autoplay): presses on the first frame at or after each note and holds presses to
-// their end, so a run can be compared before and after gameplay changes.
-const AUTOPLAY = new URLSearchParams(location.search).has('autoplay');
-let autoplayIndex = 0;
+// their end, so a run can be compared before and after gameplay changes. ?autoplay=swipe, =chop
+// or =flow plays every note that way instead (pair it with ?inputs=all outside the story).
+const AUTOPLAY = new URLSearchParams(location.search).has('autoplay'),
+  AUTOPLAY_STYLE = new URLSearchParams(location.search).get('autoplay') || '';
+let autoplayIndex = 0,
+  autoplayNextCut = 0;
 function autoplayStep(t) {
-  if (session.holding && !session.activeHold) endPress();
+  const h = session.activeHold;
+  if (AUTOPLAY_STYLE === 'flow') {
+    if (!session.holding && notes.some((n) => n.state === 'pending')) startPress();
+    return;
+  }
+  if (AUTOPLAY_STYLE === 'chop' && h) {
+    if (h.state === 'holding' && session.holding) endPress();
+    else if (h.state === 'chopping' && t >= autoplayNextCut) {
+      startPress();
+      endPress();
+      autoplayNextCut = t + 0.3;
+    }
+    return;
+  }
+  if (session.holding && !h) endPress();
   while (autoplayIndex < notes.length && notes[autoplayIndex].state !== 'pending') autoplayIndex++;
   const n = notes[autoplayIndex];
-  if (n && !session.activeHold && t >= n.time) startPress();
+  if (n && !h && t >= n.time) {
+    startPress();
+    if (AUTOPLAY_STYLE === 'swipe') {
+      play.swipe(session, songTime(), (autoplayIndex % 4) * (Math.PI / 4) - Math.PI / 2);
+      applySessionEvents();
+    }
+    autoplayNextCut = t + 0.25;
+  }
 }
 function triggerSlash() {
   slashFx.push({ age: 0, life: 0.25 });
@@ -4573,6 +4739,8 @@ function makeRC() {
     particles,
     texts,
     slashFx,
+    slashLines,
+    flowing: session.flowing,
     centerJudge,
     products,
     orders,
@@ -4658,13 +4826,48 @@ canvas.addEventListener(
       canvas.setPointerCapture(e.pointerId);
     } catch (_) {}
     startPress();
+    gesture = { id: e.pointerId, x, y, t0: performance.now(), swiped: false, lastX: x, dir: 0, leg: 0 };
   },
   { passive: false },
+);
+// Swipes and zigzag cuts: a fast stroke right after touching down, and each turn back across.
+canvas.addEventListener(
+  'pointermove',
+  (e) => {
+    if (!gesture || e.pointerId !== gesture.id || (state !== S.PLAYING && state !== S.LEAD_IN)) return;
+    const r = canvas.getBoundingClientRect(),
+      x = e.clientX - r.left,
+      y = e.clientY - r.top,
+      u = view.uiScale || 1,
+      t = songTime();
+    if (
+      !gesture.swiped &&
+      performance.now() - gesture.t0 < SWIPE_MS &&
+      Math.hypot(x - gesture.x, y - gesture.y) > SWIPE_PX * u
+    ) {
+      gesture.swiped = true;
+      play.swipe(session, t, Math.atan2(y - gesture.y, x - gesture.x));
+    }
+    const step = x - gesture.lastX;
+    if (Math.abs(step) >= 2 * u) {
+      const dir = Math.sign(step);
+      if (dir === gesture.dir) gesture.leg += Math.abs(step);
+      else {
+        if (gesture.leg >= ZIGZAG_PX * u) play.chop(session, t);
+        gesture.dir = dir;
+        gesture.leg = Math.abs(step);
+      }
+      gesture.lastX = x;
+    }
+    applySessionEvents();
+  },
+  { passive: true },
 );
 canvas.addEventListener(
   'pointerup',
   (e) => {
     e.preventDefault();
+    gesture = null;
     if (suppressPointerUp) {
       suppressPointerUp = false;
       return;
@@ -4682,6 +4885,7 @@ document.addEventListener('visibilitychange', () => {
     cancelPress();
   } else if (state === S.SELECT) playPreview(SONGS[songIndex]);
 });
+const ARROW_ANGLES = { ArrowRight: 0, ArrowDown: Math.PI / 2, ArrowLeft: Math.PI, ArrowUp: -Math.PI / 2 };
 addEventListener('keydown', (e) => {
   if (tutorialActive) {
     e.preventDefault();
@@ -4692,6 +4896,14 @@ addEventListener('keydown', (e) => {
   if (['KeyZ', 'KeyX', 'Space'].includes(e.code)) {
     e.preventDefault();
     if (!session.holding) startPress();
+  }
+  if (ARROW_ANGLES[e.code] !== undefined && !e.repeat) {
+    e.preventDefault();
+    if (!session.holding) startPress();
+    if (state === S.PLAYING || state === S.LEAD_IN) {
+      play.swipe(session, songTime(), ARROW_ANGLES[e.code]);
+      applySessionEvents();
+    }
   }
   if (e.code === 'KeyR') {
     e.preventDefault();
@@ -4739,6 +4951,10 @@ addEventListener('keyup', (e) => {
     return;
   }
   if (['KeyZ', 'KeyX', 'Space'].includes(e.code)) {
+    e.preventDefault();
+    endPress();
+  }
+  if (ARROW_ANGLES[e.code] !== undefined) {
     e.preventDefault();
     endPress();
   }
