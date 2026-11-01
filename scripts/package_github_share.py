@@ -516,7 +516,7 @@ def validate_package(target: Path) -> None:
     require_one(f"assets/game_art/sunny_shop/background_sunny.*{art_ext}", target)
     require_one(f"assets/game_art/sunny_shop/main_visual_landscape.*{art_ext}", target)
     require_one(f"assets/game_art/sunny_shop/main_visual_portrait.*{art_ext}", target)
-    require_one(f"assets/songs/ark_light/cover.*{cover_ext}", target)
+    require_one(f"assets/songs/open_the_fruit_stand!/cover.*{cover_ext}", target)
 
     manifest = json.loads((target / "charts" / "manifest.json").read_text(encoding="utf-8"))
     for entry in manifest.get("charts", []):
