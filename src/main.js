@@ -52,6 +52,7 @@ import {
 } from './core/chart.js?v=2026-11-01a';
 import * as econ from './core/economy.js?v=2026-11-01a';
 import * as story from './story/flow.js?v=2026-11-01a';
+import * as play from './core/session.js?v=2026-11-01a';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
@@ -582,7 +583,6 @@ let dpr = 1,
   playbackClockStartedAt = 0,
   playbackClockBase = 0,
   playbackSyncTimer = 0,
-  missCursor = 0,
   chartEndTime = 0,
   maxNoteSpan = 0,
   resultView = null,
@@ -592,25 +592,10 @@ let dpr = 1,
   backdropCache = { key: '', canvas: null },
   chartManifest = {},
   chartLoadError = '';
-let heat = 0,
-  combo = 0,
-  maxCombo = 0,
-  acc = 0,
-  total = 0,
-  timingTotal = 0,
-  comboTarget = 0,
-  holding = false,
-  activeHold = null,
-  lastJudge = '准备',
-  lastErr = 0,
+let session = play.createSession([], [], WINDOWS),
   pulse = 0,
   shake = 0,
-  lastComboBurst = 0,
-  customerAnger = 0,
   gameOverReason = '',
-  counts = {},
-  missReasons = {},
-  productCounts = {},
   resultData = null,
   resultReveal = 0,
   resultMode = 'shift';
@@ -739,15 +724,6 @@ function diffIncomeMul(d = diff) {
 }
 function diffResourceMul(d = diff) {
   return d && d.resourceMul ? d.resourceMul : 1;
-}
-function addHeat(v) {
-  heat += Math.max(0, Math.round(v));
-}
-function comboHeat(scale = 1) {
-  return econ.comboHeat(combo, scale);
-}
-function heatBonusValue(value = heat, customer = 85, failed = false) {
-  return econ.heatBonusValue(value, customer, failed);
 }
 function expectedShiftIncome(day = shopState.day, slots = unlockedSlotCount()) {
   return econ.expectedShiftIncome(day, slots);
@@ -1724,9 +1700,9 @@ function makeOrders() {
   const p = ensureDailyPlan(),
     press = notes.filter((n) => n.kind === 'press').length,
     base = {
-      chunks: Math.max(6, Math.round(total * 0.15)),
+      chunks: Math.max(6, Math.round(notes.length * 0.15)),
       juice: Math.max(2, Math.ceil(press * 0.52)),
-      combo: Math.max(12, Math.round(total * 0.16)),
+      combo: Math.max(12, Math.round(notes.length * 0.16)),
       quality: Math.max(70, Math.round(70 + diffIndex * 6)),
       orders: Math.max(2, 2 + diffIndex),
     };
@@ -1754,29 +1730,16 @@ function reset() {
   texts = [];
   slashFx = [];
   products = [];
-  heat = combo = maxCombo = acc = 0;
-  total = notes.length;
-  const holdCount = notes.filter((n) => n.kind === 'press').length;
   chartEndTime = notes.length ? notes.reduce((m, n) => Math.max(m, n.time, n.end), 0) : 0;
   maxNoteSpan = notes.length ? notes.reduce((m, n) => Math.max(m, Math.max(0, n.end - n.time)), 0) : 0;
-  missCursor = 0;
-  timingTotal = total;
-  comboTarget = total + holdCount;
   orders = makeOrders();
+  session = play.createSession(notes, orders, WINDOWS);
   orderFlash = [];
-  counts = { Perfect: 0, Great: 0, Good: 0, Miss: 0 };
-  missReasons = { Miss: 0, EarlyRelease: 0 };
-  productCounts = { chunks: 0, juice: 0, waste: 0 };
-  holding = false;
-  activeHold = null;
-  lastJudge = '准备';
-  lastErr = 0;
-  pulse = shake = lastComboBurst = 0;
+  pulse = shake = 0;
   autoplayIndex = 0;
   resultData = null;
   resultView = null;
   centerJudge = null;
-  customerAnger = 0;
   gameOverReason = '';
   resultReveal = 0;
   resultMode = 'shift';
@@ -3559,7 +3522,7 @@ async function start() {
       state = S.READY;
       readyTimer = READY_TIME;
       audio.currentTime = 0;
-      lastJudge = '\u51c6\u5907';
+      session.lastJudge = '\u51c6\u5907';
       pulse = 1;
       shake = 0;
       await new Promise((resolve) => {
@@ -3622,7 +3585,7 @@ function beginLeadIn() {
   state = S.LEAD_IN;
   leadInTimer = leadInTotal = leadInDuration();
   resetPlaybackClock(leadInSongTime());
-  lastJudge = '';
+  session.lastJudge = '';
   pulse = 0.35;
 }
 function handlePlaybackError(e) {
@@ -3651,7 +3614,7 @@ function beginPlayback() {
   state = S.PLAYING;
   readyTimer = leadInTimer = 0;
   resetPlaybackClock(0);
-  lastJudge = '\u5f00\u59cb\uff01';
+  session.lastJudge = '\u5f00\u59cb\uff01';
   pulse = 1;
   sfxPlay('game.resume');
   const began = performance.now();
@@ -3675,7 +3638,7 @@ function pauseGame() {
   if (state !== S.RESUME_COUNTDOWN) pausedFromState = state;
   state = S.PAUSED;
   resumeCountdown = 0;
-  holding = false;
+  session.holding = false;
   audio.pause();
   sfxPlay('game.pause');
 }
@@ -3684,7 +3647,7 @@ function resumeGame() {
   state = S.RESUME_COUNTDOWN;
   resumeCountdown = RESUME_COUNTDOWN_TIME;
   pauseButtons = [];
-  holding = false;
+  session.holding = false;
   sfxPlay('game.resume');
 }
 async function completeResumeCountdown() {
@@ -3703,18 +3666,19 @@ async function completeResumeCountdown() {
 }
 function debugSkipToResult() {
   if (![S.READY, S.LEAD_IN, S.PLAYING, S.PAUSED, S.RESUME_COUNTDOWN].includes(state)) return;
-  if (timingTotal <= 0) timingTotal = Math.max(1, total);
-  acc = timingTotal;
-  counts = { Perfect: total, Great: 0, Good: 0, Miss: 0 };
-  maxCombo = Math.max(comboTarget || 1, total);
-  combo = 0;
-  customerAnger = 0;
-  heat = 3000;
+  const s = session;
+  if (s.timingTotal <= 0) s.timingTotal = Math.max(1, s.total);
+  s.acc = s.timingTotal;
+  s.counts = { Perfect: s.total, Great: 0, Good: 0, Miss: 0 };
+  s.maxCombo = Math.max(s.comboTarget || 1, s.total);
+  s.combo = 0;
+  s.customerAnger = 0;
+  s.heat = 3000;
   orders.forEach((o) => {
     o.have = o.need;
     o.done = true;
   });
-  productCounts = { chunks: 20, juice: 8, waste: 0 };
+  s.productCounts = { chunks: 20, juice: 8, waste: 0 };
   closeSettings();
   audio.pause();
   state = S.PLAYING;
@@ -3727,62 +3691,31 @@ function finish(reason = 'complete') {
   audio.pause();
   resultView = null;
   const failed = reason === 'angry',
-    timing = timingTotal ? acc / timingTotal : 0,
-    ordersDone = orders.filter((o) => o.done).length,
-    baseCustomer =
-      timing * 72 +
-      (maxCombo / Math.max(1, comboTarget)) * 18 +
-      (ordersDone / orders.length) * 12 -
-      counts.Miss * 1.4 -
-      customerAnger * 0.32,
-    customer = failed ? 0 : Math.round(clamp(baseCustomer, 0, 100));
-  const basePay = failed ? 30 : 80,
-    cutterMul = 1 + upgradeBonus('cutter'),
-    blenderMul = 1 + upgradeBonus('blender'),
-    signMul = 1 + upgradeBonus('sign'),
-    productPay = Math.round(productCounts.chunks * 5 * cutterMul + productCounts.juice * 18 * blenderMul),
-    heatPay = heatBonusValue(heat, customer, failed),
-    tip =
-      !failed && customer >= 96 ? 140 : !failed && customer >= 90 ? 90 : !failed && customer >= 80 ? 45 : 0,
-    money = Math.round((basePay + productPay + heatPay + tip) * diffIncomeMul(diff));
-  const rawRep = failed ? 0 : Math.round(customer / 8 + counts.Perfect * 0.05 + ordersDone * 1.5),
-    rep = Math.round(rawRep * signMul),
-    rank = failed
-      ? 'F'
-      : customer >= 96
-        ? 'S'
-        : customer >= 88
-          ? 'A'
-          : customer >= 76
-            ? 'B'
-            : customer >= 62
-              ? 'C'
-              : 'D';
+    s = session,
+    score = play.scoreShift(s, {
+      failed,
+      cutterBonus: upgradeBonus('cutter'),
+      blenderBonus: upgradeBonus('blender'),
+      signBonus: upgradeBonus('sign'),
+      incomeMul: diffIncomeMul(diff),
+    }),
+    { customer, money, rep, rank, ordersDone } = score;
   const tutorialShift = currentShiftIsTutorial();
   resultData = {
     songTitle: song.title,
     artist: song.artist,
     diff: diff.name,
-    timing,
-    customer,
-    money,
-    basePay,
-    productPay,
-    heatPay,
-    tip,
-    rep,
-    rank,
-    heat,
-    maxCombo,
-    timingTotal,
-    comboTarget,
-    ordersDone,
+    ...score,
+    heat: s.heat,
+    maxCombo: s.maxCombo,
+    timingTotal: s.timingTotal,
+    comboTarget: s.comboTarget,
     failed,
     failReason: reason,
-    anger: customerAnger,
-    counts: { ...counts },
-    missReasons: { ...missReasons },
-    products: { ...productCounts },
+    anger: s.customerAnger,
+    counts: { ...s.counts },
+    missReasons: { ...s.missReasons },
+    products: { ...s.productCounts },
     orders: orders.map((o) => ({ ...o })),
   };
   if (serviceRun.active) {
@@ -3811,9 +3744,9 @@ function finish(reason = 'complete') {
   dayStats.money += money;
   dayStats.rep += rep;
   dayStats.best = Math.max(dayStats.best, customer);
-  dayStats.products += productCounts.chunks + productCounts.juice;
+  dayStats.products += s.productCounts.chunks + s.productCounts.juice;
   dayStats.orders += ordersDone;
-  dayStats.misses += counts.Miss;
+  dayStats.misses += s.counts.Miss;
   dayStats.ledger.push({
     title: song.title,
     diff: diff.name,
@@ -4018,7 +3951,7 @@ function shiftResourceYield(r) {
   bag.juice += Math.floor((r.products.juice || 0) / 3);
   bag.combo += Math.floor(r.maxCombo / 35);
   if (r.rank === 'S' || r.rank === 'A') bag.premium += 1;
-  if (counts.Miss <= 3) bag.sparkle += 1;
+  if (r.counts.Miss <= 3) bag.sparkle += 1;
   return bag;
 }
 function applyShiftToDay(r) {
@@ -4363,125 +4296,64 @@ function songTime() {
 function startPress() {
   unlockSfx();
   if (state !== S.PLAYING && state !== S.LEAD_IN) return;
-  holding = true;
-  if (activeHold && activeHold.state === 'holding') {
-    lastJudge = 'Hold';
-    pulse = Math.max(pulse, 0.35);
-    return;
-  }
-  triggerSlash();
-  const t = songTime(),
-    target = hitTarget(t);
-  if (target) {
-    const j = judgeTiming(target.err, WINDOWS);
-    if (j) {
-      target.n.kind === 'press' ? beginHold(target.n, j, target.err) : hit(target.n, j, target.err);
-      return;
-    }
-  }
-  lastJudge = 'Empty';
+  play.press(session, songTime(), diff.travel);
+  applySessionEvents();
 }
 function endPress() {
-  holding = false;
-  if (activeHold && (state === S.PLAYING || state === S.LEAD_IN)) releaseHold(activeHold, songTime());
+  if (state === S.PLAYING || state === S.LEAD_IN) {
+    play.release(session, songTime());
+    applySessionEvents();
+  } else session.holding = false;
 }
 function cancelPress() {
-  holding = false;
+  session.holding = false;
   if (state === S.PLAYING) pauseGame();
 }
-function beginHold(n, j, e) {
-  n.state = 'holding';
-  n.nextTick = n.time + n.tickInterval;
-  n.ticksDone = 0;
-  activeHold = n;
-  counts[j.name]++;
-  acc += j.acc;
-  combo++;
-  maxCombo = Math.max(maxCombo, combo);
-  addHeat(j.name === 'Perfect' ? 12 : j.name === 'Great' ? 9 : 6);
-  addHeat(comboHeat(0.22));
-  lastJudge = '按住 ' + j.name;
-  lastErr = e * 1000;
-  pulse = 1;
-  shake = 0.12;
-  sfxPlay('judge', j.name);
-  showCenterJudge(j.name, j.color);
-  juice(noteX(n), view.hitY, n.fruit.color, 20);
-  updateComboOrders();
-  checkComboBurst();
-}
-function completeHold(n, label = '榨汁完成', bonus = 0) {
-  if (n.state !== 'holding') return;
-  n.state = 'done';
-  activeHold = null;
-  addHeat(16 + n.holdTicks * 5 + comboHeat(0.25) + bonus);
-  combo++;
-  maxCombo = Math.max(maxCombo, combo);
-  productCounts.juice++;
-  addProduct('juice', n.fruit.color);
-  updateComboOrders();
-  checkComboBurst();
-  lastJudge = label;
-  pulse = 1;
-  shake = 0.22;
-  sfxPlay('hold.complete');
-  showCenterJudge(n.holdTicks > 1 ? `${label} +${n.holdTicks}` : label, '#8cffc1');
-  juice(noteX(n), view.hitY, n.fruit.color, 52 + n.holdTicks * 4);
-}
-function dropHold(n, t) {
-  if (n.state !== 'holding') return;
-  n.state = 'done';
-  activeHold = null;
-  missReasons.EarlyRelease = (missReasons.EarlyRelease || 0) + 1;
-  lastJudge = 'Early Release';
-  lastErr = (t - n.end) * 1000;
-  pulse = Math.max(pulse, 0.45);
-  showCenterJudge('\u677e\u5f00\u8fc7\u65e9', '#ffd98c');
-}
-function releaseHold(n, t) {
-  const remaining = n.end - t,
-    len = Math.max(0.001, n.end - n.time),
-    softWindow = Math.max(WINDOWS.good, Math.min(0.55, len * 0.38));
-  if (remaining <= softWindow) completeHold(n);
-  else miss(n, t, 'Early Release');
-}
-function hit(n, j, e) {
-  n.state = 'done';
-  counts[j.name]++;
-  acc += j.acc;
-  combo++;
-  maxCombo = Math.max(maxCombo, combo);
-  addHeat(j.name === 'Perfect' ? 14 : j.name === 'Great' ? 10 : 6);
-  addHeat(comboHeat(0.25));
-  productCounts.chunks++;
-  lastJudge = j.name;
-  lastErr = e * 1000;
-  pulse = 1;
-  shake = 0.24;
-  sfxPlay('judge', j.name);
-  showCenterJudge(j.name, j.color);
-  splash(noteX(n), view.hitY, n.fruit.color, 32);
-  addProduct('chunks', n.fruit.color);
-  updateComboOrders();
-  checkComboBurst();
-}
-function miss(n, t, label = 'Miss') {
-  if (n.state === 'done') return;
-  n.state = 'done';
-  if (activeHold === n) activeHold = null;
-  counts.Miss++;
-  missReasons[label === 'Early Release' ? 'EarlyRelease' : 'Miss'] =
-    (missReasons[label === 'Early Release' ? 'EarlyRelease' : 'Miss'] || 0) + 1;
-  combo = 0;
-  productCounts.waste++;
-  customerAnger = clamp(customerAnger + (label === 'Early Release' ? 14 : 10), 0, 100);
-  lastJudge = label;
-  lastErr = (t - (n.time || t)) * 1000;
-  sfxPlay('miss');
-  showCenterJudge(label, '#ff6f8d');
-  splash(noteX(n), view.hitY, '#77809f', 12);
-  addProduct('waste', '#77809f');
-  if (customerAnger >= 100) finish('angry');
+/** Turns rule events from the session into sound, particles and on-screen judgements. */
+function applySessionEvents() {
+  for (const e of play.drainEvents(session)) {
+    const n = e.note;
+    if (e.type === 'slash') triggerSlash();
+    else if (e.type === 'holdRepress') pulse = Math.max(pulse, 0.35);
+    else if (e.type === 'judge') {
+      pulse = 1;
+      shake = e.hold ? 0.12 : 0.24;
+      sfxPlay('judge', e.judge.name);
+      showCenterJudge(e.judge.name, e.judge.color);
+      if (e.hold) juice(noteX(n), view.hitY, n.fruit.color, 20);
+      else splash(noteX(n), view.hitY, n.fruit.color, 32);
+    } else if (e.type === 'holdComplete') {
+      pulse = 1;
+      shake = 0.22;
+      sfxPlay('hold.complete');
+      showCenterJudge(n.holdTicks > 1 ? `${e.label} +${n.holdTicks}` : e.label, '#8cffc1');
+      juice(noteX(n), view.hitY, n.fruit.color, 52 + n.holdTicks * 4);
+    } else if (e.type === 'holdTick') {
+      pulse = Math.max(pulse, 0.35);
+      sfxPlay('hold.tick');
+      juice(noteX(n), view.hitY, n.fruit.color, 4);
+    } else if (e.type === 'miss') {
+      sfxPlay('miss');
+      showCenterJudge(e.label, '#ff6f8d');
+      splash(noteX(n), view.hitY, '#77809f', 12);
+    } else if (e.type === 'product') {
+      products.push({ kind: e.kind, color: e.color, age: 0 });
+      if (products.length > 42) products.shift();
+    } else if (e.type === 'orderComplete') {
+      orderFlash.push({ txt: e.order.name + ' 完成', color: e.order.color, age: 0, life: 1.2 });
+      sfxPlay('order.complete');
+      floatText(view.cx, Math.max(view.laneTop + 88, view.hitY - 170), '订单完成', e.order.color);
+      pulse = 1;
+      shake = Math.max(shake, 0.28);
+    } else if (e.type === 'comboBurst') {
+      orderFlash.push({ txt: `${e.combo} COMBO!`, color: '#ffd98c', age: 0, life: 1 });
+      sfxPlay('combo');
+      showCenterJudge('COMBO!', '#ffd98c');
+      pulse = 1;
+      shake = Math.max(shake, 0.18);
+    }
+  }
+  if (play.isAngry(session)) finish('angry');
 }
 function floatText(x, y, txt, color) {
   if (texts.some((f) => f.txt === txt && Math.abs(f.x - x) < 10 && Math.abs(f.y - y) < 22 && f.age < 0.18))
@@ -4491,7 +4363,7 @@ function floatText(x, y, txt, color) {
 }
 function showCenterJudge(txt, color) {
   if (state !== S.PLAYING && state !== S.LEAD_IN && state !== S.RESUME_COUNTDOWN) return;
-  centerJudge = { txt, color, combo, age: 0, life: 0.46 };
+  centerJudge = { txt, color, combo: session.combo, age: 0, life: 0.46 };
 }
 function particleRoom(amt) {
   return Math.max(0, Math.min(amt, MAX_PARTICLES - particles.length));
@@ -4541,63 +4413,6 @@ function compactByLife(list) {
   list.length = w;
   return list;
 }
-function completeOrder(o) {
-  if (o.done) return;
-  o.done = true;
-  orderFlash.push({ txt: o.name + ' \u5b8c\u6210', color: o.color, age: 0, life: 1.2 });
-  addHeat(35);
-  sfxPlay('order.complete');
-  floatText(view.cx, Math.max(view.laneTop + 88, view.hitY - 170), '\u8ba2\u5355\u5b8c\u6210', o.color);
-  pulse = 1;
-  shake = Math.max(shake, 0.28);
-}
-function updateProductOrders(kind) {
-  for (const o of orders) {
-    if (o.done) continue;
-    if (o.kind === kind || o.kind === 'orders') {
-      o.have = Math.min(o.need, o.have + 1);
-      if (o.have >= o.need) completeOrder(o);
-    }
-  }
-}
-function updateComboOrders() {
-  for (const o of orders) {
-    if (o.done) continue;
-    if (o.kind === 'combo') {
-      o.have = Math.min(o.need, Math.max(o.have, combo));
-      if (o.have >= o.need) completeOrder(o);
-    } else if (o.kind === 'quality') {
-      const q = Math.round((timingTotal ? acc / timingTotal : 0) * 100);
-      o.have = Math.min(o.need, Math.max(o.have, q));
-      if (o.have >= o.need) completeOrder(o);
-    }
-  }
-}
-function checkComboBurst() {
-  if (combo >= 25 && combo % 25 === 0 && combo !== lastComboBurst) {
-    lastComboBurst = combo;
-    orderFlash.push({ txt: `${combo} COMBO!`, color: '#ffd98c', age: 0, life: 1 });
-    sfxPlay('combo');
-    showCenterJudge('COMBO!', '#ffd98c');
-    pulse = 1;
-    shake = Math.max(shake, 0.18);
-  }
-}
-function holdTick(n, t) {
-  while (n.nextTick && t >= n.nextTick && n.nextTick < n.end) {
-    n.nextTick += n.tickInterval;
-    n.ticksDone++;
-    addHeat(2 + Math.min(8, Math.floor(combo * 0.025)));
-    pulse = Math.max(pulse, 0.35);
-    sfxPlay('hold.tick');
-    juice(noteX(n), view.hitY, n.fruit.color, 4);
-  }
-}
-function addProduct(kind, color) {
-  products.push({ kind, color, age: 0 });
-  if (products.length > 42) products.shift();
-  updateProductOrders(kind);
-}
 function update(dt) {
   stepPaletteTween(dt);
   if (tutorialActive) return;
@@ -4622,18 +4437,11 @@ function update(dt) {
   const t = songTime();
   if (state === S.PLAYING) {
     if (AUTOPLAY) autoplayStep(t);
-    customerAnger = Math.max(0, customerAnger - dt * 5.5);
-    while (missCursor < notes.length && t > notes[missCursor].time + WINDOWS.miss) {
-      const n = notes[missCursor++];
-      if (n.state === 'pending') miss(n, t, 'Miss');
-    }
-    if (activeHold && activeHold.state === 'holding') {
-      if (holding) {
-        holdTick(activeHold, t);
-        if (Math.random() < dt * 9) juice(noteX(activeHold), view.hitY, activeHold.fruit.color, 1);
-      }
-      if (holding && t >= activeHold.end - WINDOWS.perfect) completeHold(activeHold);
-    }
+    play.advance(session, t, dt);
+    applySessionEvents();
+    const held = session.activeHold;
+    if (held && held.state === 'holding' && session.holding && Math.random() < dt * 9)
+      juice(noteX(held), view.hitY, held.fruit.color, 1);
     if (shouldFinishPlayback(t)) finish();
   }
   if (state === S.ENDED && resultMode === 'shift' && resultData) {
@@ -4674,10 +4482,10 @@ function update(dt) {
 const AUTOPLAY = new URLSearchParams(location.search).has('autoplay');
 let autoplayIndex = 0;
 function autoplayStep(t) {
-  if (holding && !activeHold) endPress();
+  if (session.holding && !session.activeHold) endPress();
   while (autoplayIndex < notes.length && notes[autoplayIndex].state !== 'pending') autoplayIndex++;
   const n = notes[autoplayIndex];
-  if (n && !activeHold && t >= n.time) startPress();
+  if (n && !session.activeHold && t >= n.time) startPress();
 }
 function triggerSlash() {
   slashFx.push({ age: 0, life: 0.25 });
@@ -4717,7 +4525,7 @@ function shouldFinishPlayback(t) {
   return audio.ended || t >= playDuration();
 }
 function playHp() {
-  return clamp(100 - customerAnger, 0, 100);
+  return clamp(100 - session.customerAnger, 0, 100);
 }
 function hitPauseButton(x, y) {
   for (const b of getPauseButtons()) {
@@ -4757,13 +4565,13 @@ function makeRC() {
     products,
     orders,
     orderFlash,
-    heat,
-    combo,
-    maxCombo,
-    counts,
-    customerAnger,
-    holding,
-    activeHold,
+    heat: session.heat,
+    combo: session.combo,
+    maxCombo: session.maxCombo,
+    counts: session.counts,
+    customerAnger: session.customerAnger,
+    holding: session.holding,
+    activeHold: session.activeHold,
     readyTimer,
     leadInTimer,
     leadInTotal,
@@ -4782,8 +4590,8 @@ function makeRC() {
     SPEEDS,
     WINDOWS,
     FRUITS,
-    total,
-    lastErr,
+    total: session.total,
+    lastErr: session.lastErr,
     maxNoteSpan,
     noteX,
     noteY,
@@ -4870,7 +4678,7 @@ addEventListener('keydown', (e) => {
   }
   if (['KeyZ', 'KeyX', 'Space'].includes(e.code)) {
     e.preventDefault();
-    if (!holding) startPress();
+    if (!session.holding) startPress();
   }
   if (e.code === 'KeyR') {
     e.preventDefault();
@@ -4903,13 +4711,13 @@ addEventListener('keydown', (e) => {
     e.preventDefault();
     song.audioOffset = (song.audioOffset || 0) - 0.02;
     reset();
-    lastJudge = 'Offset ' + song.audioOffset.toFixed(3);
+    session.lastJudge = 'Offset ' + song.audioOffset.toFixed(3);
   }
   if (e.code === 'BracketRight') {
     e.preventDefault();
     song.audioOffset = (song.audioOffset || 0) + 0.02;
     reset();
-    lastJudge = 'Offset ' + song.audioOffset.toFixed(3);
+    session.lastJudge = 'Offset ' + song.audioOffset.toFixed(3);
   }
 });
 addEventListener('keyup', (e) => {
