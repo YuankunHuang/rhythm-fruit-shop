@@ -1772,6 +1772,7 @@ function reset() {
   lastJudge = '准备';
   lastErr = 0;
   pulse = shake = lastComboBurst = 0;
+  autoplayIndex = 0;
   resultData = null;
   resultView = null;
   centerJudge = null;
@@ -4620,6 +4621,7 @@ function update(dt) {
   advancePlaybackClock(dt);
   const t = songTime();
   if (state === S.PLAYING) {
+    if (AUTOPLAY) autoplayStep(t);
     customerAnger = Math.max(0, customerAnger - dt * 5.5);
     while (missCursor < notes.length && t > notes[missCursor].time + WINDOWS.miss) {
       const n = notes[missCursor++];
@@ -4666,6 +4668,16 @@ function update(dt) {
   if (orderFlash.length > MAX_ORDER_FLASH) orderFlash.splice(0, orderFlash.length - MAX_ORDER_FLASH);
   perfStats.particleCount = particles.length;
   perfStats.textsCount = texts.length;
+}
+// Dev aid (?autoplay): presses on the first frame at or after each note and holds presses to
+// their end, so a run can be compared before and after gameplay changes.
+const AUTOPLAY = new URLSearchParams(location.search).has('autoplay');
+let autoplayIndex = 0;
+function autoplayStep(t) {
+  if (holding && !activeHold) endPress();
+  while (autoplayIndex < notes.length && notes[autoplayIndex].state !== 'pending') autoplayIndex++;
+  const n = notes[autoplayIndex];
+  if (n && !activeHold && t >= n.time) startPress();
 }
 function triggerSlash() {
   slashFx.push({ age: 0, life: 0.25 });

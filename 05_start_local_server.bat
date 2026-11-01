@@ -23,5 +23,5 @@ if not errorlevel 1 (
   timeout /t 1 /nobreak >nul
 )
 
-python -m http.server 8080
+python scripts\dev_server.py 8080
 pause
