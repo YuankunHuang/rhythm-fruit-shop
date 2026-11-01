@@ -91,6 +91,24 @@ test('releasing a hold early is an Early Release miss', () => {
   assert.equal(s.missReasons.EarlyRelease, 1);
   assert.equal(s.combo, 0);
   assert.equal(s.activeHold, null);
+  // The head judgement is replaced, not kept beside the Miss.
+  assert.deepEqual(s.counts, { Perfect: 0, Great: 0, Good: 0, Miss: 1 });
+  assert.equal(s.acc, 0);
+});
+
+test('every note is judged exactly once, whatever the input', () => {
+  // A deterministic masher: random press and release times, including early hold releases.
+  let seed = 7;
+  const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const s = session(lychee);
+  run(s, (s, t) => {
+    if (rand() < 0.08) press(s, t, 2);
+    else if (s.holding && rand() < 0.15) release(s, t);
+  });
+  const { Perfect, Great, Good, Miss } = s.counts;
+  assert.ok(s.missReasons.EarlyRelease > 0, 'the masher released at least one hold early');
+  assert.equal(Perfect + Great + Good + Miss, s.notes.filter((n) => n.state === 'done').length);
+  assert.equal(Miss, s.missReasons.Miss + s.missReasons.EarlyRelease);
 });
 
 test('releasing within the soft window still completes the hold', () => {

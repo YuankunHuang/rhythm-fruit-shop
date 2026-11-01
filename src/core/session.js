@@ -121,6 +121,7 @@ function beginHold(s, n, j, err) {
   n.state = 'holding';
   n.nextTick = n.time + n.tickInterval;
   n.ticksDone = 0;
+  n.headJudge = j;
   s.activeHold = n;
   scoreJudge(s, j);
   addHeat(s, j.name === 'Perfect' ? 12 : j.name === 'Great' ? 9 : 6);
@@ -161,6 +162,11 @@ function miss(s, n, t, label) {
   n.state = 'done';
   if (s.activeHold === n) s.activeHold = null;
   const early = label === 'Early Release';
+  // A hold released early turns its head judgement into this Miss, so every note is counted once.
+  if (early && n.headJudge) {
+    s.counts[n.headJudge.name]--;
+    s.acc -= n.headJudge.acc;
+  }
   s.counts.Miss++;
   s.missReasons[early ? 'EarlyRelease' : 'Miss']++;
   s.combo = 0;
