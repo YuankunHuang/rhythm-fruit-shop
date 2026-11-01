@@ -50,6 +50,7 @@ import {
   chartStats as countChart,
   chartLevel as rateChart,
 } from './core/chart.js?v=2026-11-01a';
+import * as econ from './core/economy.js?v=2026-11-01a';
 
 if (new URLSearchParams(location.search).has('reset')) {
   clearAllGameData();
@@ -650,28 +651,7 @@ const perfStats = {
 };
 let gameplayWarmupDepth = 0,
   startInFlightPromise = null;
-function makeResourceBag() {
-  return { chunks: 0, juice: 0, combo: 0, apple: 0, orange: 0, lime: 0, grape: 0, premium: 0, sparkle: 0 };
-}
-function makeMenuProgress() {
-  return {};
-}
-function makeDayStats() {
-  return {
-    shifts: 0,
-    money: 0,
-    rep: 0,
-    best: 0,
-    products: 0,
-    orders: 0,
-    misses: 0,
-    resources: makeResourceBag(),
-    menuProgress: makeMenuProgress(),
-    goalBonus: 0,
-    ledger: [],
-    summaryCelebrated: false,
-  };
-}
+const { makeResourceBag, makeDayStats, addBag } = econ;
 let dayStats = makeDayStats(),
   dailyPlan = null;
 
@@ -720,8 +700,7 @@ function createSaveSlot(i) {
 const prologueSeen = readPrologueSeen;
 const markPrologueSeen = savePrologueSeen;
 function shopLevel(s = shopState) {
-  const upgraded = ['cutter', 'blender', 'sign'].filter((id) => ((s.upgrades || {})[id] || 1) >= 2).length;
-  return Math.min(3, 1 + upgraded);
+  return econ.shopLevel(s);
 }
 function dayPlanSlotIds(day = shopState.day) {
   return dayPlanConfig(day).slots || ['day', 'dusk', 'night'];
@@ -735,20 +714,13 @@ function isTimeSlotUnlocked(slot) {
 }
 
 function shopStage() {
-  let s = SHOP_STAGES[0];
-  for (const st of SHOP_STAGES) if (shopState.reputation >= st.minRep) s = st;
-  return s;
+  return econ.shopStage(shopState.reputation, SHOP_STAGES);
 }
 function upgradeBonus(id) {
-  const u = SHOP_UPGRADES.find((x) => x.id === id);
-  if (!u) return 0;
-  return (shopState.upgrades[id] || 1) * u.baseBonus;
+  return econ.upgradeBonus(shopState.upgrades, SHOP_UPGRADES, id);
 }
 function upgradeCost(id) {
-  const u = SHOP_UPGRADES.find((x) => x.id === id);
-  if (!u) return Infinity;
-  const lv = shopState.upgrades[id] || 1;
-  return lv >= u.maxLv ? Infinity : u.costs[lv];
+  return econ.upgradeCost(shopState.upgrades, SHOP_UPGRADES, id);
 }
 function canUpgrade(id) {
   return shopState.coins >= upgradeCost(id);
@@ -767,43 +739,27 @@ function diffIncomeMul(d = diff) {
 function diffResourceMul(d = diff) {
   return d && d.resourceMul ? d.resourceMul : 1;
 }
-function scaleResourceBag(bag, mul = 1) {
-  if (mul === 1) return bag;
-  for (const k in bag) if (bag[k] > 0) bag[k] = Math.max(1, Math.round(bag[k] * mul));
-  return bag;
-}
 function addHeat(v) {
   heat += Math.max(0, Math.round(v));
 }
 function comboHeat(scale = 1) {
-  return Math.min(70, Math.floor(Math.sqrt(Math.max(0, combo)) * 5 * scale));
+  return econ.comboHeat(combo, scale);
 }
 function heatBonusValue(value = heat, customer = 85, failed = false) {
-  if (failed) return 0;
-  const cap = 280,
-    scale = 2200,
-    quality = clamp(customer / 100, 0.55, 1.08);
-  return Math.round(cap * (1 - Math.exp(-Math.max(0, value) / scale)) * quality);
+  return econ.heatBonusValue(value, customer, failed);
 }
 function expectedShiftIncome(day = shopState.day, slots = unlockedSlotCount()) {
-  return Math.round(slots * (360 + day * 65));
+  return econ.expectedShiftIncome(day, slots);
 }
 function estimateIncome(s, d) {
-  const st = chartStats(s, d),
-    profile = songProfile(s, d),
-    basePay = 70,
-    productPay = Math.round(
-      (profile.chunks || 0) * 70 * (1 + upgradeBonus('cutter')) +
-        (profile.juice || 0) * 95 * (1 + upgradeBonus('blender')),
-    ),
-    estimatedHeat = st.notes * 9 + st.holds * 36 + songFitScore(s, dailyPlan) * 45,
-    heatPay = heatBonusValue(estimatedHeat, 86, false),
-    tip = 50;
-  return Math.round((basePay + productPay + heatPay + tip) * diffIncomeMul(d));
-}
-function addBag(a, b, mul = 1) {
-  for (const k in b) a[k] = (a[k] || 0) + b[k] * mul;
-  return a;
+  return econ.estimateIncome({
+    stats: chartStats(s, d),
+    profile: songProfile(s, d),
+    fit: songFitScore(s, dailyPlan),
+    cutterBonus: upgradeBonus('cutter'),
+    blenderBonus: upgradeBonus('blender'),
+    incomeMul: diffIncomeMul(d),
+  });
 }
 function resourceText(b, limit = 3) {
   return (
@@ -816,36 +772,13 @@ function resourceText(b, limit = 3) {
   );
 }
 function songProfile(s, d = diff) {
-  const bag = makeResourceBag(),
-    stage = s.stage || 'day',
-    id = s.id || s.title;
-  if (stage === 'day') addBag(bag, { chunks: 2, juice: 1, apple: 1, orange: 1 });
-  else if (stage === 'dusk') addBag(bag, { chunks: 2, juice: 2, combo: 1, lime: 1, orange: 1 });
-  else if (stage === 'night') addBag(bag, { juice: 2, combo: 1, grape: 1, premium: 1, sparkle: 1 });
-  else addBag(bag, { juice: 2, combo: 2, premium: 2, sparkle: 1 });
-  const fruits = ['apple', 'orange', 'lime', 'grape'];
-  const extra = fruits[Math.abs([...id].reduce((n, ch) => n + ch.charCodeAt(0), 0)) % fruits.length];
-  bag[extra] = (bag[extra] || 0) + 1;
-  if ((s.bpm || 0) > 145) bag.combo++;
-  if ((s.duration || 0) > 180) bag.premium++;
-  return scaleResourceBag(bag, diffResourceMul(d));
+  return econ.songProfile(s, diffResourceMul(d));
 }
 function availableMenus() {
-  const rep = shopState.reputation || 0,
-    count = rep >= 220 ? MENU_ITEMS.length : rep >= 70 ? 4 : 3;
-  return MENU_ITEMS.slice(0, count);
+  return econ.availableMenus(shopState.reputation || 0, MENU_ITEMS);
 }
 function songFitScore(s, plan = dailyPlan) {
-  if (!plan) return 0;
-  const bag = songProfile(s);
-  let score = 0;
-  for (const id of plan.menuIds) {
-    const m = menuById(id);
-    for (const k in m.needs) score += (bag[k] || 0) * m.needs[k];
-  }
-  if (plan.focus && bag[plan.focus]) score += 2;
-  if (plan.stageHint === s.stage) score += 1;
-  return score;
+  return econ.songFitScore(s, plan, menuById, diffResourceMul());
 }
 function dayUnlockEntries(day = shopState.day) {
   return DAY_UNLOCKS.filter((x) => x.day === day);
@@ -862,48 +795,14 @@ function unlockedPlanSongs(day = shopState.day) {
       !(day === 1 && !tutorialDone && !FIRST_DAY_SONGS.includes(s.id)),
   );
 }
-function songSetBag(list, d = diff) {
-  const bag = makeResourceBag();
-  list.forEach((s) => addBag(bag, songProfile(s, d)));
-  return bag;
-}
 function menuNeedsSatisfied(menuIds, bag) {
-  return menuIds.every((id) =>
-    Object.entries(menuById(id).needs || {}).every(([k, v]) => (bag[k] || 0) >= v),
-  );
+  return econ.menuNeedsSatisfied(menuIds, bag, menuById);
 }
 function canSupplyMenus(menuIds, songs = unlockedPlanSongs(), limit = unlockedSlotCount()) {
-  if (!menuIds.length) return true;
-  if (!songs.length || limit <= 0) return false;
-  let ok = false;
-  function pick(start, left, chosen) {
-    if (ok) return;
-    if (menuNeedsSatisfied(menuIds, songSetBag(chosen))) {
-      ok = true;
-      return;
-    }
-    if (left <= 0) return;
-    for (let i = start; i < songs.length; i++) pick(i + 1, left - 1, chosen.concat(songs[i]));
-  }
-  pick(0, Math.min(limit, songs.length), []);
-  return ok;
+  return econ.canSupplyMenus(menuIds, songs, limit, menuById, diffResourceMul());
 }
 function chooseDailyMenuIds(day, menus, songs, slotCount) {
-  const ordered = menus.map((m, i) => menus[(i + day - 1) % menus.length]),
-    target = Math.max(1, Math.min(slotCount, day >= 3 ? 2 : 1, menus.length));
-  const ids = [];
-  for (const m of ordered) {
-    const next = ids.concat(m.id);
-    if (canSupplyMenus(next, songs, slotCount)) {
-      ids.push(m.id);
-      if (ids.length >= target) break;
-    }
-  }
-  if (!ids.length) {
-    const fallback = menus.find((m) => canSupplyMenus([m.id], songs, slotCount)) || menus[0];
-    ids.push(fallback.id);
-  }
-  return ids;
+  return econ.chooseDailyMenuIds(day, menus, songs, slotCount, menuById, diffResourceMul());
 }
 function plannedMenuIds(day, menus, songs, slotCount) {
   const cfg = dayPlanConfig(day),
@@ -955,19 +854,7 @@ function resetDay() {
   lastServiceResult = null;
 }
 function goalStatus() {
-  const p = ensureDailyPlan(),
-    menuDone = Object.values(dayStats.menuProgress || {}).reduce((a, b) => a + b, 0),
-    avg = dayStats.shifts
-      ? Math.round(dayStats.ledger.reduce((s, r) => s + r.customer, 0) / dayStats.shifts)
-      : 0;
-  return {
-    money: dayStats.money >= p.moneyGoal,
-    menus: menuDone >= p.menuGoal,
-    shifts: dayStats.shifts >= p.shiftsTarget,
-    menuDone,
-    avg,
-    complete: dayStats.money >= p.moneyGoal && menuDone >= p.menuGoal && dayStats.shifts >= p.shiftsTarget,
-  };
+  return econ.goalStatus(ensureDailyPlan(), dayStats);
 }
 function dailySupplyNames() {
   const p = ensureDailyPlan();
