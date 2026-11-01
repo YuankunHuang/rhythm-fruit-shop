@@ -25,18 +25,36 @@ cpp_core/
 # no licence to publish them. The package script never ships ignored files.
 audio/tracks/ark-light.m4a
 audio/tracks/Beethoven.m4a
+audio/tracks/drama.m4a
 audio/tracks/faraway.m4a
+audio/tracks/grafiore.m4a
+audio/tracks/lets_drive.m4a
+audio/tracks/please.m4a
+audio/tracks/purple-passion.m4a
 audio/tracks/seeker.m4a
 audio/tracks/unwelcome-school.m4a
+audio/tracks/wings-of-silence.m4a
 assets/songs/ark_light/
 assets/songs/beethoven/
+assets/songs/drama/
 assets/songs/faraway/
+assets/songs/grafiore/
+assets/songs/lets_drive/
+assets/songs/please/
+assets/songs/purple_passion/
 assets/songs/seeker/
 assets/songs/unwelcome_school/
+assets/songs/wings_of_silence/
 charts/tracks/ark-light.json
 charts/tracks/beethoven.json
+charts/tracks/drama.json
 charts/tracks/faraway.json
+charts/tracks/grafiore.json
+charts/tracks/lets-drive.json
+charts/tracks/please.json
+charts/tracks/purple-passion.json
 charts/tracks/seeker.json
 charts/tracks/unwelcome-school.json
+charts/tracks/wings-of-silence.json
 
 node_modules/

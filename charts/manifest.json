@@ -106,6 +106,13 @@
       "file": "tracks/beethoven.json"
     },
     {
+      "id": "drama",
+      "type": "track",
+      "title": "Drama",
+      "song": "audio/tracks/drama.m4a",
+      "file": "tracks/drama.json"
+    },
+    {
       "id": "faraway",
       "type": "track",
       "title": "Faraway",
@@ -113,11 +120,39 @@
       "file": "tracks/faraway.json"
     },
     {
+      "id": "grafiore",
+      "type": "track",
+      "title": "Grafiore",
+      "song": "audio/tracks/grafiore.m4a",
+      "file": "tracks/grafiore.json"
+    },
+    {
+      "id": "lets_drive",
+      "type": "track",
+      "title": "Let's Drive",
+      "song": "audio/tracks/lets_drive.m4a",
+      "file": "tracks/lets-drive.json"
+    },
+    {
       "id": "open_the_fruit_stand!",
       "type": "track",
       "title": "Open The Fruit Stand!",
       "song": "audio/tracks/Open the Fruit Stand!.m4a",
       "file": "tracks/open-the-fruit-stand!.json"
+    },
+    {
+      "id": "please",
+      "type": "track",
+      "title": "Please",
+      "song": "audio/tracks/please.m4a",
+      "file": "tracks/please.json"
+    },
+    {
+      "id": "purple_passion",
+      "type": "track",
+      "title": "Purple Passion",
+      "song": "audio/tracks/purple-passion.m4a",
+      "file": "tracks/purple-passion.json"
     },
     {
       "id": "seeker",
@@ -132,6 +167,13 @@
       "title": "Unwelcome School",
       "song": "audio/tracks/unwelcome-school.m4a",
       "file": "tracks/unwelcome-school.json"
+    },
+    {
+      "id": "wings_of_silence",
+      "type": "track",
+      "title": "Wings Of Silence",
+      "song": "audio/tracks/wings-of-silence.m4a",
+      "file": "tracks/wings-of-silence.json"
     }
   ]
 }

@@ -233,6 +233,24 @@
       ]
     },
     {
+      "id": "drama",
+      "type": "track",
+      "title": "Drama",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/drama.m4a",
+      "duration": 204.625,
+      "bpm": 267.9,
+      "activeStart": 12.979,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
       "id": "faraway",
       "type": "track",
       "title": "Faraway",
@@ -251,6 +269,42 @@
       ]
     },
     {
+      "id": "grafiore",
+      "type": "track",
+      "title": "Grafiore",
+      "artist": "M2U",
+      "file": "audio/tracks/grafiore.m4a",
+      "duration": 168.915,
+      "bpm": 274.0,
+      "activeStart": 0.74,
+      "audioOffset": -0.02,
+      "stage": "dusk",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "lets_drive",
+      "type": "track",
+      "title": "Let's Drive",
+      "artist": "Demo Audio",
+      "file": "audio/tracks/lets_drive.m4a",
+      "duration": 85.652,
+      "bpm": 155.0,
+      "activeStart": 0.493,
+      "audioOffset": -0.02,
+      "stage": "night",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
       "id": "open_the_fruit_stand!",
       "title": "Open The Fruit Stand!",
       "artist": "Demo Audio",
@@ -261,6 +315,42 @@
       "audioOffset": -0.02,
       "stage": "day",
       "type": "track",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "please",
+      "type": "track",
+      "title": "Please",
+      "artist": "R300K",
+      "file": "audio/tracks/please.m4a",
+      "duration": 121.998,
+      "bpm": 160.9,
+      "activeStart": 0.509,
+      "audioOffset": -0.02,
+      "stage": "day",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "purple_passion",
+      "type": "track",
+      "title": "Purple Passion",
+      "artist": "Diana Boncheva",
+      "file": "audio/tracks/purple-passion.m4a",
+      "duration": 223.103,
+      "bpm": 168.1,
+      "activeStart": 0.33,
+      "audioOffset": -0.02,
+      "stage": "day",
       "difficulties": [
         "easy",
         "normal",
@@ -297,6 +387,24 @@
       "activeStart": 0.136,
       "audioOffset": -0.02,
       "stage": "day",
+      "difficulties": [
+        "easy",
+        "normal",
+        "hard",
+        "expert"
+      ]
+    },
+    {
+      "id": "wings_of_silence",
+      "type": "track",
+      "title": "Wings of Silence",
+      "artist": "M2U",
+      "file": "audio/tracks/wings-of-silence.m4a",
+      "duration": 143.645,
+      "bpm": 180.2,
+      "activeStart": 0.645,
+      "audioOffset": -0.02,
+      "stage": "late",
       "difficulties": [
         "easy",
         "normal",
