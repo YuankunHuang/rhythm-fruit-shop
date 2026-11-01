@@ -3799,14 +3799,15 @@ function showServiceStoryResult(r) {
       ordersDone: r.ordersDone,
       totalOrders: r.orders ? r.orders.length : 0,
     });
-    if (!wasTrackEvent && flowMenuId) {
+    const servedMenu = !wasTrackEvent && flowMenuId;
+    if (servedMenu) {
       dayStats.menuProgress[flowMenuId] = (dayStats.menuProgress[flowMenuId] || 0) + 1;
     }
     dayStats.orders += r.ordersDone || 0;
     dayStats.products += ((r.products && r.products.chunks) || 0) + ((r.products && r.products.juice) || 0);
     dayStats.misses += (r.counts && r.counts.Miss) || 0;
-    const _shiftBiz = applyShiftToDay(r);
-    void _shiftBiz;
+    // The served drink already counts toward the menu goal; its in-shift orders must not count it again.
+    applyShiftToDay(r, { countMenus: !servedMenu });
     if (wasTrackEvent && tePhase) {
       trackEventPhase = null;
       if (learnSong(tePhase.songId)) {
@@ -3964,13 +3965,14 @@ function shiftResourceYield(r) {
   if (r.counts.Miss <= 3) bag.sparkle += 1;
   return bag;
 }
-function applyShiftToDay(r) {
+/** Banks a shift's resources and order bonus; `countMenus: false` leaves menu progress to the caller. */
+function applyShiftToDay(r, { countMenus = true } = {}) {
   const bag = shiftResourceYield(r);
   addBag(dayStats.resources, bag);
   let menuDone = 0;
   for (const o of r.orders) {
     if (o.menu && o.done && o.menu !== 'combo') {
-      dayStats.menuProgress[o.menu] = (dayStats.menuProgress[o.menu] || 0) + 1;
+      if (countMenus) dayStats.menuProgress[o.menu] = (dayStats.menuProgress[o.menu] || 0) + 1;
       menuDone++;
     }
   }
