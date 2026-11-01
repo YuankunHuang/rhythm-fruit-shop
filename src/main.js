@@ -3877,9 +3877,12 @@ async function completeTutorialAndStartDay() {
   shopState.firstShiftDone = true;
   learnSong('open_the_fruit_stand!');
   markTutorialSeen(DAY1_SHIFT_TUTORIAL_ID);
-  const _savedResult = lastServiceResult;
+  const _savedResult = lastServiceResult,
+    tutorialDayStats = dayStats;
   resetDay();
   lastServiceResult = _savedResult;
+  // The tutorial order is day 1's only order and its pay is already banked, so the day's report keeps it.
+  dayStats = tutorialDayStats;
   setIntroDifficulty();
   ensureDailyPlan();
   saveShopState();
