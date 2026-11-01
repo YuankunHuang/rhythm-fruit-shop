@@ -376,34 +376,6 @@ def copy_runtime_assets(target: Path) -> int:
     return n
 
 
-def _apply_webp_patches(text: str) -> str:
-    text = re.sub(r"(assets/songs/[^'\"]+/)cover\.png", r"\1cover.webp", text)
-    text = re.sub(r"(assets/game_art/song_covers/[^'\"]+)\.png", r"\1.webp", text)
-    text = re.sub(r"(assets/game_art/[^'\"\)]+)\.png", r"\1.webp", text)
-    return text
-
-
-def patch_html_for_webp(target: Path) -> None:
-    """Replace image paths in the packaged index.html and src/*.js to use .webp versions."""
-    patched = []
-
-    html_path = target / "index.html"
-    original = html_path.read_text(encoding="utf-8")
-    updated = _apply_webp_patches(original)
-    if updated != original:
-        html_path.write_text(updated, encoding="utf-8")
-        patched.append("index.html")
-
-    for js_path in sorted((target / "src").rglob("*.js")):
-        original = js_path.read_text(encoding="utf-8")
-        updated = _apply_webp_patches(original)
-        if updated != original:
-            js_path.write_text(updated, encoding="utf-8")
-            patched.append(f"src/{js_path.relative_to(target / 'src').as_posix()}")
-
-    print(f"\nPatched image paths for WebP in: {', '.join(patched) if patched else '(none changed)'}")
-
-
 def file_digest(path: Path, length: int = FINGERPRINT_HEX_LEN) -> str:
     h = hashlib.sha256()
     with path.open("rb") as f:
@@ -418,7 +390,7 @@ def fingerprint_name(path: Path) -> Path:
 
 
 def fingerprint_runtime_files(target: Path) -> dict[str, str]:
-    """Rename cacheable runtime files with a content hash and rewrite references."""
+    """Rename cacheable runtime files with a content hash; return logical path -> shipped path."""
     roots = [target / "audio", target / "assets", target / "charts"]
     files: list[Path] = []
     for root in roots:
@@ -441,9 +413,11 @@ def fingerprint_runtime_files(target: Path) -> dict[str, str]:
             old_path = Path(old_rel)
             for source_suffix in [".opus", ".mp3", ".ogg", ".wav", ".flac"]:
                 mapping[old_path.with_suffix(source_suffix).as_posix()] = new_rel
+        if old_rel.startswith("assets/") and path.suffix.lower() == ".webp":
+            # Source code names the PNG it was converted from.
+            mapping[Path(old_rel).with_suffix(".png").as_posix()] = new_rel
 
-    rewrite_fingerprinted_references(target, mapping)
-    print(f"\nFingerprinted runtime files: {len(mapping)}")
+    print(f"\nFingerprinted runtime files: {len(files)}")
     return mapping
 
 
@@ -456,64 +430,15 @@ def rewrite_text_file(path: Path, replacements: dict[str, str]) -> None:
         path.write_text(text, encoding="utf-8")
 
 
-def rewrite_fingerprinted_references(target: Path, mapping: dict[str, str]) -> None:
-    if not mapping:
-        return
-
-    rewrite_text_file(target / "index.html", mapping)
-    patch_song_cover_lookup(target, mapping)
-
-    for js_path in sorted((target / "src").rglob("*.js")):
-        rewrite_text_file(js_path, mapping)
-
-    for json_path in sorted((target / "data").rglob("*.json")):
-        rewrite_text_file(json_path, mapping)
-
-    chart_replacements = {old: new for old, new in mapping.items() if old.startswith("audio/")}
-    for chart_path in sorted((target / "charts").rglob("*.json")):
-        if chart_path.name != "manifest.json":
-            rewrite_text_file(chart_path, chart_replacements)
-
-    manifest_path = target / "charts" / "manifest.json"
-    if manifest_path.exists():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        for entry in manifest.get("charts", []):
-            song = entry.get("song")
-            chart = entry.get("file")
-            if song in mapping:
-                entry["song"] = mapping[song]
-            if chart and f"charts/{chart}" in mapping:
-                entry["file"] = Path(mapping[f"charts/{chart}"]).relative_to("charts").as_posix()
-        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-
-def patch_song_cover_lookup(target: Path, mapping: dict[str, str]) -> None:
-    """Dynamic cover URLs need an explicit id -> fingerprinted path lookup injected into src/main.js."""
-    covers: dict[str, str] = {}
-    for old, new in mapping.items():
-        match = re.fullmatch(r"assets/songs/([^/]+)/cover\.(?:png|webp)", old)
-        if match:
-            covers[match.group(1)] = new
-
-    if not covers:
-        return
-
-    main_js_path = target / "src" / "main.js"
-    if not main_js_path.exists():
-        return
-
-    js = main_js_path.read_text(encoding="utf-8")
-    lookup = "const SONG_COVERS=" + json.dumps(covers, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + ";"
-    if "const SONG_COVERS=" not in js:
-        js = js.replace("function songByline(", lookup + "\nfunction songByline(", 1)
-
-    js = re.sub(
-        r"function songSnapshot\(s\)\{return s\.cover\?versionedUrl\(s\.cover\):''\}",
-        "function songSnapshot(s){const c=SONG_COVERS[s.id];return c?versionedUrl(c):(s.cover?versionedUrl(s.cover):'')}",
-        js,
-        count=1,
+def write_asset_map(target: Path, mapping: dict[str, str]) -> None:
+    """Runtime code resolves every asset URL through src/asset-map.js (see versionedUrl);
+    only the static CSS in index.html is rewritten as text."""
+    body = json.dumps(mapping, ensure_ascii=False, sort_keys=True, indent=0)
+    (target / "src" / "asset-map.js").write_text(
+        "// Generated by scripts/package_github_share.py.\nexport const ASSET_MAP = " + body + ";\n",
+        encoding="utf-8",
     )
-    main_js_path.write_text(js, encoding="utf-8")
+    rewrite_text_file(target / "index.html", mapping)
 
 
 def require_file(path: Path) -> None:
@@ -526,7 +451,11 @@ def require_one(pattern: str, root: Path) -> None:
         raise RuntimeError(f"Missing package file matching: {pattern}")
 
 
-def validate_package(target: Path) -> None:
+def validate_package(target: Path, mapping: dict[str, str]) -> None:
+    def require_shipped(logical: str, what: str) -> None:
+        if not (target / mapping.get(logical, logical)).exists():
+            raise RuntimeError(f"Missing {what}: {logical}")
+
     webp = HAS_PILLOW
     art_ext = ".webp" if webp else ".png"
     cover_ext = ".webp" if webp else ".png"
@@ -555,12 +484,19 @@ def validate_package(target: Path) -> None:
 
     manifest = json.loads((target / "charts" / "manifest.json").read_text(encoding="utf-8"))
     for entry in manifest.get("charts", []):
-        song = target / entry["song"]
-        chart = target / "charts" / entry["file"]
-        if not song.exists():
-            raise RuntimeError(f"Missing audio referenced by manifest: {entry['song']}")
-        if not chart.exists():
-            raise RuntimeError(f"Missing chart referenced by manifest: {entry['file']}")
+        require_shipped(entry["song"], "audio referenced by manifest")
+        require_shipped("charts/" + entry["file"], "chart referenced by manifest")
+    songs = json.loads((target / "data" / "songs.json").read_text(encoding="utf-8"))
+    for song in songs.get("songs", []):
+        require_shipped(song["file"], "audio referenced by songs.json")
+    # Literal asset paths in source; paths built at runtime are checked by playing the build.
+    # Missing art is a content gap, not a broken build, so it warns instead of failing.
+    for js_path in sorted((target / "src").rglob("*.js")):
+        if js_path.name == "asset-map.js":
+            continue
+        for logical in re.findall(r"""['"`]((?:assets|audio)/[^'"`$]+\.\w+)['"`]""", js_path.read_text(encoding="utf-8")):
+            if not (target / mapping.get(logical, logical)).exists():
+                print(f"  warn: src/{js_path.relative_to(target / 'src').as_posix()} references missing {logical}")
 
 
 def build_package(target: Path, make_zip: bool) -> None:
@@ -582,11 +518,9 @@ def build_package(target: Path, make_zip: bool) -> None:
     (target / ".nojekyll").write_text("", encoding="utf-8")
     write_share_launchers(target)
 
-    if HAS_PILLOW:
-        patch_html_for_webp(target)
-
-    fingerprint_runtime_files(target)
-    validate_package(target)
+    mapping = fingerprint_runtime_files(target)
+    write_asset_map(target, mapping)
+    validate_package(target, mapping)
 
     total_mb = sum(f.stat().st_size for f in target.rglob("*") if f.is_file()) / 1024 / 1024
     print("")

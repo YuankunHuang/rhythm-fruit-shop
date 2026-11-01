@@ -1228,7 +1228,7 @@ function applyTheme(theme, persist = false) {
   syncDomShellTheme();
   refreshThemeCache();
   const logo = document.querySelector('.brand-logo');
-  if (logo) logo.src = themeLogo();
+  if (logo) logo.src = versionedUrl(themeLogo());
   if (state === S.SELECT) updateSongPreview();
 }
 function isPortrait() {

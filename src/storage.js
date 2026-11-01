@@ -1,5 +1,7 @@
 // localStorage 命名空间 + 存档读写。结构定义见 docs/save_schema.md。
 
+import { ASSET_MAP } from './asset-map.js';
+
 export const APP_CACHE_VERSION = '2026-05-10v';
 export const SAVE_SCHEMA_VERSION = 2;
 export const SAVE_SLOT_COUNT = 3;
@@ -185,5 +187,6 @@ export function clearAllGameData() {
 
 export function versionedUrl(src) {
   if (!src || /^(data:|blob:)/.test(src)) return src;
+  src = ASSET_MAP[src] || src;
   return src + (src.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(APP_CACHE_VERSION);
 }
