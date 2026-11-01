@@ -1057,10 +1057,10 @@ function updateSplashBackground() {
 function updateHomeRoomBackdrop() {
   const room = $('homeRoomBackdrop');
   if (!room) return;
-  const space = currentHomeSpace(),
-    img = ensureImageLoaded(isPortrait() ? space.portrait : space.landscape),
-    url = img && img._rfaSrc ? `url("${img._rfaSrc}")` : '';
-  room.style.backgroundImage = url;
+  const pick = (space) => ensureImageLoaded(isPortrait() ? space.portrait : space.landscape),
+    layers = [...new Set([currentHomeSpace(), HOME_SPACES.apartment].map(pick))].filter((img) => img._rfaSrc);
+  // The apartment sits underneath, so a home whose art is missing still has a backdrop.
+  room.style.backgroundImage = layers.map((img) => `url("${img._rfaSrc}")`).join(', ');
 }
 /** 冷启动：仅开屏，不挂载 MainMenu（完成后才有 MainMenu）。 */
 function bootstrapOpeningOnly() {
@@ -1790,11 +1790,9 @@ function songByline(s, sep = ' / ') {
     : `${type}${sep}${stageLabel(s.stage)}`;
 }
 function songSnapshot(s) {
-  return s && s.cover
-    ? versionedUrl(s.cover)
-    : s && s.id
-      ? versionedUrl(`assets/songs/${s.id}/cover.png`)
-      : '';
+  // Story tracks keep a cover beside their song; a drink has one only when songs.json names it.
+  const src = s && (s.cover || (s.type === 'track' ? `assets/songs/${s.id}/cover.png` : ''));
+  return src ? versionedUrl(src) : '';
 }
 function cancelPreviewFade() {
   if (previewFadeFrame) cancelAnimationFrame(previewFadeFrame);
@@ -3061,7 +3059,15 @@ function renderMenuEditor() {
         card = document.createElement('div');
       card.className = 'menu-song-card';
       const fallback = currentMainVisual()._rfaSrc || '';
-      card.innerHTML = `${chartLevelBadge(s)}<div class="menu-song-cover" style="background-image:url('${songSnapshot(s)}'),url('${fallback}')"></div><div><div class="song-title">${s.title}</div><div class="song-icons">${songAttrLine(s)}</div><div class="pill-row">${songPillsHtml(s, { withLabel: true })}</div></div>`;
+      card.innerHTML = `${chartLevelBadge(s)}<div class="menu-song-cover" style="background-image:${[
+        songSnapshot(s),
+        fallback,
+      ]
+        .filter(Boolean)
+        .map((u) => `url('${u}')`)
+        .join(
+          ',',
+        )}"></div><div><div class="song-title">${s.title}</div><div class="song-icons">${songAttrLine(s)}</div><div class="pill-row">${songPillsHtml(s, { withLabel: true })}</div></div>`;
       card.onclick = () => {
         if (used) {
           dayMenu[usedSlot] = null;
