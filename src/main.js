@@ -543,6 +543,8 @@ let dpr = 1,
   previewLoopStart = 0,
   previewWanted = false,
   openingDismissed = false,
+  bootReady = false,
+  openingQueued = false,
   tutorialActive = false,
   currentTutorial = null,
   currentTutorialTarget = null,
@@ -2031,8 +2033,13 @@ function buildCards(preserveScroll = true) {
 
 function enterOpening() {
   if (openingDismissed || !openingScreen) return;
-  openingDismissed = true;
   unlockSfx();
+  // A tap before the charts load waits for boot, which would otherwise clear the panel it opens.
+  if (!bootReady) {
+    openingQueued = true;
+    return;
+  }
+  openingDismissed = true;
   sfxPlay('ui.select');
   if (prologueSeen()) {
     showTitle();
@@ -4784,6 +4791,8 @@ loadOfficialCharts().then((ok) => {
   reset();
   state = S.HOME;
   bootstrapOpeningOnly();
+  bootReady = true;
+  if (openingQueued) enterOpening();
   if (!ok) showToast(chartLoadError || '\u8c31\u9762\u52a0\u8f7d\u5931\u8d25');
   requestAnimationFrame(loop);
 });
