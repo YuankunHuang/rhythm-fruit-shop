@@ -595,6 +595,9 @@ html.theme-sunny .schedule-supply-row{background:rgba(255,255,255,.58)}
 .vn-characters{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;--vn-box-w:min(calc(760px * var(--ui-scale)),calc(100vw - calc(26px * var(--ui-scale))));--vn-box-edge:calc((100vw - var(--vn-box-w)) / 2)}
 .vn-character{position:absolute;bottom:calc(130px * var(--ui-scale));height:min(calc(600px * var(--ui-scale)),72dvh);max-width:calc(var(--vn-box-w) * .62);object-fit:contain;object-position:bottom center;filter:drop-shadow(0 calc(18px * var(--ui-scale)) calc(28px * var(--ui-scale)) rgba(38,48,68,.22));opacity:0;transform:translateY(calc(18px * var(--ui-scale))) scale(.985);transition:opacity .22s ease,transform .28s ease,filter .22s ease}
 .vn-character.show{opacity:1;transform:translateY(0) scale(1)}
+/* The delivery robot is waist-high: stand it lower so its wheels meet the dialogue box. */
+.vn-character[data-char="xiaodi"]{bottom:calc(70px * var(--ui-scale))}
+@media(max-width:760px){.vn-character[data-char="xiaodi"]{bottom:calc(104px * var(--ui-scale))}}
 .vn-character.dim{opacity:.56;filter:drop-shadow(0 calc(14px * var(--ui-scale)) calc(24px * var(--ui-scale)) rgba(38,48,68,.16)) saturate(.86)}
 .vn-character.left{left:var(--vn-box-edge);transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}
 .vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}

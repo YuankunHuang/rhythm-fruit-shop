@@ -320,6 +320,17 @@ const VN_CHARACTERS = {
       attentive: lazyImage('assets/game_art/lao_bei/attentive.png'),
     },
   },
+  xiaodi: {
+    side: 'left',
+    assets: {
+      neutral: lazyImage('assets/game_art/xiaodi/neutral.png'),
+      smile: lazyImage('assets/game_art/xiaodi/smile.png'),
+      waiting: lazyImage('assets/game_art/xiaodi/waiting.png'),
+      mimic: lazyImage('assets/game_art/xiaodi/mimic.png'),
+      v2_neutral: lazyImage('assets/game_art/xiaodi/v2_neutral.png'),
+      v2_smile: lazyImage('assets/game_art/xiaodi/v2_smile.png'),
+    },
+  },
   laofang: {
     side: 'left',
     assets: {
@@ -2615,6 +2626,8 @@ function vnCharacterKey(node) {
   if (sl.includes('student') || sl.includes('学生') || s === '林小末') return 'student_girl';
   const VIP_MAP = {
     阿晟: 'ashen',
+    小递: 'xiaodi',
+    配送机器人: 'xiaodi',
     老方: 'laofang',
     猫小姐: 'miss_cat',
     顾薇: 'guiwei',
@@ -2773,6 +2786,7 @@ function renderVNCharacters(node) {
     activeImg = config.side === 'left' ? vnCharLeft : vnCharRight,
     inactiveImg = config.side === 'left' ? vnCharRight : vnCharLeft;
   setVNCharacterImage(activeImg, config, vnDefaultExpression(key, node));
+  activeImg.dataset.char = key;
   activeImg.classList.remove('dim');
   inactiveImg.classList.remove('show', 'dim');
   inactiveImg.removeAttribute('src');
