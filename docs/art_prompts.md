@@ -74,3 +74,96 @@ mood. No people, no hands. No text, no letters, no labels, no logos, no signs.
 ## 饮品封面接入
 
 放好后，在 `data/songs.json` 对应条目加一行 `"cover": "assets/songs/<id>/cover.png"`，游戏才会读取（故事曲目默认读同目录的 `cover.png`，饮品不默认读取，避免对不存在的文件发请求）。
+
+## 4. 新剧情需要的立绘（2026-11-01 剧情重写后）
+
+通用要求（同现有立绘）：透明背景 PNG，3:4，928×1232；动漫风角色立绘，柔和赛璐璐上色、略带厚涂；人物腰部以上（机器人画全身）；不要文字、不要水印。可以把 `assets/game_art/lao_fang/neutral.png` 作为风格参考图一起喂给生图工具。同一角色的几张表情，先生成第一张，再用它当参考图生成其余几张，保持脸和衣服一致。
+
+**放好以后告诉我，立绘要在代码里登记才会显示。**
+
+### 4.1 配送机器人「小递」（优先，第 3–10 天每天出场）
+
+原型是现实里的餐厅送餐机器人（海底捞那种）：齐腰高的白色柜子，顶上一块小屏幕，屏幕上是简笔表情。它的“表情”全靠屏幕。
+
+路径：`assets/game_art/xiao_di/` 下面六张。
+
+公共描述（每张都带上）：
+
+```
+Full-body character art of a small waist-high indoor delivery robot, standing on a transparent
+background. Rounded white plastic cabinet body like a bedside table on four small wheels, a front
+compartment door with a thin glowing blue light strip, a small rectangular screen on top acting as
+its face, slightly scuffed edges from daily use. Clean, friendly, a little clumsy-looking.
+Soft cel-shaded anime illustration style matching a slice-of-life visual novel, gentle lighting.
+No text, no letters, no logos, no numbers anywhere, including on the screen.
+```
+
+各张只换屏幕内容：
+- `neutral.png`：`The screen shows a minimal face: two round black dots for eyes and a short flat line.`
+- `smile.png`：`The screen shows a minimal smiling face: two round dots and a gentle upward curve.`
+- `waiting.png`：`The screen shows a simple hourglass icon instead of a face.`
+- `mimic.png`（第 8 天学柚子说“吃面”）：`The screen shows a tiny simple doodle of a girl's face with short green bob hair and a round orange-slice hair clip, drawn in the same minimal line style.`
+- `v2_neutral.png`（第 10 天全量升级后）：把公共描述里的身体换成 `a sleeker newer model of the same robot: slightly taller, seamless glossy white shell, a larger wide screen, two small rubber tracks instead of wheels, a soft white glow around the screen edge`，屏幕：`calm minimal face, two soft glowing dots and a faint curve`。
+- `v2_smile.png`：同上，屏幕 `two soft glowing dots and a warm smiling curve, perfectly symmetrical`。
+
+### 4.2 老王（优先，五金店老板，第 3、5、10 天）
+
+路径：`assets/game_art/lao_wang/` 下 `neutral.png`、`laugh.png`、`wistful.png`。
+
+```
+Waist-up character portrait of a cheerful 70-year-old Chinese man who runs a small hardware and
+key-cutting shop on an old street. Short grey crew cut, sun-tanned wrinkled face, thick eyebrows,
+reading glasses pushed up on his forehead, a faded navy work vest over a white undershirt, a
+carpenter's pencil behind one ear, a small paper bag of sunflower seeds in one hand.
+Transparent background. Soft cel-shaded anime illustration, warm slice-of-life visual novel style.
+Hands relaxed and anatomically correct, five fingers, or kept out of frame. No text, no logos.
+```
+
+表情：
+- `neutral.png`：`relaxed, chatty expression, mouth slightly open as if about to tell gossip`
+- `laugh.png`：`laughing loudly with eyes squeezed shut, one hand slapping the air`
+- `wistful.png`（第 10 天说要回老家钓鱼）：`a quiet wistful half-smile, looking slightly off to the side`
+
+### 4.3 阿凯（可选，第 10 天刚出院的骑手）
+
+路径：`assets/game_art/a_kai/` 下 `neutral.png`、`grin.png`。
+
+```
+Waist-up character portrait of a young Chinese food-delivery rider, about 20, short messy black
+hair, a bright orange delivery vest over a grey hoodie, his left arm in a white sling, a small
+bandage on his cheek. Transparent background. Soft cel-shaded anime illustration, slice-of-life
+visual novel style. No text or logos on the vest.
+```
+
+表情：`neutral.png` 有点不好意思；`grin.png` 咧嘴笑。
+
+## 5. 新背景（可选，需要我加一个小功能才能切换）
+
+现在所有对白都用店内背景。下面两张图能让最重要的两场戏换个地方；图到了我再加“某一段对白换背景”的功能。尺寸同前：横版 1456×816、竖版 816×1456，各一张。
+
+### 5.1 店门口的夜街和公交站灯箱（第 9 天程晚的演出）
+
+路径：`assets/game_art/street/bus_stop_night_portrait.png`、`..._landscape.png`
+
+```
+Night street scene in an old neighborhood, seen from the doorway of a small fruit juice shop.
+Across the narrow street, a bus stop shelter with a large glowing advertising light box showing a
+beautiful smiling young woman, glossy and perfect like a commercial, holding nothing. Warm
+streetlights, a few parked scooters, a red motorbike with a small faded green toy dinosaur tied
+to the back seat. Wet pavement reflecting the light box. Quiet, slightly melancholic, warm and
+cool light mixed. Painterly anime background art, slice-of-life. No people in the foreground.
+No text, no letters, no logos anywhere, including on the light box and shop signs.
+```
+
+### 5.2 雨夜地铁口和饮品机（第 7 天主角修机器）
+
+路径：`assets/game_art/street/subway_kiosk_rain_portrait.png`、`..._landscape.png`
+
+```
+Rainy night at a subway station entrance on a city street. Beside the entrance stairs stands a
+sleek white automated drink vending kiosk with a large screen showing a simple friendly smiley
+face icon, its side maintenance panel slightly open. Heavy rain, puddles, neon and streetlight
+reflections, an orange delivery rider's helmet resting on the kiosk ledge. Lonely, cinematic,
+blue and amber light. Painterly anime background art, slice-of-life. No people. No text, no
+letters, no logos, no numbers anywhere.
+```
