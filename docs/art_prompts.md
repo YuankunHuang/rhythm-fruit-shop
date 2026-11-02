@@ -77,93 +77,162 @@ mood. No people, no hands. No text, no letters, no labels, no logos, no signs.
 
 ## 4. 新剧情需要的立绘（2026-11-01 剧情重写后）
 
-通用要求（同现有立绘）：透明背景 PNG，3:4，928×1232；动漫风角色立绘，柔和赛璐璐上色、略带厚涂；人物腰部以上（机器人画全身）；不要文字、不要水印。可以把 `assets/game_art/lao_fang/neutral.png` 作为风格参考图一起喂给生图工具。同一角色的几张表情，先生成第一张，再用它当参考图生成其余几张，保持脸和衣服一致。
+### 现有立绘的标准（新图必须照这个出）
+
+量自 `assets/game_art/` 里现有的常客立绘：
+
+| 项目 | 标准 |
+|---|---|
+| 文件 | 透明背景 PNG（RGBA） |
+| 尺寸 | `neutral.png` 928×1232；其余表情 1792×2380。两种都是 3:4，比例不能变 |
+| 构图 | 一个人，正对镜头、身体略微侧转；头顶上方留一小段空，往下一直截到大腿中段，画面底边直接切断，不画脚 |
+| 画风 | 干净的日系动画赛璐璐：清晰的深色描线，平涂加一层柔和阴影，皮肤偏暖；不是厚涂、不是写实 |
+| 配色 | 全作的主色是绿和橙（店的颜色），衣服上可以带一点 |
+| 一致性 | 同一角色的所有表情：脸、发型、衣服、构图、大小、位置完全一样，只改表情和手 |
+| 禁止 | 文字、logo、数字、水印（之前有几张立绘右下角留了生图工具的四角星水印，要检查） |
+
+**出图顺序：** 先出 `neutral.png`，满意以后，再把它作为参考图出其余表情，提示词里写 `same character, same outfit, same framing and size, only change the expression`。
 
 **放好以后告诉我，立绘要在代码里登记才会显示。**
 
 ### 4.1 配送机器人「小递」（优先，第 3–10 天每天出场）
 
-原型是现实里的餐厅送餐机器人（海底捞那种）：齐腰高的白色柜子，顶上一块小屏幕，屏幕上是简笔表情。它的“表情”全靠屏幕。
+原型是现实里的餐厅送餐机器人：齐腰高的白色柜子，顶上一块小屏幕，表情全靠屏幕上的简笔脸。
 
-路径：`assets/game_art/xiao_di/` 下面六张。
+**要附的参考图：**
+1. `assets/game_art/lao_fang/neutral.png`：描线、上色和构图的风格参考。
+2. `assets/game_art/yan_zi/neutral.png`：主色参考，同属这条街的配送行业。
+3. 一张真实的餐厅送餐机器人照片（网上搜「送餐机器人」任选一张）：只参考形体。提示词里要求不要猫耳朵、不要任何品牌标志。
 
-公共描述（每张都带上）：
+**路径：** `assets/game_art/xiao_di/`，共六张，尺寸按上面的标准（`neutral.png` 928×1232，其余 1792×2380）。
+
+**公共提示词：**
 
 ```
-Full-body character art of a small waist-high indoor delivery robot, standing on a transparent
-background. Rounded white plastic cabinet body like a bedside table on four small wheels, a front
-compartment door with a thin glowing blue light strip, a small rectangular screen on top acting as
-its face, slightly scuffed edges from daily use. Clean, friendly, a little clumsy-looking.
-Soft cel-shaded anime illustration style matching a slice-of-life visual novel, gentle lighting.
-No text, no letters, no logos, no numbers anywhere, including on the screen.
+Character art for a slice-of-life anime visual novel, matching the attached reference portraits:
+clean anime cel shading, crisp dark outlines, flat colors with one soft shadow step.
+Subject: a small waist-high indoor delivery robot, shown whole and centered, filling the frame the
+same way the reference characters do. Rounded white plastic cabinet body like a bedside table, on
+four small wheels; a front compartment door with a thin glowing blue light strip; a small
+rectangular screen on top that acts as its face; slightly scuffed edges from daily use. Friendly
+and a little clumsy-looking. A small green and orange accent stripe on the side.
+Use the attached photo only for the body shape: no cat ears, no brand marks.
+Transparent background. Portrait 3:4. No text, no letters, no logos, no numbers anywhere,
+including on the screen. No watermark.
 ```
 
-各张只换屏幕内容：
+**六张，只换屏幕或机身：**
 - `neutral.png`：`The screen shows a minimal face: two round black dots for eyes and a short flat line.`
 - `smile.png`：`The screen shows a minimal smiling face: two round dots and a gentle upward curve.`
 - `waiting.png`：`The screen shows a simple hourglass icon instead of a face.`
-- `mimic.png`（第 8 天学柚子说“吃面”）：`The screen shows a tiny simple doodle of a girl's face with short green bob hair and a round orange-slice hair clip, drawn in the same minimal line style.`
-- `v2_neutral.png`（第 10 天全量升级后）：把公共描述里的身体换成 `a sleeker newer model of the same robot: slightly taller, seamless glossy white shell, a larger wide screen, two small rubber tracks instead of wheels, a soft white glow around the screen edge`，屏幕：`calm minimal face, two soft glowing dots and a faint curve`。
+- `mimic.png`（第 8 天学柚子说“吃面”）：`The screen shows a tiny minimal doodle of a girl's face with a short green bob and a round orange-slice hair clip, in the same simple line style.`（可以再附 `assets/game_art/yuzu/neutral.png`）
+- `v2_neutral.png`（第 10 天全量升级后）：机身换成 `a sleeker newer model of the same robot: slightly taller, seamless glossy white shell, a larger wide screen, two small rubber tracks instead of wheels, a soft white glow around the screen edge`，屏幕 `calm minimal face, two soft glowing dots and a faint curve`。参考图加上已经生成的 `neutral.png`，保持“同一系列”的感觉。
 - `v2_smile.png`：同上，屏幕 `two soft glowing dots and a warm smiling curve, perfectly symmetrical`。
 
 ### 4.2 老王（优先，五金店老板，第 3、5、10 天）
 
-路径：`assets/game_art/lao_wang/` 下 `neutral.png`、`laugh.png`、`wistful.png`。
+**要附的参考图：**
+1. `assets/game_art/lao_bei/neutral.png`：同年龄段的老人怎么画（皱纹、白发、眼镜）。
+2. `assets/game_art/lao_fang/neutral.png`：同一条街上干活的人怎么穿（工装、马甲）。
+
+**路径：** `assets/game_art/lao_wang/` 下 `neutral.png`（928×1232）、`laugh.png`、`wistful.png`（1792×2380）。
 
 ```
-Waist-up character portrait of a cheerful 70-year-old Chinese man who runs a small hardware and
-key-cutting shop on an old street. Short grey crew cut, sun-tanned wrinkled face, thick eyebrows,
-reading glasses pushed up on his forehead, a faded navy work vest over a white undershirt, a
+Character portrait for a slice-of-life anime visual novel, matching the attached reference
+portraits exactly in style, framing and size: clean anime cel shading, crisp dark outlines, flat
+colors with one soft shadow step; one person facing the viewer, body turned slightly, cropped at
+mid-thigh by the bottom edge, small margin above the head.
+Subject: a cheerful 70-year-old Chinese man who runs a small hardware and key-cutting shop on an
+old street. Short grey crew cut, sun-tanned wrinkled face, thick grey eyebrows, reading glasses
+pushed up on his forehead, a faded navy work vest with many pockets over a white undershirt, a
 carpenter's pencil behind one ear, a small paper bag of sunflower seeds in one hand.
-Transparent background. Soft cel-shaded anime illustration, warm slice-of-life visual novel style.
-Hands relaxed and anatomically correct, five fingers, or kept out of frame. No text, no logos.
+Hands anatomically correct with five fingers, or kept out of frame.
+Transparent background. Portrait 3:4. No text, no logos, no watermark.
 ```
 
-表情：
-- `neutral.png`：`relaxed, chatty expression, mouth slightly open as if about to tell gossip`
-- `laugh.png`：`laughing loudly with eyes squeezed shut, one hand slapping the air`
-- `wistful.png`（第 10 天说要回老家钓鱼）：`a quiet wistful half-smile, looking slightly off to the side`
+表情（出完 `neutral.png` 再出）：
+- `neutral.png`：`relaxed and chatty, mouth slightly open as if about to share gossip`
+- `laugh.png`：`laughing loudly with eyes squeezed shut, the free hand raised mid-slap`
+- `wistful.png`（第 10 天说要回老家钓鱼）：`a quiet wistful half-smile, eyes looking slightly off to the side`
 
-### 4.3 阿凯（可选，第 10 天刚出院的骑手）
+### 4.3 阿凯（可选，第 10 天刚出院的骑手，和焰子同一个分拣站）
 
-路径：`assets/game_art/a_kai/` 下 `neutral.png`、`grin.png`。
+**要附的参考图：**
+1. `assets/game_art/yan_zi/neutral.png`：同一个站的骑手，外套款式和配色要一样（橙色外套、反光条、绿裤子）。
+2. `assets/game_art/lao_fang/neutral.png`：风格和构图参考。
+
+**路径：** `assets/game_art/a_kai/` 下 `neutral.png`（928×1232）、`grin.png`（1792×2380）。
 
 ```
-Waist-up character portrait of a young Chinese food-delivery rider, about 20, short messy black
-hair, a bright orange delivery vest over a grey hoodie, his left arm in a white sling, a small
-bandage on his cheek. Transparent background. Soft cel-shaded anime illustration, slice-of-life
-visual novel style. No text or logos on the vest.
+Character portrait for a slice-of-life anime visual novel, matching the attached reference
+portraits exactly in style, framing and size (cel shading, crisp dark outlines, cropped at
+mid-thigh, facing the viewer).
+Subject: a young Chinese food-delivery rider, about 20, short messy black hair, wearing the same
+orange rider jacket with reflective strips and green trousers as the rider in the reference, his
+left arm in a white sling, a small bandage on his cheek.
+Transparent background. Portrait 3:4. No text or logos on the jacket. No watermark.
 ```
 
-表情：`neutral.png` 有点不好意思；`grin.png` 咧嘴笑。
+表情：`neutral.png` 有点不好意思地挠头（只用右手）；`grin.png` 咧嘴笑。
 
 ## 5. 新背景（可选，需要我加一个小功能才能切换）
 
-现在所有对白都用店内背景。下面两张图能让最重要的两场戏换个地方；图到了我再加“某一段对白换背景”的功能。尺寸同前：横版 1456×816、竖版 816×1456，各一张。
+现在所有对白都用店内背景。下面两张能让最重要的两场戏换个地方，图到了我再加“某一段对白换背景”的功能。
+
+### 现有对白背景的标准
+
+| 项目 | 标准 |
+|---|---|
+| 文件 | PNG（RGB，不透明） |
+| 尺寸 | 竖版 816×1456、横版 1456×816，各一张 |
+| 画风 | 对白时用的是 `sunny_shop/shop_interior_*` 和 `home/apartment_*`：暖光、细节多、像动画电影背景的手绘风。不是街景主视觉 `main_visual_*` 那种扁平插画风，新背景要跟前者 |
+| 构图 | 下方三分之一会被对话框盖住，重要的东西放在画面上半部分；人物立绘会站在左右两侧，画面中间留一点空 |
+| 禁止 | 人物（立绘另画）、文字、招牌上的字、logo、水印 |
 
 ### 5.1 店门口的夜街和公交站灯箱（第 9 天程晚的演出）
 
-路径：`assets/game_art/street/bus_stop_night_portrait.png`、`..._landscape.png`
+**要附的参考图：**
+1. `assets/game_art/sunny_shop/shop_interior_portrait.png`：画风和笔触参考（这张必须附）。
+2. `assets/game_art/home/apartment_portrait.png`：同一画风下光线和细节的密度。
+3. `assets/game_art/neon_night/main_visual_portrait.png`：只参考夜晚的色调和灯光，不参考画法。
+
+**路径：** `assets/game_art/street/bus_stop_night_portrait.png`、`bus_stop_night_landscape.png`
 
 ```
-Night street scene in an old neighborhood, seen from the doorway of a small fruit juice shop.
-Across the narrow street, a bus stop shelter with a large glowing advertising light box showing a
-beautiful smiling young woman, glossy and perfect like a commercial, holding nothing. Warm
-streetlights, a few parked scooters, a red motorbike with a small faded green toy dinosaur tied
-to the back seat. Wet pavement reflecting the light box. Quiet, slightly melancholic, warm and
-cool light mixed. Painterly anime background art, slice-of-life. No people in the foreground.
-No text, no letters, no logos anywhere, including on the light box and shop signs.
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference (warm, detailed, cinematic anime-film background), but at night; use the third
+reference only for night colors and lighting.
+Scene: a quiet old-neighborhood street at night, seen from the doorway of a small fruit juice
+shop. Across the narrow street, a bus stop shelter with a large glowing advertising light box
+showing a beautiful smiling young woman, glossy and perfect like a commercial. Warm streetlights,
+a few parked scooters, a red motorbike with a small faded green toy dinosaur tied to the back
+seat. Damp pavement reflecting the light box. Quietly melancholic, warm and cool light mixed.
+Keep the lower third simple. No people other than the woman inside the light box.
+No text, no letters, no logos anywhere, including on the light box and shop signs. No watermark.
 ```
 
 ### 5.2 雨夜地铁口和饮品机（第 7 天主角修机器）
 
-路径：`assets/game_art/street/subway_kiosk_rain_portrait.png`、`..._landscape.png`
+**要附的参考图：** 同 5.1 的三张。
+
+**路径：** `assets/game_art/street/subway_kiosk_rain_portrait.png`、`subway_kiosk_rain_landscape.png`
 
 ```
-Rainy night at a subway station entrance on a city street. Beside the entrance stairs stands a
-sleek white automated drink vending kiosk with a large screen showing a simple friendly smiley
-face icon, its side maintenance panel slightly open. Heavy rain, puddles, neon and streetlight
-reflections, an orange delivery rider's helmet resting on the kiosk ledge. Lonely, cinematic,
-blue and amber light. Painterly anime background art, slice-of-life. No people. No text, no
-letters, no logos, no numbers anywhere.
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference, but on a rainy night; use the third reference only for night colors.
+Scene: a subway station entrance on a city street in heavy rain. Beside the entrance stairs stands
+a sleek white automated drink vending kiosk with a large screen showing a simple smiley-face icon,
+its side maintenance panel slightly open. Puddles, streetlight and neon reflections, an orange
+rider helmet resting on the kiosk ledge. Lonely, cinematic, blue and amber light.
+Keep the lower third simple. No people. No text, no letters, no logos, no numbers anywhere.
+No watermark.
 ```
+
+## 6. 出图后的检查清单
+
+- [ ] 尺寸和比例对：立绘 3:4（928×1232 / 1792×2380），背景 816×1456 / 1456×816。
+- [ ] 立绘是透明背景，边缘没有白边或残留的背景色。
+- [ ] 同一角色的几张表情叠在一起看：头的位置、大小、衣服都对得上。
+- [ ] 放大检查屏幕、灯箱、招牌、衣服：没有乱码文字和 logo。
+- [ ] 四个角落没有生图工具的水印。
+- [ ] 手指数对（五根），或者手在画面外。
