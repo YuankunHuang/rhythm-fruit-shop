@@ -339,6 +339,13 @@ const VN_CHARACTERS = {
       wistful: lazyImage('assets/game_art/lao_wang/wistful.png'),
     },
   },
+  akai: {
+    side: 'left',
+    assets: {
+      neutral: lazyImage('assets/game_art/a_kai/neutral.png'),
+      grin: lazyImage('assets/game_art/a_kai/grin.png'),
+    },
+  },
   laofang: {
     side: 'left',
     assets: {
@@ -2636,6 +2643,7 @@ function vnCharacterKey(node) {
     阿晟: 'ashen',
     小递: 'xiaodi',
     老王: 'laowang',
+    阿凯: 'akai',
     配送机器人: 'xiaodi',
     老方: 'laofang',
     猫小姐: 'miss_cat',

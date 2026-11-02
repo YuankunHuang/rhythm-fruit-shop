@@ -81,12 +81,12 @@
         { "speaker": "", "text": "十点半，老方来了。身后跟着一个年轻人，左胳膊吊着绷带。" },
         { "speaker": "老方", "text": "新来的！这是阿凯，葡萄多放的那个。", "expr": "warm_smile" },
         { "speaker": "老方", "text": "那天下大雨，系统崩了，他急着送一单，在三号线那个路口摔了。今天刚出院。", "expr": "neutral" },
-        { "speaker": "阿凯", "text": "方叔，你别逢人就说……" },
+        { "speaker": "阿凯", "text": "方叔，你别逢人就说……", "expr": "neutral" },
         { "speaker": "老方", "text": "说说怎么了！摔了是光荣的！我们那时候——", "expr": "warm_smile" },
-        { "speaker": "阿凯", "text": "你们那时候没有外卖。" },
+        { "speaker": "阿凯", "text": "你们那时候没有外卖。", "expr": "grin" },
         { "speaker": "老方", "text": "……哈哈，对，我们那时候没有外卖。", "expr": "warm_smile" },
         { "speaker": "", "text": "阿凯坐下来，用右手翻了翻存杯本，找到了自己的名字：阿凯，葡萄多放，存五杯，后面写着「方叔付」。" },
-        { "speaker": "阿凯", "text": "方叔，你干嘛给我们存杯……" },
+        { "speaker": "阿凯", "text": "方叔，你干嘛给我们存杯……", "expr": "neutral" },
         { "speaker": "老方", "text": "存都存了，喝就是了。", "expr": "neutral" },
         { "speaker": "老方", "text": "一杯鲜果杯，葡萄多放。他就一只手，给他拿个勺子。", "expr": "warm_smile" },
         { "speaker": "订单", "html": "<div class=\"order-card\"><span>彩虹鲜果杯</span><b>阿凯</b><span>葡萄多放 · 今天刚出院 · 方叔付</span></div>" }
@@ -103,7 +103,7 @@
           "label": "好评 (>=88)",
           "nodes": [
             { "speaker": "", "text": "阿凯用一只手吃，吃得很香。" },
-            { "speaker": "阿凯", "text": "好吃！方叔说你们家的最好吃，我以前以为他是吹牛。" },
+            { "speaker": "阿凯", "text": "好吃！方叔说你们家的最好吃，我以前以为他是吹牛。", "expr": "grin" },
             { "speaker": "老方", "text": "我什么时候吹过牛！", "expr": "warm_smile" }
           ]
         },
@@ -111,15 +111,15 @@
           "min": 62,
           "label": "一般 (>=62)",
           "nodes": [
-            { "speaker": "", "text": "阿凯吃完了，把存杯本上自己那一行划掉一杯。划得歪歪扭扭的，左撇子划的。" },
-            { "speaker": "阿凯", "text": "还剩四杯。" }
+            { "speaker": "", "text": "阿凯吃完了，把存杯本上自己那一行划掉一杯。划得歪歪扭扭的。他是左撇子，只能用右手划。" },
+            { "speaker": "阿凯", "text": "还剩四杯。", "expr": "grin" }
           ]
         },
         {
           "min": 0,
           "label": "较差",
           "nodes": [
-            { "speaker": "阿凯", "text": "葡萄……好像少了点？" },
+            { "speaker": "阿凯", "text": "葡萄……好像少了点？", "expr": "neutral" },
             { "speaker": "老方", "text": "葡萄少了，下回多放。人没少就行。", "expr": "neutral" }
           ]
         }
