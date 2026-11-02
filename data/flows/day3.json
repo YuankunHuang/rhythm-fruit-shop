@@ -272,9 +272,9 @@
       "type": "dialogue",
       "nodes": [
         { "speaker": "", "text": "中午前，隔壁五金店的老王过来买柠檬水。他每天这个点来，买一杯，靠在吧台边喝完再走，顺便把整条街的新闻讲一遍。" },
-        { "speaker": "老王", "text": "小柚子，听说了没，前面路口那家药店，下个月改自助了。" },
+        { "speaker": "老王", "text": "小柚子，听说了没，前面路口那家药店，下个月改自助了。", "expr": "neutral" },
         { "speaker": "柚子", "text": "听说了。你都讲三遍了。", "expr": "deadpan" },
-        { "speaker": "老王", "text": "那我讲第四遍。" },
+        { "speaker": "老王", "text": "那我讲第四遍。", "expr": "neutral" },
         { "speaker": "", "text": "玻璃门外，停着一个东西。" },
         { "speaker": "", "text": "齐腰高，白色，圆滚滚的，像一个带轮子的床头柜。顶上一块屏幕，屏幕上是两个圆点和一道弧线，一张很简单的笑脸。" },
         { "speaker": "", "text": "它停在门外，一动不动。" },
@@ -283,7 +283,7 @@
         { "speaker": "", "text": "没有人动。" },
         { "speaker": "配送机器人", "text": "您好，请帮我开门。", "expr": "neutral" },
         { "speaker": "", "text": "一模一样。连换气的地方都一模一样。" },
-        { "speaker": "老王", "text": "……它在跟谁说话？" },
+        { "speaker": "老王", "text": "……它在跟谁说话？", "expr": "neutral" },
         { "speaker": "柚子", "text": "跟门。", "expr": "deadpan" },
         { "speaker": "配送机器人", "text": "您好，请帮我开门。", "expr": "neutral" },
         { "speaker": "", "text": "老王放下杯子，过去拉开了门。" },
@@ -294,7 +294,7 @@
         { "speaker": "", "text": "柚子清了清嗓子，把手背在身后，捏着嗓子，用一种老电影里才有的腔调开口了。" },
         { "speaker": "柚子", "text": "「哦，亲爱的，请将你的餐品放入我的舱内吧。我发誓，我会好好待它的。」", "expr": "teasing" },
         { "speaker": "配送机器人", "text": "请将餐品放入舱内，并点击屏幕确认。", "expr": "neutral" },
-        { "speaker": "老王", "text": "（笑得直拍吧台）哈哈哈哈！它就会这一句！" },
+        { "speaker": "老王", "text": "（笑得直拍吧台）哈哈哈哈！它就会这一句！", "expr": "laugh" },
         { "speaker": "柚子", "text": "「上帝啊，我竟然爱上了一个只会说一句话的男人。」", "expr": "teasing" },
         { "speaker": "配送机器人", "text": "请将餐品放入舱内，并点击屏幕确认。", "expr": "neutral" },
         { "speaker": "", "text": "老王笑得把柠檬水都洒了。" },
@@ -319,7 +319,7 @@
         { "speaker": "配送机器人", "text": "感谢您的配合，祝您生活愉快。", "expr": "neutral" },
         { "speaker": "", "text": "它慢慢地开走了。开到路口，红灯，它停下来，一动不动地等。" },
         { "speaker": "", "text": "（等红灯倒是比人守规矩。）" },
-        { "speaker": "老王", "text": "小柚子，你刚才那是什么腔调？" },
+        { "speaker": "老王", "text": "小柚子，你刚才那是什么腔调？", "expr": "neutral" },
         { "speaker": "柚子", "text": "译制片。我小时候我爸天天看。", "expr": "deadpan" },
         { "speaker": "柚子", "text": "以后它就叫播音员。", "expr": "teasing" }
       ]

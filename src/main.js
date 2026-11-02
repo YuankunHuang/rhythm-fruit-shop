@@ -331,6 +331,14 @@ const VN_CHARACTERS = {
       v2_smile: lazyImage('assets/game_art/xiaodi/v2_smile.png'),
     },
   },
+  laowang: {
+    side: 'left',
+    assets: {
+      neutral: lazyImage('assets/game_art/lao_wang/neutral.png'),
+      laugh: lazyImage('assets/game_art/lao_wang/laugh.png'),
+      wistful: lazyImage('assets/game_art/lao_wang/wistful.png'),
+    },
+  },
   laofang: {
     side: 'left',
     assets: {
@@ -2627,6 +2635,7 @@ function vnCharacterKey(node) {
   const VIP_MAP = {
     阿晟: 'ashen',
     小递: 'xiaodi',
+    老王: 'laowang',
     配送机器人: 'xiaodi',
     老方: 'laofang',
     猫小姐: 'miss_cat',
