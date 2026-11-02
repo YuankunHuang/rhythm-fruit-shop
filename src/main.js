@@ -548,6 +548,8 @@ let dpr = 1,
   bootReady = false,
   openingQueued = false,
   pendingInputHint = null,
+  pendingCoach = null,
+  coach = null,
   gesture = null,
   slashLines = [],
   tutorialActive = false,
@@ -567,6 +569,7 @@ let dpr = 1,
   notes = [],
   particles = [],
   texts = [],
+  flowFx = null,
   products = [],
   orders = [],
   orderFlash = [],
@@ -1770,6 +1773,59 @@ function unlockInputFor(phase) {
     saveShopState();
   }
   pendingInputHint = { mode, body: phase.unlockHint };
+  if (!tutorialSeen('coach_' + mode)) pendingCoach = mode;
+}
+// Slow-motion practice in the shift that unlocks a way of playing: as each of the first suitable notes
+// comes in, the music slows and a fingertip shows the gesture on it. Two successes end it, and so do six
+// tries, so nobody is held there. A failed shift keeps it for the retry.
+const COACH_CAPTIONS = {
+  swipe: '果子到线时，朝任意方向划一下',
+  chop: '按下，松手，再快点几下，或左右来回划',
+  flow: '按住屏幕，别松手',
+};
+const COACH_RATE = 0.4,
+  COACH_LEAD = 1.1;
+function coachFits(mode, n, t) {
+  if (n.state !== 'pending' || n.time < t + 0.25) return false;
+  if (mode === 'swipe') return n.kind !== 'press';
+  if (mode === 'chop') return n.kind === 'press' && n.end - n.time >= 0.4;
+  return n.time >= t + play.FLOW_ARM + 0.7;
+}
+function coachSucceeded(mode, n) {
+  if (n.missed) return false;
+  if (mode === 'swipe') return n.style === 'swipe';
+  if (mode === 'chop') return n.chops > 0;
+  return n.style === 'flow' || !!n.flowBegun;
+}
+function stepCoach(t, dt) {
+  if (!coach && pendingCoach && !AUTOPLAY) coach = { mode: pendingCoach, done: 0, tries: 0, target: null, rate: 1 };
+  if (!coach) return;
+  if (coach.target && coach.target.state === 'done') {
+    coach.tries++;
+    if (coachSucceeded(coach.mode, coach.target)) coach.done++;
+    coach.target = null;
+    if (coach.done >= 2 || coach.tries >= 6) {
+      if (coach.done >= 2) markTutorialSeen('coach_' + coach.mode);
+      pendingCoach = null;
+      coach.finished = true;
+    }
+  }
+  if (!coach.target && !coach.finished) coach.target = notes.find((n) => coachFits(coach.mode, n, t)) || null;
+  const near = coach.target && coach.target.time - t < COACH_LEAD,
+    want = near ? COACH_RATE : 1;
+  coach.rate += (want - coach.rate) * Math.min(1, dt * 6);
+  if (Math.abs(coach.rate - want) < 0.01) coach.rate = want;
+  audio.playbackRate = coach.rate;
+  if (coach.finished && coach.rate === 1) coach = null;
+}
+function coachFx() {
+  if (!coach || !coach.target || coach.rate > 0.97) return null;
+  return {
+    mode: coach.mode,
+    x: noteX(coach.target),
+    caption: COACH_CAPTIONS[coach.mode],
+    alpha: Math.min(1, (1 - coach.rate) / (1 - COACH_RATE)),
+  };
 }
 function reset() {
   notes = buildNotes();
@@ -1781,6 +1837,8 @@ function reset() {
   maxNoteSpan = notes.length ? notes.reduce((m, n) => Math.max(m, Math.max(0, n.end - n.time)), 0) : 0;
   orders = makeOrders();
   slashLines = [];
+  flowFx = null;
+  coach = null;
   session = play.createSession(notes, orders, WINDOWS, availableInputs());
   orderFlash = [];
   pulse = shake = 0;
@@ -2137,9 +2195,22 @@ function recordBossLetterSeen() {
 function clearBossLetterPending() {
   _pendingBossLetterId = null;
 }
+// The title and signature use a web handwriting font whose Chinese glyphs load on first use.
+// Fetch exactly the glyphs a letter needs when it is prepared, and show it only once they are in,
+// so the text never appears in a fallback font and then jumps.
+const letterFontLoads = new Map();
+function loadLetterFont(L) {
+  const text = `${L.title || ''}${L.sign || ''}`;
+  if (!letterFontLoads.has(text)) {
+    const load = document.fonts ? document.fonts.load(`400 24px "Ma Shan Zheng"`, text).catch(() => {}) : null;
+    letterFontLoads.set(text, Promise.race([load, new Promise((r) => setTimeout(r, 1500))]));
+  }
+  return letterFontLoads.get(text);
+}
 function bossLetterBodyHtml(L) {
+  loadLetterFont(L);
   const paras = (L.paragraphs || []).map((p) => `<p>${escHtml(p)}</p>`).join('');
-  return `<div class="boss-letter-card modal-card vn-boss-letter-inner"><p class="boss-letter-kicker">${escHtml(L.kicker || '')}</p><h2 class="boss-letter-title">${escHtml(L.title || '')}</h2><div class="boss-letter-body">${paras}</div>${L.sign ? `<p class="boss-letter-sign">${escHtml(L.sign)}</p>` : ''}</div><div class="vn-hint">点击继续</div>`;
+  return `<div class="boss-letter-card modal-card vn-boss-letter-inner" data-letter="${escHtml(L.id || '')}"><p class="boss-letter-kicker">${escHtml(L.kicker || '')}</p><h2 class="boss-letter-title">${escHtml(L.title || '')}</h2><div class="boss-letter-body">${paras}</div>${L.sign ? `<p class="boss-letter-sign">${escHtml(L.sign)}</p>` : ''}</div><div class="vn-hint">点击继续</div>`;
 }
 function isFirstBossLetterEver() {
   return !(shopState.bossLettersSeen && shopState.bossLettersSeen.length);
@@ -2168,7 +2239,7 @@ function renderHomePanel() {
   if (hasSave) {
     board.classList.remove('hidden');
     lead.classList.remove('hidden');
-    lead.innerHTML = `<p class="eyebrow">${escHtml(`第 ${shopState.day || 1} 天 · ${rentDaysLeft()} 天后交租`)}</p><p class="home-board-space">${escHtml(space.title)}</p><p class="subtitle home-board-sub">${escHtml(space.subtitle)}</p>`;
+    lead.innerHTML = `<p class="eyebrow">${escHtml(`第 ${shopState.day || 1} 天`)}</p><p class="home-board-space">${escHtml(space.title)}</p><p class="subtitle home-board-sub">${escHtml(space.subtitle)}</p>`;
   } else {
     board.classList.add('hidden');
     lead.classList.add('hidden');
@@ -2181,28 +2252,47 @@ function renderHomePanel() {
     : '开始新生活';
   $('titleLoadButton').textContent = hasSave ? '读取存档' : '加载存档';
   $('titlePracticeButton').textContent = '练习一下';
+  const card = ([k, v, s]) => `<div class="home-ledger-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`,
+    missing = rentMissing(),
+    daysLeft = rentDaysLeft(),
+    rep = shopState.reputation || 0,
+    nextStage = SHOP_STAGES.find((st) => st.minRep > rep),
+    gear = ['cutter', 'blender', 'sign'].map((id) => up[id] || 1),
+    upgraded = gear.filter((lv) => lv >= 2).length;
   $('homeLedger').innerHTML = hasSave
     ? [
-        ['现金', `${shopState.coins || 0} 金`, `房租还差 ${rentMissing()} 金`],
-        ['房租', `${shopState.rentAmount || 480} 金`, `剩余 ${rentDaysLeft()} 天`],
-        ['口碑', shopState.reputation || 0, `店铺 Lv.${shopLevel()}`],
-        ['今天', `第 ${shopState.day || 1} 天`, shopState.readyForNextDay ? '可以睡到明天' : '准备开店'],
+        ['手头的钱', `${shopState.coins || 0} 金`, missing > 0 ? `交房租还差 ${missing} 金` : '够交这期房租了'],
+        [
+          '房租',
+          `${shopState.rentAmount || 480} 金`,
+          daysLeft <= 0 ? '今天要交' : daysLeft === 1 ? '明天要交' : `${daysLeft} 天后要交`,
+        ],
       ]
-        .map(
-          ([k, v, s]) =>
-            `<div class="home-ledger-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`,
-        )
+        .map(card)
         .join('')
     : '';
   $('homeAssets').innerHTML = hasSave
     ? [
-        ['曲目', `${learned} 首`, '已学会'],
-        ['时段', slots.map((s) => s.label).join(' / '), '已解锁'],
-        ['设备', `切${up.cutter || 1} 榨${up.blender || 1} 招${up.sign || 1}`, '当前等级'],
+        [
+          '口碑',
+          rep,
+          nextStage ? `再涨 ${nextStage.minRep - rep}，店就升格成「${nextStage.name}」` : '整条街都知道这家店了',
+        ],
+        ['会做的饮品', `${learned} 种`, '排班时从里面挑'],
+        [
+          '营业时段',
+          slots.map((sl) => sl.label).join('、'),
+          slots.length < TIME_SLOTS.length ? '更晚的班以后开放' : '从白天开到深夜',
+        ],
+        [
+          '设备',
+          upgraded ? `升级过 ${upgraded} 台` : '都还是旧的',
+          gear.every((lv) => lv === gear[0])
+            ? `切果台、榨汁机、灯箱都是 ${gear[0]} 级`
+            : `切果台 ${gear[0]} · 榨汁机 ${gear[1]} · 灯箱 ${gear[2]} 级`,
+        ],
       ]
-        .map(
-          ([k, v, s]) => `<div class="home-asset-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`,
-        )
+        .map(card)
         .join('')
     : '';
   $('homeSmall').textContent = hasSave
@@ -2708,6 +2798,15 @@ function renderVNNode() {
   if (node.action === 'startService') {
     $('flowBody').innerHTML = (node.html || '') + '<div class="vn-hint">点击开始制作</div>';
   }
+  const letterId = node.html && $('flowBody').querySelector('[data-letter]')?.dataset.letter,
+    letter = letterId && (GameData.bossLetters || []).find((l) => l.id === letterId);
+  if (letter) {
+    const body = $('flowBody');
+    body.style.visibility = 'hidden';
+    loadLetterFont(letter).then(() => {
+      if (vnState.nodes[vnState.index] === node) body.style.visibility = '';
+    });
+  } else $('flowBody').style.visibility = '';
 }
 function advanceVN() {
   if (vnState.locked) return;
@@ -4400,7 +4499,7 @@ function applySessionEvents() {
       shake = e.hold ? 0.12 : 0.24;
       sfxPlay('judge', e.judge.name);
       if (e.style === 'flow') {
-        showCenterJudge('流', n.fruit.color);
+        showCenterJudge(e.judge.name, e.judge.color, '流');
         juice(noteX(n), view.hitY, n.fruit.color, 10);
       } else {
         showCenterJudge(e.judge.name, e.judge.color);
@@ -4420,7 +4519,9 @@ function applySessionEvents() {
     } else if (e.type === 'swipe') {
       slashLines.push({ x: noteX(n), y: view.hitY, angle: e.angle, age: 0, life: 0.3, color: n.fruit.color });
       fruitHalves(noteX(n), view.hitY, e.angle, n.fruit.color);
-      showCenterJudge('划', n.fruit.color);
+      // The tap's judgement popped a moment ago: tag that one instead of showing a second.
+      if (centerJudge && centerJudge.age < 0.25) centerJudge.tag = '划';
+      else showCenterJudge('划', n.fruit.color);
     } else if (e.type === 'chop') {
       pulse = Math.max(pulse, 0.6);
       shake = Math.max(shake, 0.1);
@@ -4439,7 +4540,7 @@ function applySessionEvents() {
       pulse = 1;
       shake = 0.22;
       sfxPlay('hold.complete');
-      showCenterJudge(`${e.label} ×${n.chops}`, '#ffd98c');
+      showCenterJudge(`${e.label} ×${n.chops}`, '#ffd98c', '切');
       chunks(noteX(n), view.hitY, n.fruit.color, 22);
     } else if (e.type === 'miss') {
       sfxPlay('miss');
@@ -4470,9 +4571,21 @@ function floatText(x, y, txt, color) {
   texts.push({ x, y, vy: -44, age: 0, life: 0.62, txt, color });
   if (texts.length > MAX_TEXTS) texts.shift();
 }
-function showCenterJudge(txt, color) {
+function showCenterJudge(txt, color, tag = '') {
   if (state !== S.PLAYING && state !== S.LEAD_IN && state !== S.RESUME_COUNTDOWN) return;
-  centerJudge = { txt, color, combo: session.combo, age: 0, life: 0.46 };
+  centerJudge = { txt, color, tag, combo: session.combo, age: 0, life: 0.46 };
+}
+/** While flowing: follow the lane and fruit of the next note, and let juice run from that spot. */
+function stepFlowFx(t, dt) {
+  if (!session.flowing) {
+    flowFx = null;
+    return;
+  }
+  const next = notes.find((n) => n.state !== 'done' && n.end >= t - 0.05) || notes[notes.length - 1],
+    x = next ? noteX(next) : view.cx,
+    color = next ? next.fruit.color : '#ffb14c';
+  flowFx = { x: flowFx ? flowFx.x + (x - flowFx.x) * Math.min(1, dt * 14) : x, color };
+  if (Math.random() < dt * 14) juice(flowFx.x, view.hitY, color, 1);
 }
 function particleRoom(amt) {
   return Math.max(0, Math.min(amt, MAX_PARTICLES - particles.length));
@@ -4594,6 +4707,8 @@ function update(dt) {
     const held = session.activeHold;
     if (held && held.state === 'holding' && session.holding && Math.random() < dt * 9)
       juice(noteX(held), view.hitY, held.fruit.color, 1);
+    stepFlowFx(t, dt);
+    stepCoach(t, dt);
     if (shouldFinishPlayback(t)) finish();
   }
   if (state === S.ENDED && resultMode === 'shift' && resultData) {
@@ -4741,6 +4856,8 @@ function makeRC() {
     slashFx,
     slashLines,
     flowing: session.flowing,
+    flowFx,
+    coachFx: coachFx(),
     centerJudge,
     products,
     orders,

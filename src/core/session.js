@@ -269,6 +269,7 @@ const MISS_REASON = { 'Early Release': 'EarlyRelease', 'Too Few Cuts': 'TooFewCu
 function miss(s, n, t, label) {
   if (n.state === 'done') return;
   n.state = 'done';
+  n.missed = true;
   if (s.activeHold === n) s.activeHold = null;
   // A hold that was started and then lost turns its head judgement into this Miss, so every note is counted once.
   if (n.headJudge) {

@@ -34,6 +34,8 @@
         { "speaker": "顾薇", "text": "谢，比想象中有用。" },
         { "speaker": "你", "text": "我也没说什么。" },
         { "speaker": "顾薇", "text": "但你说了「左边暗了」，这已经够了。" },
+        { "speaker": "", "text": "（要颗粒，就不能一直按着打到底。）" },
+        { "speaker": "", "text": "（打到一半松手，剩下的……用刀。）" },
         { "speaker": "订单", "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>顾薇</b><span>要颗粒 · 手上有颜料 · 配色问了你</span></div>", "action": "startService" }
       ]
     },
@@ -161,6 +163,11 @@
         { "speaker": "老弦", "text": "情感样本。给 AI 学。" },
         { "speaker": "", "text": "停了一下。" },
         { "speaker": "老弦", "text": "它学得很快。" },
+        { "speaker": "你", "text": "您以前拉琴，换弓听得出来吗？" },
+        { "speaker": "老弦", "text": "拉得好的，听不出来。" },
+        { "speaker": "老弦", "text": "它每个音都学得会。音和音中间那口气，它没录到。" },
+        { "speaker": "", "text": "（那口气……）" },
+        { "speaker": "", "text": "（这一杯，我想一口气做完，手不离开。）" },
         { "speaker": "订单", "html": "<div class=\"order-card\"><span>荔枝汁</span><b>老弦</b><span>只要荔枝 · 大拇指没参与 · 它学得很快</span></div>", "action": "startService" }
       ]
     },

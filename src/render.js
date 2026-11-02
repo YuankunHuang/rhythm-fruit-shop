@@ -22,7 +22,7 @@ export function warmBackdropCache(RC) {
 // ── Frame-local render context ────────────────────────────────────────────────
 // Set at the start of each drawFrame call; all draw functions read from these.
 let state, view, selectedTheme, songCoverImg, songCoverImgId, homeVisual;
-let notes, particles, texts, slashFx, slashLines, flowing, centerJudge;
+let notes, particles, texts, slashFx, slashLines, flowing, flowFx, coachFx, centerJudge;
 let products, orders, orderFlash;
 let heat, combo, maxCombo, counts, customerAnger, holding, activeHold;
 let readyTimer, leadInTimer, leadInTotal, resumeCountdown;
@@ -49,6 +49,8 @@ function _unpackRC(RC) {
     slashFx,
     slashLines,
     flowing,
+    flowFx,
+    coachFx,
     centerJudge,
     products,
     orders,
@@ -213,43 +215,28 @@ function drawCachedBackdrop() {
   ctx.drawImage(_backdropCache.canvas, 0, 0);
   ctx.restore();
 }
-/** While the finger stays down with flow unlocked: a stream of juice rising from the hit line. */
-function drawFlowRibbon(t) {
+/** While flowing: the hit line takes the colour of the next fruit, brightest in the lane it will land in. */
+function drawFlowGlow(t) {
+  if (!flowFx) return;
   const u = view.uiScale || 1,
-    next = notes.find((n) => n.state !== 'done' && n.time >= t - 0.2),
-    color = next ? next.fruit.color : '#ffb14c',
-    top = view.laneTop + 10 * u,
-    bottom = view.hitY,
-    half = 16 * u;
+    pulse = 0.5 + 0.5 * Math.sin(t * 9);
   ctx.save();
-  const g = ctx.createLinearGradient(0, top, 0, bottom);
-  g.addColorStop(0, 'rgba(255,255,255,0)');
-  g.addColorStop(0.55, color + '55');
-  g.addColorStop(1, color + 'cc');
+  ctx.globalAlpha = 0.32;
+  ctx.fillStyle = flowFx.color;
+  rr(view.cx - view.laneW / 2 - 18, view.hitY - 13, view.laneW + 36, 26, 13);
+  ctx.fill();
+  const g = ctx.createRadialGradient(flowFx.x, view.hitY, 2 * u, flowFx.x, view.hitY, (40 + 8 * pulse) * u);
+  g.addColorStop(0, flowFx.color);
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.globalAlpha = 0.85;
   ctx.fillStyle = g;
   ctx.beginPath();
-  for (let y = bottom; y >= top; y -= 8 * u) {
-    const w = half * (0.75 + 0.25 * Math.sin(y * 0.045 + t * 9));
-    ctx.lineTo(view.cx - w, y);
-  }
-  for (let y = top; y <= bottom; y += 8 * u) {
-    const w = half * (0.75 + 0.25 * Math.sin(y * 0.045 + t * 9 + 1.7));
-    ctx.lineTo(view.cx + w, y);
-  }
-  ctx.closePath();
+  ctx.arc(flowFx.x, view.hitY, (48 + 8 * pulse) * u, 0, Math.PI * 2);
   ctx.fill();
-  ctx.globalAlpha = 0.55;
-  ctx.fillStyle = '#ffffff';
-  for (let i = 0; i < 6; i++) {
-    const y = bottom - ((t * 240 * u + i * 70 * u) % (bottom - top));
-    ctx.beginPath();
-    ctx.arc(view.cx + Math.sin(i * 2.3 + t * 4) * half * 0.4, y, 2.4 * u, 0, Math.PI * 2);
-    ctx.fill();
-  }
   ctx.restore();
 }
 function drawVisibleNotes(t) {
-  if (flowing) drawFlowRibbon(t);
+  if (flowing) drawFlowGlow(t);
   let count = 0,
     lookahead = noteLookahead(),
     start = Math.max(0, lowerBoundNotes(t - lookahead - WINDOWS.miss - maxNoteSpan) - 4),
@@ -664,6 +651,16 @@ function drawCenterJudge() {
   ctx.strokeText(centerJudge.txt, 0, 0);
   ctx.fillStyle = centerJudge.color;
   ctx.fillText(centerJudge.txt, 0, 0);
+  if (centerJudge.tag) {
+    // How the note was played (swipe, chop, flow), small above the judgement.
+    const tagSize = Math.round(24 * s),
+      tagY = -Math.round(42 * s);
+    ctx.font = `950 ${tagSize}px system-ui`;
+    ctx.lineWidth = Math.round(6 * s);
+    ctx.strokeText(centerJudge.tag, 0, tagY);
+    ctx.fillStyle = p.gold;
+    ctx.fillText(centerJudge.tag, 0, tagY);
+  }
   if (centerJudge.combo > 1) {
     ctx.globalAlpha = Math.min(0.6, a);
     ctx.font = `950 ${comboSize}px system-ui`;
@@ -674,6 +671,72 @@ function drawCenterJudge() {
   }
   ctx.restore();
   ctx.globalAlpha = 1;
+}
+/** Slow-motion practice: a caption, and a fingertip acting out the gesture on the note it is for. */
+function drawCoach() {
+  if (!coachFx) return;
+  const u = view.uiScale || 1,
+    { mode, x, caption, alpha } = coachFx,
+    y = view.hitY + 26 * u,
+    ph = ((performance.now() / 1000) % 1.3) / 1.3;
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = `900 ${Math.round(17 * u)}px system-ui`;
+  const tw = ctx.measureText(caption).width,
+    cy = view.hitY + 70 * u;
+  ctx.fillStyle = 'rgba(38,48,68,.84)';
+  rr(view.cx - tw / 2 - 18 * u, cy - 19 * u, tw + 36 * u, 38 * u, 19 * u);
+  ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText(caption, view.cx, cy);
+  let fx = x,
+    fy = y,
+    down = true;
+  if (mode === 'swipe') {
+    const k = Math.min(1, ph / 0.45);
+    fx = x - 46 * u + 92 * u * k;
+    fy = y + 22 * u - 70 * u * k;
+    down = ph < 0.5;
+    if (down) {
+      ctx.strokeStyle = 'rgba(255,255,255,.85)';
+      ctx.lineWidth = 6 * u;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(x - 46 * u, y + 22 * u);
+      ctx.lineTo(fx, fy);
+      ctx.stroke();
+    }
+  } else if (mode === 'chop') {
+    // Press, let go, then quick taps.
+    if (ph < 0.25) down = true;
+    else {
+      const beat = Math.floor(((ph - 0.25) / 0.75) * 8);
+      down = beat % 2 === 0 && beat > 0;
+      fx = x + (beat % 4 < 2 ? -8 : 8) * u;
+    }
+  }
+  const r = 17 * u;
+  if (down) {
+    const ring = (performance.now() / 600) % 1;
+    ctx.strokeStyle = `rgba(255,255,255,${(1 - ring).toFixed(2)})`;
+    ctx.lineWidth = 3 * u;
+    ctx.beginPath();
+    ctx.arc(fx, fy, r + ring * 22 * u, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.shadowColor = 'rgba(38,48,68,.35)';
+  ctx.shadowBlur = 10 * u;
+  ctx.fillStyle = down ? 'rgba(255,255,255,.95)' : 'rgba(255,255,255,.55)';
+  ctx.beginPath();
+  ctx.arc(fx, fy, down ? r * 0.9 : r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = 'rgba(63,159,101,.9)';
+  ctx.lineWidth = 3 * u;
+  ctx.stroke();
+  ctx.restore();
 }
 /** Blade strokes left by swipes and chops. */
 function drawSlashLines() {
@@ -761,6 +824,7 @@ function drawFx() {
     ctx.restore();
   }
   drawSlashLines();
+  drawCoach();
   drawCenterJudge();
   ctx.globalAlpha = 1;
   ctx.textAlign = 'center';
