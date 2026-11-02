@@ -56,6 +56,8 @@ test('serviceBranch bands and afterServiceNodes fallbacks', () => {
 
 test('milestones read only the context', () => {
   assert.equal(matchMilestone({ type: 'day_gte', value: 2 }, ctx({ day: 2 })), true);
+  assert.equal(matchMilestone({ type: 'day_eq', value: 10 }, ctx({ day: 10 })), true);
+  assert.equal(matchMilestone({ type: 'day_eq', value: 10 }, ctx({ day: 11 })), false);
   assert.equal(matchMilestone({ type: 'rent_days_left_eq', value: 1 }, ctx({ rentDaysLeft: 2 })), false);
   assert.equal(matchMilestone({ type: 'no_boss_letters_seen' }, ctx({ seen: ['x'] })), false);
   assert.equal(matchMilestone({ type: 'unknown' }, ctx()), false);

@@ -119,6 +119,20 @@ function autoGrow(t) {
   t.style.height = 'auto';
   t.style.height = t.scrollHeight + 2 + 'px';
 }
+/** The news ticker a dialogue phase starts: one headline per line; empty leaves the current one running. */
+function tickerField(phase) {
+  const t = el('textarea', { rows: 1, placeholder: '跑马灯新闻，一行一条（留空 = 沿用上一段的）' });
+  t.value = (phase.ticker || []).join('\n');
+  t.addEventListener('input', () => {
+    const lines = t.value.split('\n').map((x) => x.trim()).filter(Boolean);
+    if (lines.length) phase.ticker = lines;
+    else delete phase.ticker;
+    autoGrow(t);
+    markDirty();
+  });
+  requestAnimationFrame(() => autoGrow(t));
+  return el('div', { class: 'fields' }, el('label', { style: 'flex:1' }, '跑马灯', t));
+}
 function field(label, input) {
   return el('label', {}, label, input);
 }
@@ -413,7 +427,7 @@ function playFields(phase) {
 function phaseBody(phase) {
   const body = el('div');
   const t = phase.type;
-  if (t === 'dialogue') body.append(linesEditor(ensure(phase, 'nodes', [])));
+  if (t === 'dialogue') body.append(tickerField(phase), linesEditor(ensure(phase, 'nodes', [])));
   if (t === 'service') {
     body.append(
       el(

@@ -587,6 +587,11 @@ html.theme-sunny .schedule-supply-row{background:rgba(255,255,255,.58)}
 .vn-panel #flowVisual{display:block;height:calc(104px * var(--ui-scale));margin-bottom:calc(14px * var(--ui-scale));border-radius:calc(22px * var(--ui-scale));background-size:cover;background-position:center}
 .vn-panel #flowBody{flex:1;display:flex;flex-direction:column;width:100%;max-width:none;min-height:calc(104px * var(--ui-scale));margin:0;text-align:left}
 .vn-panel .panel-actions{display:none}
+.news-ticker{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:6;display:flex;align-items:center;height:calc(30px * var(--ui-scale));padding-right:calc(84px * var(--ui-scale));background:rgba(38,48,68,.88);color:#fff;font-size:calc(14px * var(--ui-scale));font-weight:800;pointer-events:none}
+.news-ticker-label{flex:none;display:flex;align-items:center;height:100%;padding:0 calc(10px * var(--ui-scale));background:#e84968;letter-spacing:.12em}
+.news-ticker-window{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
+.news-ticker-track{display:inline-block;padding-left:100%;animation:newsTickerScroll var(--ticker-duration,24s) linear infinite}
+@keyframes newsTickerScroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 .vn-characters{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;--vn-box-w:min(calc(760px * var(--ui-scale)),calc(100vw - calc(26px * var(--ui-scale))));--vn-box-edge:calc((100vw - var(--vn-box-w)) / 2)}
 .vn-character{position:absolute;bottom:calc(130px * var(--ui-scale));height:min(calc(600px * var(--ui-scale)),72dvh);max-width:calc(var(--vn-box-w) * .62);object-fit:contain;object-position:bottom center;filter:drop-shadow(0 calc(18px * var(--ui-scale)) calc(28px * var(--ui-scale)) rgba(38,48,68,.22));opacity:0;transform:translateY(calc(18px * var(--ui-scale))) scale(.985);transition:opacity .22s ease,transform .28s ease,filter .22s ease}
 .vn-character.show{opacity:1;transform:translateY(0) scale(1)}
@@ -649,6 +654,7 @@ html.theme-night .resource-help-list b{color:#fff}
   <button type="button" id="overlaySettingsButton" class="theme-fab overlay-settings-fab" aria-label="&#x8bbe;&#x7f6e;">&#x2699;</button>
   <div id="homeRoomBackdrop" class="home-room-backdrop hidden" aria-hidden="true"></div>
   <div id="sceneBackdrop" class="scene-backdrop hidden"></div>
+  <div id="newsTicker" class="news-ticker hidden" aria-hidden="true"><span class="news-ticker-label">新闻</span><div class="news-ticker-window"><div class="news-ticker-track"></div></div></div>
   <div id="vnCharacters" class="vn-characters hidden">
     <img id="vnCharLeft" class="vn-character left" alt="">
     <img id="vnCharRight" class="vn-character right" alt="">

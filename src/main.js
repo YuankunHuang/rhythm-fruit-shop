@@ -2741,7 +2741,21 @@ function setVNCharacterImage(img, config, expr) {
   img.classList.add('show');
   img.classList.remove('hidden');
 }
+// News ticker along the top during dialogue: the city's news running past the shop. A dialogue phase or
+// a single line sets it with `ticker` (a list of headlines; [] clears it); it stays on, like a radio
+// left running, until the day ends.
+let newsTicker = [];
+function setTicker(items) {
+  newsTicker = (Array.isArray(items) ? items : items ? [items] : []).filter(Boolean);
+  const text = newsTicker.join('　　·　　');
+  $('newsTicker').querySelector('.news-ticker-track').textContent = text;
+  $('newsTicker').style.setProperty('--ticker-duration', `${Math.max(16, text.length * 0.32)}s`);
+}
+function showTicker(on) {
+  $('newsTicker').classList.toggle('hidden', !(on && newsTicker.length));
+}
 function hideVNCharacters() {
+  showTicker(false);
   vnCharacters.classList.add('hidden');
   [vnCharLeft, vnCharRight].forEach((img) => {
     img.classList.remove('show', 'dim');
@@ -2797,6 +2811,8 @@ function renderVNNode() {
     return;
   }
   const narration = !node.speaker;
+  if (node.ticker !== undefined) setTicker(node.ticker);
+  showTicker(true);
   renderVNCharacters(node);
   const panel = $('flowPanel');
   panel.classList.toggle('service-transition', !!node.transition);
@@ -2869,6 +2885,7 @@ function startServiceTransition() {
   setTimeout(() => startStoryService('lemon_water'), 520);
 }
 function startDayFlow(flow) {
+  setTicker([]);
   storySlotId = 'day';
   flowCursor.start(flow.phases);
   runNextFlowPhase();
@@ -2880,6 +2897,7 @@ function runNextFlowPhase() {
     return;
   }
   const phase = flowCursor.take();
+  if (phase.ticker !== undefined) setTicker(phase.ticker);
   if (phase.slotId) {
     storySlotId = phase.slotId;
     invalidateBackdropCache();

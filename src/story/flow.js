@@ -75,6 +75,7 @@ export function matchMilestone(m, ctx) {
   if (m.type === 'reputation_gte') return ctx.reputation >= +m.value;
   if (m.type === 'no_boss_letters_seen') return ctx.seen.length === 0;
   if (m.type === 'day_gte') return ctx.day >= +m.value;
+  if (m.type === 'day_eq') return ctx.day === +m.value;
   return false;
 }
 
