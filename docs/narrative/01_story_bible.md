@@ -1,3 +1,5 @@
+> **注意（2026-11-01）：** 剧情以 [`00_skeleton_v3.md`](00_skeleton_v3.md) 为准。本文件里与之冲突的人物身份、出场顺序和情节，均以 v3 为准。
+
 # 《节奏鲜果铺》写手参考手册（Story Bible）
 
 > 写手工作文档。世界设定与故事总览见 `STORY.md`，人物详卡见 `02_core_cast.md` / `03_vip_characters.md`，对白执行规范见 `05_writing_guide.md`，Track Event 机制见 `04_track_event_design.md`。
