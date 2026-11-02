@@ -679,9 +679,20 @@ function selectSaveSlot(i) {
   resetDay();
   return true;
 }
+// The prologue belongs to each save: a new life starts with it. One just played from the opening
+// screen, before any save existed, counts for the save made right after it.
+let prologuePlayedWithoutSave = false;
+function startSave() {
+  if (shopState.prologueDone) showDayIntro();
+  else startPrologue();
+}
 function createSaveSlot(i) {
   activeSaveSlot = i;
   shopState = defaultShopState();
+  if (prologuePlayedWithoutSave) {
+    shopState.prologueDone = true;
+    prologuePlayedWithoutSave = false;
+  }
   setIntroDifficulty();
   saveShopState();
   resetDay();
@@ -2382,9 +2393,9 @@ function renderSaveSlots() {
       sfxPlay('ui.select');
       if (savePanelMode === 'new') {
         createSaveSlot(i);
-        showDayIntro();
+        startSave();
       } else if (selectSaveSlot(i)) {
-        showDayIntro();
+        startSave();
       } else showToast('\u8fd9\u4e2a\u69fd\u4f4d\u8fd8\u6ca1\u6709\u5b58\u6863');
     };
     grid.appendChild(card);
@@ -4029,12 +4040,18 @@ function showOneDaySettlement() {
   retry.classList.add('quiet', 'replay-prologue-cta');
   menu.classList.add('hidden');
   end.classList.add('hidden');
-  home.textContent = '\u56de\u5230\u4e3b\u754c\u9762';
+  markPrologueSeen();
+  if (activeSaveSlot >= 0) {
+    shopState.prologueDone = true;
+    saveShopState();
+    home.textContent = '开始第一天';
+    home.onclick = () => showDayIntro();
+  } else {
+    prologuePlayedWithoutSave = true;
+    home.textContent = '\u56de\u5230\u4e3b\u754c\u9762';
+    home.onclick = () => showTitle();
+  }
   home.classList.remove('secondary');
-  home.onclick = () => {
-    markPrologueSeen();
-    showTitle();
-  };
   wrap.appendChild(home);
   wrap.appendChild(retry);
   wrap.appendChild(menu);

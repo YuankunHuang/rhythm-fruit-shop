@@ -29,6 +29,7 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
     totalShifts: 0,
     totalMoney: 0,
     firstShiftDone: false,
+    prologueDone: false,
     upgrades: { cutter: 1, blender: 1, sign: 1 },
     currentMenu: [],
     learnedSongs: [...initialLearnedSongs],
@@ -69,6 +70,8 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
     ...base,
     ...raw,
     firstShiftDone,
+    // Saves from before this flag existed: anything past day 1's first shift has had its prologue.
+    prologueDone: !!(raw.prologueDone || firstShiftDone || (raw.day || 1) > 1),
     upgrades: { ...base.upgrades, ...asObject(raw.upgrades) },
     currentMenu: asArray(raw.currentMenu),
     learnedSongs: normalizeLearnedSongs(raw, initialLearnedSongs),

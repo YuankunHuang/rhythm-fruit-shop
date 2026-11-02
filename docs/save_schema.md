@@ -46,6 +46,7 @@ type PlayerSave = {
 
   // 教学状态（命名见 §5）
   firstShiftDone: boolean;
+  prologueDone: boolean; // 这个存档是否演过序章；新档先演序章，旧档载入时：过了第 1 天首班即视为已演
 
   // 升级
   upgrades: {
@@ -79,6 +80,7 @@ type SlotEntry = {
 | 机制 | 字段 | 作用域 | 触发 | 存放 |
 |---|---|---|---|---|
 | 序章 VN（柚子+学生妹+柠檬水）+ 序章结算返回 | `prologueSeen` | 浏览器级（跨存档） | 序章账本「回到主界面」 | `rfaPrologueSeen` |
+| 序章（每个存档一次） | `shopState.prologueDone` | 存档级 | 新建存档或读到未演序章的存档时先演序章，账本页「开始第一天」进入第 1 天；开屏首次游玩（还没有存档）演过的序章，算给紧接着新建的存档 | `SaveSlot.shopState` |
 | 首日上岗练习（Day 1 第一班，一次性） | `shopState.firstShiftDone` + `tutorialSeen.day1ShiftTutorial` | 存档级 | 任意曲目的第一班结算→「正式上岗」 | `SaveSlot.shopState`（载入时两者互为补丁） |
 | 上下文聚光灯（dayIntro 等） | `shopState.tutorialSeen` | 存档级 | 不同 UI 出现时 | `SaveSlot.shopState` |
 
