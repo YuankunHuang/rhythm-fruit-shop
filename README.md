@@ -68,6 +68,7 @@ The runtime loads charts from `charts/*.json`.
 - `charts/` — Canonical chart source. One JSON per song; `manifest.json` indexes them.
 - `index.html` — Playable entry; loads charts at runtime.
 - `tools/chart_editor.html` — Local chart polish tool.
+- `tools/script_reader.html` — Read-only view of the whole script in play order (prologue, days, branches, boss letters), read from the live data files: `http://localhost:8080/tools/script_reader.html`.
 - `tools/story_editor.html` — Story editor for the prologue and the day flows. Start the local server (`05_start_local_server.bat` or `npm run serve`), open `http://localhost:8080/tools/story_editor.html`, edit, Ctrl+S saves straight back to `data/`.
 - `scripts/import_osu_mania.py` — Import 3K `.osu` drafts to JSON + single-finger rule checks.
 - `scripts/sync_charts_to_game.py` — Refresh `manifest.json` and song metadata in `index.html` (does not rewrite note data).

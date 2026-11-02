@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>剧本通读</title>
+    <style>
+      :root {
+        --bg: #f6f3ec;
+        --card: #ffffff;
+        --ink: #2b2f36;
+        --muted: #7a7f88;
+        --line: #e4ded2;
+        --accent: #3f9f65;
+        --select: #d18a3f;
+        --branch: #a46dd1;
+        --track: #d14f84;
+        --letter: #8a6d3b;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #1d1f23;
+          --card: #26292e;
+          --ink: #e6e3dc;
+          --muted: #979ca5;
+          --line: #3a3e45;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 17px/1.85 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      }
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        padding: 10px 16px;
+        background: var(--card);
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      nav a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 8px 16px 120px;
+      }
+      h1 {
+        margin: 48px 0 4px;
+        font-size: 26px;
+        scroll-margin-top: 90px;
+      }
+      .day-meta {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+      .line {
+        margin: 6px 0;
+      }
+      .who {
+        font-weight: 700;
+        margin-right: 6px;
+      }
+      .who.you {
+        color: var(--accent);
+      }
+      .narr {
+        color: var(--muted);
+      }
+      .mark {
+        margin: 22px 0 10px;
+        padding: 6px 12px;
+        border-left: 4px solid var(--line);
+        background: var(--card);
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .mark b {
+        color: var(--ink);
+      }
+      .mark.service {
+        border-color: var(--accent);
+      }
+      .mark.select {
+        border-color: var(--select);
+      }
+      .mark.track {
+        border-color: var(--track);
+      }
+      .order {
+        display: inline-block;
+        margin: 6px 0;
+        padding: 4px 10px;
+        border: 1px dashed var(--line);
+        border-radius: 6px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      details {
+        margin: 8px 0 8px 4px;
+        padding: 2px 0 2px 14px;
+        border-left: 3px solid var(--branch);
+      }
+      details.wrong {
+        border-color: var(--select);
+      }
+      summary {
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--branch);
+        font-weight: 600;
+      }
+      details.wrong summary {
+        color: var(--select);
+      }
+      .ticker {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 4px 0 10px;
+      }
+      .letter {
+        margin: 18px 0;
+        padding: 14px 18px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--letter);
+        font-family: KaiTi, STKaiti, serif;
+      }
+      .letter h3 {
+        margin: 0 0 6px;
+        font-size: 17px;
+      }
+      .letter .k {
+        font-family: sans-serif;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .letter p {
+        margin: 6px 0;
+      }
+      .tools {
+        font-size: 13px;
+        color: var(--muted);
+        margin-left: auto;
+      }
+      .tools label {
+        cursor: pointer;
+      }
+      @media print {
+        nav {
+          display: none;
+        }
+        details {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav id="nav"><span class="tools"><label><input type="checkbox" id="openAll" /> 展开所有分支</label></span></nav>
+    <main id="out">读取中……</main>
+    <script type="module">
+      // Read-only view of the whole script: the prologue, every day flow and the boss letters, in play order.
+      // Reads the live data files, so it is always current. Open through the local server: /tools/script_reader.html
+      const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      const load = async (p) => {
+        const r = await fetch('../' + p, { cache: 'reload' });
+        if (!r.ok) return null;
+        return JSON.parse((await r.text()).replace(/^﻿/, ''));
+      };
+      const songs = (await load('data/songs.json')).songs;
+      const drinkName = {};
+      const SLOT = { day: '白天', dusk: '黄昏', night: '夜里', late: '深夜' };
+      const INPUT = { swipe: '划', chop: '切', flow: '流' };
+      const PLACE = { bus_stop_night: '夜里的公交站', subway_kiosk_rain: '下雨的地铁站口', shopDorm: '店铺阁楼', apartment: '廉租小屋' };
+
+      const line = (n) => {
+        if (n.html) return `<div class="order">${esc(n.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())}</div>`;
+        if (!n.text) return '';
+        if (!n.speaker) return `<p class="line narr">${esc(n.text)}</p>`;
+        return `<p class="line"><span class="who${n.speaker === '你' ? ' you' : ''}">${esc(n.speaker)}</span>${esc(n.text)}</p>`;
+      };
+      const lines = (arr) => (arr || []).map(line).join('');
+      const branch = (b, cls = '') =>
+        `<details class="${cls}"><summary>${esc(b.label)}${b.style ? ` · 做法：${esc(INPUT[b.style] || b.style)}` : ''}${b.minShare ? ` ≥${Math.round(b.minShare * 100)}%` : ''}</summary>${lines(b.nodes)}</details>`;
+      const song = (id) => drinkName[id] || songs.find((s) => s.id === id)?.title || id;
+      const unlock = (p) => (p.unlockInput ? ` · 解锁新做法「${esc(INPUT[p.unlockInput] || p.unlockInput)}」` : '');
+
+      function phase(p) {
+        let h = '';
+        if (p.ticker && p.ticker.length) h += `<div class="ticker">跑马灯：${p.ticker.map(esc).join(' ｜ ')}</div>`;
+        if (p.backdrop) h += `<div class="mark">场景换到 <b>${esc(PLACE[p.backdrop] || p.backdrop)}</b></div>`;
+        if (p.setHome) h += `<div class="mark">住处换成 <b>${esc(PLACE[p.setHome] || p.setHome)}</b></div>`;
+        switch (p.type) {
+          case 'dialogue':
+            return h + lines(p.nodes);
+          case 'service':
+            return (
+              h +
+              `<div class="mark service">营业 · <b>${esc(song(p.songId))}</b>${unlock(p)}${p.chart === 'mechanize' ? ' · 机械谱面' : ''}${p.inputs ? ` · 只能用：${p.inputs.map((x) => INPUT[x] || x).join('、') || '点'}` : ''}</div>`
+            );
+          case 'service_select': {
+            (p.options || []).forEach((o) => (drinkName[o.songId] = o.label));
+            const opts = (p.options || []).map((o) => `${o.songId === p.correctId ? '<b>✓ ' : ''}${esc(o.label)}${o.songId === p.correctId ? '</b>' : ''}（${esc(o.hint)}）`).join('　');
+            const wrong = Object.entries(p.onWrong || {})
+              .map(([k, v]) => branch({ label: k === '_default' ? '选错（其他）' : `选错：${song(k)}`, nodes: v }, 'wrong'))
+              .join('');
+            return h + `<div class="mark select"><b>${esc(p.customer)}</b> 点单：${opts}${unlock(p)}</div>${wrong}`;
+          }
+          case 'score_branch':
+            return h + `<div class="mark">按这一单的表现分支</div>${(p.branches || []).map((b) => branch(b)).join('')}${lines(p.after)}`;
+          case 'track_event':
+            return (
+              h +
+              lines(p.nodes_before) +
+              `<div class="mark track">曲目事件 · <b>${esc(song(p.songId))}</b>${p.vipName ? ` · ${esc(p.vipName)}` : ''}</div>${(p.branches || []).map((b) => branch(b)).join('')}${lines(p.after)}`
+            );
+          case 'tutorial_complete':
+            return h + '<div class="mark">教学结束</div>';
+          case 'settlement':
+            return h + '<div class="mark">收工 · 日报</div>';
+          default:
+            return h + `<div class="mark">${esc(p.type)}</div>`;
+        }
+      }
+
+      const letters = (await load('data/boss_letters.json'))?.letters || [];
+      const letterDay = (l) => (l.milestone && /^day_(gte|eq)$/.test(l.milestone.type) ? l.milestone.value : null);
+      const WHEN = {
+        day_gte: (v) => `第 ${v} 天起`,
+        day_eq: (v) => `第 ${v} 天`,
+        rent_days_left_eq: (v) => `交房租前 ${v} 天`,
+        shop_level_gte: (v) => `店升到 ${v} 级`,
+        reputation_gte: (v) => `口碑到 ${v}`,
+      };
+      const when = (l) => (WHEN[l.milestone?.type] ? WHEN[l.milestone.type](l.milestone.value) : l.milestone?.type || '');
+      const letter = (l) =>
+        `<div class="letter"><div class="k">老板的信${l.kicker ? ' · ' + esc(l.kicker) : ''} · 寄到：${esc(when(l))}</div><h3>${esc(l.title)}</h3>${(l.paragraphs || []).map((x) => `<p>${esc(x)}</p>`).join('')}<p>${esc(l.sign)}</p></div>`;
+
+      const parts = [];
+      const nav = [];
+      const pro = await load('data/dialogue/prologue.json');
+      if (pro) {
+        nav.push('<a href="#prologue">序章</a>');
+        const after = pro.afterService || {};
+        const BAND = { good: '好评', ok: '一般', bad: '较差' };
+        parts.push(
+          `<h1 id="prologue">序章</h1>${lines(pro.opening)}<div class="mark service">第一单（教学）</div><div class="mark">按这一单的表现分支</div>${Object.entries(after.branches || {})
+            .map(([k, v]) => branch({ label: BAND[k] || k, nodes: v }))
+            .join('')}${lines(after.shared)}`,
+        );
+      }
+      for (let d = 1; ; d++) {
+        const f = await load(`data/flows/day${d}.json`);
+        if (!f) break;
+        nav.push(`<a href="#day${d}">第 ${d} 天</a>`);
+        // A letter placed after a named phase goes there; the others open the day.
+        const mine = letters.filter((l) => letterDay(l) === d);
+        const afterPhase = (id) => mine.filter((l) => l.placement?.afterPhaseId === id).map(letter).join('');
+        const ls = mine.filter((l) => !l.placement?.afterPhaseId).map(letter).join('');
+        const slots = (f.slots || []).map((s) => SLOT[s] || s).join(' · ');
+        parts.push(`<h1 id="day${d}">第 ${d} 天${f.title && !/^第\s*\d+\s*天$/.test(f.title) ? '：' + esc(f.title) : ''}</h1><div class="day-meta">${slots}</div>${ls}${f.phases.map((p) => phase(p) + afterPhase(p.id)).join('')}`);
+      }
+      const rest = letters.filter((l) => letterDay(l) === null);
+      if (rest.length) {
+        nav.push('<a href="#letters">其他信件</a>');
+        parts.push(`<h1 id="letters">其他时机的信</h1>${rest.map(letter).join('')}`);
+      }
+      document.getElementById('out').innerHTML = parts.join('');
+      document.getElementById('nav').insertAdjacentHTML('afterbegin', nav.join(''));
+      document.getElementById('openAll').addEventListener('change', (e) => document.querySelectorAll('details').forEach((x) => (x.open = e.target.checked)));
+    </script>
+  </body>
+</html>
