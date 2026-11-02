@@ -2596,6 +2596,7 @@ function showSceneBackdrop() {
 function hideSceneBackdrop() {
   if (sceneBackdrop.classList.contains('hidden')) return;
   sceneBackdrop.classList.remove('active');
+  showTicker(false);
   hideVNCharacters();
   clearTimeout(_hideBackdropTimer);
   _hideBackdropTimer = setTimeout(() => sceneBackdrop.classList.add('hidden'), 420);
@@ -2755,7 +2756,6 @@ function showTicker(on) {
   $('newsTicker').classList.toggle('hidden', !(on && newsTicker.length));
 }
 function hideVNCharacters() {
-  showTicker(false);
   vnCharacters.classList.add('hidden');
   [vnCharLeft, vnCharRight].forEach((img) => {
     img.classList.remove('show', 'dim');
@@ -2806,6 +2806,7 @@ function renderVNNode() {
   if (!node) {
     const done = vnState.onDone;
     vnState.locked = false;
+    showTicker(false);
     hideVNCharacters();
     if (done) done();
     return;
