@@ -556,7 +556,8 @@
         { "speaker": "", "text": "它不用敲。你还是敲了。" },
         { "speaker": "", "text": "你推开后厨旁边那扇小门，上了楼。" },
         { "speaker": "系统", "text": "街口地铁站的智饮站，一夜都亮着。楼上阁楼的那扇窗，也亮了一会儿。", "action": "settlement" }
-      ]
+      ],
+      "setHome": "shopDorm"
     },
     { "id": "settle", "type": "settlement" }
   ]

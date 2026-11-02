@@ -251,9 +251,9 @@ const SHOP_INTERIORS = {
     portrait: lazyImage('assets/game_art/sunny_shop/shop_interior_portrait.png'),
   },
 };
+// Where the player lives. The story moves them (`"setHome"` on a flow phase): the attic key on day 10.
 function currentHomeSpace() {
-  const key = shopState.homeStage || (shopLevel() >= 3 ? 'shopDorm' : 'apartment');
-  return HOME_SPACES[key] || HOME_SPACES.apartment;
+  return HOME_SPACES[shopState.homeStage] || HOME_SPACES.apartment;
 }
 function currentHomeVisual() {
   const space = currentHomeSpace(),
@@ -2944,6 +2944,10 @@ function runNextFlowPhase() {
   const phase = flowCursor.take();
   if (phase.ticker !== undefined) setTicker(phase.ticker);
   sceneBackdropKey = phase.backdrop || null;
+  if (phase.setHome && HOME_SPACES[phase.setHome] && shopState.homeStage !== phase.setHome) {
+    shopState.homeStage = phase.setHome;
+    saveShopState();
+  }
   if (phase.slotId) {
     storySlotId = phase.slotId;
     invalidateBackdropCache();
@@ -4499,6 +4503,8 @@ function renderResult() {
 }
 function showDaySummary() {
   dayRun.active = false;
+  setTicker([]);
+  showTicker(false);
   const newlyUnlocked = resolveDayUnlocks();
   shopState.readyForNextDay = true;
   saveShopState();
