@@ -266,6 +266,10 @@ const SCENE_BACKDROPS = {
     portrait: lazyImage('assets/game_art/street/bus_stop_night_portrait.png'),
     landscape: lazyImage('assets/game_art/street/bus_stop_night_landscape.png'),
   },
+  subway_kiosk_rain: {
+    portrait: lazyImage('assets/game_art/street/subway_kiosk_rain_portrait.png'),
+    landscape: lazyImage('assets/game_art/street/subway_kiosk_rain_landscape.png'),
+  },
 };
 let sceneBackdropKey = null;
 function currentShopInterior() {
