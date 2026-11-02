@@ -260,8 +260,16 @@ function currentHomeVisual() {
     img = isPortrait() ? space.portrait : space.landscape;
   return img || currentMainVisual();
 }
+// Places a dialogue phase can move to with `"backdrop": "<key>"`; the shop interior otherwise.
+const SCENE_BACKDROPS = {
+  bus_stop_night: {
+    portrait: lazyImage('assets/game_art/street/bus_stop_night_portrait.png'),
+    landscape: lazyImage('assets/game_art/street/bus_stop_night_landscape.png'),
+  },
+};
+let sceneBackdropKey = null;
 function currentShopInterior() {
-  const group = SHOP_INTERIORS[selectedTheme] || SHOP_INTERIORS.sunny;
+  const group = SCENE_BACKDROPS[sceneBackdropKey] || SHOP_INTERIORS[selectedTheme] || SHOP_INTERIORS.sunny;
   return isPortrait() ? group.portrait : group.landscape;
 }
 const VN_CHARACTERS = {
@@ -2918,6 +2926,7 @@ function startServiceTransition() {
 }
 function startDayFlow(flow) {
   setTicker([]);
+  sceneBackdropKey = null;
   storySlotId = 'day';
   flowCursor.start(flow.phases);
   runNextFlowPhase();
@@ -2930,6 +2939,7 @@ function runNextFlowPhase() {
   }
   const phase = flowCursor.take();
   if (phase.ticker !== undefined) setTicker(phase.ticker);
+  sceneBackdropKey = phase.backdrop || null;
   if (phase.slotId) {
     storySlotId = phase.slotId;
     invalidateBackdropCache();

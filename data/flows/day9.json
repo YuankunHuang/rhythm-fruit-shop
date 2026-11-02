@@ -435,7 +435,8 @@
         { "speaker": "", "text": "你在吧台后面，手里还拿着一个没封口的杯子。" },
         { "speaker": "", "text": "柚子站在你旁边，没有说话。她的手搭在吧台上，指节有点白。" },
         { "speaker": "柚子", "text": "……哪张是她，一眼就看出来了。", "expr": "neutral" }
-      ]
+      ],
+      "backdrop": "bus_stop_night"
     },
     {
       "id": "rush",
