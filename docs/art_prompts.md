@@ -236,3 +236,212 @@ No watermark.
 - [ ] 放大检查屏幕、灯箱、招牌、衣服：没有乱码文字和 logo。
 - [ ] 四个角落没有生图工具的水印。
 - [ ] 手指数对（五根），或者手在画面外。
+
+## 7. 30 天版本需要的图（2026-11-02）
+
+剧情圣经 v4.2（`docs/narrative/00_skeleton_v4.md` 第七节）把一部分故事搬到了店外，几乎每晚都回家，所以要补这些图。
+
+**通用说明：**
+- **背景**的标准照第 5 节：
+  - 不透明 PNG，竖版 816×1456、横版 1456×816；
+  - 下方三分之一会被对话框盖住；
+  - 画面里不能有人、文字、logo、水印。
+- **立绘**的标准照第 4 节：透明背景，3:4，截到大腿中段。
+- **工具：**
+  - MidJourney：在提示词末尾加 `--ar 9:16`（竖）或 `--ar 16:9`（横），参考图用 `--sref` 当风格参考。它出不了透明背景，立绘请用 ChatGPT，或者出图后再抠。
+  - 尺寸差一点没关系，比例接近就行，接入时我统一裁切和缩放。
+- **背景的参考图（下文简称）：**
+  - R1：`assets/game_art/sunny_shop/shop_interior_portrait.png`，画风和笔触，必附；
+  - R2：`assets/game_art/home/apartment_portrait.png`，光线和细节的密度；
+  - R3：`assets/game_art/neon_night/main_visual_portrait.png`，只参考夜晚的颜色。
+  - 出横版时，换成同名的 `_landscape` 图。
+- **出图顺序：** 7.1 → 7.9，可选的最后出，也可以不出。7.1 每晚都用，也最先用来试“一天的形状”。
+- 放好以后告诉我。背景和立绘都要在代码里登记才会显示。
+
+### 7.1 廉租小屋（夜）·主线必需
+
+**参考图：** 现有的 `assets/game_art/home/apartment_portrait.png`（同一间屋子，必附），R3。
+
+**路径：** `assets/game_art/home/apartment_night_portrait.png`、`apartment_night_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel. The same room, the same furniture and the
+same camera angle as the first attached reference, but late at night. Use the second reference
+only for night colors. Through the window: dark apartment blocks with a few lit windows and
+air-conditioner units. The only light is a small warm desk lamp and the cold glow of a phone lying
+face-up on the desk. The fruit basket holds a single orange; an instant-noodle cup with chopsticks
+resting on its lid sits next to the open notebook; the green jacket hangs on its hook. Quiet,
+tired, a little lonely but still warm. Keep the lower third simple. No people. No text, no
+letters, no numbers anywhere, including the wall calendar and the phone screen. No watermark.
+```
+
+### 7.2 店门口（白天）·主线必需
+
+**参考图：**
+- R1、R2；
+- `assets/game_art/sunny_shop/main_visual_landscape.png`：只参考这家店长什么样，不参考画法。要参考的是橙白条纹雨棚、红橙色木门脸、橱窗里的水果箱、门口的 A 字小黑板。
+
+**路径：** `assets/game_art/street/shop_front_day_portrait.png`、`shop_front_day_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference (warm, detailed, cinematic anime-film background). Use the third reference only
+for the shop's identity: an orange-and-cream striped awning, a red-orange wooden shop front, fruit
+crates in the windows, an A-frame chalkboard sign by the door. Paint it as a real, slightly worn
+little shop on an old back street rather than an idealized storefront: the awning a little faded,
+a rolling metal shutter rolled up above the door, a worn concrete step, a few potted plants, the
+A-frame chalkboard sign standing slightly crooked on the pavement. Next door, the edge of an old
+hardware store with tools hanging in its doorway. Late-morning sunlight through a street tree,
+power lines overhead, a parked electric scooter. Seen from across the narrow street, the shop in
+the upper two thirds. Keep the lower third simple pavement. No people. No text, no letters, no
+numbers anywhere: the chalkboard, the awning and every sign are blank. No watermark.
+```
+
+### 7.3 店门口（夜，卷帘门拉下一半）·主线必需
+
+**参考图：** 7.2 出好的图（同一个构图，必附），R3。
+
+**路径：** `assets/game_art/street/shop_front_night_portrait.png`、`shop_front_night_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel. The same shop front, the same street and
+the same camera angle as the first attached reference, but at night after closing. Use the second
+reference only for night colors. The rolling metal shutter is pulled halfway down; warm yellow
+light spills out from under it across the pavement. The A-frame chalkboard sign is folded and
+leaning against the wall. The hardware store next door is shuttered. One streetlight with moths
+around it, the street tree in silhouette. Calm, the end of a long day. Keep the lower third simple.
+No people. No text, no letters, no numbers anywhere. No watermark.
+```
+
+### 7.4 地铁口（夜，不下雨）·主线必需
+
+**参考图：** R1；`assets/game_art/street/subway_kiosk_rain_portrait.png`（同一个地方，必附）；R3。
+
+**路径：** `assets/game_art/street/subway_entrance_night_portrait.png`、`subway_entrance_night_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference. The same subway entrance as the second (rainy-night) reference, but on a dry,
+clear night; use the third reference only for night colors. Beside the stairs, the same white
+automated drink kiosk with a simple smiley face on its screen. On the wall by the entrance, a large
+glowing advertising light box showing a beautiful, glossy, perfectly smiling young woman in a
+commercial pose. Under the light box, a low wall covered with hundreds of small colored sticky
+notes, layered and curling at the edges. In front of the light box, a small open patch of pavement
+where someone could stand and perform. Streetlights, the glow of a convenience store across the
+street. Keep the lower third simple. No people other than the woman inside the light box. No text,
+no letters, no numbers anywhere, including the light box, the kiosk screen and the sticky notes
+(the notes are blank or covered in unreadable scribble). No watermark.
+```
+
+### 7.5 天台（夜，月亮）·主线必需
+
+**参考图：** R1、R2、R3。
+
+**路径：** `assets/game_art/street/rooftop_night_portrait.png`、`rooftop_night_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference, at night; use the third reference only for night colors. Scene: the flat
+rooftop of an old four-storey building in a dense old neighborhood. Rusty water tanks, a laundry
+line with a single green apron hanging on it, two folding plastic stools and an upturned fruit
+crate used as a table, a few potted plants and a styrofoam box growing spring onions, a low
+parapet. Beyond it, a sea of old rooftops and distant glowing high-rises. A large bright full moon
+low in the sky, thin clouds. Peaceful and private. Keep the lower third simple. No people. No
+text, no letters, no logos anywhere. No watermark.
+```
+
+### 7.6 分拣站门口（傍晚）·主线必需
+
+**参考图：** R1、R2。
+
+**路径：** `assets/game_art/street/sorting_station_dusk_portrait.png`、`sorting_station_dusk_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference, at dusk. Scene: the gate of a parcel sorting station on the industrial edge of
+a city. A wide sliding metal gate, half open; through it, under bright white strip lights, long
+conveyor belts and a floor of small flat orange sorting robots carrying parcels in neat lines.
+Outside the gate: stacked cardboard boxes, a row of parked electric delivery tricycles and
+scooters, a guard booth with a warm lit window, a pole light just coming on. Orange-purple sky.
+The feeling of standing outside, looking in. Keep the lower third simple. No people. No text, no
+letters, no logos, no numbers on boxes, signs or the gate. No watermark.
+```
+
+### 7.7 批发市场（清晨）·主线必需
+
+**参考图：** R1、R2。
+
+**路径：** `assets/game_art/street/wholesale_market_dawn_portrait.png`、`wholesale_market_dawn_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel, matching the painterly style of the first
+attached reference. Scene: a fruit wholesale market at dawn, just before sunrise. A long covered
+aisle of stalls under a high corrugated roof, bare light bulbs on wires, stacks of fruit crates
+(oranges, lemons, grapes, watermelons, pineapples), green tarps, a hand trolley, electric tricycles
+loaded with boxes, puddles on concrete, a thin mist, and the first blue light at the far open end.
+It looks busy, but nobody is there for now. Keep the lower third simple. No people. No text, no
+letters, no numbers on crates, signs or price boards. No watermark.
+```
+
+### 7.8 店铺阁楼（夜）·主线必需
+
+**参考图：** 现有的 `assets/game_art/home/shop_dorm_portrait.png`（同一间屋子，必附），R3。
+
+**路径：** `assets/game_art/home/shop_dorm_night_portrait.png`、`shop_dorm_night_landscape.png`
+
+```
+Background art for a slice-of-life anime visual novel. The same attic room, the same furniture and
+the same camera angle as the first attached reference, but late at night. Use the second reference
+only for night colors. Through the window: old neighborhood rooftops under a deep blue sky with a
+few stars. A small desk lamp is on; warm light rises through the open floor hatch from the shop
+below. A single brass key lies on the desk next to the phone. Calm and safe, the first night in a
+new place. Keep the lower third simple. No people. No text, no letters, no numbers anywhere. No
+watermark.
+```
+
+### 7.9 林小末的妈妈·立绘
+
+她在智饮站做补货员，跑十几个点位，晚上十一点下班；第 15、26 天出场。
+
+**参考图：**
+1. `assets/game_art/student_girl/neutral.png`：她的女儿，长相和画风都照这张。
+2. `assets/game_art/lao_fang/neutral.png`：在街上干活的人怎么画。
+
+**路径：** `assets/game_art/lin_mother/` 下 `neutral.png`（928×1232），`smile.png`、`sorry.png`、`tired.png`（1792×2380）。
+
+```
+Character portrait for a slice-of-life anime visual novel, matching the attached reference
+portraits exactly in style, framing and size: clean anime cel shading, crisp dark outlines, flat
+colors with one soft shadow step; one person facing the viewer, body turned slightly, cropped at
+mid-thigh by the bottom edge, small margin above the head.
+Subject: a Chinese woman of about 42, the mother of the girl in the first reference: the same
+straight black hair, tied back in a low practical ponytail with a few loose strands, the same dark
+eyes, a tired but kind face, no makeup. She restocks automated drink kiosks for a living: a light
+grey work vest with white reflective strips over a dark green cardigan, a lanyard with a blank ID
+card, a heavy ring of many small keys clipped to her belt, cotton work gloves tucked into a vest
+pocket, one hand holding a phone.
+Hands anatomically correct with five fingers, or kept out of frame.
+Transparent background. Portrait 3:4. No text or logos on the vest, the card or the phone.
+No watermark.
+```
+
+**表情：** 出完 `neutral.png` 再出其余三张，提示词里写 `same character, same outfit, same framing and size, only change the expression`。
+- `neutral.png`：`a polite small smile, a little tired`
+- `smile.png`：`a warm smile, eyes looking slightly down as if at her daughter`
+- `sorry.png`：`apologetic and embarrassed, one hand raised as if saying sorry for the trouble`
+- `tired.png`：`eyes half-lidded, rubbing the back of her neck with one hand`
+
+### 7.10 可选的五处（熟络戏和第 6、26 天；不出，就把戏搬回店里）
+
+**通用：**
+- 参考图都是 R1、R2，夜景再加 R3。
+- 路径都在 `assets/game_art/street/` 下，竖横各一张。
+- 每段前面接：`Background art for a slice-of-life anime visual novel, matching the painterly style of the first attached reference. Scene:`
+- 每段后面接：`Keep the lower third simple. No people. No text, no letters, no logos, no numbers anywhere. No watermark.`
+
+**五处：**
+- **公交车厢（夜）** `bus_interior_night_*`：`the inside of an almost empty city bus at night: rows of blue plastic seats, handrails and hanging straps, warm-white interior light, the windows showing blurred streetlights and shop lights, a single plastic bag left on a seat.`
+- **夜宵摊** `night_food_stall_*`：`a roadside late-night food stall on a street corner: a barbecue grill with rising smoke, folding tables and red plastic stools on the pavement, a big umbrella, string lights, delivery scooters parked nearby with helmets on the seats, skewers and drink bottles on the tables.`
+- **电影院（几乎空的厅）** `cinema_empty_*`：`the inside of a small cinema hall during a screening, seen from the back rows: rows of red seats almost all empty, the big screen glowing with an abstract bright image, the projector beam through floating dust, soft light on the seat backs.`
+- **学校门口（黄昏）** `school_gate_dusk_*`：`the gate of an ordinary city high school at dusk: an electric sliding gate, a guard booth, tall plane trees, parked bicycles, and at the curb a small white van with its back doors open, full of neatly packed drink bottles and boxes.`
+- **医院走廊** `hospital_corridor_*`：`a corridor of an ordinary city hospital ward in the evening: pale green walls, a row of blue plastic waiting seats, a window at the far end with the evening sky, a wheelchair, a water dispenser, soft fluorescent light; calm and plain, not frightening.`
