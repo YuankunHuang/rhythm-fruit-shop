@@ -69,7 +69,9 @@ The runtime loads charts from `charts/*.json`.
 - `index.html` — Playable entry; loads charts at runtime.
 - `tools/chart_editor.html` — Local chart polish tool.
 - `tools/route_check.mjs` — Lists every order whose routes lack their own lines: wrong drinks served, ways of playing unlocked by then, score bands. `node tools/route_check.mjs` (`--all` lists complete orders too); exits non-zero while gaps remain.
-- `tools/script_reader.html` — Read-only view of the whole script in play order (prologue, days, branches, boss letters), read from the live data files: `http://localhost:8080/tools/script_reader.html`.
+- `tools/script_reader.html` — Read-only view of the whole script in play order (prologue, days, branches, boss letters), read from the live data files: `http://localhost:8080/tools/script_reader.html`. Add `?story=30` to read the 30-day story being written.
+- `tools/story_check.mjs` — Checks what the game needs from each day file: speakers' pictures, drinks, places, orders that serve what was picked, phone cards; with `--story30`, each day's ticker and evening. `node tools/story_check.mjs [--story30]`.
+- **The 30-day story** is written in `data/story30/` (its ready days in `index.json`) and played with `?story=30` on the game's URL, with saves of its own. The current ten days in `data/flows/` stay the default until it is done. Plan: `docs/narrative/expansion_plan.md`.
 - `tools/story_editor.html` — Story editor for the prologue and the day flows. Start the local server (`05_start_local_server.bat` or `npm run serve`), open `http://localhost:8080/tools/story_editor.html`, edit, Ctrl+S saves straight back to `data/`.
 - `scripts/import_osu_mania.py` — Import 3K `.osu` drafts to JSON + single-finger rule checks.
 - `scripts/sync_charts_to_game.py` — Refresh `manifest.json` and song metadata in `index.html` (does not rewrite note data).
