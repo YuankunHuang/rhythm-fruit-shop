@@ -56,10 +56,11 @@ export function settleOrder(order, rules) {
 
 /**
  * Closes a day: the wage slip. Returns the slip lines (label, amount, kind) and the new wallet.
- * `state`: { day, wallet, praisedWeeks, rentPaid, prologue }; `orders`: settled orders.
+ * `state`: { day, wallet, praisedWeeks, rentPaid, prologue, dinner }; `orders`: settled orders.
+ * `dinner` names a dinner the story already gave him (柚子's noodles at closing): it costs nothing.
  */
 export function closeDay(state, orders, rules) {
-  const { day, wallet = 0, praisedWeeks = [], rentPaid = false, prologue = false } = state,
+  const { day, wallet = 0, praisedWeeks = [], rentPaid = false, prologue = false, dinner = '' } = state,
     lines = [],
     add = (label, amount, kind = 'income') => lines.push({ label, amount, kind });
   add(prologue ? '试工半天' : '日薪', prologue ? rules.prologueWage : rules.wage);
@@ -84,8 +85,10 @@ export function closeDay(state, orders, rules) {
   const beforeDinner = wallet + lines.reduce((s, l) => s + l.amount, 0),
     owed = rentPaid ? 0 : rules.rent.amount,
     [cheap, ...better] = rules.dinners,
-    meal = better.filter((m) => beforeDinner - m.cost - owed >= m.margin).pop() || cheap;
-  add(`晚饭 ${meal.name}`, -meal.cost, 'expense');
+    meal = dinner
+      ? { name: dinner, cost: 0 }
+      : better.filter((m) => beforeDinner - m.cost - owed >= m.margin).pop() || cheap;
+  add(`晚饭 ${meal.name}`, meal.cost ? -meal.cost : 0, meal.cost ? 'expense' : 'income');
   const net = lines.reduce((s, l) => s + l.amount, 0);
   return {
     day,

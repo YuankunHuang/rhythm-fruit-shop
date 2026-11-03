@@ -1,0 +1,47 @@
+{
+  "$schema": "milestone boss letters v1",
+  "letters": [
+    {
+      "id": "boss_welcome_first",
+      "priority": 0,
+      "placement": {
+        "type": "after_day_home"
+      },
+      "delivery": "mailbox_intro",
+      "kicker": "第一封",
+      "title": "不愧是我看上的员工",
+      "milestone": {
+        "type": "day_eq",
+        "value": 2
+      },
+      "paragraphs": [
+        "新来的：欢迎。冷柜要敲两下，柚子会教你。她不教的，就是不用学。",
+        "咱们店的规矩不多：东西要新鲜，杯子要干净，节奏要打。为什么要打节奏，你干久了就知道了；干不久，知道了也没用。",
+        "不愧是我看上的员工。",
+        "ps. 你没填入职表。不用填了，我都知道。"
+      ],
+      "sign": "——老板"
+    },
+    {
+      "id": "boss_rent_eve",
+      "priority": 1,
+      "placement": {
+        "type": "after_day_home"
+      },
+      "delivery": "plain_read",
+      "kicker": "写两笔",
+      "title": "明天交房租",
+      "milestone": {
+        "type": "day_eq",
+        "value": 6
+      },
+      "paragraphs": [
+        "同志们：明天是交房租的日子。我说的是你那间小屋的房租，不是店里的。店里的事，轮不到你操心——暂时。",
+        "钱不够的话，别找柚子借。她嘴上不借，最后都会借，借完了自己吃一个礼拜的面。",
+        "实在不够，把冷柜后面那块砂纸卖了。开玩笑的。那块砂纸留着，以后还用得上。"
+      ],
+      "sign": "——老板"
+    }
+  ],
+  "$comment": "Letters for the 30-day story (data/story30/), by day. Act 1: day 2, day 6 (the eve of the first rent)."
+}

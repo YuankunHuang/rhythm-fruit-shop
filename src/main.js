@@ -2344,6 +2344,7 @@ function slipFor(day, orders, prologue, wallet = shopState.wallet || 0) {
       praisedWeeks: shopState.praisedWeeks || [],
       rentPaid: rentPaidOn(ledger.nextRentDay(Math.max(1, day), rules)),
       prologue,
+      dinner: dayStats.dinner || '',
     },
     orders.map((o) => ledger.settleOrder(o, rules)),
     rules,
@@ -3168,6 +3169,8 @@ function runNextFlowPhase() {
   // The shop's ledger opens when the story says so; story income (存杯本 and the like) lands on today's slip.
   if (phase.shopLedger && !shopState.shopLedger) shopState.shopLedger = { raised: 0, ...phase.shopLedger };
   if (phase.shopIncome) (dayStats.shopIncome = dayStats.shopIncome || []).push(...phase.shopIncome);
+  // A phase that feeds him (`"dinner": "员工面"`) takes dinner off the wage slip.
+  if (phase.dinner) dayStats.dinner = phase.dinner;
   if (phase.setHome && HOME_SPACES[phase.setHome] && shopState.homeStage !== phase.setHome) {
     shopState.homeStage = phase.setHome;
     saveShopState();
@@ -4528,9 +4531,22 @@ function goHomeEvening() {
   audio.pause();
   stopPreview();
   setTicker([]);
-  eveningRun = true;
-  flowCursor.start(evening);
-  runNextFlowPhase();
+  const startEvening = () => {
+    eveningRun = true;
+    flowCursor.start(evening);
+    runNextFlowPhase();
+  };
+  // A letter left for him on the way out is found at the shop door, so it comes before the road home.
+  const L = pickBossLetterForPlacement('after_day_home');
+  if (!L) return startEvening();
+  invalidateBackdropCache();
+  state = S.FLOW;
+  updateMenuLoop();
+  showVN(buildBossLetterNodes(L, 'after_home'), () => {
+    _pendingBossLetterId = L.id;
+    recordBossLetterSeen();
+    startEvening();
+  });
 }
 function setResultActions(mode) {
   const retry = $('retryButton'),

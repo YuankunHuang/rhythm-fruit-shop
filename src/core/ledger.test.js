@@ -100,6 +100,12 @@ test('praise comes once a week, the prologue is half a day, dinner follows the m
   );
 });
 
+test('a dinner the story already gave him costs nothing', () => {
+  const s = closeDay({ day: 3, wallet: 100, dinner: '员工面' }, [], rules);
+  assert.deepEqual(s.lines.at(-1), { label: '晚饭 员工面', amount: 0, kind: 'income' });
+  assert.equal(s.net, 66);
+});
+
 test('rent comes out of the wallet first, then savings', () => {
   assert.deepEqual(payRent({ wallet: 500, savings: 5200 }, rules), {
     wallet: 20,

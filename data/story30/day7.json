@@ -1,0 +1,468 @@
+{
+  "id": "day7",
+  "title": "第7天",
+  "slots": ["day", "night"],
+  "menuIds": ["grapeSmoothie", "citrusFizz"],
+  "phases": [
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "ticker": ["职业伤害保障全国推开以来，累计受理骑手理赔十一万余件；出险最多的时段是晚上七点到九点", "气象台：秋老虎还要再待一个礼拜，今天午后最高三十四度", "后街那点事：裁缝铺那只鹦鹉学会了扫码到账的声音，这礼拜已经有三个客人掏出手机看了", "超市月饼礼盒提前上架，最贵一盒标价一千八百八；导购介绍，主要贵在盒子", "地铁口便利贴：三号线上谁落了一把黑伞，伞把上缠着红胶布。我坐到终点站交给失物招领了，报“红胶布”就能领"],
+      "nodes": [
+        { "speaker": "", "text": "七点二十，你到店门口。卷帘门已经拉上去一半，后厨有水开的声音。" },
+        { "speaker": "", "text": "你把钱包掏出来，又数了一遍，塞回裤兜，弯腰钻了进去。" },
+        { "speaker": "", "text": "柚子从后厨出来，两只手各端着一只碗。路过冷柜的时候腾不出手，她拿胳膊肘在冷柜门上敲了两下。" },
+        { "speaker": "", "text": "冷柜本来就好好地响着。" },
+        { "speaker": "柚子", "text": "洗手。吃饭。", "expr": "neutral" },
+        { "speaker": "你", "text": "这么早？" },
+        { "speaker": "柚子", "text": "礼拜六。中午学生放了学，你就别想吃了。", "expr": "deadpan" },
+        { "speaker": "", "text": "两碗面，清汤，几根青菜，一碗上面卧着一个荷包蛋。她把一碗推给你，自己端着另一碗，靠在吧台边上吃。" },
+        { "speaker": "", "text": "你夹起一筷子面。底下还埋着一个。" },
+        { "speaker": "你", "text": "……两个。" },
+        { "speaker": "柚子", "text": "冰箱里那板蛋，快过期了。", "expr": "deadpan" },
+        { "speaker": "", "text": "那板蛋就摆在灶台边上。你刚才洗手的时候看见过，盒子上印的日期是前天。" },
+        { "speaker": "", "text": "你把两个蛋都吃了。" },
+        { "speaker": "柚子", "text": "吃完切柠檬。三十个，三毫米。礼拜六柠檬水走得快，备两壶。", "expr": "serious" },
+        { "speaker": "你", "text": "好。" },
+        { "speaker": "", "text": "她吃得快，碗一放，去把剩下那半截卷帘门推了上去。太阳已经晒到台阶上了。" }
+      ]
+    },
+    {
+      "id": "visit_lin",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "十点半，风铃乱响了一阵。书包先挤进门，林小末跟在后面。" },
+        { "speaker": "林小末", "text": "靠墙那张没人吧。", "expr": "tired" },
+        { "speaker": "你", "text": "没人。" },
+        { "speaker": "", "text": "她把书包往小桌上一放。拉链拉到一半卡住了，她拽了一把，没开，又拽一把，从里面抽出一沓复印的卷子，订书钉钉得歪歪扭扭。" },
+        { "speaker": "你", "text": "这么多。" },
+        { "speaker": "林小末", "text": "往年的补考卷。去年的，前年的，还有一套是隔壁学校的。", "expr": "neutral" },
+        { "speaker": "你", "text": "得有五六十张。" },
+        { "speaker": "林小末", "text": "六十四。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "上完两节课就去复印店排队。前面一个大爷在印他孙子的作文，印了二十份。", "expr": "tired" },
+        { "speaker": "你", "text": "二十份？" },
+        { "speaker": "林小末", "text": "说是要寄给亲戚。", "expr": "neutral" },
+        { "speaker": "", "text": "她从书包侧兜里摸出几个硬币，摊在手心，用手指一个一个拨过去。拨完一遍，又从头拨了一遍。" },
+        { "speaker": "林小末", "text": "那个……柠檬水。", "expr": "awkward" },
+        { "speaker": "林小末", "text": "……我只有四块。", "expr": "awkward" },
+        { "speaker": "", "text": "你回头看柚子。她在收银台后面对账，笔没停。" },
+        { "speaker": "柚子", "text": "四块先放着。差两块，记上。", "expr": "neutral" },
+        { "speaker": "", "text": "她把账本翻到最后一页。那一页上已经记了好几行，每行几个字、一个数，有几行划掉了。她在底下添了一行。" },
+        { "speaker": "林小末", "text": "下礼拜还。", "expr": "neutral" },
+        { "speaker": "柚子", "text": "嗯。", "expr": "neutral" },
+        { "speaker": "", "text": "林小末把四个硬币一个一个放在吧台上，放得很轻。" },
+        { "speaker": "订单", "html": "<div class=\"order-card\"><span>柠檬水</span><b>林小末</b><span>最便宜那种 · 四块，差两块记上 · 六十四张卷子</span></div>" }
+      ]
+    },
+    {
+      "id": "select_lin",
+      "type": "service_select",
+      "customer": "林小末",
+      "correctId": "lemon_water",
+      "menuId": "",
+      "slotId": "day",
+      "allowRetry": false,
+      "options": [
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽 · 最便宜那种" },
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 · 十五块" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "浓稠 · 二十二块" }
+      ],
+      "onWrong": {
+        "fruit_cup": [
+          { "speaker": "", "text": "你把鲜果杯的高杯子拿了下来。" },
+          { "speaker": "林小末", "text": "那个是十五的杯子。", "expr": "awkward" },
+          { "speaker": "林小末", "text": "……你都拿下来了。", "expr": "awkward" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "", "text": "冰沙机转了起来。" },
+          { "speaker": "林小末", "text": "我说的是柠檬水。", "expr": "neutral" },
+          { "speaker": "林小末", "text": "冰沙二十二。我连柠檬水都不够。", "expr": "awkward" }
+        ]
+      }
+    },
+    {
+      "id": "after_lin",
+      "type": "score_branch",
+      "variable": "customer",
+      "byDrink": {
+        "fruit_cup": [
+          { "speaker": "柚子", "text": "这杯算你请的。", "expr": "deadpan" },
+          { "speaker": "林小末", "text": "那我是欠两块，还是欠十一块？", "expr": "neutral" },
+          { "speaker": "柚子", "text": "两块。剩下的他出。", "expr": "deadpan" },
+          { "speaker": "", "text": "林小末看了你一眼，低头把杯子里的草莓一颗一颗挑出来先吃了。" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "林小末", "text": "……二十二的。", "expr": "neutral" },
+          { "speaker": "柚子", "text": "算他请的。", "expr": "deadpan" },
+          { "speaker": "", "text": "她两只手捧着杯子吸了一口，眼睛眯起来。" },
+          { "speaker": "林小末", "text": "冰得脑子疼。", "expr": "awkward" },
+          { "speaker": "林小末", "text": "（小声）……好喝。", "expr": "smile" }
+        ]
+      },
+      "byStyle": {
+        "swipe": [
+          { "speaker": "林小末", "text": "你刚才那几刀好快。", "expr": "neutral" },
+          { "speaker": "你", "text": "划的。" },
+          { "speaker": "林小末", "text": "划。跟切有什么不一样？", "expr": "neutral" },
+          { "speaker": "你", "text": "一刀，和好几刀。" },
+          { "speaker": "林小末", "text": "……行吧。", "expr": "neutral" }
+        ]
+      },
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "", "text": "她喝了一口，把杯子挪到桌角，离卷子远一点。" },
+            { "speaker": "林小末", "text": "嗯。就是这个。", "expr": "smile" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "林小末", "text": "嗯。", "expr": "neutral" },
+            { "speaker": "", "text": "她咬着吸管，眼睛已经回到卷子上了。" },
+            { "speaker": "林小末", "text": "跟平时差不多。", "expr": "neutral" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "林小末", "text": "淡了。", "expr": "tired" },
+            { "speaker": "你", "text": "抱歉。" },
+            { "speaker": "林小末", "text": "没事。四块钱的，淡一点正好。", "expr": "neutral" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "", "text": "她从第一张开始做。做一会儿，看一眼手机，又接着做。" }
+      ]
+    },
+    {
+      "id": "visit_ashen",
+      "type": "dialogue",
+      "cast": ["林小末"],
+      "nodes": [
+        { "speaker": "", "text": "十一点半，阿晟来了。还是那件深色高领毛衣，秋老虎的天，额头上一层汗。" },
+        { "speaker": "", "text": "他在门口站了一下，侧过头听音箱，眉头皱起来，才走到吧台前。" },
+        { "speaker": "阿晟", "text": "葡萄冰沙。", "expr": "neutral" },
+        { "speaker": "你", "text": "最稠的，冰两颗。" },
+        { "speaker": "阿晟", "text": "……嗯。两颗。", "expr": "neutral" },
+        { "speaker": "", "text": "他把手机扣在吧台上，屏幕朝下。" },
+        { "speaker": "林小末", "text": "喂。", "expr": "neutral" },
+        { "speaker": "", "text": "阿晟回过头。林小末坐在靠墙那张小桌后面，笔帽还咬在嘴里。" },
+        { "speaker": "林小末", "text": "你是上回哼歌那个。", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "是。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "你英语怎么样？", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "看拿来干什么。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "念听力。音频发在班级群里，我手机没流量了，就剩这张原文。", "expr": "tired" },
+        { "speaker": "阿晟", "text": "你自己念。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "自己念的，我都知道下一句是什么。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "你念就行。念错了不怪你。", "expr": "awkward" },
+        { "speaker": "", "text": "阿晟看了你一眼。" },
+        { "speaker": "你", "text": "葡萄还没洗。" },
+        { "speaker": "", "text": "他走过去，接过那张纸，拿远了一点，推了推眼镜。" },
+        { "speaker": "阿晟", "text": "Section B. Conversation one. W: Excuse me, is anyone sitting here? M: No, go ahead.", "expr": "focused" },
+        { "speaker": "林小末", "text": "W 和 M 不用念。", "expr": "awkward" },
+        { "speaker": "阿晟", "text": "……哦。", "expr": "neutral" },
+        { "speaker": "", "text": "他从头又念了一遍。" },
+        { "speaker": "阿晟", "text": "Excuse me, is anyone sitting here? No, go ahead. Are you waiting for the seven-forty train too? Yes. It's late again.", "expr": "focused" },
+        { "speaker": "林小末", "text": "停停停。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "你口音太标准了。像 AI。", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "不是 AI。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "我知道不是。我说的是像。", "expr": "neutral" },
+        { "speaker": "林小末", "text": "考试那个录音会吞音，「is anyone」一下就滑过去了。你每个词都念得清清楚楚，一个一个往外蹦。", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "连读。", "expr": "focused" },
+        { "speaker": "林小末", "text": "对，连读。", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "再来。", "expr": "neutral" },
+        { "speaker": "", "text": "第二遍他念得快了一点，「is anyone」粘成了一个词。念到第二句，还抢了半拍。" },
+        { "speaker": "林小末", "text": "……这遍像人了。", "expr": "smile" },
+        { "speaker": "阿晟", "text": "嗯。", "expr": "neutral" },
+        { "speaker": "", "text": "她低头在卷子上勾了一个 B。他往下念，她往下勾。" },
+        { "speaker": "订单", "html": "<div class=\"order-card\"><span>葡萄冰沙</span><b>阿晟</b><span>最稠 · 冰两颗 · 被借去念了一段听力</span></div>" }
+      ]
+    },
+    {
+      "id": "select_ashen",
+      "type": "service_select",
+      "customer": "阿晟",
+      "correctId": "grape_smoothie_still",
+      "menuId": "grapeSmoothie",
+      "slotId": "day",
+      "allowRetry": false,
+      "options": [
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "最稠 · 冰两颗" },
+        { "songId": "grape_smoothie_afterglow", "label": "葡萄冰沙（偏酸）", "hint": "酸一点 · 稀一点" },
+        { "songId": "citrus_fizz", "label": "柑橘碳酸", "hint": "有气 · 冲" }
+      ],
+      "onWrong": {
+        "grape_smoothie_afterglow": [
+          { "speaker": "林小末", "text": "那串葡萄颜色不一样。", "expr": "neutral" },
+          { "speaker": "阿晟", "text": "……什么？", "expr": "neutral" },
+          { "speaker": "林小末", "text": "没什么。你接着念。", "expr": "neutral" }
+        ],
+        "citrus_fizz": [
+          { "speaker": "", "text": "气泡水的瓶盖「呲」地响了一声。阿晟念到一半，抬起头。" },
+          { "speaker": "阿晟", "text": "那是气泡。", "expr": "focused" },
+          { "speaker": "阿晟", "text": "……开都开了。", "expr": "neutral" }
+        ]
+      }
+    },
+    {
+      "id": "after_ashen",
+      "type": "score_branch",
+      "variable": "customer",
+      "byDrink": {
+        "grape_smoothie_afterglow": [
+          { "speaker": "", "text": "吸管插进去，他试了试阻力。" },
+          { "speaker": "阿晟", "text": "稀了。也酸。", "expr": "focused" },
+          { "speaker": "阿晟", "text": "不是我那个参数。", "expr": "neutral" },
+          { "speaker": "", "text": "他又吸了一口，没放下。" },
+          { "speaker": "阿晟", "text": "……意外。可以。", "expr": "neutral" }
+        ],
+        "citrus_fizz": [
+          { "speaker": "", "text": "他把杯子举到右耳边，听了一会儿。左耳的耳机还塞着。" },
+          { "speaker": "阿晟", "text": "底噪太大。", "expr": "focused" },
+          { "speaker": "你", "text": "底噪？" },
+          { "speaker": "阿晟", "text": "气泡。全是。", "expr": "neutral" },
+          { "speaker": "", "text": "他还是一口一口喝完了。" }
+        ]
+      },
+      "byStyle": {
+        "swipe": {
+          "good": [
+            { "speaker": "阿晟", "text": "你刚才那几刀，都在拍子上。", "expr": "focused" },
+            { "speaker": "阿晟", "text": "不是夸。", "expr": "neutral" }
+          ],
+          "ok": [
+            { "speaker": "阿晟", "text": "刀有两下抢了。后面稳了。", "expr": "focused" }
+          ],
+          "bad": [
+            { "speaker": "阿晟", "text": "刀声乱了。我念的时候有听到。", "expr": "neutral" }
+          ]
+        }
+      },
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "", "text": "吸管插进去，他试了试那点阻力。" },
+            { "speaker": "阿晟", "text": "对了。", "expr": "focused" },
+            { "speaker": "阿晟", "text": "再来一杯。打包。", "expr": "neutral" },
+            { "speaker": "你", "text": "现在就要？" },
+            { "speaker": "阿晟", "text": "回去还有一百首。", "expr": "tired" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "", "text": "他吸了一口。" },
+            { "speaker": "阿晟", "text": "稠度差半格。往稀那边。", "expr": "focused" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "阿晟", "text": "有毛刺。", "expr": "focused" },
+            { "speaker": "你", "text": "毛刺？" },
+            { "speaker": "阿晟", "text": "冰没打碎。有渣。", "expr": "neutral" },
+            { "speaker": "", "text": "他拿吸管把冰渣按下去，还是喝了。" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "", "text": "他付了钱。找回来的硬币在吧台上排成一行，大的在左，小的在右，食指从左到右点了一遍，才收进口袋。" },
+        { "speaker": "林小末", "text": "下礼拜还有听力。", "expr": "neutral" },
+        { "speaker": "阿晟", "text": "……看情况。", "expr": "neutral" },
+        { "speaker": "", "text": "他拎起杯子，推门出去了。", "exit": "阿晟" },
+        { "speaker": "", "text": "林小末把那张原文翻过来，背面还有一段。她看了一眼门口，又翻了回去。" }
+      ]
+    },
+    {
+      "id": "afternoon",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "中午学生来了一拨，柠檬水卖掉一壶半。" },
+        { "speaker": "", "text": "一点多，林小末做完了两张卷子，开始收书包。拉链又卡住了。" },
+        { "speaker": "林小末", "text": "账本上，写的是我名字吗？", "expr": "neutral" },
+        { "speaker": "柚子", "text": "写的「书包」。", "expr": "deadpan" },
+        { "speaker": "林小末", "text": "……行吧。", "expr": "awkward" },
+        { "speaker": "", "text": "她拎起书包出了门，挂件一路响到路口。", "exit": "林小末" },
+        { "speaker": "", "text": "下午店里没人。柚子看书，你把冰沙机拆开洗了，零件一样一样晾在窗台上。" }
+      ]
+    },
+    {
+      "id": "night_intro",
+      "type": "dialogue",
+      "slotId": "night",
+      "ticker": ["地铁五号线晚高峰信号故障，列车晚点十二分钟；运营方致歉，并为受影响乘客开具“延误证明”", "后街那点事：三楼那家的钢琴，一个月了，每天晚上都卡在同一个地方。楼下阿姨说后面那段她都会哼了，就等他弹过去", "球赛：本市队主场零比零，九十分钟射正三次；赛后主教练表示“比赛很胶着”"],
+      "nodes": [
+        { "speaker": "", "text": "天黑得比前几天早了。七点过一点，路灯亮了，外卖的摩托一辆接一辆从门口擦过去。" },
+        { "speaker": "", "text": "柚子在拖地，从里往外拖。拖到门口，就该收工了。" }
+      ]
+    },
+    {
+      "id": "visit_yanzi",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "七点四十，门被推开了。这回推得不快。" },
+        { "speaker": "", "text": "进来的是前几天问路的那个骑手。头盔还戴着，面罩掀到额头上。" },
+        { "speaker": "焰子", "text": "柑橘碳酸。", "expr": "neutral" },
+        { "speaker": "焰子", "text": "要——", "expr": "sharp_alert" },
+        { "speaker": "", "text": "她的手机「叮」了一声。她低头看屏幕。" },
+        { "speaker": "", "text": "「您今日已累计接单 11 小时 52 分。8 分钟后系统将暂停派单，请注意休息。」" },
+        { "speaker": "焰子", "text": "……不用快了。", "expr": "neutral" },
+        { "speaker": "", "text": "这一句她说得很慢。" },
+        { "speaker": "你", "text": "打包？" },
+        { "speaker": "焰子", "text": "在这儿喝。", "expr": "neutral" },
+        { "speaker": "你", "text": "那边有凳子。" },
+        { "speaker": "焰子", "text": "不坐。坐下去就起不来了。", "expr": "neutral" },
+        { "speaker": "", "text": "她靠着吧台站着，手机搁在台面上，屏幕朝上，倒计时还开着。" },
+        { "speaker": "柚子", "text": "跑了一天？", "expr": "neutral" },
+        { "speaker": "焰子", "text": "早上七点出的门。", "expr": "neutral" },
+        { "speaker": "焰子", "text": "今天跑得顺。再给我一个钟头，能多跑三单。", "expr": "grin" },
+        { "speaker": "柚子", "text": "它不给。", "expr": "deadpan" },
+        { "speaker": "焰子", "text": "它不给。", "expr": "neutral" },
+        { "speaker": "订单", "html": "<div class=\"order-card\"><span>柑橘碳酸</span><b>焰子</b><span>站着喝 · 面罩掀着 · 还有八分钟</span></div>" }
+      ]
+    },
+    {
+      "id": "select_yanzi",
+      "type": "service_select",
+      "customer": "焰子",
+      "correctId": "citrus_fizz",
+      "menuId": "",
+      "slotId": "night",
+      "allowRetry": false,
+      "options": [
+        { "songId": "citrus_fizz", "label": "柑橘碳酸", "hint": "有气 · 冲 · 插根吸管就能喝" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽 · 没气" },
+        { "songId": "grape_smoothie_still", "label": "葡萄冰沙", "hint": "浓稠 · 得慢慢喝" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "焰子", "text": "那是柠檬水。", "expr": "neutral" },
+          { "speaker": "焰子", "text": "……也行。有冰就行。", "expr": "neutral" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "", "text": "冰沙机转了起来。" },
+          { "speaker": "焰子", "text": "冰沙？", "expr": "sharp_alert" },
+          { "speaker": "焰子", "text": "……今天也骑不了几步了。冰沙就冰沙。", "expr": "neutral" }
+        ]
+      }
+    },
+    {
+      "id": "after_yanzi",
+      "type": "score_branch",
+      "variable": "customer",
+      "byDrink": {
+        "lemon_water": [
+          { "speaker": "", "text": "她喝了一大口，咂了一下嘴。" },
+          { "speaker": "焰子", "text": "莫得气。", "expr": "neutral" },
+          { "speaker": "焰子", "text": "不提神。……今天也不用提神了。", "expr": "neutral" }
+        ],
+        "grape_smoothie_still": [
+          { "speaker": "焰子", "text": "这个好多钱？", "expr": "neutral" },
+          { "speaker": "你", "text": "二十二。" },
+          { "speaker": "焰子", "text": "我点的碳酸。我给碳酸的钱。", "expr": "sharp_alert" },
+          { "speaker": "柚子", "text": "差的十二，算你请的。", "expr": "deadpan" },
+          { "speaker": "", "text": "焰子拿吸管戳了戳，吸了一口，嚼了嚼。" },
+          { "speaker": "焰子", "text": "能嚼。", "expr": "grin" }
+        ]
+      },
+      "byStyle": {
+        "swipe": {
+          "good": [
+            { "speaker": "", "text": "你下刀没停，一刀一片，切口又平又齐。" },
+            { "speaker": "焰子", "text": "利索。", "expr": "grin" }
+          ],
+          "ok": [
+            { "speaker": "", "text": "你一刀一片地切下去，最后一片切斜了。" },
+            { "speaker": "焰子", "text": "刀快。手还没跟上。", "expr": "neutral" }
+          ],
+          "bad": [
+            { "speaker": "", "text": "你下刀很快，切出来的片厚的厚、薄的薄。" },
+            { "speaker": "焰子", "text": "快是快。", "expr": "neutral" }
+          ]
+        }
+      },
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "", "text": "她仰头灌了一大口，气泡冲上来，她眯了一下眼睛。" },
+            { "speaker": "焰子", "text": "巴适。", "expr": "grin" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "", "text": "她喝了一口。" },
+            { "speaker": "焰子", "text": "气差一点。将就。", "expr": "neutral" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "", "text": "她喝了一口，又喝了一口。" },
+            { "speaker": "焰子", "text": "冲劲不够。", "expr": "neutral" },
+            { "speaker": "焰子", "text": "算了。今天也不赶。", "expr": "neutral" }
+          ]
+        }
+      ],
+      "after": [
+        { "speaker": "", "text": "手机又「叮」了一声。倒计时跳到 00:00，换成一行字：「已暂停派单」。" },
+        { "speaker": "", "text": "她把手机揣进兜里，把剩下那口喝完了。" },
+        { "speaker": "焰子", "text": "走了。", "expr": "neutral" },
+        { "speaker": "你", "text": "回家？" },
+        { "speaker": "焰子", "text": "回去睡觉。明天六点出门。", "expr": "neutral" },
+        { "speaker": "焰子", "text": "谢了。", "expr": "neutral" },
+        { "speaker": "", "text": "她拉下面罩，推门出去。摩托在门口响了一声，这回开得不快，到路口才加速。", "exit": "焰子" }
+      ]
+    },
+    {
+      "id": "closing",
+      "type": "dialogue",
+      "cast": ["柚子"],
+      "nodes": [
+        { "speaker": "", "text": "八点，你把最后一张椅子倒扣在桌上。" },
+        { "speaker": "", "text": "柚子坐在收银台后面数今天的钱。硬币一枚一枚从她指缝里落进铁盒，她眼睛看着账本，手自己在数。" },
+        { "speaker": "柚子", "text": "冰沙机冲了没。", "expr": "neutral" },
+        { "speaker": "你", "text": "冲了。" },
+        { "speaker": "柚子", "text": "柠檬——", "expr": "neutral" },
+        { "speaker": "你", "text": "剩十一个，在第二层。够明天上午。" },
+        { "speaker": "柚子", "text": "……嗯。", "expr": "neutral" },
+        { "speaker": "", "text": "你去关冷柜的门。关上以后，你在门上敲了两下。" },
+        { "speaker": "", "text": "冷柜照样嗡嗡地响。" },
+        { "speaker": "", "text": "收银台那边，硬币的声音停了。" },
+        { "speaker": "柚子", "text": "……明天照常。", "expr": "neutral" },
+        { "speaker": "你", "text": "好。" },
+        { "speaker": "", "text": "她把铁盒里的硬币全倒回台面上，从头数。", "action": "settlement" }
+      ]
+    },
+    { "id": "settle", "type": "settlement" },
+    {
+      "id": "home",
+      "type": "dialogue",
+      "backdrop": "apartment_night",
+      "nodes": [
+        { "speaker": "", "text": "到家九点多。楼道的灯坏了一盏，你摸着扶手上的楼。" },
+        { "speaker": "", "text": "你把钱包里的钱倒在床上，连今天的工钱一起，一张一张理平。" },
+        { "speaker": "", "text": "要交的那一沓，你单独放在桌角，拿杯子压着。" },
+        { "speaker": "", "text": "隔壁有人敲门。" },
+        { "speaker": "房东", "text": "（门外）这礼拜的啊。……行，齐了。" },
+        { "speaker": "房东", "text": "下礼拜六还是这个点儿。" },
+        { "speaker": "", "text": "拖鞋声往这边过来了。" },
+        { "speaker": "", "text": "门外有人敲门。" }
+      ]
+    }
+  ]
+}

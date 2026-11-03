@@ -1,0 +1,215 @@
+{
+  "id": "day1",
+  "title": "第1天",
+  "slots": ["day"],
+  "menuIds": ["fruitCup"],
+  "phases": [
+    {
+      "id": "morning_home",
+      "type": "dialogue",
+      "backdrop": "apartment",
+      "nodes": [
+        { "speaker": "", "text": "六点四十。楼上的水管先响，闹钟后响。" },
+        { "speaker": "", "text": "屋里放下一张床、一张折叠桌，就只剩一条过道。门背后贴着房东的字条：「每礼拜六交租，480，现金。」" },
+        {
+          "phone": {
+            "title": "7:02",
+            "items": [
+              { "kind": "msg", "from": "妈", "text": "晚上视频？" }
+            ]
+          }
+        },
+        { "speaker": "", "text": "你回了两个字：「收到。」" },
+        { "speaker": "", "text": "公交两块。你把两枚硬币攥在手心里，下了楼。" }
+      ]
+    },
+    {
+      "id": "morning",
+      "type": "dialogue",
+      "ticker": ["新一代对话模型今起小范围上线，首批邀请码十分钟内领完；二手平台已有人标价 299 元转让", "气象台：秋老虎还要再待一个礼拜，本周最高气温 34 度", "多家超市月饼礼盒提前上架，比去年早了十来天", "地铁口便利贴：二号线早上那班，旁边大哥站着睡着了，到站自己醒，一站没坐过", "后街那点事：五金店门口那只猫今天换了个纸箱睡，比昨天那个小一号"],
+      "nodes": [
+        { "speaker": "", "text": "七点五十。卷帘门拉到一半，柚子弯腰钻进来，没打招呼，先走到冷柜前，抬手敲了两下。" },
+        { "speaker": "", "text": "冷柜嗡了一声，灯亮了。" },
+        { "speaker": "柚子", "text": "今天还算老实。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……早。" },
+        { "speaker": "柚子", "text": "很准时嘛。", "expr": "smile" },
+        { "speaker": "柚子", "text": "机器就是这样。没事的时候岁月静好，等你最需要它的时候才发作。", "expr": "deadpan" },
+        { "speaker": "", "text": "她把备料单拍在台面上。字写得很快，一笔一画却很挺。" },
+        { "speaker": "柚子", "text": "彩虹鲜果杯，今天出这个。还记得吗？", "expr": "serious" },
+        { "speaker": "你", "text": "大概。" },
+        { "speaker": "柚子", "text": "「大概」不行。", "expr": "annoyed" },
+        { "speaker": "柚子", "text": "上了台，就是真刀真枪。", "expr": "serious" },
+        { "speaker": "你", "text": "昨天练过了——" },
+        { "speaker": "柚子", "text": "昨天是练手。今天是来真的。", "expr": "serious" },
+        { "speaker": "柚子", "text": "草莓去蒂，橙子切丁，菠萝去芯。蓝莓洗两遍，第二遍别用力。七种，一层一层码，顺序贴在冷柜门上。", "expr": "serious" },
+        { "speaker": "你", "text": "收到。" },
+        { "speaker": "柚子", "text": "……收到什么收到。这儿又不是你们公司。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……好。" },
+        { "speaker": "柚子", "text": "说「好」就行。", "expr": "neutral" },
+        { "speaker": "", "text": "她转身去开后厨的灯，走到一半，又退回来。" },
+        { "speaker": "柚子", "text": "对了，别搞创新。先把标准版做熟。", "expr": "serious" },
+        { "speaker": "你", "text": "我还什么都没干。" },
+        { "speaker": "柚子", "text": "你刚才盯着菜单板看了半天。上一个这么看的，第三天就想往果杯里加芒果。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……芒果不行吗？" },
+        { "speaker": "柚子", "text": "单上没有。", "expr": "deadpan" }
+      ]
+    },
+    {
+      "id": "tutorial_roleplay",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "柚子", "text": "好，先演练一遍。", "expr": "serious" },
+        { "speaker": "你", "text": "演练什么？" },
+        { "speaker": "柚子", "text": "点单。我扮客人，你接单。", "expr": "serious" },
+        { "speaker": "你", "text": "……你扮客人？" },
+        { "speaker": "柚子", "text": "有什么问题吗？", "expr": "deadpan" },
+        { "speaker": "你", "text": "没有没有，不敢不敢。" },
+        { "speaker": "柚子", "text": "这才像样。", "expr": "smile" },
+        { "speaker": "", "text": "她解下围裙搭在椅背上，推门出去。风铃晃了两下。", "exit": "柚子" },
+        { "speaker": "", "text": "两秒钟后，门又开了。" },
+        { "speaker": "", "text": "进来的人肩膀松着，步子慢悠悠的，东张西望，最后停在价目牌前，眯起了眼睛。" },
+        { "speaker": "柚子", "text": "哟，这家店环境不错嘛。", "expr": "neutral" },
+        { "speaker": "", "text": "（还挺像那么回事。）" },
+        { "speaker": "你", "text": "您好，想喝点什么？" },
+        { "speaker": "柚子", "text": "来一份镇店之宝。", "expr": "neutral" },
+        { "speaker": "你", "text": "什……" },
+        { "speaker": "柚子", "text": "没有？那特色单品总有吧。", "expr": "neutral" },
+        { "speaker": "你", "text": "……" },
+        { "speaker": "柚子", "text": "那来一杯青柠翡翠冷萃。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……没有。" },
+        { "speaker": "柚子", "text": "西瓜芭乐熔金。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……也没有。" },
+        { "speaker": "柚子", "text": "蓝莓星冰饮总该有吧，外面家家都有。", "expr": "deadpan" },
+        { "speaker": "你", "text": "……也没有。" },
+        { "speaker": "柚子", "text": "什么都没有还开店。", "expr": "deadpan" },
+        { "speaker": "你", "text": "柚子小姐，您是来找茬的吧。" },
+        { "speaker": "柚子", "text": "这叫「压力测试」。真客人可不会等你想好了再开口。", "expr": "deadpan" },
+        { "speaker": "柚子", "text": "你的菜单就是军火库。快，报菜名！", "expr": "annoyed" },
+        { "speaker": "你", "text": "鲜切水果、现打果汁、柠檬水。今天的招牌是彩虹鲜果杯，七种水果，一层一层码，现做。" },
+        { "speaker": "柚子", "text": "哦？那就来你们今天的招牌。", "expr": "teasing" },
+        { "speaker": "你", "text": "马上。" }
+      ]
+    },
+    {
+      "id": "tutorial_select",
+      "type": "service_select",
+      "customer": "柚子（扮演）",
+      "selectTitle": "今日招牌",
+      "selectHint": "顾客说要「今天的招牌」。",
+      "correctId": "fruit_cup",
+      "menuId": "fruitCup",
+      "slotId": "day",
+      "allowRetry": true,
+      "practice": true,
+      "options": [
+        { "songId": "fruit_cup", "label": "彩虹鲜果杯", "hint": "当日招牌 / 色彩层次 / 颇费耐心" },
+        { "songId": "lemon_water", "label": "柠檬水", "hint": "清爽柑橘 / 简单快速" },
+        { "songId": "fresh_orange_juice", "label": "鲜橙汁", "hint": "现打果汁 / 要用榨汁机" }
+      ],
+      "onWrong": {
+        "lemon_water": [
+          { "speaker": "柚子", "text": "……", "expr": "deadpan" },
+          { "speaker": "", "text": "她看了看你手里的柠檬，又看了看你。" },
+          { "speaker": "你", "text": "呃——" },
+          { "speaker": "柚子", "text": "我说的是「招牌」。", "expr": "annoyed" },
+          { "speaker": "你", "text": "柠檬水……不算招牌吗？" },
+          { "speaker": "柚子", "text": "抬头。看今天的菜单板。", "expr": "serious" },
+          { "speaker": "", "text": "（……彩虹鲜果杯。写得很大。）" }
+        ],
+        "fresh_orange_juice": [
+          { "speaker": "", "text": "你刚把橙子按上榨汁机，她敲了敲台面。" },
+          { "speaker": "柚子", "text": "橙汁？", "expr": "deadpan" },
+          { "speaker": "柚子", "text": "它昨天刚罢过工，你第一单就找它？", "expr": "teasing" },
+          { "speaker": "柚子", "text": "招牌。抬头看。", "expr": "serious" },
+          { "speaker": "", "text": "（菜单板最上面一行：彩虹鲜果杯。粉笔字，还描了边。）" }
+        ],
+        "_default": [
+          { "speaker": "柚子", "text": "……再想想。", "expr": "deadpan" }
+        ]
+      }
+    },
+    {
+      "id": "tutorial_result_vn",
+      "type": "dialogue",
+      "nodes": [
+        { "speaker": "", "text": "她接过杯子，举到灯下转了半圈，看了看层次。" },
+        { "speaker": "柚子", "text": "演习结束。", "expr": "neutral" },
+        { "speaker": "", "text": "她把围裙系回去，背也直了。刚才那个东张西望的客人，一下就没了。" },
+        { "speaker": "你", "text": "我过了？" }
+      ]
+    },
+    { "id": "tutorial_complete", "type": "tutorial_complete" },
+    {
+      "id": "after_1",
+      "type": "score_branch",
+      "variable": "customer",
+      "branches": [
+        {
+          "min": 88,
+          "label": "好评 (>=88)",
+          "nodes": [
+            { "speaker": "柚子", "text": "嗯。这杯对了。", "expr": "smile" },
+            { "speaker": "你", "text": "……真的？" },
+            { "speaker": "柚子", "text": "层次是齐的。这个最难的不是手，是耐心。", "expr": "smile" },
+            { "speaker": "柚子", "text": "明天照这个做。", "expr": "neutral" }
+          ]
+        },
+        {
+          "min": 62,
+          "label": "一般 (>=62)",
+          "nodes": [
+            { "speaker": "柚子", "text": "勉勉强强吧。算你过关。", "expr": "teasing" },
+            { "speaker": "柚子", "text": "手再稳一点，层次就出来了。不着急，一开始都这样。", "expr": "relieved" }
+          ]
+        },
+        {
+          "min": 0,
+          "label": "较差",
+          "nodes": [
+            { "speaker": "柚子", "text": "慢慢来。", "expr": "neutral" },
+            { "speaker": "你", "text": "……我拍子没跟上。" },
+            { "speaker": "柚子", "text": "节奏是练出来的，不是找出来的。光拿眼睛找，找不到。", "expr": "serious" }
+          ]
+        }
+      ],
+      "after": [
+        {
+          "speaker": "",
+          "text": "下午的客人都是柚子接的。你在后面切了一下午橙子。",
+          "ticker": ["本周六晚市体育场有球赛，地铁三号线当晚延长运营一小时", "地铁口便利贴：入职第一天。工牌照片拍得像通缉令，人事说大家都这样", "后街那点事：烤红薯的推车今年出来得早，老板说秋老虎，推出来也没人买，就当遛弯"]
+        },
+        { "speaker": "", "text": "收工的时候，她拉开收银机，抽出几张钞票，没低头看，数好了压在台面上。" },
+        { "speaker": "柚子", "text": "日结。点一下。", "expr": "neutral" },
+        { "speaker": "", "text": "你点了两遍。" },
+        { "speaker": "柚子", "text": "走之前，刀放回刀架。", "expr": "deadpan" },
+        { "speaker": "你", "text": "好。" },
+        { "speaker": "", "text": "她走到门边，手搭上门把，又回过头。" },
+        { "speaker": "柚子", "text": "今天那个「大概」——", "expr": "neutral" },
+        { "speaker": "你", "text": "不说了。" },
+        { "speaker": "柚子", "text": "嗯。", "expr": "smile" },
+        { "speaker": "", "text": "风铃响了一下，她走了。", "exit": "柚子" },
+        { "speaker": "系统", "text": "天色暗下来。你把刀一把一把插回刀架，比早上顺手了一点。", "action": "settlement" }
+      ]
+    },
+    { "id": "settle", "type": "settlement" },
+    {
+      "id": "home_night",
+      "type": "dialogue",
+      "backdrop": "apartment_night",
+      "nodes": [
+        { "speaker": "", "text": "八点，视频响了。你把手机靠在水杯上，镜头对着白墙。" },
+        { "speaker": "妈", "text": "吃了没？" },
+        { "speaker": "你", "text": "吃了。" },
+        { "speaker": "妈", "text": "他爸，过来，孩子在呢。" },
+        { "speaker": "爸", "text": "（离得远）看见了。那边还热吧？" },
+        { "speaker": "你", "text": "还热。白天三十度上下。" },
+        { "speaker": "妈", "text": "你们公司中秋发月饼不？去年那盒蛋黄的，你爸一个人吃了仨。" },
+        { "speaker": "你", "text": "……还没说。" },
+        { "speaker": "妈", "text": "忙不忙？" },
+        { "speaker": "你", "text": "挺好的。忙。" },
+        { "speaker": "爸", "text": "那早点睡。挂了。" },
+        { "speaker": "", "text": "屏幕黑了。你坐了一会儿，才起来去烧水。" }
+      ]
+    }
+  ]
+}

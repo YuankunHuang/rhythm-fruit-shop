@@ -267,7 +267,7 @@
         }
       }
 
-      const letters = (await load('data/boss_letters.json'))?.letters || [];
+      const letters = (await load(FLOWS === 'data/story30' ? 'data/story30/boss_letters.json' : 'data/boss_letters.json'))?.letters || [];
       const letterDay = (l) => (l.milestone && /^day_(gte|eq)$/.test(l.milestone.type) ? l.milestone.value : null);
       const WHEN = {
         day_gte: (v) => `第 ${v} 天起`,

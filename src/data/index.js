@@ -47,7 +47,8 @@ export async function loadGameData() {
     fetchJson('data/shop.json'),
     fetchJson('data/day_plans.json'),
     fetchJson('data/dialogue/prologue.json'),
-    fetchJson('data/boss_letters.json'),
+    // The 30-day story has letters of its own, by day.
+    fetchJson(STORY_SET ? `data/${STORY_SET}/boss_letters.json` : 'data/boss_letters.json'),
     fetchJson('data/ledger.json'),
   ]);
 

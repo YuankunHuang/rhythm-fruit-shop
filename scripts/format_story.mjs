@@ -12,7 +12,7 @@ const files = [
     .map((f) => 'data/flows/' + f),
   // The 30-day story while it is written.
   ...readdirSync(new URL('data/story30/', root))
-    .filter((f) => /^dayd+.json$/.test(f))
+    .filter((f) => /^day\d+\.json$/.test(f))
     .map((f) => 'data/story30/' + f),
 ];
 for (const rel of files) {
