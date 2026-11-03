@@ -15,6 +15,16 @@ export const KEYS = Object.freeze({
   resourceIntro: 'rfaResourceIntroSeen',
 });
 
+/** `?story=30` plays the 30-day story while it is being written (data/story30/), with saves of its own. */
+export const STORY_SET = (() => {
+  try {
+    return new URLSearchParams(location.search).get('story') === '30' ? 'story30' : '';
+  } catch {
+    return '';
+  }
+})();
+const SAVE_SLOTS_KEY = STORY_SET ? `${KEYS.saveSlots}_${STORY_SET}` : KEYS.saveSlots;
+
 const INITIAL_LEARNED_SONGS_FALLBACK = ['tutorial'];
 
 export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FALLBACK) {
@@ -114,7 +124,7 @@ export function loadSaveSlots(initialLearnedSongs = INITIAL_LEARNED_SONGS_FALLBA
   const empty = Array.from({ length: SAVE_SLOT_COUNT }, () => null);
   let raw = empty;
   try {
-    const data = JSON.parse(localStorage.getItem(KEYS.saveSlots));
+    const data = JSON.parse(localStorage.getItem(SAVE_SLOTS_KEY));
     if (Array.isArray(data)) raw = empty.map((_, i) => data[i] || null);
   } catch (_) {
     /* 损坏：使用空槽 */
@@ -124,7 +134,7 @@ export function loadSaveSlots(initialLearnedSongs = INITIAL_LEARNED_SONGS_FALLBA
 
 export function persistSaveSlots(slots) {
   try {
-    localStorage.setItem(KEYS.saveSlots, JSON.stringify(slots));
+    localStorage.setItem(SAVE_SLOTS_KEY, JSON.stringify(slots));
   } catch (_) {}
 }
 
@@ -204,7 +214,7 @@ export function saveResourceIntroSeen() {
 
 export function clearAllGameData() {
   try {
-    Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
+    [...Object.values(KEYS), SAVE_SLOTS_KEY].forEach((k) => localStorage.removeItem(k));
   } catch (_) {}
 }
 

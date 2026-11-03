@@ -184,7 +184,28 @@
       const drinkName = {};
       const SLOT = { day: '白天', dusk: '黄昏', night: '夜里', late: '深夜' };
       const INPUT = { swipe: '划', chop: '切', flow: '流' };
-      const PLACE = { bus_stop_night: '夜里的公交站', subway_kiosk_rain: '下雨的地铁站口', shopDorm: '店铺阁楼', apartment: '廉租小屋' };
+      const PLACE = {
+        bus_stop_night: '夜里的公交站',
+        subway_kiosk_rain: '下雨的地铁站口',
+        shopDorm: '店铺阁楼',
+        shop_dorm: '店铺阁楼',
+        apartment: '廉租小屋',
+        apartment_night: '廉租小屋（夜）',
+        shop_dorm_night: '店铺阁楼（夜）',
+        shop_front_day: '店门口（白天）',
+        shop_front_night: '店门口（夜）',
+        subway_entrance_night: '地铁口（夜）',
+        rooftop_night: '天台（夜）',
+        sorting_station_dusk: '分拣站门口（傍晚）',
+        wholesale_market_dawn: '批发市场（清晨）',
+        bus_interior_night: '公交车厢（夜）',
+        night_food_stall: '夜宵摊',
+        cinema_empty: '电影院',
+        school_gate_dusk: '学校门口（黄昏）',
+        hospital_corridor: '医院走廊',
+      };
+      // ?story=30 reads the 30-day story being written (data/story30/) instead of the current days.
+      const FLOWS = new URLSearchParams(location.search).get('story') === '30' ? 'data/story30' : 'data/flows';
 
       // Stage directions (src/story/stage.js): who is already there, who walks on, who leaves.
       const names = (x) => (Array.isArray(x) ? x : [x]).map((n) => (n === 'all' ? '所有人' : n)).map(esc).join('、');
@@ -194,6 +215,8 @@
         (n.enter ? `<div class="mark">上场：<b>${names(n.enter)}</b></div>` : '');
       const line = (n) => stageMarks(n) + lineText(n);
       const lineText = (n) => {
+        if (n.phone)
+          return `<div class="order">手机${n.phone.title ? '（' + esc(n.phone.title) + '）' : ''}${(n.phone.items || []).map((it) => `<br>【${esc(it.from)}】${esc(it.text)}${(it.replies || []).map((r) => '<br>　└ ' + esc(r)).join('')}`).join('')}</div>`;
         if (n.html) return `<div class="order">${esc(n.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())}</div>`;
         if (!n.text) return '';
         if (!n.speaker) return `<p class="line narr">${esc(n.text)}</p>`;
@@ -271,7 +294,7 @@
         );
       }
       for (let d = 1; ; d++) {
-        const f = await load(`data/flows/day${d}.json`);
+        const f = await load(`${FLOWS}/day${d}.json`);
         if (!f) break;
         nav.push(`<a href="#day${d}">第 ${d} 天</a>`);
         // A letter placed after a named phase goes there; the others open the day.

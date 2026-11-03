@@ -1,6 +1,6 @@
 // 启动时并行 fetch 所有 data/*.json，挂到 GameData 单例上。
 
-import { versionedUrl } from '../storage.js';
+import { versionedUrl, STORY_SET } from '../storage.js';
 
 export const GameData = {
   songs: [],
@@ -72,6 +72,8 @@ export async function loadGameData() {
   GameData.dayPlans = plans.plans || [];
   GameData.dayUnlocks = plans.unlocks || [];
   GameData.storyDays = plans.storyDays || 0;
+  // The 30-day story while it is being written: its days so far (data/story30/index.json).
+  if (STORY_SET) GameData.storyDays = (await fetchJson(`data/${STORY_SET}/index.json`)).storyDays || 0;
   GameData.ledger = ledger;
 
   GameData.prologue = prologue || GameData.prologue;
@@ -95,7 +97,7 @@ export const slotUnlockDay = (slotId) => {
 
 export async function loadDayFlow(day) {
   try {
-    const res = await fetch(versionedUrl(`data/flows/day${day}.json`), { cache: 'reload' });
+    const res = await fetch(versionedUrl(`data/${STORY_SET || 'flows'}/day${day}.json`), { cache: 'reload' });
     if (!res.ok) return null;
     return await res.json();
   } catch {

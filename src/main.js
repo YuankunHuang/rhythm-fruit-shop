@@ -289,15 +289,30 @@ function currentHomeVisual() {
   return img || currentMainVisual();
 }
 // Places a dialogue phase can move to with `"backdrop": "<key>"`; the shop interior otherwise.
+const artPair = (base) => ({
+  portrait: lazyImage(`assets/game_art/${base}_portrait.png`),
+  landscape: lazyImage(`assets/game_art/${base}_landscape.png`),
+});
 const SCENE_BACKDROPS = {
-  bus_stop_night: {
-    portrait: lazyImage('assets/game_art/street/bus_stop_night_portrait.png'),
-    landscape: lazyImage('assets/game_art/street/bus_stop_night_landscape.png'),
-  },
-  subway_kiosk_rain: {
-    portrait: lazyImage('assets/game_art/street/subway_kiosk_rain_portrait.png'),
-    landscape: lazyImage('assets/game_art/street/subway_kiosk_rain_landscape.png'),
-  },
+  bus_stop_night: artPair('street/bus_stop_night'),
+  subway_kiosk_rain: artPair('street/subway_kiosk_rain'),
+  apartment: artPair('home/apartment'),
+  shop_dorm: artPair('home/shop_dorm'),
+  // Places in the 30-day story (docs/art_prompts.md §7). Until a place has its own picture it borrows the
+  // nearest one we have; `night` darkens it.
+  apartment_night: { ...artPair('home/apartment'), night: true },
+  shop_dorm_night: { ...artPair('home/shop_dorm'), night: true },
+  shop_front_day: artPair('sunny_shop/main_visual'),
+  shop_front_night: artPair('neon_night/main_visual'),
+  subway_entrance_night: artPair('street/subway_kiosk_rain'),
+  rooftop_night: { ...artPair('home/shop_dorm'), night: true },
+  sorting_station_dusk: artPair('street/bus_stop_night'),
+  wholesale_market_dawn: { ...artPair('sunny_shop/shop_interior'), night: true },
+  bus_interior_night: artPair('street/bus_stop_night'),
+  night_food_stall: artPair('street/bus_stop_night'),
+  cinema_empty: { ...artPair('neon_night/main_visual'), night: true },
+  school_gate_dusk: artPair('street/bus_stop_night'),
+  hospital_corridor: { ...artPair('sunny_shop/shop_interior'), night: true },
 };
 let sceneBackdropKey = null;
 function currentShopInterior() {
@@ -666,6 +681,9 @@ let savePanelMode = 'load',
   vnState = { nodes: [], index: 0, onDone: null, locked: false },
   trackEventPhase = null;
 const flowCursor = new story.FlowCursor();
+// The day's tail after the wage slip: the road home and the night (the phases after `settlement`).
+let dayEvening = null,
+  eveningRun = false;
 const MAX_PARTICLES = 180,
   MAX_TEXTS = 10,
   MAX_ORDER_FLASH = 5;
@@ -2768,6 +2786,7 @@ function showSceneBackdrop() {
   const img = currentShopInterior();
   ensureImageLoaded(img);
   sceneBackdrop.style.backgroundImage = `url("${img._rfaSrc || img.src}")`;
+  sceneBackdrop.classList.toggle('night', !!(SCENE_BACKDROPS[sceneBackdropKey] || {}).night);
   sceneBackdrop.classList.remove('hidden');
   requestAnimationFrame(() => sceneBackdrop.classList.add('active'));
 }
@@ -3021,6 +3040,19 @@ function showVN(nodes, onDone = null, { cast } = {}) {
   UI.replace('flowPanel');
   renderVNNode();
 }
+/**
+ * A phone screen, mostly at home: messages, the city's news and strangers' notes (docs/narrative/00_skeleton_v4.md §10).
+ * `node.phone`: { title, items: [{ kind: 'msg' | 'news' | 'note', from, text, replies: [] }] }
+ */
+function phoneCardHtml(phone) {
+  const items = (phone.items || [])
+    .map(
+      (it) =>
+        `<div class="phone-item phone-${escHtml(it.kind || 'msg')}"><div class="phone-from">${escHtml(it.from || '')}</div><div class="phone-text">${escHtml(it.text || '')}</div>${(it.replies || []).map((r) => `<div class="phone-reply">${escHtml(r)}</div>`).join('')}</div>`,
+    )
+    .join('');
+  return `<div class="phone-card">${phone.title ? `<div class="phone-title">${escHtml(phone.title)}</div>` : ''}${items}</div>`;
+}
 function speakerLabel(name) {
   return (
     { Yuzu: '柚子', Student: '学生', Order: '订单', System: '系统', You: '你', 后厨: '后厨' }[name] || name
@@ -3047,8 +3079,9 @@ function renderVNNode() {
   $('flowTitle').innerHTML = narration
     ? ''
     : `<span class="vn-speaker">${escHtml(speakerLabel(node.speaker))}</span>`;
-  $('flowBody').innerHTML =
-    node.html || `<p class="${narration ? 'vn-narration' : 'vn-line'}">${escHtml(node.text || '')}</p>`;
+  $('flowBody').innerHTML = node.phone
+    ? phoneCardHtml(node.phone)
+    : node.html || `<p class="${narration ? 'vn-narration' : 'vn-line'}">${escHtml(node.text || '')}</p>`;
   if (node.action === 'startService') {
     $('flowBody').innerHTML = (node.html || '') + '<div class="vn-hint">点击开始制作</div>';
   }
@@ -3112,6 +3145,8 @@ function startServiceTransition() {
   setTimeout(() => startStoryService('lemon_water'), 520);
 }
 function startDayFlow(flow) {
+  dayEvening = null;
+  eveningRun = false;
   setTicker([]);
   sceneBackdropKey = null;
   storySlotId = 'day';
@@ -3121,7 +3156,10 @@ function startDayFlow(flow) {
 function runNextFlowPhase() {
   if (flowCursor.finished) {
     flowCursor.stop();
-    showDaySummary();
+    if (eveningRun) {
+      eveningRun = false;
+      endDayGoHome();
+    } else showDaySummary();
     return;
   }
   const phase = flowCursor.take();
@@ -3167,6 +3205,7 @@ function runNextFlowPhase() {
     flowCursor.stop();
     completeTutorialAndStartDay();
   } else if (phase.type === 'settlement') {
+    dayEvening = flowCursor.phases.slice(flowCursor.index);
     flowCursor.stop();
     showDaySummary();
   } else {
@@ -4456,6 +4495,40 @@ function drawConfetti(info) {
     resultPanel.appendChild(c);
   }
 }
+/** The end of a day: a boss letter if one is due on the way home, then the home screen. */
+function endDayGoHome() {
+  const L = pickBossLetterForPlacement('after_day_home');
+  if (L) {
+    audio.pause();
+    stopPreview();
+    clearResultCelebration();
+    clearResultPhoto();
+    songCoverImg = null;
+    songCoverImgId = '';
+    invalidateBackdropCache();
+    state = S.FLOW;
+    updateMenuLoop();
+    showVN(buildBossLetterNodes(L, 'after_home'), () => {
+      _pendingBossLetterId = L.id;
+      recordBossLetterSeen();
+      showTitle(false, false);
+    });
+  } else showTitle(false, false);
+}
+/** "回家" on the wage slip: the road home and the night at home, written after the settlement, then home. */
+function goHomeEvening() {
+  const evening = dayEvening || [];
+  dayEvening = null;
+  if (!evening.length) return endDayGoHome();
+  clearResultCelebration();
+  clearResultPhoto();
+  audio.pause();
+  stopPreview();
+  setTicker([]);
+  eveningRun = true;
+  flowCursor.start(evening);
+  runNextFlowPhase();
+}
 function setResultActions(mode) {
   const retry = $('retryButton'),
     menu = $('menuButton'),
@@ -4471,25 +4544,7 @@ function setResultActions(mode) {
     end.classList.add('hidden');
     menu.classList.remove('hidden');
     home.textContent = '\u7ed3\u675f\u4e00\u5929';
-    home.onclick = () => {
-      const L = pickBossLetterForPlacement('after_day_home');
-      if (L) {
-        audio.pause();
-        stopPreview();
-        clearResultCelebration();
-        clearResultPhoto();
-        songCoverImg = null;
-        songCoverImgId = '';
-        invalidateBackdropCache();
-        state = S.FLOW;
-        updateMenuLoop();
-        showVN(buildBossLetterNodes(L, 'after_home'), () => {
-          _pendingBossLetterId = L.id;
-          recordBossLetterSeen();
-          showTitle(false, false);
-        });
-      } else showTitle(false, false);
-    };
+    home.onclick = endDayGoHome;
   } else {
     retry.classList.remove('hidden');
     if (dayRun.active) {
@@ -4721,6 +4776,7 @@ function showWageSlip() {
   setResultActions('day');
   $('menuButton').classList.add('hidden');
   $('resultHomeButton').textContent = '回家';
+  $('resultHomeButton').onclick = goHomeEvening;
   clearResultCelebration();
   clearResultPhoto();
   state = S.ENDED;
