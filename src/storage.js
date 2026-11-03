@@ -38,6 +38,14 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
     bossLettersSeen: [],
     inputs: [],
     wrongServed: {},
+    // Story-mode money (src/core/ledger.js). `savings: null` means "not opened yet": the rules' starting savings.
+    wallet: 0,
+    savings: null,
+    praisedWeeks: [],
+    rentPaidDays: [],
+    slipDay: -1,
+    lastSlip: null,
+    shopLedger: null,
   };
 }
 
@@ -75,6 +83,11 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
     prologueDone: !!(raw.prologueDone || firstShiftDone || (raw.day || 1) > 1),
     upgrades: { ...base.upgrades, ...asObject(raw.upgrades) },
     wrongServed: asObject(raw.wrongServed),
+    wallet: Number.isFinite(raw.wallet) ? raw.wallet : 0,
+    savings: Number.isFinite(raw.savings) ? raw.savings : null,
+    praisedWeeks: asArray(raw.praisedWeeks).filter(Number.isInteger),
+    rentPaidDays: asArray(raw.rentPaidDays).filter(Number.isInteger),
+    slipDay: Number.isInteger(raw.slipDay) ? raw.slipDay : -1,
     currentMenu: asArray(raw.currentMenu),
     learnedSongs: normalizeLearnedSongs(raw, initialLearnedSongs),
     unlockHistory: normalizeUnlockHistory(raw),

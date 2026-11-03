@@ -1,0 +1,37 @@
+{
+  "$schema": "story-mode money v1; rules in src/core/ledger.js, design in docs/narrative/00_skeleton_v4.md §4",
+  "wage": 70,
+  "prologueWage": 35,
+  "commission": { "good": 3, "ok": 1, "bad": 0 },
+  "bus": 4,
+  "dinners": [
+    { "name": "泡面", "cost": 4 },
+    { "name": "盒饭", "cost": 15, "margin": 60 }
+  ],
+  "rent": { "amount": 480, "first": 7, "every": 7 },
+  "praise": { "amount": 10, "minAvg": 88, "minOrders": 2 },
+  "savings": 5200,
+  "drinks": {
+    "lemon_water": { "name": "柠檬水", "price": 6 },
+    "lemon_water_light": { "name": "柠檬水（室温）", "price": 6 },
+    "warm_lemon_water": { "name": "温柠檬水", "price": 6 },
+    "citrus_fizz": { "name": "柑橘碳酸", "price": 10 },
+    "fresh_orange_juice": { "name": "鲜橙汁", "price": 12 },
+    "hot_orange_juice": { "name": "热橙汁", "price": 12 },
+    "lychee_juice": { "name": "荔枝汁", "price": 12 },
+    "fruit_cup": { "name": "彩虹鲜果杯", "price": 15 },
+    "fruit_cup_quiet": { "name": "鲜果杯（慢做）", "price": 15 },
+    "fruit_platter": { "name": "鲜果拼盘", "price": 18 },
+    "grape_smoothie_still": { "name": "葡萄冰沙", "price": 22 },
+    "grape_smoothie_afterglow": { "name": "葡萄冰沙（偏酸）", "price": 22 },
+    "grape_smoothie_smolder": { "name": "葡萄冰沙（浓酸）", "price": 22 }
+  },
+  "customers": {
+    "柚子（扮演）": { "roleplay": true },
+    "老王": { "roundUp": 10 },
+    "程晚": { "roundUp": 25, "roundUpBand": "good" },
+    "老方": { "cups": 6 },
+    "老宋": { "paysServed": true },
+    "阿晟": { "paysServed": true, "again": true }
+  }
+}

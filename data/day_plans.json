@@ -1,5 +1,6 @@
 {
   "$schema": "per-day plan + per-day song unlock conditions v2",
+  "storyDays": 10,
   "firstDaySongs": ["open_the_fruit_stand!"],
   "plans": [
     { "day": 1,  "slots": ["day"],                  "menuIds": ["fruitCup"] },

@@ -22,6 +22,10 @@ export const GameData = {
 
   bossLetters: [],
 
+  /** Story-mode money (data/ledger.json); the story runs from day 1 to `storyDays`. */
+  ledger: null,
+  storyDays: 0,
+
   firstDaySongs: [],
   dayPlans: [],
   dayUnlocks: [],
@@ -36,7 +40,7 @@ async function fetchJson(path) {
 }
 
 export async function loadGameData() {
-  const [songs, diffs, menus, shop, plans, prologue, bossLetters] = await Promise.all([
+  const [songs, diffs, menus, shop, plans, prologue, bossLetters, ledger] = await Promise.all([
     fetchJson('data/songs.json'),
     fetchJson('data/difficulties.json'),
     fetchJson('data/menu_items.json'),
@@ -44,6 +48,7 @@ export async function loadGameData() {
     fetchJson('data/day_plans.json'),
     fetchJson('data/dialogue/prologue.json'),
     fetchJson('data/boss_letters.json'),
+    fetchJson('data/ledger.json'),
   ]);
 
   GameData.songs = songs.songs || [];
@@ -66,6 +71,8 @@ export async function loadGameData() {
   GameData.firstDaySongs = plans.firstDaySongs || [];
   GameData.dayPlans = plans.plans || [];
   GameData.dayUnlocks = plans.unlocks || [];
+  GameData.storyDays = plans.storyDays || 0;
+  GameData.ledger = ledger;
 
   GameData.prologue = prologue || GameData.prologue;
 

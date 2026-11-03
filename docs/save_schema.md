@@ -51,6 +51,16 @@ type PlayerSave = {
   // 熟客记账：谁被端过不是自己点的饮品。键是点单的客人名，值按时间排列
   wrongServed: { [customer: string]: { day: number; served: string }[] };
 
+  // 剧情模式的钱（规则见 data/ledger.json、src/core/ledger.js；设计见 docs/narrative/00_skeleton_v4.md 第四节）
+  // 剧情日（第 1 天到 day_plans.json 的 storyDays）不用 coins、口碑和升级，用这几项
+  wallet: number;              // 钱包，单位元
+  savings: number | null;      // 存款；null 表示还没动过，按规则里的初始存款算
+  praisedWeeks: number[];      // 柚子“今天不错”已经给过的周（第 1–7 天是第 0 周）
+  rentPaidDays: number[];      // 已经交过房租的日子（第 7、14、21、28 天）
+  slipDay: number;             // 最近一次日结的那一天（序章是 0）；同一天不重复入账
+  lastSlip: { day: number; lines: { label: string; amount: number; kind: string }[]; net: number; wallet: number } | null;
+  shopLedger: { target: number; raised: number; label?: string } | null; // 铺子的账，剧情打开以后才有
+
   // 升级
   upgrades: {
     cutter:  number;  // 1-5

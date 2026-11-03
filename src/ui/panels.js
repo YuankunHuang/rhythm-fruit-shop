@@ -14,6 +14,12 @@ export function showToast(msg) {
   _toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
 }
 
+export function hideToast() {
+  clearTimeout(_toastTimer);
+  const el = $('toast');
+  if (el) el.classList.remove('show');
+}
+
 // ── Panel manager factory ─────────────────────────────────────────────────────
 // Returns the UI object. Call once after DOM is ready.
 // C++ equivalent: UIManager::Init(overlayWidget)

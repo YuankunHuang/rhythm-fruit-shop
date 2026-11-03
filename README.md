@@ -90,6 +90,7 @@ Override the target with `--cpp-repo PATH` or env `RFS_CPP_REPO`.
 - Dialogue tone benchmark: [`docs/dialogue_style_benchmark_zh-CN.md`](docs/dialogue_style_benchmark_zh-CN.md) *(zh-CN)*
 - Story bible: [`docs/story_bible_zh-CN.md`](docs/story_bible_zh-CN.md) *(zh-CN)*. Runtime prologue: `data/dialogue/prologue.json`. Edit in `tools/story_editor.html` (序章), which saves back to `prologue.json`.
 - `data/flows/*.json` — Day structure, dialogue, service, grades, settlement (editor format). The HTML runtime does not fully interpret flows yet.
+- `data/ledger.json` — Story-mode money in yuan: daily wage, commission, regulars' paying habits, rent, savings (rules in `src/core/ledger.js`). Story days run from day 1 to `storyDays` in `data/day_plans.json`; coins, reputation and upgrades apply only after that and in practice.
 - Keep `action: "startService"` on the last order node in prologue `opening`, and `action: "settlement"` on the last shared after-service node, or service/settlement breaks.
 
 ### Chart pipeline (recommended)

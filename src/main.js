@@ -36,7 +36,7 @@ import {
   invalidateBackdropCache,
   warmBackdropCache,
 } from './render.js';
-import { createPanelManager, showToast } from './ui/panels.js';
+import { createPanelManager, showToast, hideToast } from './ui/panels.js';
 import { judgeTiming, lowerBound, pickHitTarget } from './core/judge.js';
 import {
   buildNotes as buildChartNotes,
@@ -45,6 +45,7 @@ import {
   mechanize,
 } from './core/chart.js';
 import * as econ from './core/economy.js';
+import * as ledger from './core/ledger.js';
 import * as story from './story/flow.js';
 import * as play from './core/session.js';
 import * as clock from './core/clock.js';
@@ -235,16 +236,42 @@ const HOME_SPACES = {
   apartment: {
     title: '廉租小屋',
     subtitle: '窗外天亮了。房租不会等人，今天也得去店里。',
+    nightSubtitle: '楼下的烧烤摊在收摊。明天还得早起。',
     landscape: lazyImage('assets/game_art/home/apartment_landscape.png'),
     portrait: lazyImage('assets/game_art/home/apartment_portrait.png'),
   },
   shopDorm: {
     title: '店铺阁楼',
     subtitle: '楼下就是柜台。这里终于像一个能落脚的地方。',
+    nightSubtitle: '楼下的冷柜在响。很稳。',
     landscape: lazyImage('assets/game_art/home/shop_dorm_landscape.png'),
     portrait: lazyImage('assets/game_art/home/shop_dorm_portrait.png'),
   },
 };
+// Fixed-drink orders carry no `customer`; their ids name the regular (service_fang2 is 老方).
+const SERVICE_CUSTOMERS = {
+  fang: '老方',
+  ashen: '阿晟',
+  laobei: '老贝',
+  guiwei: '顾薇',
+  laoxian: '老弦',
+  yanzi: '焰子',
+  laosong: '老宋',
+  mao: '猫小姐',
+  lin: '林小末',
+  lemon: '林小末',
+};
+function serviceCustomer(phase) {
+  return (
+    phase.customer ||
+    SERVICE_CUSTOMERS[
+      String(phase.id || '')
+        .replace(/^service_/, '')
+        .replace(/\d+$/, '')
+    ] ||
+    ''
+  );
+}
 const SHOP_INTERIORS = {
   sunny: {
     landscape: lazyImage('assets/game_art/sunny_shop/shop_interior_landscape.png'),
@@ -693,6 +720,7 @@ let shopState = defaultShopState();
 function saveSlotSummary(slot) {
   if (!slot) return '空存档';
   const s = slot.shopState || {};
+  if ((s.day || 1) <= (GameData.storyDays || 0)) return `第 ${s.day || 1} 天 / 钱包 ${s.wallet || 0} 元`;
   return `第 ${s.day || 1} 天 / Lv.${shopLevel(s)} / ${s.coins || 0}金 / ${s.reputation || 0}口碑`;
 }
 function persistSaveSlots() {
@@ -2273,10 +2301,99 @@ function prepareDayFlowWithBossLetters(flow) {
   return story.insertBossLetters(flow, GameData.bossLetters || [], bossLetterContext(), bossLetterBodyHtml);
 }
 function rentDaysLeft() {
+  if (isStoryDay()) return ledger.nextRentDay(shopState.day, ledgerRules()) - shopState.day + 1;
   return Math.max(0, (shopState.rentDueDay || 7) - (shopState.day || 1) + 1);
 }
 function rentMissing() {
   return Math.max(0, (shopState.rentAmount || 480) - (shopState.coins || 0));
+}
+// Story mode (day 1 to storyDays): the player's own money in yuan instead of the shop-management coins.
+// Rules in data/ledger.json; design in docs/narrative/00_skeleton_v4.md §3–4.
+function isStoryDay(day = shopState.day) {
+  return day >= 1 && day <= (GameData.storyDays || 0);
+}
+function ledgerRules() {
+  return GameData.ledger;
+}
+function storySavings() {
+  return shopState.savings == null ? ledgerRules().savings : shopState.savings;
+}
+function rentPaidOn(day) {
+  return (shopState.rentPaidDays || []).includes(day);
+}
+function rentDueUnpaid(day = shopState.day) {
+  return ledger.isRentDay(day, ledgerRules()) && !rentPaidOn(day);
+}
+/** What the rent looks like from `day`: "离交房租 2 天 · 还差 168". */
+function rentLine(day = shopState.day) {
+  const rules = ledgerRules(),
+    due = ledger.nextRentDay(Math.max(1, day), rules),
+    missing = Math.max(0, rules.rent.amount - (shopState.wallet || 0));
+  if (rentPaidOn(due)) return '这礼拜的房租交过了';
+  const when = due === day ? '今天交房租' : due === day + 1 ? '明天交房租' : `离交房租 ${due - day} 天`;
+  return `${when} · ${missing ? `还差 ${missing}` : '够了'}`;
+}
+function walletLine(day = shopState.day) {
+  return `钱包 ${shopState.wallet || 0} · ${rentLine(day)}`;
+}
+function slipFor(day, orders, prologue, wallet = shopState.wallet || 0) {
+  const rules = ledgerRules();
+  return ledger.closeDay(
+    {
+      day,
+      wallet,
+      praisedWeeks: shopState.praisedWeeks || [],
+      rentPaid: rentPaidOn(ledger.nextRentDay(Math.max(1, day), rules)),
+      prologue,
+    },
+    orders.map((o) => ledger.settleOrder(o, rules)),
+    rules,
+  );
+}
+/** Banks a day's wage slip once (`slipDay` guards replays and reloads) and keeps it for the home screen. */
+function bankSlip(day, orders, prologue = false) {
+  const slip = slipFor(day, orders, prologue);
+  shopState.wallet = slip.wallet;
+  if (slip.praised) shopState.praisedWeeks = [...(shopState.praisedWeeks || []), slip.week];
+  if (shopState.shopLedger)
+    shopState.shopLedger = ledger.addToShopLedger(
+      shopState.shopLedger,
+      slip.takings,
+      dayStats.shopIncome || [],
+    );
+  shopState.slipDay = day;
+  shopState.lastSlip = { day, lines: slip.lines, net: slip.net, wallet: slip.wallet };
+  saveShopState();
+  return shopState.lastSlip;
+}
+function wageSlipHtml(slip, note = '') {
+  const rules = ledgerRules(),
+    sign = (n) => (n > 0 ? `+${n}` : `${n}`),
+    row = (l) =>
+      `<div class="ledger-row${l.amount < 0 ? ' expense' : ''}"><span>${escHtml(l.label)}</span><b>${sign(l.amount)}</b></div>`,
+    wallet = shopState.wallet || 0,
+    rentPct = Math.round((Math.min(wallet, rules.rent.amount) / rules.rent.amount) * 100),
+    sl = shopState.shopLedger,
+    shop = sl
+      ? `<div class="receipt-ledger-card"><div class="receipt-title">${escHtml(sl.label || '铺子的账')}</div><div class="ledger-row"><span>今天的营业额</span><b>+${sl.last ? sl.last.takings : 0}</b></div>${((sl.last && sl.last.extra) || []).map(row).join('')}<div class="ledger-row"><span>已经凑了</span><b>${sl.raised} / ${sl.target}</b></div><div class="rent-progress"><span style="width:${clamp(Math.round((sl.raised / sl.target) * 100), 0, 100)}%"></span></div><div class="ledger-row needed"><span>还差</span><b>${Math.max(0, sl.target - sl.raised)}</b></div></div>`
+      : '';
+  return `<div class="receipt day-ledger-view"><div class="receipt-ledger-card hero"><div><div class="receipt-title">今天落袋</div><div class="receipt-note">${escHtml(walletLine(slip.day))}</div>${note ? `<div class="receipt-note">${escHtml(note)}</div>` : ''}</div><div class="ledger-total">${sign(slip.net)}</div></div><div class="receipt-ledger-card"><div class="receipt-title">工钱条</div>${slip.lines.map(row).join('')}<div class="ledger-row subtotal"><span>今天落袋</span><b>${sign(slip.net)}</b></div></div><div class="receipt-ledger-card"><div class="receipt-title">房租</div><div class="ledger-row"><span>一礼拜</span><b>${rules.rent.amount}</b></div><div class="ledger-row"><span>钱包</span><b>${wallet}</b></div><div class="rent-progress"><span style="width:${clamp(rentPct, 0, 100)}%"></span></div><div class="ledger-row needed"><span>${escHtml(rentLine(slip.day))}</span><b></b></div></div>${shop}</div>`;
+}
+function payRentAtHome() {
+  const res = ledger.payRent({ wallet: shopState.wallet || 0, savings: storySavings() }, ledgerRules());
+  shopState.wallet = res.wallet;
+  shopState.savings = res.savings;
+  shopState.rentPaidDays = [...(shopState.rentPaidDays || []), shopState.day];
+  saveShopState();
+  sfxPlay('ui.select');
+  showToast(
+    res.short
+      ? `房租还差 ${res.short}。房东说，下礼拜一起交。`
+      : res.fromSavings
+        ? `房租交了。钱包不够，从存款里补了 ${res.fromSavings}。`
+        : '房租交了。房东把钱对折，塞进上衣口袋。',
+  );
+  renderHomePanel();
 }
 function renderHomePanel() {
   const space = currentHomeSpace(),
@@ -2285,12 +2402,15 @@ function renderHomePanel() {
     slots = unlockedTimeSlots(),
     up = shopState.upgrades || {};
   const board = $('homeBoardSection'),
-    lead = $('homeBoardLead');
+    lead = $('homeBoardLead'),
+    story = hasSave && isStoryDay();
+  $('homeRoomBackdrop').classList.toggle('night', story && !!shopState.readyForNextDay);
   $('homeTitle').textContent = '\u8282\u594f\u9c9c\u679c\u94fa';
   if (hasSave) {
     board.classList.remove('hidden');
     lead.classList.remove('hidden');
-    lead.innerHTML = `<p class="eyebrow">${escHtml(`第 ${shopState.day || 1} 天`)}</p><p class="home-board-space">${escHtml(space.title)}</p><p class="subtitle home-board-sub">${escHtml(space.subtitle)}</p>`;
+    const night = story && shopState.readyForNextDay;
+    lead.innerHTML = `<p class="eyebrow">${escHtml(`第 ${shopState.day || 1} 天${night ? ' · 夜' : ''}`)}</p><p class="home-board-space">${escHtml(space.title)}</p><p class="subtitle home-board-sub">${escHtml(night ? space.nightSubtitle || space.subtitle : space.subtitle)}</p>`;
   } else {
     board.classList.add('hidden');
     lead.classList.add('hidden');
@@ -2298,54 +2418,85 @@ function renderHomePanel() {
   }
   $('titleNewButton').textContent = hasSave
     ? shopState.readyForNextDay
-      ? '开始新一天'
+      ? story
+        ? rentDueUnpaid()
+          ? '交房租'
+          : '睡觉'
+        : '开始新一天'
       : '去店里'
     : '开始新生活';
   $('titleLoadButton').textContent = hasSave ? '读取存档' : '加载存档';
   $('titlePracticeButton').textContent = '练习一下';
-  const card = ([k, v, s]) => `<div class="home-ledger-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`,
+  const card = ([k, v, s]) =>
+      `<div class="home-ledger-card"><span>${k}</span><b>${v}</b><small>${s}</small></div>`,
     missing = rentMissing(),
     daysLeft = rentDaysLeft(),
     rep = shopState.reputation || 0,
     nextStage = SHOP_STAGES.find((st) => st.minRep > rep),
     gear = ['cutter', 'blender', 'sign'].map((id) => up[id] || 1),
     upgraded = gear.filter((lv) => lv >= 2).length;
-  $('homeLedger').innerHTML = hasSave
-    ? [
-        ['手头的钱', `${shopState.coins || 0} 金`, missing > 0 ? `交房租还差 ${missing} 金` : '够交这期房租了'],
-        [
-          '房租',
-          `${shopState.rentAmount || 480} 金`,
-          daysLeft <= 0 ? '今天要交' : daysLeft === 1 ? '明天要交' : `${daysLeft} 天后要交`,
-        ],
-      ]
-        .map(card)
-        .join('')
-    : '';
-  $('homeAssets').innerHTML = hasSave
-    ? [
-        [
-          '口碑',
-          rep,
-          nextStage ? `再涨 ${nextStage.minRep - rep}，店就升格成「${nextStage.name}」` : '整条街都知道这家店了',
-        ],
-        ['会做的饮品', `${learned} 种`, '排班时从里面挑'],
-        [
-          '营业时段',
-          slots.map((sl) => sl.label).join('、'),
-          slots.length < TIME_SLOTS.length ? '更晚的班以后开放' : '从白天开到深夜',
-        ],
-        [
-          '设备',
-          upgraded ? `升级过 ${upgraded} 台` : '都还是旧的',
-          gear.every((lv) => lv === gear[0])
-            ? `切果台、榨汁机、灯箱都是 ${gear[0]} 级`
-            : `切果台 ${gear[0]} · 榨汁机 ${gear[1]} · 灯箱 ${gear[2]} 级`,
-        ],
-      ]
-        .map(card)
-        .join('')
-    : '';
+  const slip = shopState.lastSlip && shopState.lastSlip.day === shopState.day ? shopState.lastSlip : null,
+    rentNote = rentDueUnpaid()
+      ? '今天要交，房东在门口'
+      : rentPaidOn(shopState.day)
+        ? '这礼拜交过了'
+        : rentDaysLeft() === 2
+          ? '明天要交'
+          : `${rentDaysLeft() - 1} 天后要交`,
+    storyCards = [
+      [
+        '钱包',
+        `${shopState.wallet || 0} 元`,
+        shopState.readyForNextDay && slip ? `今天落袋 ${slip.net >= 0 ? '+' : ''}${slip.net}` : rentLine(),
+      ],
+      ['房租', `${ledgerRules().rent.amount} 元`, rentNote],
+      ['存款', `${storySavings()} 元`, '不到万不得已不动'],
+    ];
+  $('homeLedger').innerHTML = !hasSave
+    ? ''
+    : story
+      ? storyCards.map(card).join('')
+      : [
+          [
+            '手头的钱',
+            `${shopState.coins || 0} 金`,
+            missing > 0 ? `交房租还差 ${missing} 金` : '够交这期房租了',
+          ],
+          [
+            '房租',
+            `${shopState.rentAmount || 480} 金`,
+            daysLeft <= 0 ? '今天要交' : daysLeft === 1 ? '明天要交' : `${daysLeft} 天后要交`,
+          ],
+        ]
+          .map(card)
+          .join('');
+  $('homeAssets').innerHTML =
+    hasSave && !story
+      ? [
+          [
+            '口碑',
+            rep,
+            nextStage
+              ? `再涨 ${nextStage.minRep - rep}，店就升格成「${nextStage.name}」`
+              : '整条街都知道这家店了',
+          ],
+          ['会做的饮品', `${learned} 种`, '排班时从里面挑'],
+          [
+            '营业时段',
+            slots.map((sl) => sl.label).join('、'),
+            slots.length < TIME_SLOTS.length ? '更晚的班以后开放' : '从白天开到深夜',
+          ],
+          [
+            '设备',
+            upgraded ? `升级过 ${upgraded} 台` : '都还是旧的',
+            gear.every((lv) => lv === gear[0])
+              ? `切果台、榨汁机、灯箱都是 ${gear[0]} 级`
+              : `切果台 ${gear[0]} · 榨汁机 ${gear[1]} · 灯箱 ${gear[2]} 级`,
+          ],
+        ]
+          .map(card)
+          .join('')
+      : '';
   $('homeSmall').textContent = hasSave
     ? '桌上的账本会记住今天赚了多少，也会提醒你还差多少房租。'
     : 'HTML demo 用于验证完整体验。存档会以当前版本重新开始。';
@@ -2354,6 +2505,10 @@ function startHomeDay() {
   if (activeSaveSlot < 0) {
     showSavePanel('new');
     unlockMenuLoop();
+    return;
+  }
+  if (shopState.readyForNextDay && isStoryDay() && rentDueUnpaid()) {
+    payRentAtHome();
     return;
   }
   shopState.readyForNextDay ? advanceDay() : showDayIntro();
@@ -2586,12 +2741,14 @@ function showFlowMessage({
   onSecondary = null,
   autoMs = 0,
   cinematic = false,
+  daycard = false,
 }) {
   state = S.FLOW;
   const panel = $('flowPanel');
   panel.classList.remove('vn-panel', 'service-transition');
   panel.onclick = null;
   panel.classList.toggle('cinematic', !!cinematic);
+  panel.classList.toggle('daycard', !!daycard);
   $('flowTitle').textContent = title;
   $('flowBody').innerHTML = body;
   $('flowBig').textContent = big;
@@ -2829,7 +2986,7 @@ function showVN(nodes, onDone = null) {
   vnState = { nodes, index: 0, onDone, locked: false };
   const panel = $('flowPanel');
   panel.classList.add('vn-panel');
-  panel.classList.remove('cinematic', 'service-transition');
+  panel.classList.remove('cinematic', 'daycard', 'service-transition');
   $('flowBig').classList.add('hidden');
   $('flowPrimaryButton').classList.add('hidden');
   $('flowSecondaryButton').classList.add('hidden');
@@ -2946,6 +3103,9 @@ function runNextFlowPhase() {
   const phase = flowCursor.take();
   if (phase.ticker !== undefined) setTicker(phase.ticker);
   sceneBackdropKey = phase.backdrop || null;
+  // The shop's ledger opens when the story says so; story income (存杯本 and the like) lands on today's slip.
+  if (phase.shopLedger && !shopState.shopLedger) shopState.shopLedger = { raised: 0, ...phase.shopLedger };
+  if (phase.shopIncome) (dayStats.shopIncome = dayStats.shopIncome || []).push(...phase.shopIncome);
   if (phase.setHome && HOME_SPACES[phase.setHome] && shopState.homeStage !== phase.setHome) {
     shopState.homeStage = phase.setHome;
     saveShopState();
@@ -2964,7 +3124,6 @@ function runNextFlowPhase() {
   if (phase.type === 'dialogue') {
     showVN(phase.nodes, vnAfterDialogue);
   } else if (phase.type === 'service') {
-    lastPick = { songId: phase.songId, wanted: phase.songId, customer: '' };
     startFlowServiceTransition(phase);
   } else if (phase.type === 'track_event') {
     showTrackEventDiffSelect(phase);
@@ -3011,7 +3170,8 @@ function showServiceSelectPanel(phase) {
     const ib = SONGS.findIndex((s) => s.id === b.songId);
     return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib);
   });
-  let chosenId = null;
+  let chosenId = null,
+    confirmed = false;
   options.forEach((opt) => {
     const s = SONGS.find((x) => x.id === opt.songId);
     const el = document.createElement('div');
@@ -3031,7 +3191,9 @@ function showServiceSelectPanel(phase) {
       showToast('请先选择一个饮品');
       return;
     }
-    lastPick = { songId: chosenId, wanted: phase.correctId, customer: phase.customer || '' };
+    // One confirm per panel: a second tap during the transition must not start or re-record the order.
+    if (confirmed) return;
+    confirmed = true;
     if (chosenId === phase.correctId) {
       startFlowServiceTransition({ ...phase, songId: phase.correctId });
     } else {
@@ -3135,6 +3297,8 @@ function startFlowService(phase) {
     runNextFlowPhase();
     return;
   }
+  // What was served and what was asked for, recorded from the order that actually starts.
+  lastPick = { songId: id, wanted: phase.correctId || id, customer: serviceCustomer(phase) };
   activeSlotId = phase.slotId || 'day';
   invalidateBackdropCache();
   serviceRun = {
@@ -3151,6 +3315,23 @@ function startFlowService(phase) {
   diff = SERVICE_DIFF;
   start();
 }
+/** The day card. On story days a black screen: the day, the weekday and the wallet (docs/narrative/00_skeleton_v4.md §3). */
+function dayCard(day, onPrimary) {
+  const story = isStoryDay(day);
+  // A new day starts on a clean black screen; last night's toast (the rent) does not carry over.
+  if (story) hideToast();
+  showFlowMessage({
+    eyebrow: '\u5f00\u5e97\u955c\u5934',
+    big: `\u7b2c ${day} \u5929`,
+    title: story ? `礼拜${ledger.weekday(day)}` : '',
+    body: story ? escHtml(walletLine(day)) : '',
+    primary: '',
+    onPrimary,
+    autoMs: onPrimary ? (story ? 2400 : 900) : 0,
+    cinematic: true,
+    daycard: story,
+  });
+}
 async function showDayIntro() {
   setIntroDifficulty();
   ensureDailyPlan();
@@ -3163,16 +3344,7 @@ async function showDayIntro() {
       if (_d1 && Array.isArray(_d1.phases) && _d1.phases.length) {
         const flow = prepareDayFlowWithBossLetters(_d1);
         showSceneBackdrop();
-        showFlowMessage({
-          eyebrow: '\u5f00\u5e97\u955c\u5934',
-          big: `\u7b2c 1 \u5929`,
-          title: '',
-          body: '',
-          primary: '',
-          onPrimary: () => startDayFlow(flow),
-          autoMs: 900,
-          cinematic: true,
-        });
+        dayCard(1, () => startDayFlow(flow));
       } else {
         showMenuEdit();
         requestAnimationFrame(runContextTutorial);
@@ -3181,29 +3353,12 @@ async function showDayIntro() {
     return;
   }
   showSceneBackdrop();
-  showFlowMessage({
-    eyebrow: '\u5f00\u5e97\u955c\u5934',
-    big: `\u7b2c ${day} \u5929`,
-    title: '',
-    body: '',
-    primary: '',
-    onPrimary: null,
-    cinematic: true,
-  });
+  dayCard(day, null);
   const rawFlow = await loadDayFlow(day),
     flow = prepareDayFlowWithBossLetters(rawFlow || null);
   if (state !== S.FLOW) return;
   if (flow && Array.isArray(flow.phases) && flow.phases.length) {
-    showFlowMessage({
-      eyebrow: '\u5f00\u5e97\u955c\u5934',
-      big: `\u7b2c ${day} \u5929`,
-      title: '',
-      body: '',
-      primary: '',
-      onPrimary: () => startDayFlow(flow),
-      autoMs: 900,
-      cinematic: true,
-    });
+    dayCard(day, () => startDayFlow(flow));
   } else {
     showFlowMessage({
       eyebrow: '\u5f00\u5e97\u955c\u5934',
@@ -4037,6 +4192,13 @@ function showServiceStoryResult(r) {
   clearResultPhoto();
   updateMenuLoop();
   if (flowCursor.active) {
+    if (!wasTrackEvent && lastPick && isStoryDay())
+      (dayStats.storyOrders = dayStats.storyOrders || []).push({
+        customer: lastPick.customer,
+        wanted: lastPick.wanted,
+        served: lastPick.songId,
+        score: lastServiceResult.customer,
+      });
     shopState.coins += r.money;
     shopState.reputation += r.rep;
     shopState.totalShifts++;
@@ -4089,19 +4251,15 @@ function showOneDaySettlement() {
   clearResultCelebration();
   clearResultPhoto();
   const r = lastServiceResult || {},
-    tip = r.customer >= 88 ? 2 : r.customer >= 62 ? 1 : 0,
-    trialPay = 18,
-    drinkIncome = 6,
-    meal = -4,
-    rent = 480,
-    income = trialPay + drinkIncome + tip,
-    expense = Math.abs(meal),
-    total = income - expense,
-    missing = Math.max(0, rent - total),
-    rentPct = Math.round((total / rent) * 100);
+    order = { customer: '林小末', wanted: 'lemon_water', served: 'lemon_water', score: r.customer || 0 },
+    // Banked once with a save; a replay, or a prologue played without a save, only shows it.
+    slip =
+      activeSaveSlot >= 0 && shopState.slipDay < 0
+        ? bankSlip(0, [order], true)
+        : slipFor(0, [order], true, 0);
   resultMode = 'prologueLedger';
   resultRank.textContent = '\u5e8f\u7ae0 · \u8d26\u672c';
-  resultText.innerHTML = `<div class="receipt day-ledger-view"><div class="receipt-ledger-card hero"><div><div class="receipt-title">\u4eca\u65e5\u7ed3\u4f59</div><div class="receipt-note">\u5e8f\u7ae0\u8bd5\u8425\u4e1a\u9636\u6bb5\u5148\u7ed3\u7b97\u73b0\u91d1\u6536\u652f\u3002\u58f0\u671b\u3001\u5e93\u5b58\u548c\u6b63\u5f0f\u7ecf\u8425\u8d26\u672c\u4f1a\u5728\u540e\u7eed\u5f00\u5e97\u540e\u9010\u6e10\u653e\u5f00\u3002</div></div><div class="ledger-total"><span class="money-coin">$</span>${total}</div></div><div class="receipt-ledger-card"><div class="receipt-title">\u6536\u5165\u660e\u7ec6</div><div class="ledger-row"><span>\u8bd5\u7528\u5de5\u8d44</span><b>+${trialPay}</b></div><div class="ledger-row"><span>\u67e0\u6aac\u6c34\u6536\u5165</span><b>+${drinkIncome}</b></div><div class="ledger-row"><span>\u5c0f\u8d39</span><b>+${tip}</b></div><div class="ledger-row subtotal"><span>\u6536\u5165\u5c0f\u8ba1</span><b>+${income}</b></div></div><div class="receipt-ledger-card"><div class="receipt-title">\u652f\u51fa\u660e\u7ec6</div><div class="ledger-row expense"><span>\u5458\u5de5\u9910</span><b>${meal}</b></div><div class="ledger-row subtotal expense"><span>\u652f\u51fa\u5c0f\u8ba1</span><b>-${expense}</b></div></div><div class="receipt-ledger-card"><div class="receipt-title">\u623f\u79df\u76ee\u6807</div><div class="ledger-row"><span>\u672c\u5468\u623f\u79df</span><b>${rent}</b></div><div class="ledger-row"><span>\u4eca\u65e5\u5df2\u6512</span><b>${total}</b></div><div class="rent-progress"><span style="width:${clamp(rentPct, 0, 100)}%"></span></div><div class="ledger-row needed"><span>\u8fd8\u5dee</span><b>${missing}</b></div><div class="receipt-note">\u5907\u6ce8\uff1a\u67dc\u53f0\u4e0a\u5269\u4e0b\u4e86\u534a\u4e2a\u4e09\u660e\u6cbb\u3002\u67da\u5b50\u8bf4\u5148\u522b\u95ee\u3002</div></div></div>`;
+  resultText.innerHTML = wageSlipHtml(slip, '柜台上剩下了半个三明治。柚子说先别问。');
   resetResultPanelActionsLayout();
   const wrap = resultPanel.querySelector('.panel-actions'),
     retry = $('retryButton'),
@@ -4510,7 +4668,48 @@ function renderResult() {
   setResultText(refs, 'earlyRelease', Math.round(((r.missReasons && r.missReasons.EarlyRelease) || 0) * p));
   setResultText(refs, 'stamp', rankText);
 }
+function celebrateUnlocks(newlyUnlocked) {
+  if (!newlyUnlocked.length || dayStats.summaryCelebrated) return;
+  dayStats.summaryCelebrated = true;
+  resultPanel.classList.add('celebration');
+  const banner = document.createElement('div');
+  banner.className = 'celebration-banner';
+  banner.innerHTML = `<b>\u65b0\u66f2\u89e3\u9501</b> ${newlyUnlocked.join(' / ')} \u5df2\u52a0\u5165\u53ef\u6392\u73ed\u66f2\u5e93`;
+  resultText.insertBefore(banner, resultText.firstChild);
+  drawConfetti({ title: 'unlock' });
+  sfxPlay('result.done');
+}
+/** Story mode's end of the day: the wage slip, which cannot be skipped (docs/narrative/00_skeleton_v4.md §3). */
+function showWageSlip() {
+  dayRun.active = false;
+  setTicker([]);
+  showTicker(false);
+  const newlyUnlocked = resolveDayUnlocks(),
+    day = shopState.day,
+    slip =
+      shopState.slipDay === day && shopState.lastSlip
+        ? shopState.lastSlip
+        : bankSlip(day, dayStats.storyOrders || []);
+  shopState.readyForNextDay = true;
+  saveShopState();
+  resultMode = 'day';
+  resetResultPanelActionsLayout();
+  setResultActions('day');
+  $('menuButton').classList.add('hidden');
+  $('resultHomeButton').textContent = '回家';
+  clearResultCelebration();
+  clearResultPhoto();
+  state = S.ENDED;
+  showResultPanel();
+  resultRank.textContent = `第 ${day} 天 · 日结`;
+  resultText.innerHTML = wageSlipHtml(slip);
+  celebrateUnlocks(newlyUnlocked);
+}
 function showDaySummary() {
+  if (isStoryDay()) {
+    showWageSlip();
+    return;
+  }
   dayRun.active = false;
   setTicker([]);
   showTicker(false);
@@ -4545,16 +4744,7 @@ function showDaySummary() {
       : '<div class="receipt-line"><span>\u6682\u65e0\u73ed\u6b21</span><b>0</b></div>';
   resultRank.textContent = '\u4eca\u65e5\u6536\u5de5\u65e5\u62a5';
   resultText.innerHTML = `<div class="receipt"><div class="receipt-card hero"><div class="receipt-title">\u7ecf\u8425\u8bc4\u4ef7</div><div class="receipt-big">${gs.complete ? '\u8fbe\u6210\u76ee\u6807' : g.rank}</div><div class="receipt-line"><span>\u5e73\u5747\u6ee1\u610f\u5ea6</span><b class="receipt-good">${g.avg} / 100</b></div><div class="receipt-note">${gs.complete ? '\u4eca\u5929\u7684\u83dc\u5355\u548c\u8425\u6536\u90fd\u8fbe\u6807\uff0c\u53ef\u4ee5\u5b89\u5fc3\u63a8\u8fdb\u5230\u4e0b\u4e00\u5929\u3002' : g.body}</div></div><div class="receipt-card"><div class="receipt-title">\u4eca\u65e5\u76ee\u6807</div>${goalLines}<div class="receipt-note">\u4eca\u65e5\u83dc\u5355\uff1a${dailySupplyNames()}</div></div><div class="receipt-card"><div class="receipt-title">\u83dc\u5355\u5b8c\u6210</div>${menuLines}<div class="receipt-line"><span>\u76c8\u4f59\u5956\u91d1</span><b class="receipt-warn">+${dayStats.goalBonus || 0}</b></div></div><div class="receipt-card"><div class="receipt-title">\u5f53\u65e5\u4ea7\u51fa</div><div class="receipt-note">${resourceText(dayStats.resources, 8)}</div><div class="receipt-note">${newlyUnlocked.length ? '\u65b0\u5b66\u4f1a\uff1a' + newlyUnlocked.join(' / ') : '\u672a\u89e3\u9501\u65b0\u66f2'}</div><div class="day-ledger">${ledger}</div></div></div>`;
-  if (newlyUnlocked.length && !dayStats.summaryCelebrated) {
-    dayStats.summaryCelebrated = true;
-    resultPanel.classList.add('celebration');
-    const banner = document.createElement('div');
-    banner.className = 'celebration-banner';
-    banner.innerHTML = `<b>\u65b0\u66f2\u89e3\u9501</b> ${newlyUnlocked.join(' / ')} \u5df2\u52a0\u5165\u53ef\u6392\u73ed\u66f2\u5e93`;
-    resultText.insertBefore(banner, resultText.firstChild);
-    drawConfetti({ title: 'unlock' });
-    sfxPlay('result.done');
-  }
+  celebrateUnlocks(newlyUnlocked);
 }
 function songTime() {
   if (state === S.LEAD_IN) return leadInSongTime();
