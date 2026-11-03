@@ -37,6 +37,7 @@ export function defaultPlayerSave(initialLearnedSongs = INITIAL_LEARNED_SONGS_FA
     tutorialSeen: {},
     bossLettersSeen: [],
     inputs: [],
+    wrongServed: {},
   };
 }
 
@@ -73,6 +74,7 @@ export function normalizeSave(raw, initialLearnedSongs = INITIAL_LEARNED_SONGS_F
     // Saves from before this flag existed: anything past day 1's first shift has had its prologue.
     prologueDone: !!(raw.prologueDone || firstShiftDone || (raw.day || 1) > 1),
     upgrades: { ...base.upgrades, ...asObject(raw.upgrades) },
+    wrongServed: asObject(raw.wrongServed),
     currentMenu: asArray(raw.currentMenu),
     learnedSongs: normalizeLearnedSongs(raw, initialLearnedSongs),
     unlockHistory: normalizeUnlockHistory(raw),

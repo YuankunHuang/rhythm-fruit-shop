@@ -53,6 +53,38 @@ export function scoreBranchNodes(phase, score, styleShares) {
   return [...(branch ? branch.nodes : []), ...(phase.after || [])];
 }
 
+const MADE_STYLES = ['swipe', 'chop', 'flow'];
+
+/** How a result was made: the new way of playing that finished at least half the notes, else plain 'tap'. */
+export function dominantStyle(styleShares = {}) {
+  return MADE_STYLES.find((st) => (styleShares[st] || 0) >= 0.5) || 'tap';
+}
+
+/** Score band name: good >= 88, ok >= 62, otherwise bad. */
+export function band(score) {
+  return score >= 88 ? 'good' : score >= 62 ? 'ok' : 'bad';
+}
+
+const banded = (entry, score) => (Array.isArray(entry) ? entry : (entry && entry[band(score)]) || []);
+
+/**
+ * A layered reaction, for phases that use `byDrink` / `byStyle`; others fall back to scoreBranchNodes.
+ * Layers play in order: what the customer says about the drink they got when it is not the one they
+ * asked for (`byDrink[served]`), how it was made (`byStyle[tap|swipe|chop|flow]`), the score band,
+ * then `after`. A wrong drink's entry takes the place of the band layer: "it came out well" means
+ * little about a drink nobody ordered. Any layer may be an array, or banded as { good, ok, bad }.
+ * ctx: { score, styleShares, served, wanted } (served/wanted are song ids; missing means as ordered).
+ */
+export function reactionNodes(phase, ctx = {}) {
+  const score = ctx.score || 0;
+  if (!phase.byDrink && !phase.byStyle) return scoreBranchNodes(phase, score, ctx.styleShares);
+  const wrong = ctx.served && ctx.wanted && ctx.served !== ctx.wanted;
+  const drinkLayer = wrong ? banded(phase.byDrink && (phase.byDrink[ctx.served] || phase.byDrink._default), score) : [];
+  const styleLayer = banded(phase.byStyle && phase.byStyle[dominantStyle(ctx.styleShares)], score);
+  const bandLayer = wrong ? [] : (pickBranch((phase.branches || []).filter((b) => !b.style), score) || {}).nodes || [];
+  return [...drinkLayer, ...styleLayer, ...bandLayer, ...(phase.after || [])];
+}
+
 /** Customer score bands used by the prologue: good >= 88, ok >= 62. No result (null) counts as good. */
 export function serviceBranch(customer) {
   if (customer === null) return 'good';

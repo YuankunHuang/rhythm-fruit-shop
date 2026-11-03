@@ -653,6 +653,8 @@ let savePanelMode = 'load',
   dayRun = { active: false, queue: [], index: 0, aborted: false },
   serviceRun = { active: false, id: '', fromStory: false, fromTrackEvent: false },
   lastServiceResult = null,
+  // The drink actually served in the current order and the one the customer asked for (layered reactions).
+  lastPick = null,
   vnState = { nodes: [], index: 0, onDone: null, locked: false },
   trackEventPhase = null;
 const flowCursor = new story.FlowCursor();
@@ -2962,16 +2964,18 @@ function runNextFlowPhase() {
   if (phase.type === 'dialogue') {
     showVN(phase.nodes, vnAfterDialogue);
   } else if (phase.type === 'service') {
+    lastPick = { songId: phase.songId, wanted: phase.songId, customer: '' };
     startFlowServiceTransition(phase);
   } else if (phase.type === 'track_event') {
     showTrackEventDiffSelect(phase);
   } else if (phase.type === 'score_branch') {
     showVN(
-      story.scoreBranchNodes(
-        phase,
-        lastServiceResult ? lastServiceResult.customer : 0,
-        lastServiceResult && lastServiceResult.styleShares,
-      ),
+      story.reactionNodes(phase, {
+        score: lastServiceResult ? lastServiceResult.customer : 0,
+        styleShares: lastServiceResult && lastServiceResult.styleShares,
+        served: lastPick && lastPick.songId,
+        wanted: lastPick && lastPick.wanted,
+      }),
       vnAfterDialogue,
     );
   } else if (phase.type === 'service_select') {
@@ -3027,6 +3031,7 @@ function showServiceSelectPanel(phase) {
       showToast('请先选择一个饮品');
       return;
     }
+    lastPick = { songId: chosenId, wanted: phase.correctId, customer: phase.customer || '' };
     if (chosenId === phase.correctId) {
       startFlowServiceTransition({ ...phase, songId: phase.correctId });
     } else {
@@ -4023,6 +4028,11 @@ function showServiceStoryResult(r) {
   const flowMenuId = serviceRun.menuId || '';
   serviceRun = { active: false, id: '', fromStory: false, fromTrackEvent: false, wrongPick: false };
   if (wasWrongPick) lastServiceResult = { ...r, customer: Math.min(r.customer, 62) };
+  // Regulars remember being served something they did not ask for; later days can branch on it.
+  if (wasWrongPick && flowCursor.active && lastPick && lastPick.customer) {
+    const book = (shopState.wrongServed = shopState.wrongServed || {});
+    (book[lastPick.customer] = book[lastPick.customer] || []).push({ day: shopState.day, served: lastPick.songId });
+  }
   clearResultCelebration();
   clearResultPhoto();
   updateMenuLoop();
@@ -4061,8 +4071,7 @@ function showServiceStoryResult(r) {
         showToast('解锁曲目：' + (SONGS.find((x) => x.id === tePhase.songId)?.title || tePhase.songId));
       }
       const score = r.customer;
-      const branch = story.pickBranch(tePhase.branches, score, r.styleShares);
-      const nodes = [...(branch ? branch.nodes : []), ...(tePhase.after || [])];
+      const nodes = story.reactionNodes(tePhase, { score, styleShares: r.styleShares });
       if (nodes.length) {
         showVN(nodes, runNextFlowPhase);
       } else {

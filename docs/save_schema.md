@@ -48,6 +48,9 @@ type PlayerSave = {
   firstShiftDone: boolean;
   prologueDone: boolean; // 这个存档是否演过序章；新档先演序章，旧档载入时：过了第 1 天首班即视为已演
 
+  // 熟客记账：谁被端过不是自己点的饮品。键是点单的客人名，值按时间排列
+  wrongServed: { [customer: string]: { day: number; served: string }[] };
+
   // 升级
   upgrades: {
     cutter:  number;  // 1-5

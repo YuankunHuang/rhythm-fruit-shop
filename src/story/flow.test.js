@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import {
   FlowCursor,
+  dominantStyle,
   PHASE_TYPES,
   afterServiceNodes,
   insertBossLetters,
@@ -10,6 +11,7 @@ import {
   matchMilestone,
   pickBranch,
   pickLetter,
+  reactionNodes,
   scoreBranchNodes,
   serviceBranch,
 } from './flow.js';
@@ -177,4 +179,24 @@ test('a style branch wins when that way of playing finished enough of the notes'
   assert.deepEqual(pickBranch(branches, 95, { chop: 0.4 }).nodes, ['good']);
   assert.deepEqual(pickBranch(branches, 10).nodes, ['low'], 'no style shares: score bands as before');
   assert.deepEqual(scoreBranchNodes({ branches, after: ['x'] }, 95, { chop: 1 }), ['cut', 'x']);
+});
+
+test('a layered reaction plays drink, then style, then score band, then the tail', () => {
+  const phase = {
+    branches: [{ min: 88, nodes: ['good'] }, { min: 62, nodes: ['ok'] }, { min: 0, nodes: ['bad'] }],
+    byStyle: { tap: ['plain'], chop: { good: ['clean cut'], ok: ['cut'], bad: ['hacked'] } },
+    byDrink: { lemon_water: ['not what I asked'], _default: ['hm'] },
+    after: ['bye'],
+  };
+  const ask = { served: 'grape', wanted: 'grape' };
+  assert.deepEqual(reactionNodes(phase, { ...ask, score: 95 }), ['plain', 'good', 'bye']);
+  assert.deepEqual(reactionNodes(phase, { ...ask, score: 70, styleShares: { chop: 0.8 } }), ['cut', 'ok', 'bye']);
+  assert.deepEqual(reactionNodes(phase, { served: 'lemon_water', wanted: 'grape', score: 95 }), ['not what I asked', 'plain', 'bye'],
+    'a wrong drink replaces the score band');
+  assert.deepEqual(reactionNodes(phase, { served: 'fruit_cup', wanted: 'grape', score: 10, styleShares: { chop: 1 } }),
+    ['hm', 'hacked', 'bye'], 'unlisted wrong drink falls back to _default; banded style layer follows the score');
+  assert.deepEqual(reactionNodes({ branches: phase.branches, after: ['x'] }, { score: 70 }), ['ok', 'x'],
+    'phases without layers behave as before');
+  assert.equal(dominantStyle({ swipe: 0.4, chop: 0.3 }), 'tap');
+  assert.equal(dominantStyle({ flow: 0.7 }), 'flow');
 });
