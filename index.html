@@ -124,6 +124,9 @@ html.theme-night #resultPanel #retryButton.replay-prologue-cta{opacity:.82}
 .song-tag{border-radius:999px;padding:calc(3px * var(--ui-scale)) calc(7px * var(--ui-scale));background:rgba(113,203,135,.12);color:#3f9f65;font-size:calc(10px * var(--ui-scale));font-weight:950;line-height:1}
 .song-stat{background:rgba(38,48,68,.07);color:#607086}
 .diff-row{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(10px * var(--ui-scale));margin:calc(12px * var(--ui-scale)) 0 calc(18px * var(--ui-scale))}
+/* Order choices: a short last row sits in the middle instead of hugging the left. */
+#serviceSelectRow{display:flex;flex-wrap:wrap;justify-content:center}#serviceSelectRow>.diff-card{flex:0 1 calc((100% - 3 * 10px * var(--ui-scale)) / 4);min-width:0}
+@media(max-width:760px){#serviceSelectRow{gap:calc(8px * var(--ui-scale))}#serviceSelectRow>.diff-card{flex-basis:calc((100% - 8px * var(--ui-scale)) / 2)}}
 .diff-card{text-align:center;border-radius:999px;padding:calc(11px * var(--ui-scale)) calc(8px * var(--ui-scale));font-size:calc(14px * var(--ui-scale));font-weight:850}.diff-card small{display:block;font-size:.72em;line-height:1.05;opacity:.72;margin-top:2px}.diff-card.locked{opacity:.38;cursor:not-allowed;box-shadow:none!important;transform:none!important}
 .speed-row{display:inline-flex;align-items:center;justify-content:center;gap:calc(4px * var(--ui-scale));margin:calc(2px * var(--ui-scale)) auto calc(16px * var(--ui-scale));padding:calc(5px * var(--ui-scale));border:1px solid rgba(38,48,68,.08);border-radius:999px;background:#f1f5f2;vertical-align:middle}
 .speed-row:before{content:"\901f\5ea6";padding:0 calc(7px * var(--ui-scale));color:#7b8798;font-size:calc(12px * var(--ui-scale));font-weight:900;letter-spacing:.04em}
