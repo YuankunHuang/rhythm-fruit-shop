@@ -53,7 +53,8 @@ for (const d of days) {
           if (!(o.select.onWrong && o.select.onWrong[s])) missing.push(`点错「${s}」的当场反应`);
           if (serves && !(p.byDrink && p.byDrink[s])) missing.push(`端上「${s}」后的反应`);
         });
-        if (!serves && wrong.length) missing.push('点错仍要求重选（未开放端错饮品）');
+        // `practice`: 柚子 playing a customer on day 1 corrects a wrong pick; that order stays a lesson.
+        if (!serves && wrong.length && !o.select.practice) missing.push('点错仍要求重选（未开放端错饮品）');
       }
       gaps += missing.length;
       if (missing.length || showAll)

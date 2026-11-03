@@ -4376,7 +4376,10 @@ async function completeTutorialAndStartDay() {
   if (_merged && Array.isArray(_merged.phases)) {
     const _post = _merged.phases.filter(
       (p) =>
-        p.id !== 'morning' && p.type !== 'tutorial_complete' && !String(p.id || '').startsWith('tutorial_'),
+        // Morning phases (`morning`, `morning_home`, …) already played before the tutorial.
+        !String(p.id || '').startsWith('morning') &&
+        p.type !== 'tutorial_complete' &&
+        !String(p.id || '').startsWith('tutorial_'),
     );
     if (_post.length) {
       startDayFlow({ ..._merged, phases: _post });
