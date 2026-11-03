@@ -47,6 +47,7 @@ import {
 import * as econ from './core/economy.js';
 import * as ledger from './core/ledger.js';
 import * as story from './story/flow.js';
+import * as stage from './story/stage.js';
 import * as play from './core/session.js';
 import * as clock from './core/clock.js';
 
@@ -303,9 +304,9 @@ function currentShopInterior() {
   const group = SCENE_BACKDROPS[sceneBackdropKey] || SHOP_INTERIORS[selectedTheme] || SHOP_INTERIORS.sunny;
   return isPortrait() ? group.portrait : group.landscape;
 }
+// Portraits by character key. Where each one stands is the stage's call (src/story/stage.js).
 const VN_CHARACTERS = {
   yuzu: {
-    side: 'right',
     assets: {
       neutral: lazyImage('assets/game_art/yuzu/neutral.png'),
       smile: lazyImage('assets/game_art/yuzu/smile.png'),
@@ -319,7 +320,6 @@ const VN_CHARACTERS = {
     },
   },
   student_girl: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/student_girl/neutral.png'),
       tired: lazyImage('assets/game_art/student_girl/tired.png'),
@@ -328,7 +328,6 @@ const VN_CHARACTERS = {
     },
   },
   ashen: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/a_sheng/neutral.png'),
       tired: lazyImage('assets/game_art/a_sheng/tired.png'),
@@ -336,7 +335,6 @@ const VN_CHARACTERS = {
     },
   },
   chengwan: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/cheng_wan/neutral.png'),
       tired: lazyImage('assets/game_art/cheng_wan/tired.png'),
@@ -344,7 +342,6 @@ const VN_CHARACTERS = {
     },
   },
   guiwei: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/gu_wei/neutral.png'),
       lost_in_thought: lazyImage('assets/game_art/gu_wei/lost_in_thought.png'),
@@ -352,7 +349,6 @@ const VN_CHARACTERS = {
     },
   },
   laobei: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/lao_bei/neutral.png'),
       nostalgic_smile: lazyImage('assets/game_art/lao_bei/nostalgic_smile.png'),
@@ -360,7 +356,6 @@ const VN_CHARACTERS = {
     },
   },
   xiaodi: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/xiaodi/neutral.png'),
       smile: lazyImage('assets/game_art/xiaodi/smile.png'),
@@ -371,7 +366,6 @@ const VN_CHARACTERS = {
     },
   },
   laowang: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/lao_wang/neutral.png'),
       laugh: lazyImage('assets/game_art/lao_wang/laugh.png'),
@@ -379,14 +373,12 @@ const VN_CHARACTERS = {
     },
   },
   akai: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/a_kai/neutral.png'),
       grin: lazyImage('assets/game_art/a_kai/grin.png'),
     },
   },
   laofang: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/lao_fang/neutral.png'),
       weary: lazyImage('assets/game_art/lao_fang/weary.png'),
@@ -394,7 +386,6 @@ const VN_CHARACTERS = {
     },
   },
   laoxian: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/lao_xian/neutral.png'),
       pensive: lazyImage('assets/game_art/lao_xian/pensive.png'),
@@ -402,7 +393,6 @@ const VN_CHARACTERS = {
     },
   },
   miss_cat: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/mao_xiao_jie/neutral.png'),
       curious: lazyImage('assets/game_art/mao_xiao_jie/curious.png'),
@@ -410,7 +400,6 @@ const VN_CHARACTERS = {
     },
   },
   mianju: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/mian_ju/neutral.png'),
       detached: lazyImage('assets/game_art/mian_ju/detached.png'),
@@ -418,7 +407,6 @@ const VN_CHARACTERS = {
     },
   },
   xieyin: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/xie_yin/neutral.png'),
       composed_listening: lazyImage('assets/game_art/xie_yin/composed_listening.png'),
@@ -426,7 +414,6 @@ const VN_CHARACTERS = {
     },
   },
   yanzi: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/yan_zi/neutral.png'),
       sharp_alert: lazyImage('assets/game_art/yan_zi/sharp_alert.png'),
@@ -434,7 +421,6 @@ const VN_CHARACTERS = {
     },
   },
   yuange: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/yuan_ge/neutral.png'),
       quiet_content: lazyImage('assets/game_art/yuan_ge/quiet_content.png'),
@@ -442,7 +428,6 @@ const VN_CHARACTERS = {
     },
   },
   yueshu: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/yue_shu/neutral.png'),
       dreamy: lazyImage('assets/game_art/yue_shu/dreamy.png'),
@@ -450,7 +435,6 @@ const VN_CHARACTERS = {
     },
   },
   xiaobing: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/xiao_bing/neutral.png'),
       focused: lazyImage('assets/game_art/xiao_bing/focused.png'),
@@ -458,14 +442,13 @@ const VN_CHARACTERS = {
     },
   },
   laosong: {
-    side: 'left',
     assets: {
       neutral: lazyImage('assets/game_art/lao_song/neutral.png'),
       hollow: lazyImage('assets/game_art/lao_song/hollow.png'),
       composed: lazyImage('assets/game_art/lao_song/composed.png'),
     },
   },
-  wuming: { side: 'left', assets: { neutral: lazyImage('assets/game_art/wu_ming/neutral.png') } },
+  wuming: { assets: { neutral: lazyImage('assets/game_art/wu_ming/neutral.png') } },
 };
 let songCoverImg = null,
   songCoverImgId = '';
@@ -565,8 +548,6 @@ const canvas = $('game'),
   overlay = $('overlay'),
   sceneBackdrop = $('sceneBackdrop'),
   vnCharacters = $('vnCharacters'),
-  vnCharLeft = $('vnCharLeft'),
-  vnCharRight = $('vnCharRight'),
   openingScreen = $('openingScreen'),
   openingVisual = $('openingVisual'),
   homePanel = $('homePanel'),
@@ -2936,13 +2917,6 @@ function vnDefaultExpression(key, node) {
   }
   return 'neutral';
 }
-function setVNCharacterImage(img, config, expr) {
-  const asset = config.assets[expr] || config.assets.neutral;
-  ensureImageLoaded(asset);
-  img.src = asset._rfaSrc || asset.src;
-  img.classList.add('show');
-  img.classList.remove('hidden');
-}
 // News ticker along the top during dialogue: the city's news running past the shop. A dialogue phase or
 // a single line sets it with `ticker` (a list of headlines; [] clears it); it stays on, like a radio
 // left running, until the day ends.
@@ -2956,34 +2930,83 @@ function setTicker(items) {
 function showTicker(on) {
   $('newsTicker').classList.toggle('hidden', !(on && newsTicker.length));
 }
+// The stage (src/story/stage.js): who is in the scene and who is lit. It starts empty at every run of dialogue;
+// a phase's `cast` sets who is already there, and lines change it with `cast`, `enter` and `exit`.
+let vnStage = stage.emptyStage();
+const vnStageImgs = new Map(),
+  VN_NARRATION = ['', '旁白', '系统', '订单'],
+  VN_PROTAGONIST = ['你', '内心'];
+function stageKeys(names) {
+  if (names === undefined) return undefined;
+  return (Array.isArray(names) ? names : [names])
+    .map((n) => (n === 'all' ? 'all' : vnCharacterKey({ speaker: n })))
+    .filter((k) => k === 'all' || VN_CHARACTERS[k]);
+}
+function stageLine(node) {
+  const who = node.character || node.speaker || '',
+    key = vnCharacterKey(node),
+    shown = !!key && !!VN_CHARACTERS[key];
+  return {
+    key: shown ? key : '',
+    expr: shown ? vnDefaultExpression(key, node) : '',
+    keep: VN_PROTAGONIST.includes(who),
+    voice: !shown && !VN_NARRATION.includes(who) && !VN_PROTAGONIST.includes(who),
+    cast: stageKeys(node.cast),
+    enter: stageKeys(node.enter),
+    exit: stageKeys(node.exit),
+  };
+}
 function hideVNCharacters() {
   vnCharacters.classList.add('hidden');
-  [vnCharLeft, vnCharRight].forEach((img) => {
-    img.classList.remove('show', 'dim');
-    img.removeAttribute('src');
-  });
+  vnStageImgs.forEach((img) => img.remove());
+  vnStageImgs.clear();
 }
-function renderVNCharacters(node) {
-  const key = vnCharacterKey(node);
-  if (!key || !VN_CHARACTERS[key]) {
+/** Draws the stage as it stands: up to three portraits, the speaker lit and in front, the others dimmed. */
+function renderVNCharacters() {
+  const look = stage.stageLook(vnStage);
+  if (!look.length) {
     hideVNCharacters();
     return;
   }
   vnCharacters.classList.remove('hidden');
-  const config = VN_CHARACTERS[key],
-    activeImg = config.side === 'left' ? vnCharLeft : vnCharRight,
-    inactiveImg = config.side === 'left' ? vnCharRight : vnCharLeft;
-  setVNCharacterImage(activeImg, config, vnDefaultExpression(key, node));
-  activeImg.dataset.char = key;
-  activeImg.classList.remove('dim');
-  inactiveImg.classList.remove('show', 'dim');
-  inactiveImg.removeAttribute('src');
+  vnCharacters.dataset.count = String(look.length);
+  const onStage = new Set(look.map((c) => c.key));
+  vnStageImgs.forEach((img, key) => {
+    if (onStage.has(key)) return;
+    vnStageImgs.delete(key);
+    img.classList.remove('show');
+    setTimeout(() => img.remove(), 300);
+  });
+  for (const c of look) {
+    let img = vnStageImgs.get(c.key);
+    const fresh = !img;
+    if (fresh) {
+      img = document.createElement('img');
+      img.className = 'vn-character';
+      img.alt = '';
+      img.dataset.char = c.key;
+      vnCharacters.appendChild(img);
+      vnStageImgs.set(c.key, img);
+    }
+    const assets = VN_CHARACTERS[c.key].assets,
+      asset = assets[c.expr] || assets.neutral;
+    ensureImageLoaded(asset);
+    const src = asset._rfaSrc || asset.src;
+    if (img.getAttribute('src') !== src) img.src = src;
+    img.classList.remove('left', 'center', 'right');
+    img.classList.add(c.slot);
+    img.classList.toggle('lit', c.lit);
+    img.classList.toggle('dim', c.dim);
+    if (fresh) requestAnimationFrame(() => img.classList.add('show'));
+    else img.classList.add('show');
+  }
 }
-function showVN(nodes, onDone = null) {
+function showVN(nodes, onDone = null, { cast } = {}) {
   state = S.FLOW;
   showSceneBackdrop();
   setFlowInteriorVisual();
   vnState = { nodes, index: 0, onDone, locked: false };
+  vnStage = stage.stageStep(stage.emptyStage(), { cast: stageKeys(cast) });
   const panel = $('flowPanel');
   panel.classList.add('vn-panel');
   panel.classList.remove('cinematic', 'daycard', 'service-transition');
@@ -3016,7 +3039,8 @@ function renderVNNode() {
   const narration = !node.speaker;
   if (node.ticker !== undefined) setTicker(node.ticker);
   showTicker(true);
-  renderVNCharacters(node);
+  vnStage = stage.stageStep(vnStage, stageLine(node));
+  renderVNCharacters();
   const panel = $('flowPanel');
   panel.classList.toggle('service-transition', !!node.transition);
   panel.classList.toggle('vn-narration-mode', narration);
@@ -3122,7 +3146,7 @@ function runNextFlowPhase() {
     runNextFlowPhase();
   };
   if (phase.type === 'dialogue') {
-    showVN(phase.nodes, vnAfterDialogue);
+    showVN(phase.nodes, vnAfterDialogue, { cast: phase.cast });
   } else if (phase.type === 'service') {
     startFlowServiceTransition(phase);
   } else if (phase.type === 'track_event') {
@@ -3723,7 +3747,7 @@ function closeCurrentPanel() {
     state === S.FLOW &&
     $('flowPanel').classList.contains('vn-panel')
   )
-    renderVNCharacters(vnState.nodes[vnState.index]);
+    renderVNCharacters();
   if (id === 'homePanel') {
     if (closing === 'songPanel' || state === S.SELECT) showTitle(true);
   } else if (id === 'songPanel') updateSongPreview();

@@ -600,16 +600,21 @@ html.theme-sunny .schedule-supply-row{background:rgba(255,255,255,.58)}
 .news-ticker-window{flex:1;overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}
 .news-ticker-track{display:inline-block;padding-left:100%;animation:newsTickerScroll var(--ticker-duration,24s) linear infinite}
 @keyframes newsTickerScroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-.vn-characters{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;--vn-box-w:min(calc(760px * var(--ui-scale)),calc(100vw - calc(26px * var(--ui-scale))));--vn-box-edge:calc((100vw - var(--vn-box-w)) / 2)}
-.vn-character{position:absolute;bottom:calc(130px * var(--ui-scale));height:min(calc(600px * var(--ui-scale)),72dvh);max-width:calc(var(--vn-box-w) * .62);object-fit:contain;object-position:bottom center;filter:drop-shadow(0 calc(18px * var(--ui-scale)) calc(28px * var(--ui-scale)) rgba(38,48,68,.22));opacity:0;transform:translateY(calc(18px * var(--ui-scale))) scale(.985);transition:opacity .22s ease,transform .28s ease,filter .22s ease}
+.vn-characters{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;--vn-box-w:min(calc(760px * var(--ui-scale)),calc(100vw - calc(26px * var(--ui-scale))));--vn-box-edge:calc((100vw - var(--vn-box-w)) / 2);--vn-h:calc(min(calc(600px * var(--ui-scale)),72dvh) * var(--vn-scale,1));--vn-w:calc(var(--vn-h) * .75);--vn-l:var(--vn-box-edge);--vn-r:calc(100vw - var(--vn-box-edge) - var(--vn-w))}
+/* Three on stage: everyone a little smaller so the trio fits inside the dialogue box's width. */
+.vn-characters[data-count="3"]{--vn-scale:.84}
+.vn-character{position:absolute;bottom:calc(130px * var(--ui-scale));height:var(--vn-h);width:var(--vn-w);object-fit:contain;object-position:bottom center;filter:drop-shadow(0 calc(18px * var(--ui-scale)) calc(28px * var(--ui-scale)) rgba(38,48,68,.22));opacity:0;transform:translateY(calc(18px * var(--ui-scale))) scale(.985);transition:opacity .22s ease,transform .28s ease,filter .22s ease,left .35s ease,height .3s ease,width .3s ease}
 .vn-character.show{opacity:1;transform:translateY(0) scale(1)}
 /* The delivery robot is waist-high: stand it lower so its wheels meet the dialogue box. */
 .vn-character[data-char="xiaodi"]{bottom:calc(70px * var(--ui-scale))}
 @media(max-width:760px){.vn-character[data-char="xiaodi"]{bottom:calc(104px * var(--ui-scale))}}
-.vn-character.dim{opacity:.56;filter:drop-shadow(0 calc(14px * var(--ui-scale)) calc(24px * var(--ui-scale)) rgba(38,48,68,.16)) saturate(.86)}
-.vn-character.left{left:var(--vn-box-edge);transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}
+/* Dimmed, not see-through: overlapping portraits must not show through each other. */
+.vn-character.dim{filter:drop-shadow(0 calc(14px * var(--ui-scale)) calc(24px * var(--ui-scale)) rgba(38,48,68,.16)) brightness(.62) saturate(.8)}
+.vn-character.left{left:var(--vn-l);transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}
 .vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}
-.vn-character.right{right:var(--vn-box-edge)}
+.vn-character.right{left:var(--vn-r)}
+.vn-character.center{left:calc(50vw - var(--vn-w) / 2)}
+.vn-character.lit{z-index:3}
 .vn-speaker{display:block;color:#2f7a46;font-weight:1000;font-size:calc(26px * var(--ui-scale));line-height:1.05;margin-bottom:calc(14px * var(--ui-scale))}
 .vn-line{align-self:flex-start;width:100%;font-size:calc(21px * var(--ui-scale));font-weight:850;line-height:1.55;color:#263044;margin:0;text-align:left}
 .vn-narration{width:100%;font-size:calc(19px * var(--ui-scale));font-weight:700;font-style:italic;line-height:1.7;color:#4a5968;margin:0;text-align:center}
@@ -626,7 +631,7 @@ html.theme-night .vn-narration{color:#b9c7dc}
 html.theme-night .vn-hint,html.theme-night .order-card span{color:#b9c7dc}
 html.theme-sunny .flow-panel.vn-panel{background:rgba(255,252,226,.84)}
 html.theme-sunny .flow-shop-shot{background-image:linear-gradient(140deg,rgba(255,255,255,.10),rgba(255,174,42,.10)),url('assets/game_art/sunny_shop/shop_interior_landscape.png')}
-@media(max-width:760px){.flow-panel.vn-panel{margin-bottom:calc(12px * var(--ui-scale));padding:calc(16px * var(--ui-scale));border-radius:calc(22px * var(--ui-scale))}.vn-panel #flowVisual{height:calc(82px * var(--ui-scale));margin-bottom:calc(10px * var(--ui-scale))}.vn-line{font-size:calc(18px * var(--ui-scale))}.vn-character{bottom:calc(190px * var(--ui-scale));height:min(calc(430px * var(--ui-scale)),58dvh);max-width:54vw}.vn-character.left{left:calc(-36px * var(--ui-scale));transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}.vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}.vn-character.right{right:calc(-42px * var(--ui-scale))}}
+@media(max-width:760px){.flow-panel.vn-panel{margin-bottom:calc(12px * var(--ui-scale));padding:calc(16px * var(--ui-scale));border-radius:calc(22px * var(--ui-scale))}.vn-panel #flowVisual{height:calc(82px * var(--ui-scale));margin-bottom:calc(10px * var(--ui-scale))}.vn-line{font-size:calc(18px * var(--ui-scale))}.vn-characters{--vn-h:calc(min(calc(430px * var(--ui-scale)),58dvh,72vw) * var(--vn-scale,1));--vn-l:calc(-36px * var(--ui-scale));--vn-r:calc(100vw + 42px * var(--ui-scale) - var(--vn-w))}.vn-characters[data-count="3"]{--vn-scale:.9}.vn-character{bottom:calc(190px * var(--ui-scale))}.vn-character.left{transform:translateY(calc(18px * var(--ui-scale))) scale(.985) scaleX(-1)}.vn-character.left.show{opacity:1;transform:translateY(0) scale(1) scaleX(-1)}}
 .resource-help-list{display:grid;gap:calc(9px * var(--ui-scale));margin:calc(12px * var(--ui-scale)) 0;text-align:left}
 .resource-help-list p{margin:0!important;padding:calc(10px * var(--ui-scale)) calc(12px * var(--ui-scale));border-radius:calc(14px * var(--ui-scale));background:rgba(113,203,135,.08);color:#607086}
 .resource-help-list b{color:#263044}
@@ -666,10 +671,7 @@ html.theme-night .resource-help-list b{color:#fff}
   <div id="homeRoomBackdrop" class="home-room-backdrop hidden" aria-hidden="true"></div>
   <div id="sceneBackdrop" class="scene-backdrop hidden"></div>
   <div id="newsTicker" class="news-ticker hidden" aria-hidden="true"><span class="news-ticker-label">新闻</span><div class="news-ticker-window"><div class="news-ticker-track"></div></div></div>
-  <div id="vnCharacters" class="vn-characters hidden">
-    <img id="vnCharLeft" class="vn-character left" alt="">
-    <img id="vnCharRight" class="vn-character right" alt="">
-  </div>
+  <div id="vnCharacters" class="vn-characters hidden"></div>
   <div id="openingScreen" class="opening-screen" role="button" aria-label="开屏：点击进入">
     <div id="openingVisual" class="opening-visual"></div>
     <div class="opening-ripple"></div>

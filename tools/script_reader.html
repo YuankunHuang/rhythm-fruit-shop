@@ -186,7 +186,14 @@
       const INPUT = { swipe: '划', chop: '切', flow: '流' };
       const PLACE = { bus_stop_night: '夜里的公交站', subway_kiosk_rain: '下雨的地铁站口', shopDorm: '店铺阁楼', apartment: '廉租小屋' };
 
-      const line = (n) => {
+      // Stage directions (src/story/stage.js): who is already there, who walks on, who leaves.
+      const names = (x) => (Array.isArray(x) ? x : [x]).map((n) => (n === 'all' ? '所有人' : n)).map(esc).join('、');
+      const stageMarks = (n) =>
+        (n.cast ? `<div class="mark">在场：<b>${names(n.cast)}</b></div>` : '') +
+        (n.exit ? `<div class="mark">下场：<b>${names(n.exit)}</b></div>` : '') +
+        (n.enter ? `<div class="mark">上场：<b>${names(n.enter)}</b></div>` : '');
+      const line = (n) => stageMarks(n) + lineText(n);
+      const lineText = (n) => {
         if (n.html) return `<div class="order">${esc(n.html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim())}</div>`;
         if (!n.text) return '';
         if (!n.speaker) return `<p class="line narr">${esc(n.text)}</p>`;
@@ -203,6 +210,7 @@
         if (p.ticker && p.ticker.length) h += `<div class="ticker">跑马灯：${p.ticker.map(esc).join(' ｜ ')}</div>`;
         if (p.backdrop) h += `<div class="mark">场景换到 <b>${esc(PLACE[p.backdrop] || p.backdrop)}</b></div>`;
         if (p.setHome) h += `<div class="mark">住处换成 <b>${esc(PLACE[p.setHome] || p.setHome)}</b></div>`;
+        if (p.cast) h += `<div class="mark">在场：<b>${names(p.cast)}</b></div>`;
         switch (p.type) {
           case 'dialogue':
             return h + lines(p.nodes);
