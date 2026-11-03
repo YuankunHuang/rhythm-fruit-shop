@@ -160,7 +160,7 @@
       "after": [
         { "speaker": "", "text": "他拎着袋子走到门口，把广告牌扶了一下。" },
         { "speaker": "", "text": "广告牌是正的。他进门的时候已经扶过了。" },
-        { "speaker": "", "text": "他又扶了一下，才走。" },
+        { "speaker": "", "text": "他又扶了一下，才走。", "exit": "老方" },
         { "speaker": "你", "text": "……" },
         { "speaker": "柚子", "text": "别跟他说。", "expr": "neutral" },
         { "speaker": "你", "text": "没打算说。" },
@@ -193,7 +193,7 @@
         { "speaker": "小递", "text": "已学会：扶正招牌。", "expr": "smile" },
         { "speaker": "老方", "text": "好！比我们那时候的徒弟学得快多了！", "expr": "warm_smile" },
         { "speaker": "老方", "text": "我们那时候，徒弟光看就得看一个月。你看一眼就会了。", "expr": "warm_smile" },
-        { "speaker": "", "text": "他拎起袋子走了。走到路口，回头看了一眼。小递还停在牌子旁边，沙漏又转了起来。" },
+        { "speaker": "", "text": "他拎起袋子走了。走到路口，回头看了一眼。小递还停在牌子旁边，沙漏又转了起来。", "exit": "老方" },
         { "speaker": "", "text": "柚子站在你旁边，隔着玻璃看。" },
         { "speaker": "柚子", "text": "草莓还剩两盒。", "expr": "neutral" },
         { "speaker": "你", "text": "嗯。" },
@@ -285,7 +285,7 @@
         { "speaker": "", "text": "你看了一眼那台敞着门的空冷柜。" },
         { "speaker": "你", "text": "有。" },
         { "speaker": "老弦", "text": "蛮好。", "expr": "quiet_warmth" },
-        { "speaker": "", "text": "他推门出去了。" }
+        { "speaker": "", "text": "他推门出去了。", "exit": "老弦" }
       ]
     },
     {
@@ -443,7 +443,7 @@
         }
       ],
       "after": [
-        { "speaker": "", "text": "她扣上帽子，走了。经过窗边，她对着玻璃里自己的影子拢了拢头发。" },
+        { "speaker": "", "text": "她扣上帽子，走了。经过窗边，她对着玻璃里自己的影子拢了拢头发。", "exit": "程晚" },
         { "speaker": "", "text": "对面灯箱里的那个她，头发一丝不乱。" }
       ]
     },
@@ -548,7 +548,7 @@
         { "speaker": "柚子", "text": "哪句？", "expr": "neutral" },
         { "speaker": "", "text": "他没回头。" },
         { "speaker": "老宋", "text": "……没有。都是按规范写的。", "expr": "composed" },
-        { "speaker": "", "text": "他推门出去了。领带还是系得很紧。" }
+        { "speaker": "", "text": "他推门出去了。领带还是系得很紧。", "exit": "老宋" }
       ]
     },
     {
@@ -587,7 +587,7 @@
         { "speaker": "柚子", "text": "明天照常开门。", "expr": "neutral" },
         { "speaker": "你", "text": "嗯。" },
         { "speaker": "柚子", "text": "你别想太多。你一想多，就会想出点什么来。", "expr": "neutral" },
-        { "speaker": "", "text": "车门关上了。" },
+        { "speaker": "", "text": "车门关上了。", "exit": "柚子" },
         { "speaker": "系统", "text": "你一个人往回走。路上下起了雨，不大，一点一点的。你想了一路，什么也没想出来；到家以后，你打开电脑，接着想。", "action": "settlement" }
       ]
     },

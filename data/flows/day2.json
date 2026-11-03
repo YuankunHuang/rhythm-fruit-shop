@@ -167,7 +167,7 @@
       ],
       "after": [
         { "speaker": "", "text": "他拿起纸杯，冲你点了一下头，往外走。" },
-        { "speaker": "", "text": "到门口，手机响了。他看了一眼屏幕，接起来，声音压得很低，推门出去了。" },
+        { "speaker": "", "text": "到门口，手机响了。他看了一眼屏幕，接起来，声音压得很低，推门出去了。", "exit": "阿晟" },
         { "speaker": "", "text": "他喝没喝，你不知道。" }
       ]
     },
@@ -285,7 +285,7 @@
         { "speaker": "林小末", "text": "走了，还有作业。", "expr": "tired" },
         { "speaker": "你", "text": "自己写？" },
         { "speaker": "林小末", "text": "……嗯。", "expr": "neutral" },
-        { "speaker": "", "text": "挂件叮叮当当地出了门。" },
+        { "speaker": "", "text": "挂件叮叮当当地出了门。", "exit": "林小末" },
         { "speaker": "柚子", "text": "（从后门探出头）走了？", "expr": "deadpan" },
         { "speaker": "你", "text": "你什么时候回来的？" },
         { "speaker": "柚子", "text": "你拣第三颗冰的时候。", "expr": "deadpan" },

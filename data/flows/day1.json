@@ -45,7 +45,7 @@
         { "speaker": "柚子", "text": "有什么问题吗？", "expr": "deadpan" },
         { "speaker": "你", "text": "没有没有，不敢不敢。" },
         { "speaker": "柚子", "text": "这才像样。", "expr": "smile" },
-        { "speaker": "", "text": "她解下围裙搭在椅背上，推门出去。风铃晃了两下。" },
+        { "speaker": "", "text": "她解下围裙搭在椅背上，推门出去。风铃晃了两下。", "exit": "柚子" },
         { "speaker": "", "text": "两秒钟后，门又开了。" },
         { "speaker": "", "text": "进来的人肩膀松着，步子慢悠悠的，东张西望，最后停在价目牌前，眯起了眼睛。" },
         { "speaker": "柚子", "text": "哟，这家店环境不错嘛。", "expr": "neutral" },
@@ -150,7 +150,7 @@
         { "speaker": "柚子", "text": "今天那个「大概」——", "expr": "neutral" },
         { "speaker": "你", "text": "不说了。" },
         { "speaker": "柚子", "text": "嗯。", "expr": "smile" },
-        { "speaker": "", "text": "风铃响了一下，她走了。" },
+        { "speaker": "", "text": "风铃响了一下，她走了。", "exit": "柚子" },
         { "speaker": "系统", "text": "天色暗下来。你把刀一把一把插回刀架，比早上顺手了一点。" }
       ]
     },
