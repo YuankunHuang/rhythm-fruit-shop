@@ -106,8 +106,7 @@
         { "speaker": "", "text": "她接过杯子，举到灯下转了半圈，看了看层次。" },
         { "speaker": "柚子", "text": "演习结束。", "expr": "neutral" },
         { "speaker": "", "text": "她把围裙系回去，背也直了。刚才那个东张西望的客人，一下就没了。" },
-        { "speaker": "你", "text": "我过了？" },
-        { "speaker": "柚子", "text": "勉勉强强吧。算你过关。", "expr": "teasing" }
+        { "speaker": "你", "text": "我过了？" }
       ]
     },
     { "id": "tutorial_complete", "type": "tutorial_complete" },
@@ -130,7 +129,7 @@
           "min": 62,
           "label": "一般 (>=62)",
           "nodes": [
-            { "speaker": "柚子", "text": "能卖。", "expr": "deadpan" },
+            { "speaker": "柚子", "text": "勉勉强强吧。算你过关。", "expr": "teasing" },
             { "speaker": "柚子", "text": "手再稳一点，层次就出来了。不着急，一开始都这样。", "expr": "relieved" }
           ]
         },
